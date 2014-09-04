@@ -44,6 +44,13 @@
   </ul>
 </template>
 
+<template name="neuron_type_show">
+  <h1>{{name}}</h1>
+  (Back to <a href="{{pathFor 'neuron_types'}}">neuron types</a>.)
+</template>
+
+<!-- --------------------------- -->
+
 <template name="neuropiles">
   <h1>neuropiles</h1>
   <ul>
@@ -54,3 +61,10 @@
     {{/each}}
   </ul>
 </template>
+
+<template name="neuropile_show">
+  <h1>{{name}}</h1>
+  (Back to <a href="{{pathFor 'neuropiles'}}">neuropiles</a>.)
+</template>
+
+<!-- --------------------------- -->

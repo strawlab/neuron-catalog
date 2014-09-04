@@ -22,8 +22,38 @@ Router.map(function() {
 });
 
 if (Meteor.isServer) {
+  DriverLines.remove({});
+  NeuronTypes.remove({});
+  Neuropiles.remove({});
 
-  DriverLines.insert({name: "xyz"});
+  var id1 = DriverLines.insert({name: "VT37804-Gal4",
+			       });
+
+  var id2 = NeuronTypes.insert({name: "DCN",
+				driver_lines: [id1]
+			       });
+  var id3 = NeuronTypes.insert({name: "AOpTu to lateral triangle projection neuron",
+				driver_lines: [id1]
+			       });
+
+  var id4 = Neuropiles.insert({name: "lobula",
+			       driver_lines: [id1],
+			       neuron_types: [id2]
+			      });
+  var id5 = Neuropiles.insert({name: "lateral triangle",
+			       driver_lines: [id1],
+			       neuron_types: [id3]
+			      });
+  var id6 = Neuropiles.insert({name: "medulla",
+			       driver_lines: [id1],
+			       neuron_types: [id2]
+			      });
+
+  // Pass 2 : update
+  DriverLines.update(id1, {$set: {neuron_types: [id2,id3],
+				  neuropiles: [id4,id5,id6]}});
+  NeuronTypes.update(id2, {$set: {neuropiles: [id4,id6]}});
+  NeuronTypes.update(id3, {$set: {neuropiles: [id5]}});
 
 /*
   Meteor.startup(function () {

@@ -7,7 +7,7 @@ DriverLines = new Meteor.Collection("driver_lines");
   name: String
   _id: <int>
   neuron_types: [id, ...]
-  neuropils: [id, ...]
+  neuropiles: [id, ...]
 */
 
 //////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ NeuronTypes = new Meteor.Collection("neuron_types");
   name: String
   _id: <int>
   driver_lines: [id, ...]
-  neuropils: [id, ...]
+  neuropiles: [id, ...]
 */
 
 //////////////////////////////////////////////////////
