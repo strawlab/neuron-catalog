@@ -21,11 +21,13 @@ Router.map(function() {
 
 });
 
-if (Meteor.isClient) {
-}
-
 if (Meteor.isServer) {
+
+  DriverLines.insert({name: "xyz"});
+
+/*
   Meteor.startup(function () {
     // code to run on server at startup
   });
+*/
 }
