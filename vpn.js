@@ -1,19 +1,27 @@
+Router.map(function() {
+  this.route('home', {path: '/'});
+
+  this.route('driver_lines');
+  this.route('driver_line_show', {
+    path: '/driver_lines/:_id',
+    data: function() { return DriverLines.findOne(this.params._id); }
+  });
+
+  this.route('neuron_types');
+  this.route('neuron_type_show', {
+    path: '/neuron_types/:_id',
+    data: function() { return NeuronTypes.findOne(this.params._id); }
+  });
+
+  this.route('neuropiles');
+  this.route('neuropile_show', {
+    path: '/neuropiles/:_id',
+    data: function() { return Neuropiles.findOne(this.params._id); }
+  });
+
+});
+
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault("counter", 0);
-
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get("counter");
-    }
-  });
-
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set("counter", Session.get("counter") + 1);
-    }
-  });
 }
 
 if (Meteor.isServer) {

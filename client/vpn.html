@@ -3,21 +3,39 @@
 </head>
 
 <body>
-  {{> view_selector}}
+  <a href="{{pathFor 'home'}}">home</a>
+  <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
+  <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
+  <a href="{{pathFor 'neuropiles'}}">Neuropiles</a>
 </body>
 
-<template name="view_selector">
-  <h1>view selector</h1>
+<template name="home">
+  <h1>VPN</h1>
 </template>
 
-<template name="driver_line_table">
-  <h1>driver line table</h1>
+<!-- --------------------------- -->
+
+<template name="driver_lines">
+  <h1>driver lines</h1>
+  <ul>
+    {{#each driver_lines}}
+      <li>
+	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
+      </li>
+    {{/each}}
+  </ul>
 </template>
 
-<template name="neuron_type_table">
-  <h1>neuron_type table</h1>
+<template name="driver_line_show">
+  <h1>{{name}}</h1>
 </template>
 
-<template name="neuropile_table">
-  <h1>neuropile table</h1>
+<!-- --------------------------- -->
+
+<template name="neuron_types">
+  <h1>neuron types</h1>
+</template>
+
+<template name="neuropiles">
+  <h1>neuropiles</h1>
 </template>
