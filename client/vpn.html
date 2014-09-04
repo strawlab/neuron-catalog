@@ -27,8 +27,23 @@
 </template>
 
 <template name="driver_line_show">
-  <h1>{{name}}</h1>
-  (Back to <a href="{{pathFor 'driver_lines'}}">driver lines</a>.)
+  <h1>Driver Line: {{name}}</h1>
+  <h2>Neuron types</h2>
+  <ul>
+    {{#each neuron_types}}
+      <li>
+	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
+      </li>
+    {{/each}}
+  </ul>
+  <h2>Neuropiles</h2>
+  <ul>
+    {{#each neuropiles}}
+      <li>
+	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
+      </li>
+    {{/each}}
+  </ul>
 </template>
 
 <!-- --------------------------- -->
@@ -45,8 +60,23 @@
 </template>
 
 <template name="neuron_type_show">
-  <h1>{{name}}</h1>
-  (Back to <a href="{{pathFor 'neuron_types'}}">neuron types</a>.)
+  <h1>Neuron type: {{name}}</h1>
+  <h2>Driver lines</h2>
+  <ul>
+    {{#each driver_lines}}
+      <li>
+	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
+      </li>
+    {{/each}}
+  </ul>
+  <h2>Neuropiles</h2>
+  <ul>
+    {{#each neuropiles}}
+      <li>
+	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
+      </li>
+    {{/each}}
+  </ul>
 </template>
 
 <!-- --------------------------- -->
@@ -63,8 +93,23 @@
 </template>
 
 <template name="neuropile_show">
-  <h1>{{name}}</h1>
-  (Back to <a href="{{pathFor 'neuropiles'}}">neuropiles</a>.)
+  <h1>Neuropile: {{name}}</h1>
+  <h2>Driver lines</h2>
+  <ul>
+    {{#each driver_lines}}
+      <li>
+	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
+      </li>
+    {{/each}}
+  </ul>
+  <h2>Neuron types</h2>
+  <ul>
+    {{#each neuron_types}}
+      <li>
+	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
+      </li>
+    {{/each}}
+  </ul>
 </template>
 
 <!-- --------------------------- -->
