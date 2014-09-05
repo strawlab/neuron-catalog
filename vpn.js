@@ -10,21 +10,18 @@ Router.map(function() {
     path: '/driver_lines/:_id',
     data: function() { return DriverLines.findOne(this.params._id); }
   });
-  this.route('add_driver_line');
 
   this.route('neuron_types');
   this.route('neuron_type_show', {
     path: '/neuron_types/:_id',
     data: function() { return NeuronTypes.findOne(this.params._id); }
   });
-  this.route('add_neuron_type');
 
   this.route('neuropiles');
   this.route('neuropile_show', {
     path: '/neuropiles/:_id',
     data: function() { return Neuropiles.findOne(this.params._id); }
   });
-  this.route('add_neuropile');
 
 });
 
@@ -75,14 +72,14 @@ if (Meteor.isServer) {
 
   var id1 = DriverLines.insert({name: "VT37804-Gal4",
 			       });
-
   var id2 = NeuronTypes.insert({name: "DCN",
+				synonyms: ["LC14"],
 				driver_lines: [id1]
 			       });
   var id3 = NeuronTypes.insert({name: "AOpTu to lateral triangle projection neuron",
+				synonyms: [],
 				driver_lines: [id1]
 			       });
-
   var id4 = Neuropiles.insert({name: "lobula",
 			       driver_lines: [id1],
 			       neuron_types: [id2]

@@ -15,6 +15,7 @@ NeuronTypes = new Meteor.Collection("neuron_types");
 /*
   name: String
   _id: <int>
+  synonyms: [String, ...]
   driver_lines: [id, ...]
   neuropiles: [id, ...]
 */

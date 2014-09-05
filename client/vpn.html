@@ -1,5 +1,5 @@
 <head>
-  <title>vpn</title>
+  <title>VPN project</title>
 </head>
 
 <body>
@@ -39,7 +39,18 @@
 </template>
 
 <template name="home">
-  <h1>VPN</h1>
+  <h1>VPN project</h1>
+  <ul class="fa-ul">
+    <li><i class="fa-li fa fa-circle-o"></i>
+      <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
+    </li>
+    <li><i class="fa-li fa fa-circle-o"></i>
+      <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
+    </li>
+    <li><i class="fa-li fa fa-circle-o"></i>
+      <a href="{{pathFor 'neuropiles'}}">Neuropiles</a>
+    </li>
+  </ul>
 </template>
 
 <!-- --------------------------- -->
@@ -53,7 +64,8 @@
       </li>
     {{/each}}
   </ul>
-  <a href="{{pathFor 'add_driver_line'}}">Add a new driver line</a>
+  <a class="btn btn-default add" href="#">
+    <i class="fa fa-plus fa-lg"></i> Add a new driver line</a>
 </template>
 
 <template name="driver_line_show">
@@ -89,11 +101,18 @@
       </li>
     {{/each}}
   </ul>
-  <a href="{{pathFor 'add_neuron_type'}}">Add a new neuron type</a>
+
+  <a class="btn btn-default add" href="#">
+    <i class="fa fa-plus fa-lg"></i> Add a new neuron type</a>
+
 </template>
 
 <template name="neuron_type_show">
   <h1>Neuron type: {{name}}</h1>
+  <h2>Synonyms</h2>
+    {{#each synonyms}}
+      {{this}}
+    {{/each}}
   <h2>Driver lines</h2>
   <ul class="fa-ul">
     {{#each driver_lines}}
@@ -125,7 +144,8 @@
       </li>
     {{/each}}
   </ul>
-  <a href="{{pathFor 'add_neuropile'}}">Add a new neuropile</a>
+  <a class="btn btn-default add" href="#">
+    <i class="fa fa-plus fa-lg"></i> Add a new neuropile</a>
 </template>
 
 <template name="neuropile_show">
