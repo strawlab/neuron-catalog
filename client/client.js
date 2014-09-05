@@ -36,6 +36,13 @@ Template.driver_line_show.neuropiles = function () {
   return get_neuropiles(this);
 }
 
+Template.driver_line_show.events({
+  'click a.delete': function(e) {
+    e.preventDefault();
+    DriverLines.remove(this._id);
+  }
+});
+
 // -------------
 
 Template.neuron_types.neuron_type_cursor = function () {
