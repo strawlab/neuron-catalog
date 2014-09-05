@@ -17,9 +17,9 @@
 
 <template name="driver_lines">
   <h1>driver lines</h1>
-  <ul>
+  <ul class="fa-ul">
     {{#each driver_line_cursor}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
       </li>
     {{/each}}
@@ -30,31 +30,32 @@
 <template name="driver_line_show">
   <h1>Driver Line: {{name}}</h1>
   <h2>Neuron types</h2>
-  <ul>
+  <ul class="fa-ul">
     {{#each neuron_types}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
       </li>
     {{/each}}
   </ul>
   <h2>Neuropiles</h2>
-  <ul>
+  <ul class="fa-ul">
     {{#each neuropiles}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
       </li>
     {{/each}}
   </ul>
-  <a href="#remove_driver_line">Remove this driver line</a>
+  <a class="btn btn-danger" href="#remove_driver_line">
+    <i class="fa fa-trash-o fa-lg"></i> Remove this driver line</a>
 </template>
 
 <!-- --------------------------- -->
 
 <template name="neuron_types">
   <h1>neuron types</h1>
-  <ul>
+  <ul class="fa-ul">
     {{#each neuron_type_cursor}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
       </li>
     {{/each}}
@@ -65,31 +66,32 @@
 <template name="neuron_type_show">
   <h1>Neuron type: {{name}}</h1>
   <h2>Driver lines</h2>
-  <ul>
+  <ul class="fa-ul">
     {{#each driver_lines}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
       </li>
     {{/each}}
   </ul>
   <h2>Neuropiles</h2>
-  <ul>
+  <ul class="fa-ul">
     {{#each neuropiles}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
       </li>
     {{/each}}
   </ul>
-  <a href="#remove_neuron_type">Remove this neuron type</a>
+  <a class="btn btn-danger" href="#remove_neuron_type">
+    <i class="fa fa-trash-o fa-lg"></i> Remove this neuron type</a>
 </template>
 
 <!-- --------------------------- -->
 
 <template name="neuropiles">
   <h1>neuropiles</h1>
-  <ul>
+  <ul class="fa-ul">
     {{#each neuropile_cursor}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
       </li>
     {{/each}}
@@ -100,22 +102,23 @@
 <template name="neuropile_show">
   <h1>Neuropile: {{name}}</h1>
   <h2>Driver lines</h2>
-  <ul>
+  <ul class="fa-ul">
     {{#each driver_lines}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
       </li>
     {{/each}}
   </ul>
   <h2>Neuron types</h2>
-  <ul>
+  <ul class="fa-ul">
     {{#each neuron_types}}
-      <li>
+      <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
       </li>
     {{/each}}
   </ul>
-  <a href="#remove_neuropile">Remove this neuropile</a>
+  <a class="btn btn-danger" href="#remove_neuropile">
+    <i class="fa fa-trash-o fa-lg"></i> Remove this neuropile</a>
 </template>
 
 <!-- --------------------------- -->
