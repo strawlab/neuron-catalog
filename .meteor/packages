@@ -6,8 +6,7 @@
 standard-app-packages
 autopublish
 insecure
+iron:layout
 iron:router
 natestrauser:font-awesome
 mizzao:bootstrap-3
-iron:layout
-
