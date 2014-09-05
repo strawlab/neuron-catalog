@@ -1,8 +1,5 @@
 Router.configure({
-  layoutTemplate: 'MyLayout',
-  yieldTemplates: {
-    'myFooter': {to: 'footer'}
-  }
+  layoutTemplate: 'MyLayout'
 });
 
 Router.map(function() {
