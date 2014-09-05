@@ -28,6 +28,46 @@ Router.map(function() {
 
 });
 
+
+remove_driver_line = function ( my_id ) {
+  function rdl( doc ) {
+    var index = doc.driver_lines.indexOf(this.my_id);
+    // No need to check for index==-1 because we know it does not (except race condition).
+    doc.driver_lines.splice(index, 1);
+    this.coll.update( doc._id, {$set: {driver_lines: doc.driver_lines}});
+  };
+
+  NeuronTypes.find( {driver_lines: my_id} ).forEach( rdl, {my_id:my_id,coll:NeuronTypes} );
+  Neuropiles.find(  {driver_lines: my_id} ).forEach( rdl, {my_id:my_id,coll:Neuropiles}  );
+  DriverLines.remove(my_id);
+}
+
+remove_neuron_type = function ( my_id ) {
+  function rnt( doc ) {
+    var index = doc.neuron_types.indexOf(this.my_id);
+    // No need to check for index==-1 because we know it does not (except race condition).
+    doc.neuron_types.splice(index, 1);
+    this.coll.update( doc._id, {$set: {neuron_types: doc.neuron_types}});
+  };
+
+  DriverLines.find( {neuron_types: my_id} ).forEach( rnt, {my_id:my_id,coll:DriverLines} );
+  Neuropiles.find(  {neuron_types: my_id} ).forEach( rnt, {my_id:my_id,coll:Neuropiles}  );
+  NeuronTypes.remove(my_id);
+}
+
+remove_neuropile = function ( my_id ) {
+  function rn( doc ) {
+    var index = doc.neuropiles.indexOf(this.my_id);
+    // No need to check for index==-1 because we know it does not (except race condition).
+    doc.neuropiles.splice(index, 1);
+    this.coll.update( doc._id, {$set: {neuropiles: doc.neuropiles}});
+  };
+
+  DriverLines.find( {neuron_types: my_id} ).forEach( rn, {my_id:my_id,coll:DriverLines} );
+  NeuronTypes.find( {neuron_types: my_id} ).forEach( rn, {my_id:my_id,coll:NeuronTypes} );
+  Neuropiles.remove(my_id);
+}
+
 if (Meteor.isServer) {
   DriverLines.remove({});
   NeuronTypes.remove({});

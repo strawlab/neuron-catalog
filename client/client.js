@@ -39,7 +39,7 @@ Template.driver_line_show.neuropiles = function () {
 Template.driver_line_show.events({
   'click a.delete': function(e) {
     e.preventDefault();
-    DriverLines.remove(this._id);
+    remove_driver_line( this._id );
   }
 });
 
@@ -57,6 +57,13 @@ Template.neuron_type_show.neuropiles = function () {
   return get_neuropiles(this);
 }
 
+Template.neuron_type_show.events({
+  'click a.delete': function(e) {
+    e.preventDefault();
+    remove_neuron_type( this._id );
+  }
+});
+
 // -------------
 
 Template.neuropiles.neuropile_cursor = function () {
@@ -70,6 +77,13 @@ Template.neuropile_show.driver_lines = function () {
 Template.neuropile_show.neuron_types = function () {
   return get_neuron_types(this);
 }
+
+Template.neuropile_show.events({
+  'click a.delete': function(e) {
+    e.preventDefault();
+    remove_neuropile( this._id );
+  }
+});
 
 // -------------
 
