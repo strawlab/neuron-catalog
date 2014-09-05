@@ -6,18 +6,21 @@ Router.map(function() {
     path: '/driver_lines/:_id',
     data: function() { return DriverLines.findOne(this.params._id); }
   });
+  this.route('add_driver_line');
 
   this.route('neuron_types');
   this.route('neuron_type_show', {
     path: '/neuron_types/:_id',
     data: function() { return NeuronTypes.findOne(this.params._id); }
   });
+  this.route('add_neuron_type');
 
   this.route('neuropiles');
   this.route('neuropile_show', {
     path: '/neuropiles/:_id',
     data: function() { return Neuropiles.findOne(this.params._id); }
   });
+  this.route('add_neuropile');
 
 });
 
