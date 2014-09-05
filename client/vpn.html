@@ -3,10 +3,28 @@
 </head>
 
 <body>
-  <a href="{{pathFor 'home'}}">home</a>
-  <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
-  <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
-  <a href="{{pathFor 'neuropiles'}}">Neuropiles</a>
+  <div class="container-fluid">
+
+   <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+
+      <a href="{{pathFor 'home'}}">home</a>
+      <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
+      <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
+      <a href="{{pathFor 'neuropiles'}}">Neuropiles</a>
+
+    </div>
+   </div>
+
+   <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+
+      {{> yield}}
+
+    </div>
+   </div>
+
+  </div>
 </body>
 
 <template name="home">
