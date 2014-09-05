@@ -1,3 +1,10 @@
+Router.configure({
+  layoutTemplate: 'MyLayout',
+  yieldTemplates: {
+    'myFooter': {to: 'footer'}
+  }
+});
+
 Router.map(function() {
   this.route('home', {path: '/'});
 

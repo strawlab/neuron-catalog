@@ -3,6 +3,9 @@
 </head>
 
 <body>
+</body>
+
+<template name="MyLayout">
   <div class="container-fluid">
 
    <div class="row">
@@ -18,31 +21,31 @@
 
    <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      {{#Layout template="MyLayout" data=getData}}
-      Main Content-{{this}}
-
-      {{#contentFor "footer"}}
-      Footer stuff goes here! {{this}}
-      {{/contentFor}}
-      {{/Layout}}
-
-    </div>
-   </div>
-
-  </div>
-</body>
-
-<template name="MyLayout">
-  <h1>My Layout</h1>
 
   <article>
     {{> yield}}
   </article>
 
+    </div>
+   </div>
+
+   <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+
   <footer>
     {{> yield "footer"}}
-  </footer>x
+  </footer>
+
+    </div>
+   </div>
+
+  </div>
 </template>
+
+<template name="myFooter">
+this is myFooter
+</template>
+
 
 <template name="home">
   <h1>VPN</h1>
