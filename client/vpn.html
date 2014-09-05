@@ -18,15 +18,31 @@
 
    <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      <article>
-      {{> yield}}
-      </article>
+      {{#Layout template="MyLayout" data=getData}}
+      Main Content-{{this}}
+
+      {{#contentFor "footer"}}
+      Footer stuff goes here! {{this}}
+      {{/contentFor}}
+      {{/Layout}}
 
     </div>
    </div>
 
   </div>
 </body>
+
+<template name="MyLayout">
+  <h1>My Layout</h1>
+
+  <article>
+    {{> yield}}
+  </article>
+
+  <footer>
+    {{> yield "footer"}}
+  </footer>x
+</template>
 
 <template name="home">
   <h1>VPN</h1>

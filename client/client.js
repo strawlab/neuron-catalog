@@ -65,3 +65,7 @@ Template.neuropile_show.neuron_types = function () {
 }
 
 // -------------
+
+UI.body.getData = function () {
+  return 'data';
+};
