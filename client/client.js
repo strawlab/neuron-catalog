@@ -40,12 +40,17 @@ open_insert_edit_dialog = function (modal_title) {
   $("#show_dialog_id").modal("show");
 }
 
+var jump_table = {
+  'DriverLines': {'remove_by_id': function (x) { remove_driver_line(x); }},
+  'NeuronTypes': {'remove_by_id': function (x) { remove_neuron_type(x); }},
+  'Neuropiles':  {'remove_by_id': function (x) { remove_neuropile(x);   }}
+}
 
 Template.edit_delete_buttons.events({
   'click button.delete': function(e) {
     e.preventDefault();
-//    open_confirm_dialog("Do you want to delete driver line XYZ?");
-//    remove_driver_line( this._id );
+    //open_confirm_dialog("Do you want to delete item?");
+    jump_table[this.collection].remove_by_id(this.my_id);
   }
 });
 
@@ -71,16 +76,6 @@ Template.driver_line_show.neuropiles = function () {
   return get_neuropiles(this);
 }
 
-/*
-Template.driver_line_show.events({
-  'click button.delete': function(e) {
-    e.preventDefault();
-    open_confirm_dialog("Do you want to delete driver line XYZ?");
-    remove_driver_line( this._id );
-  }
-});
-*/
-
 // -------------
 
 Template.neuron_types.events({
@@ -102,13 +97,6 @@ Template.neuron_type_show.neuropiles = function () {
   return get_neuropiles(this);
 }
 
-Template.neuron_type_show.events({
-  'click a.delete': function(e) {
-    e.preventDefault();
-    remove_neuron_type( this._id );
-  }
-});
-
 // -------------
 
 Template.neuropiles.events({
@@ -129,13 +117,6 @@ Template.neuropile_show.driver_lines = function () {
 Template.neuropile_show.neuron_types = function () {
   return get_neuron_types(this);
 }
-
-Template.neuropile_show.events({
-  'click a.delete': function(e) {
-    e.preventDefault();
-    remove_neuropile( this._id );
-  }
-});
 
 // ------- tab layout stuff ----
 
