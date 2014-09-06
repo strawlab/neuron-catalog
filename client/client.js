@@ -27,11 +27,11 @@ var jump_table = {
 }
 
 Template.edit_delete_buttons.events({
-  'click button.edit': function(e) {
+  'click a.edit': function(e) {
     e.preventDefault();
     jump_table[this.collection].edit(this.my_id);
   },
-  'click button.delete': function(e) {
+  'click a.delete': function(e) {
     e.preventDefault();
     //open_confirm_dialog("Do you want to delete item?"); // TODO XXX FIXME add this
     jump_table[this.collection].remove(this.my_id);
@@ -81,7 +81,7 @@ Template.driver_lines.driver_line_cursor = function () {
 }
 
 Template.driver_lines.events({
-  'click a.add': function(e) {
+  'click a.insert': function(e) {
     e.preventDefault();
     open_insert_edit_dialog("Add new driver line");
   }
@@ -90,7 +90,7 @@ Template.driver_lines.events({
 // -------------
 
 Template.neuron_types.events({
-  'click a.add': function(e) {
+  'click a.insert': function(e) {
     e.preventDefault();
     open_insert_edit_dialog("Add new neuron type");
   }
@@ -103,7 +103,7 @@ Template.neuron_types.neuron_type_cursor = function () {
 // -------------
 
 Template.neuropiles.events({
-  'click a.add': function(e) {
+  'click a.insert': function(e) {
     e.preventDefault();
     open_insert_edit_dialog("Add new neuropile");
   }

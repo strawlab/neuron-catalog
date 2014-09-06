@@ -64,8 +64,8 @@
 
 <template name="edit_delete_buttons">
   <div class="btn-group">
-    <button type="button" class="btn btn-default edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
-    <button type="button" class="btn btn-danger delete"><i class="fa fa-trash-o"></i> Delete</button>
+    <a class="btn btn-default edit" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+    <a class="btn btn-danger delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
   </div>
 </template>
 
@@ -167,8 +167,9 @@
 <template name="driver_lines">
   {{> driver_line_table driver_lines=driver_line_cursor}}
 
-  <a class="btn btn-default add" href="#">
-    <i class="fa fa-plus fa-lg"></i> Add a new driver line</a>
+  <a class="btn btn-default insert" href="#">
+    <i class="fa fa-pencil-square-o"></i> Add a new driver line</a>
+
 </template>
 
 <template name="driver_line_show">
@@ -189,8 +190,9 @@
 <template name="neuron_types">
   {{> neuron_type_table neuron_types=neuron_type_cursor}}
 
-  <a class="btn btn-default add" href="#">
-    <i class="fa fa-plus fa-lg"></i> Add a new neuron type</a>
+  <a class="btn btn-default insert" href="#">
+    <i class="fa fa-pencil-square-o"></i> Add a new neuron type</a>
+
 </template>
 
 <template name="neuron_type_show">
@@ -219,7 +221,7 @@
 <template name="neuropiles">
   {{> neuropile_table neuropiles=neuropile_cursor}}
 
-  <a class="btn btn-default add" href="#">
+  <a class="btn btn-default insert" href="#">
     <i class="fa fa-plus fa-lg"></i> Add a new neuropile</a>
 </template>
 
