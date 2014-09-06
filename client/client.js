@@ -147,22 +147,22 @@ Template.MyLayout.tab_attrs_home = function () {
 }
 
 Template.MyLayout.tab_attrs_driver_lines = function () {
-  var current = Router.current();
-  if (current && current.route.name=='driver_lines') {
+  var cur = Router.current();
+  if (cur && cur.route.name=='driver_lines' || cur.route.name=='driver_line_show' ) {
     return {'class':"active"};
   }
 }
 
 Template.MyLayout.tab_attrs_neuron_types = function () {
-  var current = Router.current();
-  if (current && current.route.name=='neuron_types') {
+  var cur = Router.current();
+  if (cur && cur.route.name=='neuron_types' || cur.route.name=='neuron_type_show') {
     return {'class':"active"};
   }
 }
 
 Template.MyLayout.tab_attrs_neuropiles = function () {
-  var current = Router.current();
-  if (current && current.route.name=='neuropiles') {
+  var cur = Router.current();
+  if (cur && cur.route.name=='neuropiles' || cur.route.name=='neuropile_show') {
     return {'class':"active"};
   }
 }
