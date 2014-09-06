@@ -28,14 +28,28 @@ Router.map(function() {
 
 remove_driver_line = function ( my_id ) {
   function rdl( doc ) {
-    var index = doc.driver_lines.indexOf(this.my_id);
-    // No need to check for index==-1 because we know it does not (except race condition).
-    doc.driver_lines.splice(index, 1);
-    this.coll.update( doc._id, {$set: {driver_lines: doc.driver_lines}});
+    var setter = {};
+    for (i in this.fields) {
+      var field = this.fields[i];
+      console.log("field",field);
+      console.log("doc",doc);
+      var index = doc[field].indexOf(this.my_id);
+      // No need to check for index==-1 because we know it does not (except race condition).
+      doc[field].splice(index, 1);
+      setter[field] = doc[field];
+    }
+    this.coll.update( doc._id, {$set: setter});
   };
 
-  NeuronTypes.find( {driver_lines: my_id} ).forEach( rdl, {my_id:my_id,coll:NeuronTypes} );
-  Neuropiles.find(  {driver_lines: my_id} ).forEach( rdl, {my_id:my_id,coll:Neuropiles}  );
+  NeuronTypes.find( {driver_lines: my_id} ).forEach( rdl,
+						     {my_id:my_id,
+						      coll:NeuronTypes,
+						      fields:["driver_lines",
+							      "best_driver_lines"]} );
+  Neuropiles.find(  {driver_lines: my_id} ).forEach( rdl,
+						     {my_id:my_id,
+						      coll:Neuropiles,
+						      fields:["driver_lines"]} );
   DriverLines.remove(my_id);
 }
 
@@ -74,11 +88,13 @@ if (Meteor.isServer) {
 			       });
   var id2 = NeuronTypes.insert({name: "DCN",
 				synonyms: ["LC14"],
-				driver_lines: [id1]
+				driver_lines: [id1],
+				best_driver_lines: [id1]
 			       });
   var id3 = NeuronTypes.insert({name: "AOpTu to lateral triangle projection neuron",
 				synonyms: [],
-				driver_lines: [id1]
+				driver_lines: [id1],
+				best_driver_lines: []
 			       });
   var id4 = Neuropiles.insert({name: "lobula",
 			       driver_lines: [id1],

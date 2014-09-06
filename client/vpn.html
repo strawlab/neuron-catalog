@@ -70,39 +70,60 @@
 </template>
 
 <template name="driver_line_table">
-  <ul class="fa-ul">
+  <table class="table">
+    <tr>
+      <th>Driver line</th>
+    </tr>
     {{#each driver_lines}}
-      <li><i class="fa-li fa fa-circle-o"></i>
+    <tr>
+      <td>
 	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
-      </li>
+      </td>
+    </tr>
     {{/each}}
-  </ul>
+  </table>
 </template>
 
 <template name="neuron_type_table">
-  <ul class="fa-ul">
+  <table class="table">
+    <tr>
+      <th>Neuron type</th>
+      <th>Synonyms</th>
+      <th>Best driver lines</th>
+    </tr>
     {{#each neuron_types}}
-      <li><i class="fa-li fa fa-circle-o"></i>
+    <tr>
+      <td>
 	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
-      </li>
+      </td>
+      <td>
+	{{synonyms}}
+      </td>
+      <td>
+      </td>
+    </tr>
     {{/each}}
-  </ul>
+  </table>
 </template>
 
 <template name="neuropile_table">
-  <ul class="fa-ul">
+  <table class="table">
+    <tr>
+      <th>Neuropile</th>
+    </tr>
     {{#each neuropiles}}
-      <li><i class="fa-li fa fa-circle-o"></i>
+    <tr>
+      <td>
 	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
-      </li>
+      </td>
+    </tr>
     {{/each}}
-  </ul>
+  </table>
 </template>
 
 <!-- --------------------------- -->
 
 <template name="driver_lines">
-  <h1>driver lines</h1>
   {{> driver_line_table driver_lines=driver_line_cursor}}
 
   <a class="btn btn-default add" href="#">
@@ -125,7 +146,6 @@
 <!-- --------------------------- -->
 
 <template name="neuron_types">
-  <h1>neuron types</h1>
   {{> neuron_type_table neuron_types=neuron_type_cursor}}
 
   <a class="btn btn-default add" href="#">
@@ -153,7 +173,6 @@
 <!-- --------------------------- -->
 
 <template name="neuropiles">
-  <h1>neuropiles</h1>
   {{> neuropile_table neuropiles=neuropile_cursor}}
 
   <a class="btn btn-default add" href="#">
