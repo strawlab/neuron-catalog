@@ -88,65 +88,77 @@
 </template>
 
 <template name="driver_line_table">
-  <table class="table">
-    <tr>
-      <th>Driver line</th>
-    </tr>
-    {{#each driver_lines}}
-    {{#driver_line_from_id_block}}
-    <tr>
-      <td>
-	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
-      </td>
-    </tr>
-    {{/driver_line_from_id_block}}
-    {{/each}}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>Driver line</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each driver_lines}}
+      {{#driver_line_from_id_block}}
+      <tr>
+	<td>
+	  <a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
+	</td>
+      </tr>
+      {{/driver_line_from_id_block}}
+      {{/each}}
+    </tbody>
   </table>
 </template>
 
 <template name="neuron_type_table">
-  <table class="table">
-    <tr>
-      <th>Neuron type</th>
-      <th>Synonyms</th>
-      <th>Best driver lines</th>
-    </tr>
-    {{#each neuron_types}}
-    {{#neuron_type_from_id_block}}
-    <tr>
-      <td>
-	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
-      </td>
-      <td>
-	{{synonyms}}
-      </td>
-      <td>
-	{{#each best_driver_lines}}
-        {{#driver_line_from_id_block}}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>Neuron type</th>
+	<th>Synonyms</th>
+	<th>Best driver lines</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each neuron_types}}
+      {{#neuron_type_from_id_block}}
+      <tr>
+	<td>
+	  <a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
+	</td>
+	<td>
+	  {{synonyms}}
+	</td>
+	<td>
+	  {{#each best_driver_lines}}
+          {{#driver_line_from_id_block}}
           <a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
-        {{/driver_line_from_id_block}}
-	{{/each}}
-      </td>
-    </tr>
-    {{/neuron_type_from_id_block}}
-    {{/each}}
+          {{/driver_line_from_id_block}}
+	  {{/each}}
+	</td>
+      </tr>
+      {{/neuron_type_from_id_block}}
+      {{/each}}
+    </tbody>
   </table>
 </template>
 
 <template name="neuropile_table">
-  <table class="table">
-    <tr>
-      <th>Neuropile</th>
-    </tr>
-    {{#each neuropiles}}
-    <tr>
-      <td>
-	{{#neuropile_from_id_block}}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>Neuropile</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each neuropiles}}
+      <tr>
+	<td>
+	  {{#neuropile_from_id_block}}
           <a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
-	{{/neuropile_from_id_block}}
-      </td>
-    </tr>
-    {{/each}}
+	  {{/neuropile_from_id_block}}
+	</td>
+      </tr>
+      {{/each}}
+    </tbody>
   </table>
 </template>
 
