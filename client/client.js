@@ -41,16 +41,26 @@ open_insert_edit_dialog = function (modal_title) {
 }
 
 var jump_table = {
-  'DriverLines': {'remove_by_id': function (x) { remove_driver_line(x); }},
-  'NeuronTypes': {'remove_by_id': function (x) { remove_neuron_type(x); }},
-  'Neuropiles':  {'remove_by_id': function (x) { remove_neuropile(x);   }}
+  'DriverLines': {'remove': function (x) { remove_driver_line(x); },
+		  'edit':   function (x) { edit_driver_line(x); }
+		 },
+  'NeuronTypes': {'remove': function (x) { remove_neuron_type(x); },
+		  'edit':   function (x) { edit_neuron_type(x); }
+		 },
+  'Neuropiles':  {'remove': function (x) { remove_neuropile(x);   },
+		  'edit':   function (x) { edit_neuropile(x); }
+		 }
 }
 
 Template.edit_delete_buttons.events({
+  'click button.edit': function(e) {
+    e.preventDefault();
+    jump_table[this.collection].edit(this.my_id);
+  },
   'click button.delete': function(e) {
     e.preventDefault();
-    //open_confirm_dialog("Do you want to delete item?");
-    jump_table[this.collection].remove_by_id(this.my_id);
+    //open_confirm_dialog("Do you want to delete item?"); // TODO XXX FIXME add this
+    jump_table[this.collection].remove(this.my_id);
   }
 });
 
