@@ -62,28 +62,24 @@
   </ul>
 </template>
 
-<!-- --------------------------- -->
+<template name="edit_delete_buttons">
+  <div class="btn-group">
+    <button type="button" class="btn btn-default edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
+    <button type="button" class="btn btn-danger delete"><i class="fa fa-trash-o"></i> Delete {{collection}} {{my_id}}</button>
+  </div>
+</template>
 
-<template name="driver_lines">
-  <h1>driver lines</h1>
+<template name="driver_line_table">
   <ul class="fa-ul">
-    {{#each driver_line_cursor}}
+    {{#each driver_lines}}
       <li><i class="fa-li fa fa-circle-o"></i>
 	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
       </li>
     {{/each}}
   </ul>
-  <a class="btn btn-default add" href="#">
-    <i class="fa fa-plus fa-lg"></i> Add a new driver line</a>
 </template>
 
-<template name="driver_line_show">
-  <h1>Driver Line: {{name}}</h1>
-  <div class="btn-group">
-    <button type="button" class="btn btn-default edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
-    <button type="button" class="btn btn-danger delete"><i class="fa fa-trash-o"></i> Delete</button>
-  </div>
-  <h2>Neuron types</h2>
+<template name="neuron_type_table">
   <ul class="fa-ul">
     {{#each neuron_types}}
       <li><i class="fa-li fa fa-circle-o"></i>
@@ -91,7 +87,9 @@
       </li>
     {{/each}}
   </ul>
-  <h2>Neuropiles</h2>
+</template>
+
+<template name="neuropile_table">
   <ul class="fa-ul">
     {{#each neuropiles}}
       <li><i class="fa-li fa fa-circle-o"></i>
@@ -99,6 +97,28 @@
       </li>
     {{/each}}
   </ul>
+</template>
+
+<!-- --------------------------- -->
+
+<template name="driver_lines">
+  <h1>driver lines</h1>
+  {{> driver_line_table driver_lines=driver_line_cursor}}
+
+  <a class="btn btn-default add" href="#">
+    <i class="fa fa-plus fa-lg"></i> Add a new driver line</a>
+</template>
+
+<template name="driver_line_show">
+
+  <h1>Driver Line: {{name}}</h1>
+  {{> edit_delete_buttons collection="DriverLines" my_id=_id}}
+
+  <h2>Neuron types</h2>
+  {{> neuron_type_table neuron_types=neuron_types}}
+
+  <h2>Neuropiles</h2>
+  {{> neuropile_table neuropiles=neuropiles}}
 
 </template>
 
@@ -106,84 +126,51 @@
 
 <template name="neuron_types">
   <h1>neuron types</h1>
-  <ul class="fa-ul">
-    {{#each neuron_type_cursor}}
-      <li><i class="fa-li fa fa-circle-o"></i>
-	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
-      </li>
-    {{/each}}
-  </ul>
+  {{> neuron_type_table neuron_types=neuron_type_cursor}}
 
   <a class="btn btn-default add" href="#">
     <i class="fa fa-plus fa-lg"></i> Add a new neuron type</a>
-
 </template>
 
 <template name="neuron_type_show">
+
   <h1>Neuron type: {{name}}</h1>
-  <div class="btn-group">
-    <button type="button" class="btn btn-default edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
-    <button type="button" class="btn btn-danger delete"><i class="fa fa-trash-o"></i> Delete</button>
-  </div>
+  {{> edit_delete_buttons collection="NeuronTypes" my_id=_id}}
+
   <h2>Synonyms</h2>
     {{#each synonyms}}
       {{this}}
     {{/each}}
+
   <h2>Driver lines</h2>
-  <ul class="fa-ul">
-    {{#each driver_lines}}
-      <li><i class="fa-li fa fa-circle-o"></i>
-	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
-      </li>
-    {{/each}}
-  </ul>
+  {{> driver_line_table driver_lines=driver_lines}}
+
   <h2>Neuropiles</h2>
-  <ul class="fa-ul">
-    {{#each neuropiles}}
-      <li><i class="fa-li fa fa-circle-o"></i>
-	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
-      </li>
-    {{/each}}
-  </ul>
+  {{> neuropile_table neuropiles=neuropiles}}
+
 </template>
 
 <!-- --------------------------- -->
 
 <template name="neuropiles">
   <h1>neuropiles</h1>
-  <ul class="fa-ul">
-    {{#each neuropile_cursor}}
-      <li><i class="fa-li fa fa-circle-o"></i>
-	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
-      </li>
-    {{/each}}
-  </ul>
+  {{> neuropile_table neuropiles=neuropile_cursor}}
+
   <a class="btn btn-default add" href="#">
     <i class="fa fa-plus fa-lg"></i> Add a new neuropile</a>
 </template>
 
 <template name="neuropile_show">
+
   <h1>Neuropile: {{name}}</h1>
-  <div class="btn-group">
-    <button type="button" class="btn btn-default edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
-    <button type="button" class="btn btn-danger delete"><i class="fa fa-trash-o"></i> Delete</button>
-  </div>
+  {{> edit_delete_buttons collection="Neuropiles" my_id=_id}}
+
   <h2>Driver lines</h2>
-  <ul class="fa-ul">
-    {{#each driver_lines}}
-      <li><i class="fa-li fa fa-circle-o"></i>
-	<a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
-      </li>
-    {{/each}}
-  </ul>
+  {{> driver_line_table driver_lines=driver_lines}}
+
   <h2>Neuron types</h2>
-  <ul class="fa-ul">
-    {{#each neuron_types}}
-      <li><i class="fa-li fa fa-circle-o"></i>
-	<a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
-      </li>
-    {{/each}}
-  </ul>
+  {{> neuron_type_table neuron_types=neuron_types}}
+
 </template>
 
 <!-- --------------------------- -->

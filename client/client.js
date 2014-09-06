@@ -40,6 +40,16 @@ open_insert_edit_dialog = function (modal_title) {
   $("#show_dialog_id").modal("show");
 }
 
+
+Template.edit_delete_buttons.events({
+  'click button.delete': function(e) {
+    e.preventDefault();
+//    open_confirm_dialog("Do you want to delete driver line XYZ?");
+//    remove_driver_line( this._id );
+  }
+});
+
+
 // -------------
 
 Template.driver_lines.driver_line_cursor = function () {
@@ -61,6 +71,7 @@ Template.driver_line_show.neuropiles = function () {
   return get_neuropiles(this);
 }
 
+/*
 Template.driver_line_show.events({
   'click button.delete': function(e) {
     e.preventDefault();
@@ -68,6 +79,7 @@ Template.driver_line_show.events({
     remove_driver_line( this._id );
   }
 });
+*/
 
 // -------------
 
