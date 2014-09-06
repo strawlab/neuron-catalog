@@ -90,6 +90,18 @@
   {{/with}}
 </template>
 
+<template name="neuron_type_from_id_block">
+  {{#with neuron_type_from_id}}
+    {{> UI.contentBlock this}}
+  {{/with}}
+</template>
+
+<template name="neuropile_from_id_block">
+  {{#with neuropile_from_id}}
+    {{> UI.contentBlock this}}
+  {{/with}}
+</template>
+
 <template name="neuron_type_table">
   <table class="table">
     <tr>
@@ -125,7 +137,9 @@
     {{#each neuropiles}}
     <tr>
       <td>
-	<a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
+	{{#neuropile_from_id_block}}
+          <a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
+	{{/neuropile_from_id_block}}
       </td>
     </tr>
     {{/each}}

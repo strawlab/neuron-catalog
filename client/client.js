@@ -14,6 +14,7 @@ function get_neuron_type_docs( my_obj ) {
   return result;
 }
 
+/*
 function get_neuropile_docs( my_obj ) {
   var result = [];
   if ('neuropiles' in my_obj) {
@@ -21,6 +22,7 @@ function get_neuropile_docs( my_obj ) {
    }
   return result;
 }
+*/
 
 // -------------
 
@@ -90,13 +92,22 @@ Template.driver_line_show.neuron_types = function () {
   return get_neuron_type_docs(this);
 }
 
+/*
 Template.driver_line_show.neuropiles = function () {
   return get_neuropile_docs(this);
 }
-
+*/
 
 
 // -------------
+
+Template.neuron_type_from_id_block.neuron_type_from_id = function () {
+  var my_id = this;
+  if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
+    my_id = this.valueOf(); // unbox it
+  }
+  return NeuronTypes.findOne(my_id);
+}
 
 Template.neuron_types.events({
   'click a.add': function(e) {
@@ -113,11 +124,19 @@ Template.neuron_type_show.driver_lines = function () {
   return get_driver_line_docs(this);
 }
 
-Template.neuron_type_show.neuropiles = function () {
+/*Template.neuron_type_show.neuropiles = function () {
   return get_neuropile_docs(this);
-}
+}*/
 
 // -------------
+
+Template.neuropile_from_id_block.neuropile_from_id = function () {
+  var my_id = this;
+  if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
+    my_id = this.valueOf(); // unbox it
+  }
+  return Neuropiles.findOne(my_id);
+}
 
 Template.neuropiles.events({
   'click a.add': function(e) {
