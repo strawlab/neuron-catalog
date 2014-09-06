@@ -24,9 +24,34 @@ function get_neuropiles( my_obj ) {
 
 // -------------
 
+Template.show_dialog.modal_title = function () {
+  var tmp = Session.get("modal_info");
+  if (tmp) return tmp.modal_title;
+}
+
+Template.show_dialog.modal_body = function () {
+  return "modal body";
+}
+
+open_insert_edit_dialog = function (modal_title) {
+  // A general purpose dialog for inserting a new entry or editing an
+  // existing entry.
+  Session.set("modal_info", {modal_title: modal_title});
+  $("#show_dialog_id").modal("show");
+}
+
+// -------------
+
 Template.driver_lines.driver_line_cursor = function () {
   return DriverLines.find({});
 }
+
+Template.driver_lines.events({
+  'click a.add': function(e) {
+    e.preventDefault();
+    open_insert_edit_dialog("Add new driver line");
+  }
+});
 
 Template.driver_line_show.neuron_types = function () {
   return get_neuron_types(this);
@@ -37,13 +62,21 @@ Template.driver_line_show.neuropiles = function () {
 }
 
 Template.driver_line_show.events({
-  'click a.delete': function(e) {
+  'click button.delete': function(e) {
     e.preventDefault();
+    open_confirm_dialog("Do you want to delete driver line XYZ?");
     remove_driver_line( this._id );
   }
 });
 
 // -------------
+
+Template.neuron_types.events({
+  'click a.add': function(e) {
+    e.preventDefault();
+    open_insert_edit_dialog("Add new neuron type");
+  }
+});
 
 Template.neuron_types.neuron_type_cursor = function () {
   return NeuronTypes.find({});
@@ -66,6 +99,13 @@ Template.neuron_type_show.events({
 
 // -------------
 
+Template.neuropiles.events({
+  'click a.add': function(e) {
+    e.preventDefault();
+    open_insert_edit_dialog("Add new neuropile");
+  }
+});
+
 Template.neuropiles.neuropile_cursor = function () {
   return Neuropiles.find({});
 }
@@ -84,6 +124,36 @@ Template.neuropile_show.events({
     remove_neuropile( this._id );
   }
 });
+
+// ------- tab layout stuff ----
+
+Template.MyLayout.tab_attrs_home = function () {
+  var current = Router.current();
+  if (current && current.route.name=='home') {
+    return {'class':"active"};
+  }
+}
+
+Template.MyLayout.tab_attrs_driver_lines = function () {
+  var current = Router.current();
+  if (current && current.route.name=='driver_lines') {
+    return {'class':"active"};
+  }
+}
+
+Template.MyLayout.tab_attrs_neuron_types = function () {
+  var current = Router.current();
+  if (current && current.route.name=='neuron_types') {
+    return {'class':"active"};
+  }
+}
+
+Template.MyLayout.tab_attrs_neuropiles = function () {
+  var current = Router.current();
+  if (current && current.route.name=='neuropiles') {
+    return {'class':"active"};
+  }
+}
 
 // -------------
 
