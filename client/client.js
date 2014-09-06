@@ -67,6 +67,14 @@ Template.edit_delete_buttons.events({
 
 // -------------
 
+Template.driver_line_from_id_block.driver_line_from_id = function () {
+  var my_id = this;
+  if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
+    my_id = this.valueOf(); // unbox it
+  }
+  return DriverLines.findOne(my_id);
+}
+
 Template.driver_lines.driver_line_cursor = function () {
   return DriverLines.find({});
 }
@@ -86,6 +94,8 @@ Template.driver_line_show.neuropiles = function () {
   return get_neuropiles(this);
 }
 
+
+
 // -------------
 
 Template.neuron_types.events({
@@ -94,12 +104,6 @@ Template.neuron_types.events({
     open_insert_edit_dialog("Add new neuron type");
   }
 });
-
-Template.lookup_driver_line_names.value = function() {
-  result = this.source_doc[this.field_name].map( function (_id) {
-    return DriverLines.findOne(_id).name } );
-  return result;
-}
 
 Template.neuron_types.neuron_type_cursor = function () {
   return NeuronTypes.find({});

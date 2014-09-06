@@ -84,8 +84,10 @@
   </table>
 </template>
 
-<template name="lookup_driver_line_names">
-  {{value}}
+<template name="driver_line_from_id_block">
+  {{#with driver_line_from_id}}
+    {{> UI.contentBlock this}}
+  {{/with}}
 </template>
 
 <template name="neuron_type_table">
@@ -104,7 +106,11 @@
 	{{synonyms}}
       </td>
       <td>
-	{{> lookup_driver_line_names source_doc=this field_name="best_driver_lines"}}
+	{{#each best_driver_lines}}
+	  {{#driver_line_from_id_block}}
+            <a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
+	  {{/driver_line_from_id_block}}
+	{{/each}}
       </td>
     </tr>
     {{/each}}
