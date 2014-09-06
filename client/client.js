@@ -95,6 +95,12 @@ Template.neuron_types.events({
   }
 });
 
+Template.lookup_driver_line_names.best_driver_lines = function() {
+  result = this.best_driver_lines.map( function (_id) {
+    return DriverLines.findOne(_id).name } );
+  return result;
+}
+
 Template.neuron_types.neuron_type_cursor = function () {
   return NeuronTypes.find({});
 }

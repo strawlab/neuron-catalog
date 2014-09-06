@@ -84,6 +84,12 @@
   </table>
 </template>
 
+<template name="lookup_driver_line_names">
+  {{#each best_driver_lines}}
+    {{this}}
+  {{/each}}
+</template>
+
 <template name="neuron_type_table">
   <table class="table">
     <tr>
@@ -100,6 +106,7 @@
 	{{synonyms}}
       </td>
       <td>
+	{{> lookup_driver_line_names this}}
       </td>
     </tr>
     {{/each}}
