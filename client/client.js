@@ -14,6 +14,10 @@ open_insert_edit_dialog = function (modal_title) {
   $("#show_dialog_id").modal("show");
 }
 
+edit_driver_line = function(_id) {
+  open_insert_edit_dialog("edit driver line "+_id);
+}
+
 var jump_table = {
   'DriverLines': {'remove': function (x) { remove_driver_line(x); },
 		  'edit':   function (x) { edit_driver_line(x); }
