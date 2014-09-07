@@ -32,9 +32,10 @@ remove_driver_line = function ( my_id ) {
     for (i in this.fields) {
       var field = this.fields[i];
       var index = doc[field].indexOf(this.my_id);
-      // No need to check for index==-1 because we know it does not (except race condition).
-      doc[field].splice(index, 1);
-      setter[field] = doc[field];
+      if (index!=-1) {
+	doc[field].splice(index, 1);
+	setter[field] = doc[field];
+      }
     }
     this.coll.update( doc._id, {$set: setter});
   };

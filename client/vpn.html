@@ -172,8 +172,14 @@
 
 </template>
 
-<template name="driver_line_show">
+<template name="driver_line_show_brief">
+  {{#driver_line_from_id_block}}
+  <h3>Driver Line: {{name}}</h3>
+  {{/driver_line_from_id_block}}
+</template>
 
+<template name="driver_line_show">
+  {{#driver_line_from_id_block}}
   <h1>Driver Line: {{name}}</h1>
   {{> edit_delete_buttons collection="DriverLines" my_id=_id}}
 
@@ -182,7 +188,7 @@
 
   <h2>Neuropiles</h2>
   {{> neuropile_table neuropiles=neuropiles}}
-
+  {{/driver_line_from_id_block}}
 </template>
 
 <!-- --------------------------- -->
@@ -195,8 +201,14 @@
 
 </template>
 
-<template name="neuron_type_show">
+<template name="neuron_type_show_brief">
+  {{#neuron_type_from_id_block}}
+  <h3>Neuron type: {{name}}</h3>
+  {{/neuron_type_from_id_block}}
+</template>
 
+<template name="neuron_type_show">
+  {{#neuron_type_from_id_block}}
   <h1>Neuron type: {{name}}</h1>
   {{> edit_delete_buttons collection="NeuronTypes" my_id=_id}}
 
@@ -213,7 +225,7 @@
 
   <h2>Driver lines</h2>
   {{> driver_line_table driver_lines=driver_lines}}
-
+  {{/neuron_type_from_id_block}}
 </template>
 
 <!-- --------------------------- -->
@@ -225,8 +237,14 @@
     <i class="fa fa-plus fa-lg"></i> Add a new neuropile</a>
 </template>
 
-<template name="neuropile_show">
+<template name="neuropile_show_brief">
+  {{#neuropile_from_id_block}}
+  <h3>Neuropile: {{name}}</h3>
+  {{/neuropile_from_id_block}}
+</template>
 
+<template name="neuropile_show">
+  {{#neuropile_from_id_block}}
   <h1>Neuropile: {{name}}</h1>
   {{> edit_delete_buttons collection="Neuropiles" my_id=_id}}
 
@@ -235,29 +253,35 @@
 
   <h2>Neuron types</h2>
   {{> neuron_type_table neuron_types=neuron_types}}
-
+  {{/neuropile_from_id_block}}
 </template>
 
 <!-- --------------------------- -->
 
 <template name="show_dialog">
+  {{#with modal_info}}
   <div class="modal fade" id="show_dialog_id">
     <div class="modal-dialog">
       <div class="modal-content">
 	<div class="modal-header">
 	  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <h4 class="modal-title">{{modal_title}}</h4>
+          <h4 class="modal-title">{{title}}</h4>
 	</div>
 	<div class="modal-body">
-	  {{modal_body}}
+	  {{> UI.dynamic template=body_template_name data=body_template_data}}
 	</div>
 	<div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary perform_action">Save changes</button>
+	  {{#if is_delete_modal}}
+          <button type="button" class="btn btn-danger delete">Delete</button>
+	  {{else}}
+          <button type="button" class="btn btn-primary save">Save</button>
+	  {{/if}}
 	</div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+  {{/with}}
 </template>
 
 <!-- ----------------------------- -->

@@ -1,17 +1,15 @@
-Template.show_dialog.modal_title = function () {
-  var tmp = Session.get("modal_info");
-  if (tmp) return tmp.modal_title;
-}
-
-Template.show_dialog.modal_body = function () {
-  return "modal body";
+Template.show_dialog.modal_info = function () {
+    var tmp = Session.get("modal_info");
+    return tmp;
 }
 
 Template.show_dialog.events({
-  'click .perform_action': function(e) {
+  'click .delete': function(e) {
     e.preventDefault();
-    console.log("performing action");
-    //jump_table[this.collection].edit(this.my_id);
+    info = Session.get("modal_info");
+    jump_table[info.collection].remove(info.my_id);
+    $("#show_dialog_id").modal('hide');
+    // redirect to
   }
 });
 
@@ -19,7 +17,7 @@ open_insert_edit_dialog = function (modal_title) {
   // A general purpose dialog for inserting a new entry or editing an
   // existing entry.
   Session.set("modal_info", {modal_title: modal_title});
-  $("#show_dialog_id").modal("show");
+  $("#show_dialog_id").modal('show');
 }
 
 edit_driver_line = function(_id) {
@@ -28,13 +26,16 @@ edit_driver_line = function(_id) {
 
 var jump_table = {
   'DriverLines': {'remove': function (x) { remove_driver_line(x); },
-		  'edit':   function (x) { edit_driver_line(x); }
+		  'edit':   function (x) { edit_driver_line(x); },
+		  'delete_template_name': "driver_line_show_brief"
 		 },
   'NeuronTypes': {'remove': function (x) { remove_neuron_type(x); },
-		  'edit':   function (x) { edit_neuron_type(x); }
+		  'edit':   function (x) { edit_neuron_type(x); },
+		  'delete_template_name': "neuron_type_show_brief"
 		 },
   'Neuropiles':  {'remove': function (x) { remove_neuropile(x);   },
-		  'edit':   function (x) { edit_neuropile(x); }
+		  'edit':   function (x) { edit_neuropile(x); },
+		  'delete_template_name': "neuropile_show_brief"
 		 }
 }
 
@@ -45,14 +46,15 @@ Template.edit_delete_buttons.events({
   },
   'click a.delete': function(e) {
     e.preventDefault();
-    //open_confirm_dialog("Do you want to delete item?"); // TODO XXX FIXME add this
-    Session.set("modal_info", {modal_title: "Do you want to delete item?",
-			       item_collection: this.collection,
-			       item_id: this.my_id,
-			       action_type: "confirm delete"
+    //remove_driver_line(this.my_id);
+    Session.set("modal_info", {title: "Do you want to delete this?",
+			       collection: this.collection,
+			       my_id: this.my_id,
+			       body_template_name: jump_table[this.collection].delete_template_name,
+			       body_template_data: this.my_id,
+			       is_delete_modal: true
 			      });
-    $("#show_dialog_id").modal("show");
-    //jump_table[this.collection].remove(this.my_id);
+    $("#show_dialog_id").modal('show');
   }
 });
 
