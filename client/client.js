@@ -7,6 +7,14 @@ Template.show_dialog.modal_body = function () {
   return "modal body";
 }
 
+Template.show_dialog.events({
+  'click .perform_action': function(e) {
+    e.preventDefault();
+    console.log("performing action");
+    //jump_table[this.collection].edit(this.my_id);
+  }
+});
+
 open_insert_edit_dialog = function (modal_title) {
   // A general purpose dialog for inserting a new entry or editing an
   // existing entry.
@@ -38,7 +46,13 @@ Template.edit_delete_buttons.events({
   'click a.delete': function(e) {
     e.preventDefault();
     //open_confirm_dialog("Do you want to delete item?"); // TODO XXX FIXME add this
-    jump_table[this.collection].remove(this.my_id);
+    Session.set("modal_info", {modal_title: "Do you want to delete item?",
+			       item_collection: this.collection,
+			       item_id: this.my_id,
+			       action_type: "confirm delete"
+			      });
+    $("#show_dialog_id").modal("show");
+    //jump_table[this.collection].remove(this.my_id);
   }
 });
 
