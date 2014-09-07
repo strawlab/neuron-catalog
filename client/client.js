@@ -9,7 +9,8 @@ Template.show_dialog.events({
     info = Session.get("modal_info");
     jump_table[info.collection].remove(info.my_id);
     $("#show_dialog_id").modal('hide');
-    // redirect to
+    var route_name = jump_table[info.collection].base_route;
+    Router.go(route_name);
   }
 });
 
@@ -27,15 +28,18 @@ edit_driver_line = function(_id) {
 var jump_table = {
   'DriverLines': {'remove': function (x) { remove_driver_line(x); },
 		  'edit':   function (x) { edit_driver_line(x); },
-		  'delete_template_name': "driver_line_show_brief"
+		  'delete_template_name': "driver_line_show_brief",
+		  'base_route': 'driver_lines'
 		 },
   'NeuronTypes': {'remove': function (x) { remove_neuron_type(x); },
 		  'edit':   function (x) { edit_neuron_type(x); },
-		  'delete_template_name': "neuron_type_show_brief"
+		  'delete_template_name': "neuron_type_show_brief",
+		  'base_route': 'neuron_types'
 		 },
   'Neuropiles':  {'remove': function (x) { remove_neuropile(x);   },
 		  'edit':   function (x) { edit_neuropile(x); },
-		  'delete_template_name': "neuropile_show_brief"
+		  'delete_template_name': "neuropile_show_brief",
+		  'base_route': 'neuropiles'
 		 }
 }
 
