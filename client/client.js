@@ -230,7 +230,7 @@ save_driver_line = function(info,template) {
   }
 
   doc.neuron_types = [];
-  var r1 = template.findAll(".neuron_type");
+  var r1 = template.findAll(".neuron_types");
   for (i in r1) {
     node = r1[i];
     if (node.checked) {
@@ -239,7 +239,7 @@ save_driver_line = function(info,template) {
   }
 
   doc.neuropiles = [];
-  var r1 = template.findAll(".neuropile");
+  var r1 = template.findAll(".neuropiles");
   for (i in r1) {
     node = r1[i];
     if (node.checked) {
