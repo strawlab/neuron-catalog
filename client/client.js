@@ -85,6 +85,7 @@ var jump_table = {
 		  'delete_template_name': "neuron_type_show_brief",
 		  'element_route': 'neuron_type_show',
 		  'base_route': 'neuron_types',
+		  'edit_driver_lines_template_name':'edit_driver_lines',
 		  'edit_neuropiles_template_name':'edit_neuropiles'
 		 },
   'Neuropiles':  {'remove': function (x) { return remove_neuropile(x); },
@@ -263,6 +264,28 @@ Template.neuron_type_show.synonym_dicts = function () {
   return result;
 }
 
+edit_driver_lines_save_func = function (info, template) {
+  var driver_lines=[];
+  var my_id = Session.get("modal_info").body_template_data.my_id
+
+  var r1 = template.findAll(".driver_lines");
+  for (i in r1) {
+    node = r1[i];
+    if (node.checked) {
+      driver_lines.push( node.id );
+    }
+  }
+  var coll_name = Session.get("modal_info").body_template_data.collection_name;
+  var collection;
+  if (coll_name=="DriverLines") {
+    collection = DriverLines;
+  } else if (coll_name=="NeuronTypes") {
+    collection = NeuronTypes;
+  }
+  collection.update(my_id, {$set:{'best_driver_lines':driver_lines}});
+  return {};
+}
+
 edit_neuron_types_save_func = function (info, template) {
   var neuron_types=[];
   var my_id = Session.get("modal_info").body_template_data.my_id
@@ -349,6 +372,17 @@ Template.neuron_type_show.events({
       NeuronTypes.update({_id: id}, {$pull: {synonyms: synonym}});
     }, 300);
   },
+  'click .edit-driver-lines': function(e) {
+    e.preventDefault();
+    Session.set("modal_info", {title: "Edit best driver lines",
+			       body_template_name: jump_table["NeuronTypes"].edit_driver_lines_template_name,
+			       body_template_data: {my_id:this._id,
+						    collection_name:"NeuronTypes"}
+			      });
+
+    modal_save_func = edit_driver_lines_save_func;
+    $("#show_dialog_id").modal('show');
+  },
   'click .edit-neuropiles': function(e) {
     e.preventDefault();
     Session.set("modal_info", {title: "Edit neuropiles",
@@ -373,6 +407,26 @@ Template.neuron_type_show.events(okCancelEvents(
       Session.set('editing_add_synonym', null);
     }
   }));
+
+Template.edit_driver_lines.driver_lines = function () {
+  var result = [];
+  var collection;
+  if (this.collection_name=="DriverLines") {
+    collection = DriverLines;
+  } else if (this.collection_name=="NeuronTypes") {
+    collection = NeuronTypes;
+  }
+  var myself = collection.findOne({_id:this.my_id});
+  DriverLines.find().forEach( function (doc) {
+    if (myself.best_driver_lines.indexOf(doc._id)==-1) {
+      doc.is_checked = false;
+    } else {
+      doc.is_checked = true;
+    }
+    result.push( doc );
+  });
+  return result;
+}
 
 Template.edit_neuron_types.neuron_types = function () {
   var result = [];

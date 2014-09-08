@@ -288,6 +288,7 @@
     </div>
     <div class="panel-body">
       {{> driver_line_table driver_lines=best_driver_lines}}
+      <a class="btn btn-default edit-driver-lines" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     </div>
   </div>
 
@@ -319,6 +320,21 @@
   </div>
 
   {{/neuron_type_from_id_block}}
+</template>
+
+<template name="edit_driver_lines">
+  <div>
+    <div><h4>driver lines</h4></div>
+    <div>
+      {{#each driver_lines}}
+      <div class="checkbox">
+	<label>
+	  <input type="checkbox" class="driver_lines" id={{_id}} checked={{is_checked}}> {{name}}
+	</label>
+      </div>
+      {{/each}}
+    </div>
+  </div>
 </template>
 
 <template name="edit_neuron_types">
