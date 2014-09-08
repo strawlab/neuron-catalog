@@ -180,8 +180,10 @@
 
 <template name="driver_line_show">
   {{#driver_line_from_id_block}}
-  <h1>Driver Line: {{name}}</h1>
-  {{> edit_delete_buttons collection="DriverLines" my_id=_id}}
+  <div>
+    <h1 style="display: inline;">Driver Line: {{name}}</h1>
+    {{> edit_delete_buttons collection="DriverLines" my_id=_id}}
+  </div>
 
   <h2>Neuron types</h2>
   {{> neuron_type_table neuron_types=neuron_types}}
@@ -209,8 +211,10 @@
 
 <template name="neuron_type_show">
   {{#neuron_type_from_id_block}}
-  <h1>Neuron type: {{name}}</h1>
-  {{> edit_delete_buttons collection="NeuronTypes" my_id=_id}}
+  <div>
+    <h1 style="display: inline;">Neuron type: {{name}}</h1>
+    {{> edit_delete_buttons collection="NeuronTypes" my_id=_id}}
+  </div>
 
   <h2>Synonyms</h2>
     {{#each synonyms}}
@@ -245,8 +249,10 @@
 
 <template name="neuropile_show">
   {{#neuropile_from_id_block}}
-  <h1>Neuropile: {{name}}</h1>
-  {{> edit_delete_buttons collection="Neuropiles" my_id=_id}}
+  <div>
+    <h1 style="display: inline;">Neuropile: {{name}}</h1>
+    {{> edit_delete_buttons collection="Neuropiles" my_id=_id}}
+  </div>
 
   <h2>Driver lines</h2>
   {{> driver_line_table driver_lines=driver_lines_referencing_me}}
@@ -323,15 +329,46 @@
 </template>
 
 <template name="neuron_type_insert">
-  name
-  synonyms
-  neuropiles
-  best_driver_lines
+  <form role="form">
+    <label>Name</label>
+    <input type="text" class="name span5">
 
+    <div>
+      <div><h4>neuropiles</h4></div>
+      <div>
+	{{#each neuropiles}}
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" class="neuropiles" id={{_id}}> {{name}}
+	  </label>
+	</div>
+	{{/each}}
+      </div>
+    </div>
+
+    <!--
+    <div>
+      <div><h4>best driver lines</h4></div>
+      <div>
+	{{#each driver_lines}}
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" class="best_driver_lines" id={{_id}}> {{name}}
+	  </label>
+	</div>
+      {{/each}}
+      </div>
+    </div>
+    -->
+
+  </form>
   <p></p>
   <p>
     Note: driver lines are computed from information about each driver
     line.
+  </p>
+  <p>
+    TODO: Add ability to enter synonyms here. FIXME.
   </p>
 </template>
 
@@ -339,12 +376,11 @@
   <form>
     <label>Name</label>
     <input type="text" class="name span5">
-
-    <p></p>
-    <p>
-      Note: driver lines are computed from information about each driver
-      line and neuron types are computed from information about each
-      neuron type.
-    </p>
   </form>
+  <p></p>
+  <p>
+    Note: driver lines are computed from information about each driver
+    line and neuron types are computed from information about each
+    neuron type.
+  </p>
 </template>
