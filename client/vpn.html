@@ -219,6 +219,26 @@
       <a class="btn btn-default edit-neuropiles" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     </div>
   </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+	Comments
+      </div>
+    </div>
+    <div class="panel-body">
+      {{#if editing_comments}}
+      <div class="comments comments-edit">
+	<textarea class="comments span5"></textarea>
+      </div>
+      {{else}}
+      <div class="comments comments-display">
+	{{comments}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+
   {{/driver_line_from_id_block}}
 </template>
 
@@ -316,6 +336,17 @@
 	Note: driver lines are computed from information about each driver
 	line.
       </p>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+	Comments
+      </div>
+    </div>
+    <div class="panel-body">
+      {{comments}}
     </div>
   </div>
 
@@ -424,6 +455,18 @@
       </p>
     </div>
   </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+	Comments
+      </div>
+    </div>
+    <div class="panel-body">
+      {{comments}}
+    </div>
+  </div>
+
   {{/neuropile_from_id_block}}
 </template>
 

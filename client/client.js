@@ -2,6 +2,7 @@
 // session variables
 Session.setDefault('editing_add_synonym', null);
 Session.setDefault("modal_info",null);
+Session.setDefault("edit_comment_info");
 var modal_save_func = null;
 
 // --------------------------------------------
@@ -352,6 +353,10 @@ Template.driver_line_show.events({
 
     modal_save_func = edit_neuropiles_save_func;
     $("#show_dialog_id").modal('show');
+  },
+  'click .comments-display': function(e) {
+    e.preventDefault();
+    Session.set("edit_comment_info", this._id);
   }
 });
 
@@ -407,6 +412,11 @@ Template.neuron_type_show.events(okCancelEvents(
       Session.set('editing_add_synonym', null);
     }
   }));
+
+
+Template.driver_line_show.editing_comments = function () {
+  return Session.equals("edit_comment_info",this._id);
+}
 
 Template.edit_driver_lines.driver_lines = function () {
   var result = [];
