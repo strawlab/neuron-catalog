@@ -52,14 +52,3 @@
 .synonym .remove:after {
     content: "x";
 }
-
-div.data-field {
-   border: 3px;
-   margin: 5px;
-   padding: 5px;
-}
-
-div.data-field-head {
-    font-size: 150%;
-    font-weight: bold;
-}
