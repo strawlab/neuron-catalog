@@ -52,3 +52,7 @@
 .synonym .remove:after {
     content: "x";
 }
+
+.item-view:before {
+    content: "Item view:";
+}
