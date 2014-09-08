@@ -76,8 +76,7 @@ var jump_table = {
 		  'delete_template_name': "driver_line_show_brief",
 		  'element_route': 'driver_line_show',
 		  'base_route': 'driver_lines',
-		  'edit_neuropiles_template_name':'edit_neuropiles',
-		  'collection':DriverLines
+		  'edit_neuropiles_template_name':'edit_neuropiles'
 		 },
   'NeuronTypes': {'remove': function (x) { return remove_neuron_type(x); },
 		  'save': function(info, template) { return save_neuron_type(info,template); },
@@ -85,16 +84,14 @@ var jump_table = {
 		  'delete_template_name': "neuron_type_show_brief",
 		  'element_route': 'neuron_type_show',
 		  'base_route': 'neuron_types',
-		  'edit_neuropiles_template_name':'edit_neuropiles',
-		  'collection':NeuronTypes
+		  'edit_neuropiles_template_name':'edit_neuropiles'
 		 },
   'Neuropiles':  {'remove': function (x) { return remove_neuropile(x); },
 		  'save': function(info, template) { return save_neuropile(info,template); },
 		  'insert_template_name': "neuropile_insert",
 		  'delete_template_name': "neuropile_show_brief",
 		  'element_route': 'neuropile_show',
-		  'base_route': 'neuropiles',
-		  'collection':Neuropiles
+		  'base_route': 'neuropiles'
 		 }
 }
 
@@ -265,6 +262,42 @@ Template.neuron_type_show.synonym_dicts = function () {
   return result;
 }
 
+edit_neuropiles_save_func = function (info, template) {
+  var neuropiles=[];
+  var my_id = Session.get("modal_info").body_template_data.my_id
+
+  var r1 = template.findAll(".neuropiles");
+  for (i in r1) {
+    node = r1[i];
+    if (node.checked) {
+      neuropiles.push( node.id );
+    }
+  }
+  var coll_name = Session.get("modal_info").body_template_data.collection_name;
+  var collection;
+  if (coll_name=="DriverLines") {
+    collection = DriverLines;
+  } else if (coll_name=="NeuronTypes") {
+    collection = NeuronTypes;
+  }
+  collection.update(my_id, {$set:{'neuropiles':neuropiles}});
+  return {};
+}
+
+Template.driver_line_show.events({
+  'click .edit-neuropiles': function(e) {
+    e.preventDefault();
+    Session.set("modal_info", {title: "Edit neuropiles",
+			       body_template_name: jump_table["DriverLines"].edit_neuropiles_template_name,
+			       body_template_data: {my_id:this._id,
+						    collection_name: "DriverLines"}
+			      });
+
+    modal_save_func = edit_neuropiles_save_func;
+    $("#show_dialog_id").modal('show');
+  }
+});
+
 Template.neuron_type_show.events({
   'click .add_synonym': function(e,tmpl) {
     // inspiration: meteor TODO app
@@ -286,30 +319,11 @@ Template.neuron_type_show.events({
     e.preventDefault();
     Session.set("modal_info", {title: "Edit neuropiles",
 			       body_template_name: jump_table["NeuronTypes"].edit_neuropiles_template_name,
-			       body_template_data: {neuron_type_id:this._id}
+			       body_template_data: {my_id:this._id,
+						    collection_name:"NeuronTypes"}
 			      });
 
-    edit_save_cb = function(error, _id) {
-      // FIXME: be more useful. E.g. hide a "saving... popup"
-      if (error) {
-	console.log("edit save: callback with error:",error);
-      }
-    }
-
-    modal_save_func = function (info, template) {
-      var neuropiles=[];
-      var my_id = Session.get("modal_info").body_template_data.neuron_type_id
-
-      var r1 = template.findAll(".neuropiles");
-      for (i in r1) {
-	node = r1[i];
-	if (node.checked) {
-	    neuropiles.push( node.id );
-	}
-      }
-      NeuronTypes.update(my_id, {$set:{'neuropiles':neuropiles}}, edit_save_cb);
-      return {};
-    }
+    modal_save_func = edit_neuropiles_save_func;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -328,7 +342,13 @@ Template.neuron_type_show.events(okCancelEvents(
 
 Template.edit_neuropiles.neuropiles = function () {
   var result = [];
-  var myself = NeuronTypes.findOne({_id:this.neuron_type_id});
+  var collection;
+  if (this.collection_name=="DriverLines") {
+    collection = DriverLines;
+  } else if (this.collection_name=="NeuronTypes") {
+    collection = NeuronTypes;
+  }
+  var myself = collection.findOne({_id:this.my_id});
   Neuropiles.find().forEach( function (doc) {
     if (myself.neuropiles.indexOf(doc._id)==-1) {
       doc.is_checked = false;
