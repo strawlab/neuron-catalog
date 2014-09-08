@@ -182,11 +182,23 @@
     {{> delete_button collection="DriverLines" my_id=_id}}
   </div>
 
-  <h2>Neuron types</h2>
-  {{> neuron_type_table neuron_types=neuron_types}}
+  <div class="data-field">
+    <div class="data-field-head">
+      Neuron types
+    </div>
+    <div class="data-field-body">
+      {{> neuron_type_table neuron_types=neuron_types}}
+    </div>
+  </div>
 
-  <h2>Neuropiles</h2>
-  {{> neuropile_table neuropiles=neuropiles}}
+  <div class="data-field">
+    <div class="data-field-head">
+      Neuropiles
+    </div>
+    <div class="data-field-body">
+      {{> neuropile_table neuropiles=neuropiles}}
+    </div>
+  </div>
   {{/driver_line_from_id_block}}
 </template>
 
@@ -213,35 +225,61 @@
     {{> delete_button collection="NeuronTypes" my_id=_id}}
   </div>
 
-  <h2>Synonyms</h2>
-  <div class="synonyms_div">
-    <div class="item-synonyms">
-      {{#each synonym_dicts}}
-      <div class="synonym removable_synonym">
-	<div class="name">{{name}}</div>
-	<div class="remove"></div>
+  <div class="data-field">
+    <div class="data-field-head">
+      Synonyms
+    </div>
+    <div class="data-field-body">
+      <div class="synonyms_div">
+	<div class="item-synonyms">
+	  {{#each synonym_dicts}}
+	  <div class="synonym removable_synonym">
+	    <div class="name">{{name}}</div>
+	    <div class="remove"></div>
+	  </div>
+	  {{/each}}
+	  {{#if adding_synonym}}
+	  <div class="synonym edit_synonym">
+	    <input type="text" id="edit_synonym_input" value="" />
+	  </div>
+	  {{else}}
+	  <div class="synonym add_synonym">
+	    +synonym
+	  </div>
+	  {{/if}}
+	</div>
       </div>
-      {{/each}}
-      {{#if adding_synonym}}
-      <div class="synonym edit_synonym">
-	<input type="text" id="edit_synonym_input" value="" />
-      </div>
-      {{else}}
-      <div class="synonym add_synonym">
-	+synonym
-      </div>
-      {{/if}}
     </div>
   </div>
 
-  <h2>Best driver lines</h2>
-  {{> driver_line_table driver_lines=best_driver_lines}}
+  <div class="data-field">
+    <div class="data-field-head">
+      Best driver lines
+    </div>
+    <div class="data-field-body">
+      {{> driver_line_table driver_lines=best_driver_lines}}
+    </div>
+  </div>
 
-  <h2>Neuropiles</h2>
-  {{> neuropile_table neuropiles=neuropiles}}
+  <div class="data-field">
+    <div class="data-field-head">
+      Neuropiles
+    </div>
+    <div class="data-field-body">
+      {{> neuropile_table neuropiles=neuropiles}}
+      <a class="btn btn-default edit-neuropiles" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+    </div>
+  </div>
 
-  <h2>Driver lines</h2>
-  {{> driver_line_table driver_lines=driver_lines_referencing_me}}
+  <div class="data-field">
+    <div class="data-field-head">
+      Driver lines
+    </div>
+    <div class="data-field-body">
+      {{> driver_line_table driver_lines=driver_lines_referencing_me}}
+    </div>
+  </div>
+
   {{/neuron_type_from_id_block}}
 </template>
 
@@ -267,11 +305,23 @@
     {{> delete_button collection="Neuropiles" my_id=_id}}
   </div>
 
-  <h2>Driver lines</h2>
-  {{> driver_line_table driver_lines=driver_lines_referencing_me}}
+  <div class="data-field">
+    <div class="data-field-head">
+      Driver lines
+    </div>
+    <div class="data-field-body">
+      {{> driver_line_table driver_lines=driver_lines_referencing_me}}
+    </div>
+  </div>
 
-  <h2>Neuron types</h2>
-  {{> neuron_type_table neuron_types=neuron_types_referencing_me}}
+  <div class="data-field">
+    <div class="data-field-head">
+      Neuron types
+    </div>
+    <div class="data-field-body">
+      {{> neuron_type_table neuron_types=neuron_types_referencing_me}}
+    </div>
+  </div>
   {{/neuropile_from_id_block}}
 </template>
 

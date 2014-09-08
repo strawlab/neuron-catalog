@@ -60,3 +60,15 @@ div.add_synonym {
     color: #333;
     border: 1px dashed #999;
 }
+
+div.data-field {
+   border: 3px #999;
+   margin: 5px;
+   padding: 5px;
+}
+
+div.data-field-head {
+    font-size: 150%;
+    font-weight: bold;
+    background: #ddd;
+}
