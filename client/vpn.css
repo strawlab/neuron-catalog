@@ -62,7 +62,7 @@ div.add_synonym {
 }
 
 div.data-field {
-   border: 3px #999;
+   border: 3px;
    margin: 5px;
    padding: 5px;
 }
@@ -70,5 +70,4 @@ div.data-field {
 div.data-field-head {
     font-size: 150%;
     font-weight: bold;
-    background: #ddd;
 }
