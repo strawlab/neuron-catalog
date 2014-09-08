@@ -76,6 +76,7 @@ var jump_table = {
 		  'delete_template_name': "driver_line_show_brief",
 		  'element_route': 'driver_line_show',
 		  'base_route': 'driver_lines',
+		  'edit_neuron_types_template_name':'edit_neuron_types',
 		  'edit_neuropiles_template_name':'edit_neuropiles'
 		 },
   'NeuronTypes': {'remove': function (x) { return remove_neuron_type(x); },
@@ -262,6 +263,28 @@ Template.neuron_type_show.synonym_dicts = function () {
   return result;
 }
 
+edit_neuron_types_save_func = function (info, template) {
+  var neuron_types=[];
+  var my_id = Session.get("modal_info").body_template_data.my_id
+
+  var r1 = template.findAll(".neuron_types");
+  for (i in r1) {
+    node = r1[i];
+    if (node.checked) {
+      neuron_types.push( node.id );
+    }
+  }
+  var coll_name = Session.get("modal_info").body_template_data.collection_name;
+  var collection;
+  if (coll_name=="DriverLines") {
+    collection = DriverLines;
+  } else if (coll_name=="NeuronTypes") {
+    collection = NeuronTypes;
+  }
+  collection.update(my_id, {$set:{'neuron_types':neuron_types}});
+  return {};
+}
+
 edit_neuropiles_save_func = function (info, template) {
   var neuropiles=[];
   var my_id = Session.get("modal_info").body_template_data.my_id
@@ -285,6 +308,17 @@ edit_neuropiles_save_func = function (info, template) {
 }
 
 Template.driver_line_show.events({
+  'click .edit-neuron-types': function(e) {
+    e.preventDefault();
+    Session.set("modal_info", {title: "Edit neuron types",
+			       body_template_name: jump_table["DriverLines"].edit_neuron_types_template_name,
+			       body_template_data: {my_id:this._id,
+						    collection_name: "DriverLines"}
+			      });
+
+    modal_save_func = edit_neuron_types_save_func;
+    $("#show_dialog_id").modal('show');
+  },
   'click .edit-neuropiles': function(e) {
     e.preventDefault();
     Session.set("modal_info", {title: "Edit neuropiles",
@@ -339,6 +373,26 @@ Template.neuron_type_show.events(okCancelEvents(
       Session.set('editing_add_synonym', null);
     }
   }));
+
+Template.edit_neuron_types.neuron_types = function () {
+  var result = [];
+  var collection;
+  if (this.collection_name=="DriverLines") {
+    collection = DriverLines;
+  } else if (this.collection_name=="NeuronTypes") {
+    collection = NeuronTypes;
+  }
+  var myself = collection.findOne({_id:this.my_id});
+  NeuronTypes.find().forEach( function (doc) {
+    if (myself.neuron_types.indexOf(doc._id)==-1) {
+      doc.is_checked = false;
+    } else {
+      doc.is_checked = true;
+    }
+    result.push( doc );
+  });
+  return result;
+}
 
 Template.edit_neuropiles.neuropiles = function () {
   var result = [];

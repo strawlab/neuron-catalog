@@ -204,6 +204,7 @@
     </div>
     <div class="panel-body">
       {{> neuron_type_table neuron_types=neuron_types}}
+      <a class="btn btn-default edit-neuron-types" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     </div>
   </div>
 
@@ -318,6 +319,21 @@
   </div>
 
   {{/neuron_type_from_id_block}}
+</template>
+
+<template name="edit_neuron_types">
+  <div>
+    <div><h4>neuron types</h4></div>
+    <div>
+      {{#each neuron_types}}
+      <div class="checkbox">
+	<label>
+	  <input type="checkbox" class="neuron_types" id={{_id}} checked={{is_checked}}> {{name}}
+	</label>
+      </div>
+      {{/each}}
+    </div>
+  </div>
 </template>
 
 <template name="edit_neuropiles">
