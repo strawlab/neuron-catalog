@@ -1,3 +1,46 @@
+// --------------------------------------------
+// session variables
+Session.setDefault('editing_add_synonym', null);
+Session.setDefault("modal_info",null);
+
+// --------------------------------------------
+// from: meteor TODO app
+
+// Returns an event map that handles the "escape" and "return" keys and
+// "blur" events on a text input (given by selector) and interprets them
+// as "ok" or "cancel".
+var okCancelEvents = function (selector, callbacks) {
+  var ok = callbacks.ok || function () {};
+  var cancel = callbacks.cancel || function () {};
+
+  var events = {};
+  events['keyup '+selector+', keydown '+selector+', focusout '+selector] =
+    function (evt) {
+      if (evt.type === "keydown" && evt.which === 27) {
+        // escape = cancel
+        cancel.call(this, evt);
+
+      } else if (evt.type === "keyup" && evt.which === 13 ||
+                 evt.type === "focusout") {
+        // blur/return/enter = ok/submit if non-empty
+        var value = String(evt.target.value || "");
+        if (value)
+          ok.call(this, value, evt);
+        else
+          cancel.call(this, evt);
+      }
+    };
+
+  return events;
+};
+
+var activateInput = function (input) {
+  input.focus();
+  input.select();
+};
+// --------------------------------------------
+
+
 Template.show_dialog.modal_info = function () {
     var tmp = Session.get("modal_info");
     return tmp;
@@ -198,6 +241,32 @@ Template.neuropile_show.neuron_types_referencing_me = function () {
 }
 
 // -------------
+Template.neuron_type_show.adding_synonym = function () {
+  return Session.equals('editing_add_synonym',this._id);
+}
+
+Template.neuron_type_show.events({
+  'click .add_synonym': function(e,tmpl) {
+    // inspiration: meteor TODO app
+    Session.set('editing_add_synonym', this._id);
+    Deps.flush(); // update DOM before focus
+    activateInput(tmpl.find("#edit_synonym_input"));
+  }
+});
+
+Template.neuron_type_show.events(okCancelEvents(
+  '#edit_synonym_input',
+  {
+    ok: function (value) {
+      NeuronTypes.update(this._id, {$addToSet: {synonyms: value}});
+      Session.set('editing_add_synonym', null);
+    },
+    cancel: function () {
+      Session.set('editing_add_synonym', null);
+    }
+  }));
+
+// -------------
 
 Template.driver_line_insert.neuron_types = function () {
   return NeuronTypes.find();
@@ -362,3 +431,5 @@ save_neuropile = function(info,template) {
 UI.body.getData = function () {
   return 'data';
 };
+
+// -------

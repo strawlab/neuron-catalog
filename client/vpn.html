@@ -214,9 +214,25 @@
   </div>
 
   <h2>Synonyms</h2>
-    {{#each synonyms}}
-      {{this}}
-    {{/each}}
+  <div class="synonyms_div">
+    <div class="item-synonyms">
+      {{#each synonyms}}
+      <div class="synonym removable_synonym">
+	<div class="name">{{this}}</div>
+	<div class="remove"></div>
+      </div>
+      {{/each}}
+      {{#if adding_synonym}}
+      <div class="synonym edit_synonym">
+	<input type="text" id="edit_synonym_input" value="" />
+      </div>
+      {{else}}
+      <div class="synonym add_synonym">
+	+synonym
+      </div>
+      {{/if}}
+    </div>
+  </div>
 
   <h2>Best driver lines</h2>
   {{> driver_line_table driver_lines=best_driver_lines}}

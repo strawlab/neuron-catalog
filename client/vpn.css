@@ -1,1 +1,62 @@
 /* CSS declarations go here */
+
+.synonyms_div {
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.synonym {
+    cursor: pointer;
+    float: left;
+    margin: 5px;
+    padding: 2px 7px;
+    font-size: 80%;
+    font-weight: bold;
+    background: #999;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+
+    opacity: 1;
+    transition: opacity 0.3s linear;
+    -moz-transition: opacity 0.3s linear;
+    -webkit-transition: opacity 0.3s linear;
+    -o-transition: opacity 0.3s linear;
+
+    position: relative;
+}
+
+.item-synonyms {
+    overflow: auto;
+    float: left;
+    margin-right: 8px;
+}
+
+.synonym {
+    margin-top: 15px;
+}
+
+.removable_synonym {
+    padding-right: 22px;
+}
+
+.synonym .remove {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    bottom: 0;
+    width: 16px;
+    background: url("/close_16.png") no-repeat 0 center;
+}
+
+.synonym .remove:hover {
+    background-position: -16px center;
+}
+
+div.add_synonym {
+    background: none;
+    color: #333;
+    border: 1px dashed #999;
+}
