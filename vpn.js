@@ -43,12 +43,7 @@ remove_driver_line = function ( my_id ) {
   NeuronTypes.find( {driver_lines: my_id} ).forEach( rdl,
 						     {my_id:my_id,
 						      coll:NeuronTypes,
-						      fields:["driver_lines",
-							      "best_driver_lines"]} );
-  Neuropiles.find(  {driver_lines: my_id} ).forEach( rdl,
-						     {my_id:my_id,
-						      coll:Neuropiles,
-						      fields:["driver_lines"]} );
+						      fields:["best_driver_lines"]} );
   DriverLines.remove(my_id);
 }
 
@@ -61,7 +56,6 @@ remove_neuron_type = function ( my_id ) {
   };
 
   DriverLines.find( {neuron_types: my_id} ).forEach( rnt, {my_id:my_id,coll:DriverLines} );
-  Neuropiles.find(  {neuron_types: my_id} ).forEach( rnt, {my_id:my_id,coll:Neuropiles}  );
   NeuronTypes.remove(my_id);
 }
 
@@ -87,25 +81,17 @@ if (Meteor.isServer) {
 			       });
   var id2 = NeuronTypes.insert({name: "DCN",
 				synonyms: ["LC14"],
-				driver_lines: [id1],
 				best_driver_lines: [id1]
 			       });
   var id3 = NeuronTypes.insert({name: "AOpTu to lateral triangle projection neuron",
 				synonyms: [],
-				driver_lines: [id1],
 				best_driver_lines: []
 			       });
-  var id4 = Neuropiles.insert({name: "lobula",
-			       driver_lines: [id1],
-			       neuron_types: [id2]
+  var id4 = Neuropiles.insert({name: "lobula"
 			      });
-  var id5 = Neuropiles.insert({name: "lateral triangle",
-			       driver_lines: [id1],
-			       neuron_types: [id3]
+  var id5 = Neuropiles.insert({name: "lateral triangle"
 			      });
-  var id6 = Neuropiles.insert({name: "medulla",
-			       driver_lines: [id1],
-			       neuron_types: [id2]
+  var id6 = Neuropiles.insert({name: "medulla"
 			      });
 
   // Pass 2 : update

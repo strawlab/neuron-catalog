@@ -173,6 +173,20 @@ Template.MyLayout.tab_attrs_neuropiles = function () {
   }
 }
 
+// ------------
+
+Template.neuron_type_show.driver_lines_referencing_me = function () {
+  return DriverLines.find( {'neuron_types': this._id} );
+}
+
+Template.neuropile_show.driver_lines_referencing_me = function () {
+  return DriverLines.find( {'neuropiles': this._id} );
+}
+
+Template.neuropile_show.neuron_types_referencing_me = function () {
+  return NeuronTypes.find( {'neuropiles': this._id} );
+}
+
 // -------------
 
 UI.body.getData = function () {

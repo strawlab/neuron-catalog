@@ -224,7 +224,7 @@
   {{> neuropile_table neuropiles=neuropiles}}
 
   <h2>Driver lines</h2>
-  {{> driver_line_table driver_lines=driver_lines}}
+  {{> driver_line_table driver_lines=driver_lines_referencing_me}}
   {{/neuron_type_from_id_block}}
 </template>
 
@@ -249,10 +249,10 @@
   {{> edit_delete_buttons collection="Neuropiles" my_id=_id}}
 
   <h2>Driver lines</h2>
-  {{> driver_line_table driver_lines=driver_lines}}
+  {{> driver_line_table driver_lines=driver_lines_referencing_me}}
 
   <h2>Neuron types</h2>
-  {{> neuron_type_table neuron_types=neuron_types}}
+  {{> neuron_type_table neuron_types=neuron_types_referencing_me}}
   {{/neuropile_from_id_block}}
 </template>
 
@@ -292,8 +292,19 @@
 
 <template name="neuron_type_insert">
   Insert neuron type form.
+
+  <p>
+    Note: driver lines are computed from information about each driver
+    line.
+  </p>
 </template>
 
 <template name="neuropile_insert">
   Insert neuropile form.
+
+  <p>
+    Note: driver lines are computed from information about each driver
+    line and neuron types are computed from information about each
+    neuron type.
+  </p>
 </template>
