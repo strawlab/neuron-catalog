@@ -75,7 +75,9 @@ var jump_table = {
 		  'insert_template_name': "driver_line_insert",
 		  'delete_template_name': "driver_line_show_brief",
 		  'element_route': 'driver_line_show',
-		  'base_route': 'driver_lines'
+		  'base_route': 'driver_lines',
+		  'edit_neuropiles_template_name':'edit_neuropiles',
+		  'collection':DriverLines
 		 },
   'NeuronTypes': {'remove': function (x) { return remove_neuron_type(x); },
 		  'save': function(info, template) { return save_neuron_type(info,template); },
@@ -83,14 +85,16 @@ var jump_table = {
 		  'delete_template_name': "neuron_type_show_brief",
 		  'element_route': 'neuron_type_show',
 		  'base_route': 'neuron_types',
-		  'edit_neuropiles_template_name':'edit_neuropiles'
+		  'edit_neuropiles_template_name':'edit_neuropiles',
+		  'collection':NeuronTypes
 		 },
   'Neuropiles':  {'remove': function (x) { return remove_neuropile(x); },
 		  'save': function(info, template) { return save_neuropile(info,template); },
 		  'insert_template_name': "neuropile_insert",
 		  'delete_template_name': "neuropile_show_brief",
 		  'element_route': 'neuropile_show',
-		  'base_route': 'neuropiles'
+		  'base_route': 'neuropiles',
+		  'collection':Neuropiles
 		 }
 }
 
