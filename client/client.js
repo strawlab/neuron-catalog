@@ -245,12 +245,32 @@ Template.neuron_type_show.adding_synonym = function () {
   return Session.equals('editing_add_synonym',this._id);
 }
 
+Template.neuron_type_show.synonym_dicts = function () {
+  var result = [];
+  for (i in this.synonyms) {
+    var tmp = {'name':this.synonyms[i],
+	       '_id':this._id};
+    result.push(tmp);
+  }
+  return result;
+}
+
 Template.neuron_type_show.events({
   'click .add_synonym': function(e,tmpl) {
     // inspiration: meteor TODO app
     Session.set('editing_add_synonym', this._id);
     Deps.flush(); // update DOM before focus
     activateInput(tmpl.find("#edit_synonym_input"));
+  },
+  'click .remove': function (evt) {
+    var synonym = this.name;
+    var id = this._id;
+
+    evt.target.parentNode.style.opacity = 0;
+    // wait for CSS animation to finish
+    Meteor.setTimeout(function () {
+      NeuronTypes.update({_id: id}, {$pull: {synonyms: synonym}});
+    }, 300);
   }
 });
 
