@@ -49,11 +49,7 @@ var jump_table = {
 		 }
 }
 
-Template.edit_delete_buttons.events({
-  'click .edit': function(e) {
-    e.preventDefault();
-    jump_table[this.collection].edit(this.my_id);
-  },
+Template.delete_button.events({
   'click .delete': function(e) {
     e.preventDefault();
     Session.set("modal_info", {title: "Do you want to delete this?",

@@ -62,11 +62,8 @@
   </ul>
 </template>
 
-<template name="edit_delete_buttons">
-  <div class="btn-group">
-    <a class="btn btn-default edit" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
-    <a class="btn btn-danger delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
-  </div>
+<template name="delete_button">
+  <a class="btn btn-danger delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
 </template>
 
 <template name="driver_line_from_id_block">
@@ -182,7 +179,7 @@
   {{#driver_line_from_id_block}}
   <div>
     <h1 style="display: inline;">Driver Line: {{name}}</h1>
-    {{> edit_delete_buttons collection="DriverLines" my_id=_id}}
+    {{> delete_button collection="DriverLines" my_id=_id}}
   </div>
 
   <h2>Neuron types</h2>
@@ -213,7 +210,7 @@
   {{#neuron_type_from_id_block}}
   <div>
     <h1 style="display: inline;">Neuron type: {{name}}</h1>
-    {{> edit_delete_buttons collection="NeuronTypes" my_id=_id}}
+    {{> delete_button collection="NeuronTypes" my_id=_id}}
   </div>
 
   <h2>Synonyms</h2>
@@ -251,7 +248,7 @@
   {{#neuropile_from_id_block}}
   <div>
     <h1 style="display: inline;">Neuropile: {{name}}</h1>
-    {{> edit_delete_buttons collection="Neuropiles" my_id=_id}}
+    {{> delete_button collection="Neuropiles" my_id=_id}}
   </div>
 
   <h2>Driver lines</h2>
