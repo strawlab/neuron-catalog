@@ -11,26 +11,40 @@ Template.show_dialog.events({
     $("#show_dialog_id").modal('hide');
     var route_name = jump_table[info.collection].base_route;
     Router.go(route_name);
+  },
+  'click .save': function(event, template) {
+    event.preventDefault();
+    info = Session.get("modal_info");
+    var result = jump_table[info.collection].save(info,template);
+    if (result.error) {
+      info.error = result.error;
+      Session.set("modal_info",info);
+    } else {
+      $("#show_dialog_id").modal('hide');
+    }
   }
 });
 
 var jump_table = {
-  'DriverLines': {'remove': function (x) { remove_driver_line(x); },
-		  'edit':   function (x) { edit_driver_line(x); },
+  'DriverLines': {'remove': function (x) { return remove_driver_line(x); },
+		  'save': function(info, template) { return save_driver_line(info,template); },
 		  'insert_template_name': "driver_line_insert",
 		  'delete_template_name': "driver_line_show_brief",
+		  'element_route': 'driver_line_show',
 		  'base_route': 'driver_lines'
 		 },
-  'NeuronTypes': {'remove': function (x) { remove_neuron_type(x); },
-		  'edit':   function (x) { edit_neuron_type(x); },
+  'NeuronTypes': {'remove': function (x) { return remove_neuron_type(x); },
+		  'save': function(info, template) { return save_neuron_type(info,template); },
 		  'insert_template_name': "neuron_type_insert",
 		  'delete_template_name': "neuron_type_show_brief",
+		  'element_route': 'neuron_type_show',
 		  'base_route': 'neuron_types'
 		 },
-  'Neuropiles':  {'remove': function (x) { remove_neuropile(x);   },
-		  'edit':   function (x) { edit_neuropile(x); },
+  'Neuropiles':  {'remove': function (x) { return remove_neuropile(x); },
+		  'save': function(info, template) { return save_neuropile(info,template); },
 		  'insert_template_name': "neuropile_insert",
 		  'delete_template_name': "neuropile_show_brief",
+		  'element_route': 'neuropile_show',
 		  'base_route': 'neuropiles'
 		 }
 }
@@ -185,6 +199,51 @@ Template.neuropile_show.driver_lines_referencing_me = function () {
 
 Template.neuropile_show.neuron_types_referencing_me = function () {
   return NeuronTypes.find( {'neuropiles': this._id} );
+}
+
+// -------------
+
+neuropile_insert_callback = function(error, _id) {
+  // FIXME: be more useful.
+  if (error) {
+    console.log("neuropile_insert_callback with error:",error);
+  }
+
+  /*
+  // Not sure this is useful. For example, it adds extra clicks to
+  // adding several elements.
+  if (_id) {
+    var route_name = jump_table[info.collection].element_route;
+    Router.go(route_name, {_id: _id});
+  }
+  */
+}
+
+save_neuropile = function(info,template) {
+  var result = {};
+
+  // parse
+  var name = template.find(".name").value;
+
+  // find errors
+  var errors = [];
+  if (name.length<1) {
+    errors.push("Name is required.");
+  }
+
+  // report errors
+  if (errors.length>0) {
+    if (errors.length==1) {
+      result.error="Error: " + errors[0];
+    } else if (errors.length>1) {
+      result.error="Errors: " + errors.join(", ");
+    }
+    return result;
+  }
+
+  // save result
+  Neuropiles.insert({"name":name}, neuropile_insert_callback);
+  return result;
 }
 
 // -------------
