@@ -2,6 +2,7 @@
 // session variables
 Session.setDefault('editing_add_synonym', null);
 Session.setDefault("modal_info",null);
+var modal_save_func = null;
 
 // --------------------------------------------
 // from: meteor TODO app
@@ -58,7 +59,7 @@ Template.show_dialog.events({
   'click .save': function(event, template) {
     event.preventDefault();
     info = Session.get("modal_info");
-    var result = jump_table[info.collection].save(info,template);
+    var result = modal_save_func(info,template);
     if (result.error) {
       info.error = result.error;
       Session.set("modal_info",info);
@@ -81,7 +82,8 @@ var jump_table = {
 		  'insert_template_name': "neuron_type_insert",
 		  'delete_template_name': "neuron_type_show_brief",
 		  'element_route': 'neuron_type_show',
-		  'base_route': 'neuron_types'
+		  'base_route': 'neuron_types',
+		  'edit_neuropiles_template_name':'edit_neuropiles'
 		 },
   'Neuropiles':  {'remove': function (x) { return remove_neuropile(x); },
 		  'save': function(info, template) { return save_neuropile(info,template); },
@@ -102,6 +104,7 @@ Template.delete_button.events({
 			       body_template_data: this.my_id,
 			       is_delete_modal: true
 			      });
+    modal_save_func = null;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -156,6 +159,7 @@ Template.driver_lines.events({
 			       collection: coll,
 			       body_template_name: jump_table[coll].insert_template_name
 			      });
+    modal_save_func = jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -170,6 +174,7 @@ Template.neuron_types.events({
 			       collection: coll,
 			       body_template_name: jump_table[coll].insert_template_name
 			      });
+    modal_save_func = jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -188,6 +193,7 @@ Template.neuropiles.events({
 			       collection: coll,
 			       body_template_name: jump_table[coll].insert_template_name
 			      });
+    modal_save_func = jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -271,6 +277,36 @@ Template.neuron_type_show.events({
     Meteor.setTimeout(function () {
       NeuronTypes.update({_id: id}, {$pull: {synonyms: synonym}});
     }, 300);
+  },
+  'click .edit-neuropiles': function(e) {
+    e.preventDefault();
+    Session.set("modal_info", {title: "Edit neuropiles",
+			       body_template_name: jump_table["NeuronTypes"].edit_neuropiles_template_name,
+			       body_template_data: {neuron_type_id:this._id}
+			      });
+
+    edit_save_cb = function(error, _id) {
+      // FIXME: be more useful. E.g. hide a "saving... popup"
+      if (error) {
+	console.log("edit save: callback with error:",error);
+      }
+    }
+
+    modal_save_func = function (info, template) {
+      var neuropiles=[];
+      var my_id = Session.get("modal_info").body_template_data.neuron_type_id
+
+      var r1 = template.findAll(".neuropiles");
+      for (i in r1) {
+	node = r1[i];
+	if (node.checked) {
+	    neuropiles.push( node.id );
+	}
+      }
+      NeuronTypes.update(my_id, {$set:{'neuropiles':neuropiles}}, edit_save_cb);
+      return {};
+    }
+    $("#show_dialog_id").modal('show');
   }
 });
 
@@ -285,6 +321,20 @@ Template.neuron_type_show.events(okCancelEvents(
       Session.set('editing_add_synonym', null);
     }
   }));
+
+Template.edit_neuropiles.neuropiles = function () {
+  var result = [];
+  var myself = NeuronTypes.findOne({_id:this.neuron_type_id});
+  Neuropiles.find().forEach( function (doc) {
+    if (myself.neuropiles.indexOf(doc._id)==-1) {
+      doc.is_checked = false;
+    } else {
+      doc.is_checked = true;
+    }
+    result.push( doc );
+  });
+  return result;
+}
 
 // -------------
 

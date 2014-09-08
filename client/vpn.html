@@ -315,6 +315,21 @@
   {{/neuron_type_from_id_block}}
 </template>
 
+<template name="edit_neuropiles">
+  <div>
+    <div><h4>neuropiles</h4></div>
+    <div>
+      {{#each neuropiles}}
+      <div class="checkbox">
+	<label>
+	  <input type="checkbox" class="neuropiles" id={{_id}} checked={{is_checked}}> {{name}}
+	</label>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
 <!-- --------------------------- -->
 
 <template name="neuropiles">
