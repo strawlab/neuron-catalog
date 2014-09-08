@@ -49,8 +49,10 @@
 
 <template name="home">
   <div class="panel panel-primary">
-    <div class="panel-title">
-      VPN project
+    <div class="panel-heading">
+      <div class="panel-title">
+	VPN project
+      </div>
     </div>
     <div class="panel-body">
       <ul class="fa-ul">
@@ -184,8 +186,10 @@
 <template name="driver_line_show">
   {{#driver_line_from_id_block}}
   <div class="panel panel-primary">
-    <div class="panel-title">
-      Driver Line: {{name}}
+    <div class="panel-heading">
+      <div class="panel-title">
+	Driver Line: {{name}}
+      </div>
     </div>
     <div class="panel-body">
       {{> delete_button collection="DriverLines" my_id=_id}}
@@ -193,8 +197,10 @@
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-title">
-      Neuron types
+    <div class="panel-heading">
+      <div class="panel-title">
+	Neuron types
+      </div>
     </div>
     <div class="panel-body">
       {{> neuron_type_table neuron_types=neuron_types}}
@@ -202,8 +208,10 @@
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-title">
-      Neuropiles
+    <div class="panel-heading">
+      <div class="panel-title">
+	Neuropiles
+      </div>
     </div>
     <div class="panel-body">
       {{> neuropile_table neuropiles=neuropiles}}
@@ -231,8 +239,10 @@
 <template name="neuron_type_show">
   {{#neuron_type_from_id_block}}
   <div class="panel panel-primary">
-    <div class="panel-title">
-      Neuron type: {{name}}
+    <div class="panel-heading">
+      <div class="panel-title">
+	Neuron type: {{name}}
+      </div>
     </div>
     <div class="panel-body">
       {{> delete_button collection="NeuronTypes" my_id=_id}}
@@ -240,8 +250,10 @@
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-title">
-      Synonyms
+    <div class="panel-heading">
+      <div class="panel-title">
+	Synonyms
+      </div>
     </div>
     <div class="panel-body">
       <div class="synonyms_div">
@@ -267,8 +279,10 @@
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-title">
-      Best driver lines
+    <div class="panel-heading">
+      <div class="panel-title">
+	Best driver lines
+      </div>
     </div>
     <div class="panel-body">
       {{> driver_line_table driver_lines=best_driver_lines}}
@@ -276,8 +290,10 @@
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-title">
-      Neuropiles
+    <div class="panel-heading">
+      <div class="panel-title">
+	Neuropiles
+      </div>
     </div>
     <div class="panel-body">
       {{> neuropile_table neuropiles=neuropiles}}
@@ -286,8 +302,10 @@
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-title">
-      Driver lines
+    <div class="panel-heading">
+      <div class="panel-title">
+	Driver lines
+      </div>
     </div>
     <div class="panel-body">
       {{> driver_line_table driver_lines=driver_lines_referencing_me}}
@@ -315,8 +333,10 @@
 <template name="neuropile_show">
   {{#neuropile_from_id_block}}
   <div class="panel panel-primary">
-    <div class="panel-title">
-      Neuropile: {{name}}
+    <div class="panel-heading">
+      <div class="panel-title">
+	Neuropile: {{name}}
+      </div>
     </div>
     <div class="panel-body">
       {{> delete_button collection="Neuropiles" my_id=_id}}
@@ -324,8 +344,10 @@
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-title">
-      Driver lines
+    <div class="panel-heading">
+      <div class="panel-title">
+	Driver lines
+      </div>
     </div>
     <div class="panel-body">
       {{> driver_line_table driver_lines=driver_lines_referencing_me}}
@@ -333,8 +355,10 @@
   </div>
 
   <div class="panel panel-default">
-    <div class="panel-title">
-      Neuron types
+    <div class="panel-heading">
+      <div class="panel-title">
+	Neuron types
+      </div>
     </div>
     <div class="panel-body">
       {{> neuron_type_table neuron_types=neuron_types_referencing_me}}
