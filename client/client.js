@@ -14,30 +14,22 @@ Template.show_dialog.events({
   }
 });
 
-open_insert_edit_dialog = function (modal_title) {
-  // A general purpose dialog for inserting a new entry or editing an
-  // existing entry.
-  Session.set("modal_info", {modal_title: modal_title});
-  $("#show_dialog_id").modal('show');
-}
-
-edit_driver_line = function(_id) {
-  open_insert_edit_dialog("edit driver line "+_id);
-}
-
 var jump_table = {
   'DriverLines': {'remove': function (x) { remove_driver_line(x); },
 		  'edit':   function (x) { edit_driver_line(x); },
+		  'insert_template_name': "driver_line_insert",
 		  'delete_template_name': "driver_line_show_brief",
 		  'base_route': 'driver_lines'
 		 },
   'NeuronTypes': {'remove': function (x) { remove_neuron_type(x); },
 		  'edit':   function (x) { edit_neuron_type(x); },
+		  'insert_template_name': "neuron_type_insert",
 		  'delete_template_name': "neuron_type_show_brief",
 		  'base_route': 'neuron_types'
 		 },
   'Neuropiles':  {'remove': function (x) { remove_neuropile(x);   },
 		  'edit':   function (x) { edit_neuropile(x); },
+		  'insert_template_name': "neuropile_insert",
 		  'delete_template_name': "neuropile_show_brief",
 		  'base_route': 'neuropiles'
 		 }
@@ -50,7 +42,6 @@ Template.edit_delete_buttons.events({
   },
   'click .delete': function(e) {
     e.preventDefault();
-    //remove_driver_line(this.my_id);
     Session.set("modal_info", {title: "Do you want to delete this?",
 			       collection: this.collection,
 			       my_id: this.my_id,
@@ -107,7 +98,12 @@ Template.driver_lines.driver_line_cursor = function () {
 Template.driver_lines.events({
   'click .insert': function(e) {
     e.preventDefault();
-    open_insert_edit_dialog("Add new driver line");
+    var coll = "DriverLines";
+    Session.set("modal_info", {title: "Add driver line",
+			       collection: coll,
+			       body_template_name: jump_table[coll].insert_template_name
+			      });
+    $("#show_dialog_id").modal('show');
   }
 });
 
@@ -116,7 +112,12 @@ Template.driver_lines.events({
 Template.neuron_types.events({
   'click .insert': function(e) {
     e.preventDefault();
-    open_insert_edit_dialog("Add new neuron type");
+    var coll = "NeuronTypes";
+    Session.set("modal_info", {title: "Add neuron type",
+			       collection: coll,
+			       body_template_name: jump_table[coll].insert_template_name
+			      });
+    $("#show_dialog_id").modal('show');
   }
 });
 
@@ -129,7 +130,12 @@ Template.neuron_types.neuron_type_cursor = function () {
 Template.neuropiles.events({
   'click .insert': function(e) {
     e.preventDefault();
-    open_insert_edit_dialog("Add new neuropile");
+    var coll = "Neuropiles";
+    Session.set("modal_info", {title: "Add neuropile",
+			       collection: coll,
+			       body_template_name: jump_table[coll].insert_template_name
+			      });
+    $("#show_dialog_id").modal('show');
   }
 });
 
