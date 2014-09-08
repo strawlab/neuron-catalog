@@ -203,20 +203,72 @@ Template.neuropile_show.neuron_types_referencing_me = function () {
 
 // -------------
 
+Template.driver_line_insert.neuron_types = function () {
+  return NeuronTypes.find();
+}
+
+Template.driver_line_insert.neuropiles = function () {
+  return Neuropiles.find();
+}
+
+driver_line_insert_callback = function(error, _id) {
+  // FIXME: be more useful. E.g. hide a "saving... popup"
+  if (error) {
+    console.log("driver_line_insert_callback with error:",error);
+  }
+}
+
+save_driver_line = function(info,template) {
+  var result = {};
+  var doc = {};
+  var errors = [];
+
+  // parse
+  doc.name = template.find(".name").value;
+  if (doc.name.length<1) {
+    errors.push("Name is required.");
+  }
+
+  doc.neuron_types = [];
+  var r1 = template.findAll(".neuron_type");
+  for (i in r1) {
+    node = r1[i];
+    if (node.checked) {
+      doc.neuron_types.push( node.id );
+    }
+  }
+
+  doc.neuropiles = [];
+  var r1 = template.findAll(".neuropile");
+  for (i in r1) {
+    node = r1[i];
+    if (node.checked) {
+      doc.neuropiles.push( node.id );
+    }
+  }
+
+  // report errors
+  if (errors.length>0) {
+    if (errors.length==1) {
+      result.error="Error: " + errors[0];
+    } else if (errors.length>1) {
+      result.error="Errors: " + errors.join(", ");
+    }
+    return result;
+  }
+
+  // save result
+  DriverLines.insert(doc, driver_line_insert_callback);
+  return result;
+}
+
+// -------------
+
 neuropile_insert_callback = function(error, _id) {
-  // FIXME: be more useful.
+  // FIXME: be more useful. E.g. hide a "saving... popup"
   if (error) {
     console.log("neuropile_insert_callback with error:",error);
   }
-
-  /*
-  // Not sure this is useful. For example, it adds extra clicks to
-  // adding several elements.
-  if (_id) {
-    var route_name = jump_table[info.collection].element_route;
-    Router.go(route_name, {_id: _id});
-  }
-  */
 }
 
 save_neuropile = function(info,template) {

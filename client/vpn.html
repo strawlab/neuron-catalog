@@ -290,9 +290,36 @@
 <!-- ----------------------------- -->
 
 <template name="driver_line_insert">
-  name
-  neuron_types
-  neuropiles
+  <form role="form">
+    <label>Name</label>
+    <input type="text" class="name span5">
+
+    <div>
+      <div><h4>neuron types</h4></div>
+      <div>
+	{{#each neuron_types}}
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" class="neuron_type" id={{_id}}> {{name}}
+	  </label>
+	</div>
+      {{/each}}
+      </div>
+    </div>
+
+    <div>
+      <div><h4>neuropiles</h4></div>
+      <div>
+	{{#each neuropiles}}
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" class="neuropile" id={{_id}}> {{name}}
+	  </label>
+	</div>
+	{{/each}}
+      </div>
+    </div>
+  </form>
 </template>
 
 <template name="neuron_type_insert">
@@ -309,13 +336,15 @@
 </template>
 
 <template name="neuropile_insert">
-  <label>Name</label>
-  <input type="text" class="name span5">
+  <form>
+    <label>Name</label>
+    <input type="text" class="name span5">
 
-  <p></p>
-  <p>
-    Note: driver lines are computed from information about each driver
-    line and neuron types are computed from information about each
-    neuron type.
-  </p>
+    <p></p>
+    <p>
+      Note: driver lines are computed from information about each driver
+      line and neuron types are computed from information about each
+      neuron type.
+    </p>
+  </form>
 </template>
