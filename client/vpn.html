@@ -11,7 +11,6 @@
 
    <div class="row">
     <div class="col-md-10 col-md-offset-1">
-
       <div class="right-login-buttons">
 	{{> loginButtons}}
       </div>
@@ -54,12 +53,10 @@
   <h1>Neuron Catalog</h1>
 
   <p>
-    Welcome to our database.
-
     {{#if currentUser}}
-    You must be logged in to see or add data.
+    Welcome back to our database.
     {{else}}
-    Welcome back, {{currentUser}}.
+    Welcome to our database. You must be logged in to see or add data.
     {{/if}}
   </p>
 
@@ -69,6 +66,10 @@
   by <a href="http://erc.europa.eu/">ERC</a> Starting Grant 281884
   FlyVisualCircuits and by <a href="http://www.imp.ac.at/">IMP</a>
   core funding.</p>
+
+  Our project page is on GitHub <i class="fa fa-github"></i>
+  as <a href="https://github.com/strawlab/neuron-catalog">strawlab/neuron-catalog</a>.
+
 
 </template>
 

@@ -691,3 +691,8 @@ UI.body.getData = function () {
 };
 
 // -------
+
+Template.home.currentUser = function () {
+  // Mimic the normal meteor accounts system from IronRouter template.
+  return Meteor.user();
+}
