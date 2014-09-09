@@ -74,8 +74,7 @@ remove_neuropil = function ( my_id ) {
 
 if (Meteor.isServer) {
 
-/*
--------------------------------------------------
+/* -------------------------------------------------
   // for debugging on server: run this.
   DriverLines.remove({});
   NeuronTypes.remove({});
@@ -110,8 +109,7 @@ if (Meteor.isServer) {
   NeuronTypes.update(id2, {$set: {neuropils: [id4,id6]}});
   NeuronTypes.update(id3, {$set: {neuropils: [id5]}});
 
--------------------------------------------------
-*/
+------------------------------------------------- */
 
 /*
   Meteor.startup(function () {
