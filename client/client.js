@@ -560,8 +560,8 @@ save_neuron_type = function(info,template) {
     errors.push("Name is required.");
   }
 
-  /*
   doc.best_driver_lines = [];
+  /*
   var r1 = template.findAll(".best_driver_lines");
   for (i in r1) {
     node = r1[i];
