@@ -186,11 +186,10 @@
     </thead>
     <tbody>
       {{#each neuropiles}}
+      {{#neuropile_from_id_block}}
       <tr>
 	<td>
-	  {{#neuropile_from_id_block}}
           <a href="{{pathFor 'neuropile_show'}}"><span {{zxkp}}>{{name}}</span></a>
-	  {{/neuropile_from_id_block}}
 	</td>
 	<td>
 	  {{#each driver_lines_referencing_me}}
@@ -207,6 +206,7 @@
 	  {{/each}}
 	</td>
       </tr>
+      {{/neuropile_from_id_block}}
       {{/each}}
     </tbody>
   </table>
