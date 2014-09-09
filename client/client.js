@@ -694,22 +694,6 @@ UI.body.getData = function () {
   return 'data';
 };
 
-
-
-Template.driver_line_table.get_neuron_types_names = function(ids) {
-  return ids.map( function(_id) {
-    return NeuronTypes.find(_id).fetch()[0].name;
-  });
-}
-
-// -------
-
-Template.driver_line_table.get_neuropiles_names = function(ids) {
-  return ids.map( function(_id) {
-    return Neuropiles.find(_id).fetch()[0].name;
-  });
-}
-
 // -------
 
 Template.registerHelper("currentUser", function () {

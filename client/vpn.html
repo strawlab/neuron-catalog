@@ -112,10 +112,18 @@
 	  <a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
 	</td>
 	<td>
-	  {{get_neuron_types_names neuron_types}}
+	  {{#each neuron_types}}
+	  {{#neuron_type_from_id_block}}
+	  <a href="{{pathFor 'neuron_type_show'}}">{{name}}</a>
+	  {{/neuron_type_from_id_block}}
+	  {{/each}}
 	</td>
 	<td>
-	  {{get_neuropiles_names neuropiles}}
+	  {{#each neuropiles}}
+	  {{#neuropile_from_id_block}}
+	  <a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
+	  {{/neuropile_from_id_block}}
+	  {{/each}}
 	</td>
       </tr>
       {{/driver_line_from_id_block}}
@@ -152,7 +160,11 @@
 	  {{/each}}
 	</td>
 	<td>
-	  {{get_neuropiles_names neuropiles}}
+	  {{#each neuropiles}}
+          {{#neuropile_from_id_block}}
+          <a href="{{pathFor 'neuropile_show'}}">{{name}}</a>
+          {{/neuropile_from_id_block}}
+	  {{/each}}
 	</td>
       </tr>
       {{/neuron_type_from_id_block}}
