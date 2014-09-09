@@ -56,7 +56,7 @@
     {{#if currentUser}}
     Welcome back to our database.
     {{else}}
-    Welcome to our database. You must be logged in to see or add data.
+    Welcome to our database. {{login_message}}
     {{/if}}
   </p>
 
@@ -175,8 +175,12 @@
 <template name="driver_lines">
   {{> driver_line_table driver_lines=driver_line_cursor}}
 
+  {{#if currentUser}}
   <a class="btn btn-default insert" href="#">
-    <i class="fa fa-pencil-square-o"></i> Add a new driver line</a>
+    <i class="fa fa-plus"></i> Add a new driver line</a>
+  {{else}}
+  {{login_message}}
+  {{/if}}
 
 </template>
 
@@ -251,8 +255,12 @@
 <template name="neuron_types">
   {{> neuron_type_table neuron_types=neuron_type_cursor}}
 
+  {{#if currentUser}}
   <a class="btn btn-default insert" href="#">
-    <i class="fa fa-pencil-square-o"></i> Add a new neuron type</a>
+    <i class="fa fa-plus"></i> Add a new neuron type</a>
+  {{else}}
+  {{login_message}}
+  {{/if}}
 
 </template>
 
@@ -397,8 +405,13 @@
 <template name="neuropiles">
   {{> neuropile_table neuropiles=neuropile_cursor}}
 
+  {{#if currentUser}}
   <a class="btn btn-default insert" href="#">
-    <i class="fa fa-plus fa-lg"></i> Add a new neuropile</a>
+    <i class="fa fa-plus"></i> Add a new neuropile</a>
+  {{else}}
+  {{login_message}}
+  {{/if}}
+
 </template>
 
 <template name="neuropile_show_brief">

@@ -692,7 +692,12 @@ UI.body.getData = function () {
 
 // -------
 
-Template.home.currentUser = function () {
+Template.registerHelper("currentUser", function () {
   // Mimic the normal meteor accounts system from IronRouter template.
   return Meteor.user();
-}
+});
+
+Template.registerHelper("login_message", function () {
+  // Mimic the normal meteor accounts system from IronRouter template.
+  return "You must be logged in to see or add data.";
+});
