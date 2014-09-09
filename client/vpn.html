@@ -53,7 +53,22 @@
 <template name="home">
   <h1>Neuron Catalog</h1>
 
-  Welcome to our database. You must be logged in to see or add data.
+  <p>
+    Welcome to our database.
+
+    {{#if currentUser}}
+    You must be logged in to see or add data.
+    {{else}}
+    Welcome back, {{currentUser}}.
+    {{/if}}
+  </p>
+
+  <p>This software was developed by
+  the <a href="http://strawlab.org/">Straw Lab</a> and is based
+  on <a href="http://meteor.com/">Meteor</a>. The work was supported
+  by <a href="http://erc.europa.eu/">ERC</a> Starting Grant 281884
+  FlyVisualCircuits and by <a href="http://www.imp.ac.at/">IMP</a>
+  core funding.</p>
 
 </template>
 
