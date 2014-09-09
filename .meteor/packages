@@ -10,6 +10,5 @@ natestrauser:font-awesome
 mizzao:bootstrap-3
 showdown
 accounts-base
-accounts-github
 accounts-ui
-
+accounts-password
