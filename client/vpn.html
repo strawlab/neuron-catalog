@@ -95,24 +95,20 @@
   {{/with}}
 </template>
 
-<template name="detail_block">
-  <div class="panel panel-default">
-    {{> UI.contentBlock this}}
-  </div>
+<template name="detail_block_top">
+  {{> UI.contentBlock this}}
 </template>
 
-<template name="detail_block_top">
-  <div class="panel panel-primary">
-    {{> UI.contentBlock this}}
-  </div>
+<template name="detail_title_top">
+  <h3>{{> UI.contentBlock this}}</h3>
+</template>
+
+<template name="detail_block">
+  {{> UI.contentBlock this}}
 </template>
 
 <template name="detail_title">
-  <div class="panel-heading">
-    <div class="panel-title">
-      {{> UI.contentBlock this}}
-    </div>
-  </div>
+  <h4>{{> UI.contentBlock this}}</h4>
 </template>
 
 <template name="detail_main">
@@ -241,14 +237,22 @@
 <!-- --------------------------- -->
 
 <template name="driver_lines">
-  {{> driver_line_table driver_lines=driver_line_cursor}}
+  {{#detail_block_top}}
+    {{#detail_title_top}}
+      All Driver Lines
+    {{/detail_title_top}}
+    {{#detail_main}}
 
-  {{#if currentUser}}
-  <a class="btn btn-default insert" href="#">
-    <i class="fa fa-plus"></i> Add a new driver line</a>
-  {{else}}
-  {{login_message}}
-  {{/if}}
+      {{> driver_line_table driver_lines=driver_line_cursor}}
+
+      {{#if currentUser}}
+      <a class="btn btn-default insert" href="#">
+	<i class="fa fa-plus"></i> Add a new driver line</a>
+      {{else}}
+        {{login_message}}
+      {{/if}}
+    {{/detail_main}}
+  {{/detail_block_top}}
 
 </template>
 
@@ -261,9 +265,9 @@
 <template name="driver_line_show">
   {{#driver_line_from_id_block}}
   {{#detail_block_top}}
-    {{#detail_title}}
+    {{#detail_title_top}}
 	Driver Line: {{name}}
-    {{/detail_title}}
+    {{/detail_title_top}}
     {{#detail_main}}
       {{> delete_button collection="DriverLines" my_id=_id}}
     {{/detail_main}}
@@ -313,6 +317,12 @@
 <!-- --------------------------- -->
 
 <template name="neuron_types">
+  {{#detail_block_top}}
+    {{#detail_title_top}}
+  All Neuron Types
+    {{/detail_title_top}}
+    {{#detail_main}}
+
   {{> neuron_type_table neuron_types=neuron_type_cursor}}
 
   {{#if currentUser}}
@@ -321,7 +331,8 @@
   {{else}}
   {{login_message}}
   {{/if}}
-
+    {{/detail_main}}
+  {{/detail_block_top}}
 </template>
 
 <template name="neuron_type_show_brief">
@@ -333,9 +344,9 @@
 <template name="neuron_type_show">
   {{#neuron_type_from_id_block}}
   {{#detail_block_top}}
-    {{#detail_title}}
+    {{#detail_title_top}}
 	Neuron type: {{name}}
-    {{/detail_title}}
+    {{/detail_title_top}}
     {{#detail_main}}
       {{> delete_button collection="NeuronTypes" my_id=_id}}
     {{/detail_main}}
@@ -454,6 +465,11 @@
 <!-- --------------------------- -->
 
 <template name="neuropiles">
+  {{#detail_block_top}}
+    {{#detail_title_top}}
+      All Neuropiles
+    {{/detail_title_top}}
+    {{#detail_main}}
   {{> neuropile_table neuropiles=neuropile_cursor}}
 
   {{#if currentUser}}
@@ -462,6 +478,8 @@
   {{else}}
   {{login_message}}
   {{/if}}
+    {{/detail_main}}
+  {{/detail_block_top}}
 
 </template>
 
@@ -475,9 +493,9 @@
   {{#neuropile_from_id_block}}
 
   {{#detail_block_top}}
-    {{#detail_title}}
+    {{#detail_title_top}}
 	Neuropile: {{name}}
-    {{/detail_title}}
+    {{/detail_title_top}}
     {{#detail_main}}
       {{> delete_button collection="Neuropiles" my_id=_id}}
     {{/detail_main}}
