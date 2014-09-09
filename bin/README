@@ -1,0 +1,12 @@
+1. Build a docker container with:
+
+    bin/build-docker.sh
+
+2. Run the docker container initially with:
+
+    bin/run.sh
+
+3. Stop and restart the docker container with:
+
+    docker stop fly-neuron-catalog
+    docker start fly-neuron-catalog
