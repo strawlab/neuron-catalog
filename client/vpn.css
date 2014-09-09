@@ -68,10 +68,6 @@ border-radius: .25em;
     content: "x";
 }
 
-.item-view:before {
-    content: "Item view:";
-}
-
 .comments-display {
     min-height: 1em;
 }

@@ -95,6 +95,32 @@
   {{/with}}
 </template>
 
+<template name="detail_block">
+  <div class="panel panel-default">
+    {{> UI.contentBlock this}}
+  </div>
+</template>
+
+<template name="detail_block_top">
+  <div class="panel panel-primary">
+    {{> UI.contentBlock this}}
+  </div>
+</template>
+
+<template name="detail_title">
+  <div class="panel-heading">
+    <div class="panel-title">
+      {{> UI.contentBlock this}}
+    </div>
+  </div>
+</template>
+
+<template name="detail_main">
+  <div class="panel-body">
+    {{> UI.contentBlock this}}
+  </div>
+</template>
+
 <template name="driver_line_table">
   <table class="table table-striped">
     <thead>
@@ -234,53 +260,45 @@
 
 <template name="driver_line_show">
   {{#driver_line_from_id_block}}
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <div class="panel-title item-view">
+  {{#detail_block_top}}
+    {{#detail_title}}
 	Driver Line: {{name}}
-      </div>
-    </div>
-    <div class="panel-body">
+    {{/detail_title}}
+    {{#detail_main}}
       {{> delete_button collection="DriverLines" my_id=_id}}
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block_top}}
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-	Neuron types
-      </div>
-    </div>
-    <div class="panel-body">
+  {{#detail_block}}
+    {{#detail_title}}
+      Neuron types
+    {{/detail_title}}
+    {{#detail_main}}
       {{> neuron_type_table neuron_types=neuron_types}}
       <a class="btn btn-default edit-neuron-types" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-	Neuropiles
-      </div>
-    </div>
-    <div class="panel-body">
+  {{#detail_block}}
+    {{#detail_title}}
+      Neuropiles
+    {{/detail_title}}
+    {{#detail_main}}
       {{> neuropile_table neuropiles=neuropiles}}
       <a class="btn btn-default edit-neuropiles" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 
   {{> comments_panel comments=comments show_name="DriverLines" _id=_id}}
   {{/driver_line_from_id_block}}
 </template>
 
 <template name="comments_panel">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-	Comments
-      </div>
-    </div>
-    <div class="panel-body">
+  {{#detail_block}}
+    {{#detail_title}}
+      Comments
+    {{/detail_title}}
+    {{#detail_main}}
       {{> show_comments comments=comments show_name=show_name _id=_id}}
       <div class="comments comments-edit">
 	<div class="comments comments-textarea">
@@ -288,8 +306,8 @@
 	</div>
         <button type="button" class="btn btn-primary save">Save comment</button>
       </div>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 </template>
 
 <!-- --------------------------- -->
@@ -314,24 +332,20 @@
 
 <template name="neuron_type_show">
   {{#neuron_type_from_id_block}}
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <div class="panel-title item-view">
+  {{#detail_block_top}}
+    {{#detail_title}}
 	Neuron type: {{name}}
-      </div>
-    </div>
-    <div class="panel-body">
+    {{/detail_title}}
+    {{#detail_main}}
       {{> delete_button collection="NeuronTypes" my_id=_id}}
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block_top}}
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
+  {{#detail_block}}
+    {{#detail_title}}
 	Synonyms
-      </div>
-    </div>
-    <div class="panel-body">
+    {{/detail_title}}
+    {{#detail_main}}
       <div class="synonyms_div">
 	<div class="item-synonyms">
 	  {{#each synonym_dicts}}
@@ -352,47 +366,41 @@
 	  {{/if}}
 	</div>
       </div>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-	Best driver lines
-      </div>
-    </div>
-    <div class="panel-body">
+  {{#detail_block}}
+    {{#detail_title}}
+      Best driver lines
+    {{/detail_title}}
+    {{#detail_main}}
       {{> driver_line_table driver_lines=best_driver_lines}}
       <a class="btn btn-default edit-driver-lines" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
+  {{#detail_block}}
+    {{#detail_title}}
 	Neuropiles
-      </div>
-    </div>
-    <div class="panel-body">
+    {{/detail_title}}
+    {{#detail_main}}
       {{> neuropile_table neuropiles=neuropiles}}
       <a class="btn btn-default edit-neuropiles" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
+  {{#detail_block}}
+    {{#detail_title}}
 	Driver lines
-      </div>
-    </div>
-    <div class="panel-body">
+    {{/detail_title}}
+    {{#detail_main}}
       {{> driver_line_table driver_lines=driver_lines_referencing_me}}
       <p>
 	Note: driver lines are computed from information about each driver
 	line.
       </p>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 
   {{> comments_panel comments=comments show_name="NeuronTypes" _id=_id}}
   {{/neuron_type_from_id_block}}
@@ -465,46 +473,41 @@
 
 <template name="neuropile_show">
   {{#neuropile_from_id_block}}
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <div class="panel-title item-view">
-	Neuropile: {{name}}
-      </div>
-    </div>
-    <div class="panel-body">
-      {{> delete_button collection="Neuropiles" my_id=_id}}
-    </div>
-  </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-	Driver lines
-      </div>
-    </div>
-    <div class="panel-body">
+  {{#detail_block_top}}
+    {{#detail_title}}
+	Neuropile: {{name}}
+    {{/detail_title}}
+    {{#detail_main}}
+      {{> delete_button collection="Neuropiles" my_id=_id}}
+    {{/detail_main}}
+  {{/detail_block_top}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+      Driver lines
+    {{/detail_title}}
+    {{#detail_main}}
       {{> driver_line_table driver_lines=driver_lines_referencing_me}}
       <p>
 	Note: driver lines are computed from information about each driver
 	line.
       </p>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-	Neuron types
-      </div>
-      </div>
-    <div class="panel-body">
+  {{#detail_block}}
+    {{#detail_title}}
+      Neuron types
+    {{/detail_title}}
+    {{#detail_main}}
       {{> neuron_type_table neuron_types=neuron_types_referencing_me}}
       <p>
 	Note: neuron types are computed from information about each
 	neuron type.
       </p>
-    </div>
-  </div>
+    {{/detail_main}}
+  {{/detail_block}}
 
   {{> comments_panel comments=comments show_name="Neuropiles" _id=_id}}
   {{/neuropile_from_id_block}}
