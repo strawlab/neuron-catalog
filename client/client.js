@@ -420,10 +420,11 @@ Template.edit_driver_lines.driver_lines = function () {
   }
   var myself = collection.findOne({_id:this.my_id});
   DriverLines.find().forEach( function (doc) {
-    if (myself.best_driver_lines.indexOf(doc._id)==-1) {
-      doc.is_checked = false;
-    } else {
-      doc.is_checked = true;
+    doc.is_checked = false;
+    if (myself.hasOwnProperty('best_driver_lines')) {
+      if (myself.best_driver_lines.indexOf(doc._id)!=-1) {
+	doc.is_checked = true;
+      }
     }
     result.push( doc );
   });
