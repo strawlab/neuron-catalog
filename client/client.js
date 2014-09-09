@@ -1,3 +1,7 @@
+Meteor.subscribe('driver_lines');
+Meteor.subscribe('neuron_types');
+Meteor.subscribe('neuropiles');
+
 var converter = new Showdown.converter();
 
 // --------------------------------------------
