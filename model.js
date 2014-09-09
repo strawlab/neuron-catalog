@@ -8,6 +8,7 @@ DriverLines = new Meteor.Collection("driver_lines");
   _id: <int>
   neuron_types: [id, ...]
   neuropiles: [id, ...]
+  comments: [{[auth_stuff], comment: markdown_string, timestamp: hmm}, ...]
 */
 
 //////////////////////////////////////////////////////

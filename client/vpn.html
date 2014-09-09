@@ -227,15 +227,13 @@
       </div>
     </div>
     <div class="panel-body">
-      {{#if editing_comments}}
+      {{> show_comments comments}}
       <div class="comments comments-edit">
-	<textarea class="comments span5"></textarea>
+	<div class="comments comments-textarea">
+	  <textarea class="comments" placeholder="Leave a comment here"></textarea>
+	</div>
+        <button type="button" class="btn btn-primary save">Save comment</button>
       </div>
-      {{else}}
-      <div class="comments comments-display">
-	{{comments}}
-      </div>
-      {{/if}}
     </div>
   </div>
 
@@ -588,4 +586,10 @@
     line and neuron types are computed from information about each
     neuron type.
   </p>
+</template>
+
+<!-- ---------------------------- -->
+
+<template name="show_comments">
+  COMMENTS: {{comments}}
 </template>
