@@ -232,7 +232,7 @@
       </div>
     </div>
     <div class="panel-body">
-      {{> show_comments comments=comments}}
+      {{> show_comments comments=comments show_name=show_name _id=_id}}
       <div class="comments comments-edit">
 	<div class="comments comments-textarea">
 	  <textarea class="comments" placeholder="Leave a comment here. Parsed as Markdown."></textarea>
@@ -574,9 +574,14 @@
 <!-- ---------------------------- -->
 
 <template name="show_comments">
-  {{#each comments}}
-  <div class="indiv-comment">
-    {{{show_markdown comment}}}
+  {{#each wrapped_comments}}
+  <div>
+    <div class="remove-indiv-comment">
+      <a class="btn btn-danger delete" href="#" title="delete comment"><i class="fa fa-trash-o"></i></a>
+    </div>
+    <div class="indiv-comment">
+      {{{show_markdown comment}}}
+    </div>
   </div>
   {{/each}}
 </template>

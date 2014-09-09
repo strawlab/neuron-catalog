@@ -636,28 +636,52 @@ Template.comments_panel.events({
   'click .save': function(event, template) {
     event.preventDefault();
     var ta = template.find("textarea.comments");
-    console.log(ta);
     var comments_raw = ta.value;
     ta.value = "";
     var collection;
     if (this.show_name=="DriverLines") {
-      collection = DriverLines
+      collection = DriverLines;
     } else if (this.show_name=="NeuronTypes") {
-      collection = NeuronTypes
+      collection = NeuronTypes;
     } else if (this.show_name=="Neuropiles") {
-      collection = Neuropiles
+      collection = Neuropiles;
     }
     var cdict = {comment:comments_raw}; // FIXME: add auth stuff and timestamp on server.
     collection.update(this._id, {$push: {comments: cdict}});
-    console.log("really saved")
   }
 });
 
-Template.show_comments.show_markdown = function (comment_raw) {
-  var result = converter.makeHtml(comment_raw);
-  console.log("rendered to HTML with result of",result);
+Template.show_comments.show_markdown = function (comment) {
+  var result = converter.makeHtml(comment.comment);
   return result;
 }
+
+Template.show_comments.wrapped_comments = function () {
+  var result = [];
+  for (i in this.comments) {
+    var doc = {};
+    doc.comment = this.comments[i];
+    doc.parent_show_name = this.show_name;
+    doc.parent_id = this._id;
+    result.push(doc);
+  }
+  return result;
+}
+
+Template.show_comments.events({
+  'click.delete':function (evt,tmpl) {
+    var collection;
+    if (this.parent_show_name=="DriverLines") {
+      collection = DriverLines;
+    } else if (this.parent_show_name=="NeuronTypes") {
+      collection = NeuronTypes;
+    } else if (this.parent_show_name=="Neuropiles") {
+      collection = Neuropiles;
+    }
+    collection.update({_id:this.parent_id},
+		      {$pull: {comments: this.comment}});
+  }
+});
 
 // -------------
 

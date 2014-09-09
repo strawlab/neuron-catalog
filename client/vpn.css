@@ -82,4 +82,10 @@ div.indiv-comment {
     border: 1px solid;
     margin: 5px;
     padding: 3px;
+    margin-right:50px;
+}
+
+div.remove-indiv-comment {
+    width:45px;
+    float:right;
 }
