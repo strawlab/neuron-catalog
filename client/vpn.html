@@ -100,6 +100,8 @@
     <thead>
       <tr>
 	<th>Driver line</th>
+	<th>Neuron types</th>
+	<th>Neuropiles</th>
       </tr>
     </thead>
     <tbody>
@@ -108,6 +110,12 @@
       <tr>
 	<td>
 	  <a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
+	</td>
+	<td>
+	  {{get_neuron_types_names neuron_types}}
+	</td>
+	<td>
+	  {{get_neuropiles_names neuropiles}}
 	</td>
       </tr>
       {{/driver_line_from_id_block}}
@@ -123,6 +131,7 @@
 	<th>Neuron type</th>
 	<th>Synonyms</th>
 	<th>Best driver lines</th>
+	<th>Neuropiles</th>
       </tr>
     </thead>
     <tbody>
@@ -141,6 +150,9 @@
           <a href="{{pathFor 'driver_line_show'}}">{{name}}</a>
           {{/driver_line_from_id_block}}
 	  {{/each}}
+	</td>
+	<td>
+	  {{get_neuropiles_names neuropiles}}
 	</td>
       </tr>
       {{/neuron_type_from_id_block}}
