@@ -100,3 +100,36 @@ div.remove-indiv-comment {
     width:45px;
     float:right;
 }
+
+div.detail-title-top {
+     display: inline-block;
+     line-height: 1.1;
+     font-weight: 500;
+     font-size: 24px;
+     margin: 0;
+     margin-top: 5px;
+}
+
+div.detail-title {
+     display: inline-block;
+     line-height: 1.1;
+     font-weight: 500;
+     font-size: 18px;
+     margin: 0;
+}
+
+div.detail-block {
+    margin: 3px;
+    padding: 3px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.btn-small {
+    padding: 1px;
+}
+
+.btn-tiny {
+    padding: 3px;
+    font-size: 50%;
+}
