@@ -4,11 +4,11 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-autopublish
-insecure
 iron:layout
 iron:router
 natestrauser:font-awesome
 mizzao:bootstrap-3
 showdown
+accounts-base
+accounts-github
 
