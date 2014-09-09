@@ -251,9 +251,12 @@ Template.neuropile_show.driver_lines_referencing_me = function () {
   return DriverLines.find( {'neuropiles': this._id} );
 }
 
+Template.neuropile_table.driver_lines_referencing_me = Template.neuropile_show.driver_lines_referencing_me;
+
 Template.neuropile_show.neuron_types_referencing_me = function () {
   return NeuronTypes.find( {'neuropiles': this._id} );
 }
+Template.neuropile_table.neuron_types_referencing_me = Template.neuropile_show.neuron_types_referencing_me;
 
 // -------------
 Template.neuron_type_show.adding_synonym = function () {
@@ -695,6 +698,11 @@ UI.body.getData = function () {
 };
 
 // -------
+
+Template.registerHelper("zxkp", function () {
+//  return {'class':'label label-default'};
+  return {'class':'zxkp'};
+});
 
 Template.registerHelper("currentUser", function () {
   // Mimic the normal meteor accounts system from IronRouter template.

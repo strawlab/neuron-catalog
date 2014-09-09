@@ -5,6 +5,16 @@
     float: right;
 }
 
+span.zxkp {
+display: inline;
+padding: .2em .6em .3em;
+line-height: 1;
+text-align: center;
+white-space: nowrap;
+vertical-align: baseline;
+border-radius: .25em;
+}
+
 .synonyms_div {
     display: block;
     position: relative;
