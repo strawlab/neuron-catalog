@@ -220,6 +220,11 @@
     </div>
   </div>
 
+  {{> comments_panel comments=comments show_name="DriverLines" _id=_id}}
+  {{/driver_line_from_id_block}}
+</template>
+
+<template name="comments_panel">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="panel-title">
@@ -227,17 +232,15 @@
       </div>
     </div>
     <div class="panel-body">
-      {{> show_comments comments}}
+      {{> show_comments comments=comments}}
       <div class="comments comments-edit">
 	<div class="comments comments-textarea">
-	  <textarea class="comments" placeholder="Leave a comment here"></textarea>
+	  <textarea class="comments" placeholder="Leave a comment here. Parsed as Markdown."></textarea>
 	</div>
         <button type="button" class="btn btn-primary save">Save comment</button>
       </div>
     </div>
   </div>
-
-  {{/driver_line_from_id_block}}
 </template>
 
 <!-- --------------------------- -->
@@ -337,17 +340,7 @@
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-	Comments
-      </div>
-    </div>
-    <div class="panel-body">
-      {{comments}}
-    </div>
-  </div>
-
+  {{> comments_panel comments=comments show_name="NeuronTypes" _id=_id}}
   {{/neuron_type_from_id_block}}
 </template>
 
@@ -454,17 +447,7 @@
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-	Comments
-      </div>
-    </div>
-    <div class="panel-body">
-      {{comments}}
-    </div>
-  </div>
-
+  {{> comments_panel comments=comments show_name="Neuropiles" _id=_id}}
   {{/neuropile_from_id_block}}
 </template>
 
@@ -591,5 +574,9 @@
 <!-- ---------------------------- -->
 
 <template name="show_comments">
-  COMMENTS: {{comments}}
+  {{#each comments}}
+  <div class="indiv-comment">
+    {{{show_markdown comment}}}
+  </div>
+  {{/each}}
 </template>

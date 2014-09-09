@@ -1,3 +1,5 @@
+var converter = new Showdown.converter();
+
 // --------------------------------------------
 // session variables
 Session.setDefault('editing_add_synonym', null);
@@ -625,6 +627,35 @@ save_neuropile = function(info,template) {
 
   // save result
   Neuropiles.insert({"name":name}, neuropile_insert_callback);
+  return result;
+}
+
+// -------------
+
+Template.comments_panel.events({
+  'click .save': function(event, template) {
+    event.preventDefault();
+    var ta = template.find("textarea.comments");
+    console.log(ta);
+    var comments_raw = ta.value;
+    ta.value = "";
+    var collection;
+    if (this.show_name=="DriverLines") {
+      collection = DriverLines
+    } else if (this.show_name=="NeuronTypes") {
+      collection = NeuronTypes
+    } else if (this.show_name=="Neuropiles") {
+      collection = Neuropiles
+    }
+    var cdict = {comment:comments_raw}; // FIXME: add auth stuff and timestamp on server.
+    collection.update(this._id, {$push: {comments: cdict}});
+    console.log("really saved")
+  }
+});
+
+Template.show_comments.show_markdown = function (comment_raw) {
+  var result = converter.makeHtml(comment_raw);
+  console.log("rendered to HTML with result of",result);
   return result;
 }
 

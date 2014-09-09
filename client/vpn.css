@@ -73,3 +73,13 @@ textarea.comments {
 .comments-textarea {
     display: block;
 }
+
+div.comments-edit {
+    padding: 5px;
+}
+
+div.indiv-comment {
+    border: 1px solid;
+    margin: 5px;
+    padding: 3px;
+}

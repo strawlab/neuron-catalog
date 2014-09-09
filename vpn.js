@@ -78,26 +78,26 @@ if (Meteor.isServer) {
   Neuropiles.remove({});
 
   var id1 = DriverLines.insert({name: "VT37804-Gal4",
-				comments: "",
+				comments: [],
 			       });
   var id2 = NeuronTypes.insert({name: "DCN",
 				synonyms: ["LC14"],
 				best_driver_lines: [id1],
-				comments: "",
+				comments: [],
 			       });
   var id3 = NeuronTypes.insert({name: "AOpTu to lateral triangle projection neuron",
 				synonyms: [],
 				best_driver_lines: [],
-				comments: "",
+				comments: [],
 			       });
   var id4 = Neuropiles.insert({name: "lobula",
-			       comments: "",
+			       comments: [],
 			      });
   var id5 = Neuropiles.insert({name: "lateral triangle",
-			       comments: "",
+			       comments: [],
 			      });
   var id6 = Neuropiles.insert({name: "medulla",
-			       comments: "",
+			       comments: [],
 			      });
 
   // Pass 2 : update
