@@ -17,10 +17,10 @@ Router.map(function() {
     data: function() { return NeuronTypes.findOne(this.params._id); }
   });
 
-  this.route('neuropiles');
-  this.route('neuropile_show', {
-    path: '/neuropiles/:_id',
-    data: function() { return Neuropiles.findOne(this.params._id); }
+  this.route('neuropils');
+  this.route('neuropil_show', {
+    path: '/neuropils/:_id',
+    data: function() { return Neuropils.findOne(this.params._id); }
   });
 
 });
@@ -59,17 +59,17 @@ remove_neuron_type = function ( my_id ) {
   NeuronTypes.remove(my_id);
 }
 
-remove_neuropile = function ( my_id ) {
+remove_neuropil = function ( my_id ) {
   function rn( doc ) {
-    var index = doc.neuropiles.indexOf(this.my_id);
+    var index = doc.neuropils.indexOf(this.my_id);
     // No need to check for index==-1 because we know it does not (except race condition).
-    doc.neuropiles.splice(index, 1);
-    this.coll.update( doc._id, {$set: {neuropiles: doc.neuropiles}});
+    doc.neuropils.splice(index, 1);
+    this.coll.update( doc._id, {$set: {neuropils: doc.neuropils}});
   };
 
   DriverLines.find( {neuron_types: my_id} ).forEach( rn, {my_id:my_id,coll:DriverLines} );
   NeuronTypes.find( {neuron_types: my_id} ).forEach( rn, {my_id:my_id,coll:NeuronTypes} );
-  Neuropiles.remove(my_id);
+  Neuropils.remove(my_id);
 }
 
 if (Meteor.isServer) {
@@ -79,7 +79,7 @@ if (Meteor.isServer) {
   // for debugging on server: run this.
   DriverLines.remove({});
   NeuronTypes.remove({});
-  Neuropiles.remove({});
+  Neuropils.remove({});
 
   var id1 = DriverLines.insert({name: "VT37804-Gal4",
 				comments: [],
@@ -94,21 +94,21 @@ if (Meteor.isServer) {
 				best_driver_lines: [],
 				comments: [],
 			       });
-  var id4 = Neuropiles.insert({name: "lobula",
+  var id4 = Neuropils.insert({name: "lobula",
 			       comments: [],
 			      });
-  var id5 = Neuropiles.insert({name: "lateral triangle",
+  var id5 = Neuropils.insert({name: "lateral triangle",
 			       comments: [],
 			      });
-  var id6 = Neuropiles.insert({name: "medulla",
+  var id6 = Neuropils.insert({name: "medulla",
 			       comments: [],
 			      });
 
   // Pass 2 : update
   DriverLines.update(id1, {$set: {neuron_types: [id2,id3],
-				  neuropiles: [id4,id5,id6]}});
-  NeuronTypes.update(id2, {$set: {neuropiles: [id4,id6]}});
-  NeuronTypes.update(id3, {$set: {neuropiles: [id5]}});
+				  neuropils: [id4,id5,id6]}});
+  NeuronTypes.update(id2, {$set: {neuropils: [id4,id6]}});
+  NeuronTypes.update(id3, {$set: {neuropils: [id5]}});
 
 -------------------------------------------------
 */

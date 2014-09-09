@@ -23,8 +23,8 @@
 	<li {{tab_attrs_neuron_types}}>
 	  <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
 	</li>
-	<li {{tab_attrs_neuropiles}}>
-	  <a href="{{pathFor 'neuropiles'}}">Neuropiles</a>
+	<li {{tab_attrs_neuropils}}>
+	  <a href="{{pathFor 'neuropils'}}">Neuropils</a>
 	</li>
       </ul>
     </div>
@@ -89,8 +89,8 @@
   {{/with}}
 </template>
 
-<template name="neuropile_from_id_block">
-  {{#with neuropile_from_id}}
+<template name="neuropil_from_id_block">
+  {{#with neuropil_from_id}}
     {{> UI.contentBlock this}}
   {{/with}}
 </template>
@@ -127,7 +127,7 @@
       <tr>
 	<th>Driver line</th>
 	<th>Neuron types</th>
-	<th>Neuropiles</th>
+	<th>Neuropils</th>
       </tr>
     </thead>
     <tbody>
@@ -145,10 +145,10 @@
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each neuropiles}}
-	  {{#neuropile_from_id_block}}
-	  <a href="{{pathFor 'neuropile_show'}}"><span {{zxkp}}>{{name}}</span></a>
-	  {{/neuropile_from_id_block}}
+	  {{#each neuropils}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
 	  {{/each}}
 	</td>
       </tr>
@@ -165,7 +165,7 @@
 	<th>Neuron type</th>
 	<th>Synonyms</th>
 	<th>Best driver lines</th>
-	<th>Neuropiles</th>
+	<th>Neuropils</th>
       </tr>
     </thead>
     <tbody>
@@ -188,10 +188,10 @@
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each neuropiles}}
-          {{#neuropile_from_id_block}}
-          <a href="{{pathFor 'neuropile_show'}}"><span {{zxkp}}>{{name}}</span></a>
-          {{/neuropile_from_id_block}}
+	  {{#each neuropils}}
+          {{#neuropil_from_id_block}}
+          <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
+          {{/neuropil_from_id_block}}
 	  {{/each}}
 	</td>
       </tr>
@@ -201,21 +201,21 @@
   </table>
 </template>
 
-<template name="neuropile_table">
+<template name="neuropil_table">
   <table class="table table-striped">
     <thead>
       <tr>
-	<th>Neuropile</th>
+	<th>Neuropil</th>
 	<th>Driver lines</th>
 	<th>Neuron types</th>
       </tr>
     </thead>
     <tbody>
-      {{#each neuropiles}}
-      {{#neuropile_from_id_block}}
+      {{#each neuropils}}
+      {{#neuropil_from_id_block}}
       <tr>
 	<td>
-          <a href="{{pathFor 'neuropile_show'}}"><span {{zxkp}}>{{name}}</span></a>
+          <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
 	</td>
 	<td>
 	  {{#each driver_lines_referencing_me}}
@@ -232,7 +232,7 @@
 	  {{/each}}
 	</td>
       </tr>
-      {{/neuropile_from_id_block}}
+      {{/neuropil_from_id_block}}
       {{/each}}
     </tbody>
   </table>
@@ -288,11 +288,11 @@
 
   {{#detail_block}}
     {{#detail_title}}
-      Neuropiles
-      <a class="btn btn-default btn-small edit-neuropiles" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      Neuropils
+      <a class="btn btn-default btn-small edit-neuropils" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     {{/detail_title}}
     {{#detail_main}}
-      {{> neuropile_table neuropiles=neuropiles}}
+      {{> neuropil_table neuropils=neuropils}}
     {{/detail_main}}
   {{/detail_block}}
 
@@ -393,11 +393,11 @@
 
   {{#detail_block}}
     {{#detail_title}}
-	Neuropiles
-      <a class="btn btn-default btn-small edit-neuropiles" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+	Neuropils
+      <a class="btn btn-default btn-small edit-neuropils" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     {{/detail_title}}
     {{#detail_main}}
-      {{> neuropile_table neuropiles=neuropiles}}
+      {{> neuropil_table neuropils=neuropils}}
     {{/detail_main}}
   {{/detail_block}}
 
@@ -445,14 +445,14 @@
   </div>
 </template>
 
-<template name="edit_neuropiles">
+<template name="edit_neuropils">
   <div>
-    <div><h4>neuropiles</h4></div>
+    <div><h4>neuropils</h4></div>
     <div>
-      {{#each neuropiles}}
+      {{#each neuropils}}
       <div class="checkbox">
 	<label>
-	  <input type="checkbox" class="neuropiles" id={{_id}} checked={{is_checked}}> {{name}}
+	  <input type="checkbox" class="neuropils" id={{_id}} checked={{is_checked}}> {{name}}
 	</label>
       </div>
       {{/each}}
@@ -462,17 +462,17 @@
 
 <!-- --------------------------- -->
 
-<template name="neuropiles">
+<template name="neuropils">
   {{#detail_block_top}}
     {{#detail_title_top}}
-      All Neuropiles
+      All Neuropils
     {{/detail_title_top}}
     {{#detail_main}}
-  {{> neuropile_table neuropiles=neuropile_cursor}}
+  {{> neuropil_table neuropils=neuropil_cursor}}
 
   {{#if currentUser}}
   <a class="btn btn-default insert" href="#">
-    <i class="fa fa-plus"></i> Add a new neuropile</a>
+    <i class="fa fa-plus"></i> Add a new neuropil</a>
   {{else}}
   {{login_message}}
   {{/if}}
@@ -481,19 +481,19 @@
 
 </template>
 
-<template name="neuropile_show_brief">
-  {{#neuropile_from_id_block}}
-  <h3>Neuropile: {{name}}</h3>
-  {{/neuropile_from_id_block}}
+<template name="neuropil_show_brief">
+  {{#neuropil_from_id_block}}
+  <h3>Neuropil: {{name}}</h3>
+  {{/neuropil_from_id_block}}
 </template>
 
-<template name="neuropile_show">
-  {{#neuropile_from_id_block}}
+<template name="neuropil_show">
+  {{#neuropil_from_id_block}}
 
   {{#detail_block_top}}
     {{#detail_title_top}}
-      Neuropile: {{name}}
-      {{> delete_button collection="Neuropiles" my_id=_id}}
+      Neuropil: {{name}}
+      {{> delete_button collection="Neuropils" my_id=_id}}
     {{/detail_title_top}}
   {{/detail_block_top}}
 
@@ -517,8 +517,8 @@
     {{/detail_main}}
   {{/detail_block}}
 
-  {{> comments_panel comments=comments show_name="Neuropiles" _id=_id}}
-  {{/neuropile_from_id_block}}
+  {{> comments_panel comments=comments show_name="Neuropils" _id=_id}}
+  {{/neuropil_from_id_block}}
 </template>
 
 <!-- --------------------------- -->
@@ -573,12 +573,12 @@
     </div>
 
     <div>
-      <div><h4>neuropiles</h4></div>
+      <div><h4>neuropils</h4></div>
       <div>
-	{{#each neuropiles}}
+	{{#each neuropils}}
 	<div class="checkbox">
 	  <label>
-	    <input type="checkbox" class="neuropiles" id={{_id}}> {{name}}
+	    <input type="checkbox" class="neuropils" id={{_id}}> {{name}}
 	  </label>
 	</div>
 	{{/each}}
@@ -593,12 +593,12 @@
     <input type="text" class="name span5">
 
     <div>
-      <div><h4>neuropiles</h4></div>
+      <div><h4>neuropils</h4></div>
       <div>
-	{{#each neuropiles}}
+	{{#each neuropils}}
 	<div class="checkbox">
 	  <label>
-	    <input type="checkbox" class="neuropiles" id={{_id}}> {{name}}
+	    <input type="checkbox" class="neuropils" id={{_id}}> {{name}}
 	  </label>
 	</div>
 	{{/each}}
@@ -614,7 +614,7 @@
   {{>derived_title}}
 </template>
 
-<template name="neuropile_insert">
+<template name="neuropil_insert">
   <form>
     <label>Name</label>
     <input type="text" class="name span5">

@@ -1,6 +1,6 @@
 Meteor.subscribe('driver_lines');
 Meteor.subscribe('neuron_types');
-Meteor.subscribe('neuropiles');
+Meteor.subscribe('neuropils');
 
 var converter = new Showdown.converter();
 
@@ -83,7 +83,7 @@ var jump_table = {
 		  'element_route': 'driver_line_show',
 		  'base_route': 'driver_lines',
 		  'edit_neuron_types_template_name':'edit_neuron_types',
-		  'edit_neuropiles_template_name':'edit_neuropiles'
+		  'edit_neuropils_template_name':'edit_neuropils'
 		 },
   'NeuronTypes': {'remove': function (x) { return remove_neuron_type(x); },
 		  'save': function(info, template) { return save_neuron_type(info,template); },
@@ -92,14 +92,14 @@ var jump_table = {
 		  'element_route': 'neuron_type_show',
 		  'base_route': 'neuron_types',
 		  'edit_driver_lines_template_name':'edit_driver_lines',
-		  'edit_neuropiles_template_name':'edit_neuropiles'
+		  'edit_neuropils_template_name':'edit_neuropils'
 		 },
-  'Neuropiles':  {'remove': function (x) { return remove_neuropile(x); },
-		  'save': function(info, template) { return save_neuropile(info,template); },
-		  'insert_template_name': "neuropile_insert",
-		  'delete_template_name': "neuropile_show_brief",
-		  'element_route': 'neuropile_show',
-		  'base_route': 'neuropiles'
+  'Neuropils':  {'remove': function (x) { return remove_neuropil(x); },
+		  'save': function(info, template) { return save_neuropil(info,template); },
+		  'insert_template_name': "neuropil_insert",
+		  'delete_template_name': "neuropil_show_brief",
+		  'element_route': 'neuropil_show',
+		  'base_route': 'neuropils'
 		 }
 }
 
@@ -143,7 +143,7 @@ Template.neuron_type_from_id_block.neuron_type_from_id = function () {
   return NeuronTypes.findOne(my_id);
 }
 
-Template.neuropile_from_id_block.neuropile_from_id = function () {
+Template.neuropil_from_id_block.neuropil_from_id = function () {
   if (this._id) { // already a doc
     return this;
   }
@@ -151,7 +151,7 @@ Template.neuropile_from_id_block.neuropile_from_id = function () {
   if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
     my_id = this.valueOf(); // unbox it
   }
-  return Neuropiles.findOne(my_id);
+  return Neuropils.findOne(my_id);
 }
 
 // -------------
@@ -194,11 +194,11 @@ Template.neuron_types.neuron_type_cursor = function () {
 
 // -------------
 
-Template.neuropiles.events({
+Template.neuropils.events({
   'click .insert': function(e) {
     e.preventDefault();
-    var coll = "Neuropiles";
-    Session.set("modal_info", {title: "Add neuropile",
+    var coll = "Neuropils";
+    Session.set("modal_info", {title: "Add neuropil",
 			       collection: coll,
 			       body_template_name: jump_table[coll].insert_template_name
 			      });
@@ -207,8 +207,8 @@ Template.neuropiles.events({
   }
 });
 
-Template.neuropiles.neuropile_cursor = function () {
-  return Neuropiles.find({});
+Template.neuropils.neuropil_cursor = function () {
+  return Neuropils.find({});
 }
 
 // ------- tab layout stuff ----
@@ -234,9 +234,9 @@ Template.MyLayout.tab_attrs_neuron_types = function () {
   }
 }
 
-Template.MyLayout.tab_attrs_neuropiles = function () {
+Template.MyLayout.tab_attrs_neuropils = function () {
   var cur = Router.current();
-  if (cur && cur.route.name=='neuropiles' || cur.route.name=='neuropile_show') {
+  if (cur && cur.route.name=='neuropils' || cur.route.name=='neuropil_show') {
     return {'class':"active"};
   }
 }
@@ -247,16 +247,16 @@ Template.neuron_type_show.driver_lines_referencing_me = function () {
   return DriverLines.find( {'neuron_types': this._id} );
 }
 
-Template.neuropile_show.driver_lines_referencing_me = function () {
-  return DriverLines.find( {'neuropiles': this._id} );
+Template.neuropil_show.driver_lines_referencing_me = function () {
+  return DriverLines.find( {'neuropils': this._id} );
 }
 
-Template.neuropile_table.driver_lines_referencing_me = Template.neuropile_show.driver_lines_referencing_me;
+Template.neuropil_table.driver_lines_referencing_me = Template.neuropil_show.driver_lines_referencing_me;
 
-Template.neuropile_show.neuron_types_referencing_me = function () {
-  return NeuronTypes.find( {'neuropiles': this._id} );
+Template.neuropil_show.neuron_types_referencing_me = function () {
+  return NeuronTypes.find( {'neuropils': this._id} );
 }
-Template.neuropile_table.neuron_types_referencing_me = Template.neuropile_show.neuron_types_referencing_me;
+Template.neuropil_table.neuron_types_referencing_me = Template.neuropil_show.neuron_types_referencing_me;
 
 // -------------
 Template.neuron_type_show.adding_synonym = function () {
@@ -317,15 +317,15 @@ edit_neuron_types_save_func = function (info, template) {
   return {};
 }
 
-edit_neuropiles_save_func = function (info, template) {
-  var neuropiles=[];
+edit_neuropils_save_func = function (info, template) {
+  var neuropils=[];
   var my_id = Session.get("modal_info").body_template_data.my_id
 
-  var r1 = template.findAll(".neuropiles");
+  var r1 = template.findAll(".neuropils");
   for (i in r1) {
     node = r1[i];
     if (node.checked) {
-      neuropiles.push( node.id );
+      neuropils.push( node.id );
     }
   }
   var coll_name = Session.get("modal_info").body_template_data.collection_name;
@@ -335,7 +335,7 @@ edit_neuropiles_save_func = function (info, template) {
   } else if (coll_name=="NeuronTypes") {
     collection = NeuronTypes;
   }
-  collection.update(my_id, {$set:{'neuropiles':neuropiles}});
+  collection.update(my_id, {$set:{'neuropils':neuropils}});
   return {};
 }
 
@@ -351,15 +351,15 @@ Template.driver_line_show.events({
     modal_save_func = edit_neuron_types_save_func;
     $("#show_dialog_id").modal('show');
   },
-  'click .edit-neuropiles': function(e) {
+  'click .edit-neuropils': function(e) {
     e.preventDefault();
-    Session.set("modal_info", {title: "Edit neuropiles",
-			       body_template_name: jump_table["DriverLines"].edit_neuropiles_template_name,
+    Session.set("modal_info", {title: "Edit neuropils",
+			       body_template_name: jump_table["DriverLines"].edit_neuropils_template_name,
 			       body_template_data: {my_id:this._id,
 						    collection_name: "DriverLines"}
 			      });
 
-    modal_save_func = edit_neuropiles_save_func;
+    modal_save_func = edit_neuropils_save_func;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -392,15 +392,15 @@ Template.neuron_type_show.events({
     modal_save_func = edit_driver_lines_save_func;
     $("#show_dialog_id").modal('show');
   },
-  'click .edit-neuropiles': function(e) {
+  'click .edit-neuropils': function(e) {
     e.preventDefault();
-    Session.set("modal_info", {title: "Edit neuropiles",
-			       body_template_name: jump_table["NeuronTypes"].edit_neuropiles_template_name,
+    Session.set("modal_info", {title: "Edit neuropils",
+			       body_template_name: jump_table["NeuronTypes"].edit_neuropils_template_name,
 			       body_template_data: {my_id:this._id,
 						    collection_name:"NeuronTypes"}
 			      });
 
-    modal_save_func = edit_neuropiles_save_func;
+    modal_save_func = edit_neuropils_save_func;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -458,7 +458,7 @@ Template.edit_neuron_types.neuron_types = function () {
   return result;
 }
 
-Template.edit_neuropiles.neuropiles = function () {
+Template.edit_neuropils.neuropils = function () {
   var result = [];
   var collection;
   if (this.collection_name=="DriverLines") {
@@ -467,8 +467,8 @@ Template.edit_neuropiles.neuropiles = function () {
     collection = NeuronTypes;
   }
   var myself = collection.findOne({_id:this.my_id});
-  Neuropiles.find().forEach( function (doc) {
-    if (myself.neuropiles.indexOf(doc._id)==-1) {
+  Neuropils.find().forEach( function (doc) {
+    if (myself.neuropils.indexOf(doc._id)==-1) {
       doc.is_checked = false;
     } else {
       doc.is_checked = true;
@@ -484,8 +484,8 @@ Template.driver_line_insert.neuron_types = function () {
   return NeuronTypes.find();
 }
 
-Template.driver_line_insert.neuropiles = function () {
-  return Neuropiles.find();
+Template.driver_line_insert.neuropils = function () {
+  return Neuropils.find();
 }
 
 driver_line_insert_callback = function(error, _id) {
@@ -515,12 +515,12 @@ save_driver_line = function(info,template) {
     }
   }
 
-  doc.neuropiles = [];
-  var r1 = template.findAll(".neuropiles");
+  doc.neuropils = [];
+  var r1 = template.findAll(".neuropils");
   for (i in r1) {
     node = r1[i];
     if (node.checked) {
-      doc.neuropiles.push( node.id );
+      doc.neuropils.push( node.id );
     }
   }
 
@@ -545,8 +545,8 @@ Template.neuron_type_insert.driver_lines = function () {
   return DriverLines.find();
 }
 
-Template.neuron_type_insert.neuropiles = function () {
-  return Neuropiles.find();
+Template.neuron_type_insert.neuropils = function () {
+  return Neuropils.find();
 }
 
 neuron_type_insert_callback = function(error, _id) {
@@ -578,12 +578,12 @@ save_neuron_type = function(info,template) {
   }
   */
 
-  doc.neuropiles = [];
-  var r1 = template.findAll(".neuropiles");
+  doc.neuropils = [];
+  var r1 = template.findAll(".neuropils");
   for (i in r1) {
     node = r1[i];
     if (node.checked) {
-      doc.neuropiles.push( node.id );
+      doc.neuropils.push( node.id );
     }
   }
 
@@ -604,14 +604,14 @@ save_neuron_type = function(info,template) {
 
 // -------------
 
-neuropile_insert_callback = function(error, _id) {
+neuropil_insert_callback = function(error, _id) {
   // FIXME: be more useful. E.g. hide a "saving... popup"
   if (error) {
-    console.log("neuropile_insert_callback with error:",error);
+    console.log("neuropil_insert_callback with error:",error);
   }
 }
 
-save_neuropile = function(info,template) {
+save_neuropil = function(info,template) {
   var result = {};
 
   // parse
@@ -634,7 +634,7 @@ save_neuropile = function(info,template) {
   }
 
   // save result
-  Neuropiles.insert({"name":name}, neuropile_insert_callback);
+  Neuropils.insert({"name":name}, neuropil_insert_callback);
   return result;
 }
 
@@ -651,8 +651,8 @@ Template.comments_panel.events({
       collection = DriverLines;
     } else if (this.show_name=="NeuronTypes") {
       collection = NeuronTypes;
-    } else if (this.show_name=="Neuropiles") {
-      collection = Neuropiles;
+    } else if (this.show_name=="Neuropils") {
+      collection = Neuropils;
     }
     var cdict = {comment:comments_raw}; // FIXME: add auth stuff and timestamp on server.
     collection.update(this._id, {$push: {comments: cdict}});
@@ -683,8 +683,8 @@ Template.show_comments.events({
       collection = DriverLines;
     } else if (this.parent_show_name=="NeuronTypes") {
       collection = NeuronTypes;
-    } else if (this.parent_show_name=="Neuropiles") {
-      collection = Neuropiles;
+    } else if (this.parent_show_name=="Neuropils") {
+      collection = Neuropils;
     }
     collection.update({_id:this.parent_id},
 		      {$pull: {comments: this.comment}});

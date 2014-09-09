@@ -7,7 +7,7 @@ DriverLines = new Meteor.Collection("driver_lines");
   name: String
   _id: <int>
   neuron_types: [id, ...]
-  neuropiles: [id, ...]
+  neuropils: [id, ...]
   comments: [{[auth_stuff], comment: markdown_string, timestamp: hmm}, ...]
 */
 
@@ -17,12 +17,12 @@ NeuronTypes = new Meteor.Collection("neuron_types");
   name: String
   _id: <int>
   synonyms: [String, ...]
-  neuropiles: [id, ...]
+  neuropils: [id, ...]
   best_driver_lines: [id, ...]
 */
 
 //////////////////////////////////////////////////////
-Neuropiles = new Meteor.Collection("neuropiles");
+Neuropils = new Meteor.Collection("neuropils");
 /*
   name: String
   _id: <int>
@@ -37,8 +37,8 @@ Meteor.publish("driver_lines", function () {
 Meteor.publish("neuron_types", function () {
   return NeuronTypes.find({});
 });
-Meteor.publish("neuropiles", function () {
-  return Neuropiles.find({});
+Meteor.publish("neuropils", function () {
+  return Neuropils.find({});
 });
 
 var logged_in_allow = {insert: function (userId, doc) {
@@ -54,5 +54,5 @@ var logged_in_allow = {insert: function (userId, doc) {
 
 DriverLines.allow(logged_in_allow);
 NeuronTypes.allow(logged_in_allow);
-Neuropiles.allow(logged_in_allow);
+Neuropils.allow(logged_in_allow);
 }
