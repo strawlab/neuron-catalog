@@ -1,6 +1,8 @@
 accounts-base@1.0.1
 accounts-github@1.0.0
 accounts-oauth@1.0.0
+accounts-ui-unstyled@1.0.1
+accounts-ui@1.0.0
 application-configuration@1.0.1
 autoupdate@1.0.6
 binary-heap@1.0.0
@@ -26,6 +28,7 @@ iron:layout@0.4.1
 iron:router@0.9.3
 jquery@1.0.0
 json@1.0.0
+less@1.0.7
 livedata@1.0.9
 localstorage@1.0.0
 logging@1.0.2
