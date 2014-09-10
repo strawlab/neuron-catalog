@@ -31,28 +31,35 @@ Neuropils = new Meteor.Collection("neuropils");
 
 
 if (Meteor.isServer) {
-Meteor.publish("driver_lines", function () {
-  return DriverLines.find({});
-});
-Meteor.publish("neuron_types", function () {
-  return NeuronTypes.find({});
-});
-Meteor.publish("neuropils", function () {
-  return Neuropils.find({});
-});
+  Meteor.publish("driver_lines", function () {
+    if (this.userId) {
+      return DriverLines.find({});
+    }
+  });
+  Meteor.publish("neuron_types", function () {
+    if (this.userId) {
+      return NeuronTypes.find({});
+    }
+  });
+  Meteor.publish("neuropils", function () {
+    if (this.userId) {
+      return Neuropils.find({});
+    }
+  });
 
-var logged_in_allow = {insert: function (userId, doc) {
-    return !!userId;
-  },
-  update: function (userId, doc, fields, modifier) {
-    return !!userId;
-  },
-  remove: function (userId, doc) {
-    return !!userId;
-  },
-};
+  var logged_in_allow = {
+    insert: function (userId, doc) {
+      return !!userId;
+    },
+    update: function (userId, doc, fields, modifier) {
+      return !!userId;
+    },
+    remove: function (userId, doc) {
+      return !!userId;
+    },
+  };
 
-DriverLines.allow(logged_in_allow);
-NeuronTypes.allow(logged_in_allow);
-Neuropils.allow(logged_in_allow);
+  DriverLines.allow(logged_in_allow);
+  NeuronTypes.allow(logged_in_allow);
+  Neuropils.allow(logged_in_allow);
 }
