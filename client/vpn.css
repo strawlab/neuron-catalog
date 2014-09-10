@@ -16,13 +16,10 @@ border-radius: .25em;
 }
 
 .synonyms_div {
-    display: block;
-    position: relative;
-    overflow: hidden;
+  display: inline;
 }
 
 .synonym {
-    float: left;
     margin: 5px;
     padding: 2px 7px;
     font-size: 80%;
@@ -38,34 +35,12 @@ border-radius: .25em;
     -webkit-transition: opacity 0.3s linear;
     -o-transition: opacity 0.3s linear;
 
-    position: relative;
+    display: inline;
 }
 
 .item-synonyms {
-    overflow: auto;
-    float: left;
     margin-right: 8px;
-}
-
-.synonym {
-    margin-top: 15px;
-}
-
-.removable_synonym {
-    padding-right: 22px;
-}
-
-.synonym .remove {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    right: 4px;
-    bottom: 0;
-    width: 16px;
-}
-
-.synonym .remove:after {
-    content: "x";
+    display: inline;
 }
 
 .comments-display {
@@ -132,4 +107,13 @@ div.detail-block {
 .btn-tiny {
     padding: 3px;
     font-size: 50%;
+}
+
+div.pzp1 {
+    display: inline;
+}
+
+div.pzp2 {
+    display: inline;
+    cursor: pointer;
 }

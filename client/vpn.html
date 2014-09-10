@@ -358,12 +358,14 @@
 	Synonyms
     {{/detail_title}}
     {{#detail_main}}
+      <p></p>
       <div class="synonyms_div">
 	<div class="item-synonyms">
 	  {{#each synonym_dicts}}
-	  <div class="synonym removable_synonym label label-default">
-	    <div class="name">{{name}}</div>
-	    <div class="remove"></div>
+
+          <div class="btn btn-default btn-small">
+	    <div class="pzp1 name">{{name}}</div>
+	    <div class="pzp2 remove"><i class="fa fa-trash-o"></i></div>
 	  </div>
 	  {{/each}}
 	  {{#if adding_synonym}}
