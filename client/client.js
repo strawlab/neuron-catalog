@@ -677,7 +677,7 @@ Template.show_comments.wrapped_comments = function () {
 }
 
 Template.show_comments.events({
-  'click.delete':function (evt,tmpl) {
+  'click .delete':function (evt,tmpl) {
     var collection;
     if (this.parent_show_name=="DriverLines") {
       collection = DriverLines;
