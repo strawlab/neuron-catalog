@@ -441,7 +441,7 @@
       {{#each driver_lines}}
       <div class="checkbox">
 	<label>
-	  <input type="checkbox" class="driver_lines" id={{_id}} checked={{is_checked}}> {{name}}
+	  <input type="checkbox" class="driver_lines" id={{_id}} checked={{is_checked}}/> {{name}}
 	</label>
       </div>
       {{/each}}
@@ -456,7 +456,7 @@
       {{#each neuron_types}}
       <div class="checkbox">
 	<label>
-	  <input type="checkbox" class="neuron_types" id={{_id}} checked={{is_checked}}> {{name}}
+	  <input type="checkbox" class="neuron_types" id={{_id}} checked={{is_checked}}/> {{name}}
 	</label>
       </div>
       {{/each}}
@@ -471,7 +471,7 @@
       {{#each neuropils}}
       <div class="checkbox">
 	<label>
-	  <input type="checkbox" class="neuropils" id={{_id}} checked={{is_checked}}> {{name}}
+	  <input type="checkbox" class="neuropils" id={{_id}} checked={{is_checked}}/> {{name}}
 	</label>
       </div>
       {{/each}}
@@ -577,7 +577,7 @@
 <template name="driver_line_insert">
   <form role="form">
     <label>Name</label>
-    <input type="text" class="name span5">
+    <input type="text" class="name span5"/>
 
     <div>
       <div><h4>neuron types</h4></div>
@@ -585,7 +585,7 @@
 	{{#each neuron_types}}
 	<div class="checkbox">
 	  <label>
-	    <input type="checkbox" class="neuron_types" id={{_id}}> {{name}}
+	    <input type="checkbox" class="neuron_types" id={{_id}}/> {{name}}
 	  </label>
 	</div>
       {{/each}}
@@ -598,7 +598,7 @@
 	{{#each neuropils}}
 	<div class="checkbox">
 	  <label>
-	    <input type="checkbox" class="neuropils" id={{_id}}> {{name}}
+	    <input type="checkbox" class="neuropils" id={{_id}}/> {{name}}
 	  </label>
 	</div>
 	{{/each}}
@@ -610,7 +610,7 @@
 <template name="neuron_type_insert">
   <form role="form">
     <label>Name</label>
-    <input type="text" class="name span5">
+    <input type="text" class="name span5"/>
 
     <div>
       <div><h4>neuropils</h4></div>
@@ -618,7 +618,7 @@
 	{{#each neuropils}}
 	<div class="checkbox">
 	  <label>
-	    <input type="checkbox" class="neuropils" id={{_id}}> {{name}}
+	    <input type="checkbox" class="neuropils" id={{_id}}/> {{name}}
 	  </label>
 	</div>
 	{{/each}}
@@ -637,7 +637,7 @@
 <template name="neuropil_insert">
   <form>
     <label>Name</label>
-    <input type="text" class="name span5">
+    <input type="text" class="name span5"/>
   </form>
   <p></p>
   <p>
