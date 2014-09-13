@@ -6,9 +6,25 @@ var converter = new Showdown.converter();
 
 // --------------------------------------------
 // session variables
+Session.setDefault('editing_name', null);
 Session.setDefault('editing_add_synonym', null);
 Session.setDefault("modal_info",null);
 var modal_save_func = null;
+
+
+// --------------------------------------------
+// helper functions
+get_collection_from_name = function(name) {
+  var coll;
+  if (name=="DriverLines") {
+    coll = DriverLines;
+  } else if (name=="NeuronTypes") {
+    coll = NeuronTypes;
+  } else if (name=="Neuropils") {
+    coll = Neuropils;
+  }
+  return coll;
+}
 
 // --------------------------------------------
 // from: meteor TODO app
@@ -102,6 +118,38 @@ var jump_table = {
 		  'base_route': 'neuropils'
 		 }
 }
+
+Template.name_field.editing_name = function () {
+  var d = Session.get('editing_name');
+  if (d==null) {
+    return false;
+  }
+  if (this.my_id == d.my_id & this.collection == d.collection) {
+    return true;
+  }
+  return false;
+}
+
+Template.name_field.events({
+  'click .edit-name': function(e,tmpl) {
+    Session.set('editing_name', tmpl.data);
+    Deps.flush(); // update DOM before focus
+    var ni = tmpl.find("#name_input");
+    ni.value = this.name;
+    activateInput(ni);
+  }});
+Template.name_field.events(okCancelEvents(
+    '#name_input',
+    {
+      ok: function (value) {
+	var coll = get_collection_from_name(this.collection);
+	coll.update(this.my_id, {$set :{"name":value}});
+	Session.set('editing_name', null);
+      },
+      cancel: function () {
+	Session.set('editing_name', null);
+      }
+    }));
 
 Template.delete_button.events({
   'click .delete': function(e) {

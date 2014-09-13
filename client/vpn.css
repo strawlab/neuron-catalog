@@ -1,5 +1,9 @@
 /* CSS declarations go here */
 
+.name-field {
+    display: inline;
+}
+
 .right-buttons {
     float: right;
 }

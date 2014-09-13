@@ -78,6 +78,16 @@
 
 </template>
 
+<template name="name_field">
+  {{#if editing_name}}
+  <input type="text" id="name_input"/>
+  {{else}}
+  <div class="name-field edit-name">{{name}}
+    <a class="btn btn-default btn-small edit-name" href="#"><i class="fa fa-pencil-square-o"></i> Edit name</a>
+  </div>
+  {{/if}}
+</template>
+
 <template name="delete_button">
   <a class="btn btn-danger btn-small delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
 </template>
@@ -275,7 +285,8 @@
   {{#driver_line_from_id_block}}
   {{#detail_block_top}}
     {{#detail_title_top}}
-	Driver Line: {{name}}
+        Driver Line:
+        {{> name_field collection="DriverLines" my_id=_id name=name}}
         {{> delete_button collection="DriverLines" my_id=_id}}
     {{/detail_title_top}}
   {{/detail_block_top}}
@@ -353,7 +364,8 @@
   {{#neuron_type_from_id_block}}
   {{#detail_block_top}}
     {{#detail_title_top}}
-	Neuron type: {{name}}
+	Neuron type:
+        {{> name_field collection="NeuronTypes" my_id=_id name=name}}
         {{> delete_button collection="NeuronTypes" my_id=_id}}
     {{/detail_title_top}}
   {{/detail_block_top}}
@@ -499,7 +511,8 @@
 
   {{#detail_block_top}}
     {{#detail_title_top}}
-      Neuropil: {{name}}
+      Neuropil:
+      {{> name_field collection="Neuropils" my_id=_id name=name}}
       {{> delete_button collection="Neuropils" my_id=_id}}
     {{/detail_title_top}}
   {{/detail_block_top}}
