@@ -694,14 +694,7 @@ Template.comments_panel.events({
     var ta = template.find("textarea.comments");
     var comments_raw = ta.value;
     ta.value = "";
-    var collection;
-    if (this.show_name=="DriverLines") {
-      collection = DriverLines;
-    } else if (this.show_name=="NeuronTypes") {
-      collection = NeuronTypes;
-    } else if (this.show_name=="Neuropils") {
-      collection = Neuropils;
-    }
+    var collection = get_collection_from_name(this.show_name);
     var cdict = {comment:comments_raw}; // FIXME: add auth stuff and timestamp on server.
     collection.update(this._id, {$push: {comments: cdict}});
   }
