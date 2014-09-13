@@ -1,8 +1,12 @@
 /* CSS declarations go here */
 
-.right-login-buttons {
-    display: inline-block;
+.right-buttons {
     float: right;
+}
+
+.side-by-side {
+    display: inline;
+    margin: 10px;
 }
 
 span.zxkp {
