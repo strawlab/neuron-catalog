@@ -1,3 +1,19 @@
+// -------------
+// font awesome (see
+// https://github.com/nate-strauser/meteor-font-awesome/blob/master/load.js )
+
+var head = document.getElementsByTagName('head')[0];
+
+//Generate a style tag
+var style = document.createElement('link');
+style.type = 'text/css';
+style.rel = "stylesheet";
+style.href = '/css/font-awesome.min.css';
+
+head.appendChild(style);
+
+// -------------
+
 Meteor.subscribe('driver_lines');
 Meteor.subscribe('neuron_types');
 Meteor.subscribe('neuropils');
