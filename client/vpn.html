@@ -323,11 +323,23 @@
     {{/detail_title}}
     {{#detail_main}}
       {{> show_comments comments=comments show_name=show_name _id=_id}}
-      <div class="comments comments-edit">
-	<div class="comments comments-textarea">
+
+  <ul class="nav nav-tabs" role="tablist">
+    {{#if is_previewing_comment}}
+    <li class="write-comment"><a href="#">Write</a></li>
+    <li class="active preview-comment"><a href="#">Preview</a></li>
+    {{else}}
+    <li class="active write-comment"><a href="#">Write</a></li>
+    <li class="preview-comment"><a href="#">Preview</a></li>
+    {{/if}}
+  </ul>
+
+      <div class="comments relative-position">
+	<div class="comment-ui-field {{is_writing_attrs}}">
 	  <textarea class="comments" placeholder="Leave a comment here. Parsed as Markdown."></textarea>
 	</div>
-        <button type="button" class="btn btn-primary save">Save comment</button>
+	<div class="comment-ui-field2 {{is_previewing_attrs}}" id="comment-preview">{{{comment_preview}}}</div>
+	<button type="button" class="btn btn-primary save">Save comment</button>
       </div>
     {{/detail_main}}
   {{/detail_block}}

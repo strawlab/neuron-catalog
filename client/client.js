@@ -9,6 +9,9 @@ var converter = new Showdown.converter();
 Session.setDefault('editing_name', null);
 Session.setDefault('editing_add_synonym', null);
 Session.setDefault("modal_info",null);
+Session.setDefault("comment_preview_mode",false);
+Session.setDefault("comment_preview_html",null);
+
 var modal_save_func = null;
 
 
@@ -688,12 +691,46 @@ save_neuropil = function(info,template) {
 
 // -------------
 
+Template.comments_panel.comment_preview = function () {
+  return Session.get("comment_preview_html");
+}
+
+Template.comments_panel.is_previewing_comment = function () {
+  return Session.equals("comment_preview_mode",true);
+}
+
+Template.comments_panel.is_writing_attrs = function () {
+  if (Session.equals("comment_preview_mode",true)) {
+    return "vis-hidden";
+  }
+}
+
+Template.comments_panel.is_previewing_attrs = function () {
+  if (Session.equals("comment_preview_mode",false)) {
+    return "vis-hidden";
+  }
+}
+
 Template.comments_panel.events({
+  'click .write-comment': function(event, template) {
+    event.preventDefault();
+    Session.set("comment_preview_mode",false);
+    Session.set("comment_preview_html",null);
+  },
+  'click .preview-comment': function(event, template) {
+    event.preventDefault();
+    var ta = template.find("textarea.comments");
+    var comments_raw = ta.value;
+    var result = converter.makeHtml(comments_raw);
+    Session.set("comment_preview_mode",true);
+    Session.set("comment_preview_html",result);
+  },
   'click .save': function(event, template) {
     event.preventDefault();
     var ta = template.find("textarea.comments");
     var comments_raw = ta.value;
     ta.value = "";
+    Session.set("comment_preview_html",null);
     var collection = get_collection_from_name(this.show_name);
     var cdict = {comment:comments_raw}; // FIXME: add auth stuff and timestamp on server.
     collection.update(this._id, {$push: {comments: cdict}});

@@ -13,6 +13,20 @@
     margin: 10px;
 }
 
+.vis-hidden {
+    visibility: hidden;
+}
+
+.comment-ui-field {
+    position: absolute;
+    width: 100%;
+    height: 7em;
+}
+
+.comment-ui-field2 {
+    min-height: 7em;
+}
+
 span.zxkp {
 display: inline;
 padding: .2em .6em .3em;
@@ -51,25 +65,13 @@ border-radius: .25em;
     display: inline;
 }
 
-.comments-display {
-    min-height: 1em;
+.relative-position {
+    position: relative;
 }
 
 textarea.comments {
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
-	    width:100%;
-	    margin:5px 0;
-	    padding:3px;
-}
-
-.comments-textarea {
-    display: block;
-}
-
-div.comments-edit {
-    padding: 5px;
+    width: 100%;
+    height: 7em;
 }
 
 div.indiv-comment {
