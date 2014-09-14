@@ -8,7 +8,19 @@ DriverLines = new Meteor.Collection("driver_lines");
   _id: <int>
   neuron_types: [id, ...]
   neuropils: [id, ...]
-  comments: [{[auth_stuff], comment: markdown_string, timestamp: hmm}, ...]
+  comments: [{[auth_stuff], comment: markdown_string, [timestamp: hmm]}, ...]
+  images: [ BinaryData(id), ... ]
+*/
+
+//////////////////////////////////////////////////////
+
+BinaryData = new Meteor.Collection("binary_data");
+/*
+ filename: String
+ mimetype: String
+ _id: <int>
+ data: <blob>
+ comments: [{[auth_stuff], comment: markdown_string, [timestamp: hmm]}, ...]
 */
 
 //////////////////////////////////////////////////////
@@ -26,14 +38,19 @@ Neuropils = new Meteor.Collection("neuropils");
 /*
   name: String
   _id: <int>
+  x3dom_models: [ BinaryData(id), ... ]
 */
-
 
 
 if (Meteor.isServer) {
   Meteor.publish("driver_lines", function () {
     if (this.userId) {
       return DriverLines.find({});
+    }
+  });
+  Meteor.publish("binary_data", function () {
+    if (this.userId) {
+      return BinaryData.find({});
     }
   });
   Meteor.publish("neuron_types", function () {
@@ -60,6 +77,7 @@ if (Meteor.isServer) {
   };
 
   DriverLines.allow(logged_in_allow);
+  BinaryData.allow(logged_in_allow);
   NeuronTypes.allow(logged_in_allow);
   Neuropils.allow(logged_in_allow);
 }

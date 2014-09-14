@@ -34,6 +34,9 @@
 	<li {{tab_attrs_neuropils}}>
 	  <a href="{{pathFor 'neuropils'}}">Neuropils</a>
 	</li>
+	<li {{tab_attrs_binary_data}}>
+	  <a href="{{pathFor 'binary_data'}}">Binary Data</a>
+	</li>
       </ul>
     </div>
    </div>
@@ -97,6 +100,12 @@
 
 <template name="driver_line_from_id_block">
   {{#with driver_line_from_id}}
+    {{> UI.contentBlock this}}
+  {{/with}}
+</template>
+
+<template name="binary_data_from_id_block">
+  {{#with binary_data_from_id}}
     {{> UI.contentBlock this}}
   {{/with}}
 </template>
@@ -296,6 +305,17 @@
 
   {{#detail_block}}
     {{#detail_title}}
+      Images
+    {{/detail_title}}
+    {{#detail_main}}
+      <br/>
+        {{> binary_data_table binary_data=images}}
+        {{> add_image_code collection="DriverLines" my_id=_id}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
       Neuron types
       <a class="btn btn-default btn-small edit-neuron-types" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
 
@@ -346,6 +366,59 @@
       </div>
     {{/detail_main}}
   {{/detail_block}}
+</template>
+
+<!-- --------------------------- -->
+
+<template name="binary_data">
+  {{#detail_block_top}}
+    {{#detail_title_top}}
+      All Binary Data
+    {{/detail_title_top}}
+    {{#detail_main}}
+        <br/>
+        {{> binary_data_table binary_data=binary_data_cursor}}
+    {{/detail_main}}
+  {{/detail_block_top}}
+</template>
+
+<template name="binary_data_show">
+  {{#binary_data_from_id_block}}
+  {{#detail_block_top}}
+    {{#detail_title_top}}
+        Image:
+        {{> name_field collection="BinaryData" my_id=_id name=name}}
+        {{> delete_button collection="BinaryData" my_id=_id}}
+    {{/detail_title_top}}
+  {{/detail_block_top}}
+
+  {{#detail_block}}
+
+  <div class="image_big">
+    <a href="{{pathFor 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url}}" alt={{name}}/></a>
+    {{name}}
+  </div>
+
+  {{/detail_block}}
+  {{/binary_data_from_id_block}}
+</template>
+
+<template name="binary_data_show_brief">
+  {{#binary_data_from_id_block}}
+  {{#detail_block_top}}
+    {{#detail_title_top}}
+        Image: {{name}}
+    {{/detail_title_top}}
+  {{/detail_block_top}}
+
+  {{#detail_block}}
+  <div class="image_square">
+    <a href="{{pathFor 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url}}" alt={{name}}/></a>
+    {{name}}
+  </div>
+
+  {{/detail_block}}
+  {{/binary_data_from_id_block}}
 </template>
 
 <!-- --------------------------- -->
@@ -682,4 +755,29 @@
     </div>
   </div>
   {{/each}}
+</template>
+
+<!-- ---------------------------- -->
+
+<template name="binary_data_table">
+  {{#each binary_data}}
+  {{#binary_data_from_id_block}}
+  <div class="image_square">
+    <a href="{{pathFor 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url}}" alt={{name}}/></a>
+    {{name}}
+    {{> delete_button collection="BinaryData" my_id=_id}}
+  </div>
+  {{/binary_data_from_id_block}}
+  {{/each}}
+</template>
+
+<template name="add_image_code">
+  <div class="add_image">
+    <a class="btn btn-default btn-small insert" href="#">
+      <i class="fa fa-plus"></i> Add image</a>
+  </div>
+</template>
+
+<template name="insert_image_dialog">
+  <input type="file" id="insert_image">
 </template>
