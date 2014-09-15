@@ -10,3 +10,11 @@
 
     docker stop fly-neuron-catalog
     docker start fly-neuron-catalog
+
+
+# ---------------------
+
+To update once edits are made, stop the container, rebuild and do an
+initial run.sh. This will require re-naming the old container. FIXME:
+how to do this non-destructively. That would seem to require a
+solution to this: https://github.com/docker/docker/issues/3036
