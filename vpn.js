@@ -23,6 +23,12 @@ Router.map(function() {
     data: function() { return Neuropils.findOne(this.params._id); }
   });
 
+  this.route('binary_data');
+  this.route('binary_data_show', {
+    path: '/binary_data/:_id',
+    data: function() { return BinaryData.findOne(this.params._id); }
+  });
+
 });
 
 
@@ -45,6 +51,30 @@ remove_driver_line = function ( my_id ) {
 						      coll:NeuronTypes,
 						      fields:["best_driver_lines"]} );
   DriverLines.remove(my_id);
+}
+
+remove_binary_data = function(my_id) {
+  function rnt( doc ) {
+    var index = doc[this.field_name].indexOf(this.my_id);
+    // No need to check for index==-1 because we know it does not (except race condition).
+    doc[this.field_name].splice(index, 1);
+    var t2 = {}
+    t2[this.field_name] = doc[this.field_name];
+    this.coll.update( doc._id, {$set: t2});
+  };
+
+  var field_name = "images";
+
+  var query = {};
+  query[field_name]=my_id;
+  DriverLines.find( query ).forEach( rnt, {'my_id':my_id,
+					   'coll':DriverLines,
+					   'field_name':field_name} );
+
+
+  var doc = BinaryData.findOne(my_id);
+  S3.delete( doc.relative_url );
+  BinaryData.remove(my_id);
 }
 
 remove_neuron_type = function ( my_id ) {

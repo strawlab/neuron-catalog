@@ -17,6 +17,7 @@ head.appendChild(style);
 Meteor.subscribe('driver_lines');
 Meteor.subscribe('neuron_types');
 Meteor.subscribe('neuropils');
+Meteor.subscribe('binary_data');
 
 var converter = new Showdown.converter();
 
@@ -41,6 +42,8 @@ get_collection_from_name = function(name) {
     coll = NeuronTypes;
   } else if (name=="Neuropils") {
     coll = Neuropils;
+  } else if (name=="BinaryData") {
+    coll = BinaryData;
   }
   return coll;
 }
@@ -135,6 +138,10 @@ var jump_table = {
 		  'delete_template_name': "neuropil_show_brief",
 		  'element_route': 'neuropil_show',
 		  'base_route': 'neuropils'
+		 },
+  'BinaryData': {'remove': function (x) { return remove_binary_data(x); },
+		 'delete_template_name':'binary_data_show_brief',
+		 'base_route': 'binary_data',
 		 }
 }
 
@@ -199,6 +206,17 @@ Template.driver_line_from_id_block.driver_line_from_id = function () {
   return DriverLines.findOne(my_id);
 }
 
+Template.binary_data_from_id_block.binary_data_from_id = function () {
+  if (this._id) { // already a doc
+    return this;
+  }
+  var my_id = this;
+  if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
+    my_id = this.valueOf(); // unbox it
+  }
+  return BinaryData.findOne(my_id);
+}
+
 Template.neuron_type_from_id_block.neuron_type_from_id = function () {
   if (this._id) { // already a doc
     return this;
@@ -239,6 +257,13 @@ Template.driver_lines.events({
     $("#show_dialog_id").modal('show');
   }
 });
+
+
+// -------------
+
+Template.binary_data.binary_data_cursor = function () {
+  return BinaryData.find({});
+}
 
 // -------------
 
@@ -290,6 +315,13 @@ Template.MyLayout.tab_attrs_home = function () {
 Template.MyLayout.tab_attrs_driver_lines = function () {
   var cur = Router.current();
   if (cur && cur.route.name=='driver_lines' || cur.route.name=='driver_line_show' ) {
+    return {'class':"active"};
+  }
+}
+
+Template.MyLayout.tab_attrs_binary_data = function () {
+  var cur = Router.current();
+  if (cur && cur.route.name=='binary_data' || cur.route.name=='binary_data_show' ) {
     return {'class':"active"};
   }
 }
@@ -806,4 +838,63 @@ Template.registerHelper("currentUser", function () {
 Template.registerHelper("login_message", function () {
   // Mimic the normal meteor accounts system from IronRouter template.
   return "You must be logged in to see or add data.";
+});
+
+// --------
+
+insert_image_save_func = function (info,template) {
+  var fb = template.find("#insert_image");
+  var fo = fb.files;
+  var s3_dirname = "/"+info.body_template_data.field_name;
+  S3.upload( fo, s3_dirname, function (error,result) {
+    if (typeof error != 'undefined') {
+      // FIXME: do something on error
+      console.log("ERROR");
+      return;
+    }
+    var doc = {'name':fo[0].name,
+	       'lastModifiedDate':fo[0].lastModifiedDate,
+	       'type':info.body_template_data.field_name,
+	       'url':result.url,
+	       'secure_url': result.secure_url,
+	       'relative_url': result.relative_url,
+	       }
+    BinaryData.insert( doc,  function(error, _id) {
+      // FIXME: be more useful. E.g. hide a "saving... popup"
+      if (error) {
+	console.log("image_insert_callback with error:",error);
+	return;
+      }
+      var data = info.body_template_data;
+      var coll = get_collection_from_name(data.collection);
+      var orig = coll.findOne({_id:data.my_id});
+      var myarr = [];
+      if (orig.hasOwnProperty(data.field_name)) {
+	myarr = orig[data.field_name];
+      }
+      myarr.push(_id);
+      var t2 = {};
+      t2[data.field_name]=myarr;
+      coll.update(data['my_id'],{$set: t2});
+    }
+		     );
+  });
+
+  return {}
+}
+
+Template.add_image_code.events({
+  'click .insert': function(e,tmpl) {
+    e.preventDefault();
+    Session.set("modal_info", {title: "Insert image",
+			       body_template_name: "insert_image_dialog",
+			       body_template_data: {"my_id":this.my_id,
+						    "collection":this.collection,
+						    "field_name":"images",
+						   },
+			      });
+    modal_save_func = insert_image_save_func;
+    $("#show_dialog_id").modal('show');
+
+  }
 });
