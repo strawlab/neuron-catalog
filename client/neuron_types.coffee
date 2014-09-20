@@ -152,3 +152,18 @@ Template.neuron_type_show.synonym_dicts = ->
 
 Template.neuron_type_show.driver_lines_referencing_me = ->
   DriverLines.find neuron_types: @_id
+
+Template.neuron_types.events "click .insert": (e) ->
+  e.preventDefault()
+  coll = "NeuronTypes"
+  Session.set "modal_info",
+    title: "Add neuron type"
+    collection: coll
+    body_template_name: window.jump_table[coll].insert_template_name
+
+  window.modal_save_func = window.jump_table[coll].save
+  $("#show_dialog_id").modal "show"
+  return
+
+Template.neuron_types.neuron_type_cursor = ->
+  NeuronTypes.find {}

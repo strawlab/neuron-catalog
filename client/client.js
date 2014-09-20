@@ -263,25 +263,6 @@ Template.binary_data.binary_data_cursor = function () {
   return BinaryData.find({});
 }
 
-// -------------
-
-Template.neuron_types.events({
-  'click .insert': function(e) {
-    e.preventDefault();
-    var coll = "NeuronTypes";
-    Session.set("modal_info", {title: "Add neuron type",
-			       collection: coll,
-			       body_template_name: window.jump_table[coll].insert_template_name
-			      });
-    window.modal_save_func = window.jump_table[coll].save;
-    $("#show_dialog_id").modal('show');
-  }
-});
-
-Template.neuron_types.neuron_type_cursor = function () {
-  return NeuronTypes.find({});
-}
-
 // ------- tab layout stuff ----
 
 Template.MyLayout.tab_attrs_home = function () {
