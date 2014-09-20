@@ -55,3 +55,69 @@ Template.edit_neuron_types.neuron_types = ->
     return
 
   result
+
+Template.neuron_type_show.events okCancelEvents("#edit_synonym_input",
+  ok: (value) ->
+    NeuronTypes.update @_id,
+      $addToSet:
+        synonyms: value
+
+    Session.set "editing_add_synonym", null
+    return
+
+  cancel: ->
+    Session.set "editing_add_synonym", null
+    return
+)
+
+Template.neuron_type_show.events
+  "click .add_synonym": (e, tmpl) ->
+
+    # inspiration: meteor TODO app
+    Session.set "editing_add_synonym", @_id
+    Deps.flush() # update DOM before focus
+    activateInput tmpl.find("#edit_synonym_input")
+    return
+
+  "click .remove": (evt) ->
+    synonym = @name
+    id = @_id
+    evt.target.parentNode.style.opacity = 0
+
+    # wait for CSS animation to finish
+    Meteor.setTimeout (->
+      NeuronTypes.update
+        _id: id
+      ,
+        $pull:
+          synonyms: synonym
+
+      return
+    ), 300
+    return
+
+  "click .edit-driver-lines": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Edit best driver lines"
+      body_template_name: jump_table["NeuronTypes"].edit_driver_lines_template_name
+      body_template_data:
+        my_id: @_id
+        collection_name: "NeuronTypes"
+
+    window.modal_save_func = edit_driver_lines_save_func
+    $("#show_dialog_id").modal "show"
+    return
+
+  "click .edit-neuropils": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Edit neuropils"
+      body_template_name: jump_table["NeuronTypes"].edit_neuropils_template_name
+      body_template_data:
+        my_id: @_id
+        collection_name: "NeuronTypes"
+
+    window.modal_save_func = edit_neuropils_save_func
+    $("#show_dialog_id").modal "show"
+    return
