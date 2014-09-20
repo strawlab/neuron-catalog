@@ -105,7 +105,7 @@ window.jump_table =
       remove_driver_line x
 
     save: (info, template) ->
-      @save_driver_line info, template
+      save_driver_line info, template
 
     insert_template_name: "driver_line_insert"
     delete_template_name: "driver_line_show_brief"
@@ -119,7 +119,7 @@ window.jump_table =
       remove_neuron_type x
 
     save: (info, template) ->
-      @save_neuron_type info, template
+      save_neuron_type info, template
 
     insert_template_name: "neuron_type_insert"
     delete_template_name: "neuron_type_show_brief"
@@ -133,7 +133,7 @@ window.jump_table =
       remove_neuropil x
 
     save: (info, template) ->
-      @save_neuropil info, template
+      save_neuropil info, template
 
     insert_template_name: "neuropil_insert"
     delete_template_name: "neuropil_show_brief"
