@@ -20,6 +20,8 @@ driver_line_insert_callback = (error, _id) ->
   console.log "driver_line_insert_callback with error:", error  if error
   return
 
+# @remove_driver_line is defined in ../vpn.coffee
+
 @save_driver_line = (info, template) ->
   result = {}
   doc = {}

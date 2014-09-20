@@ -16,6 +16,8 @@ neuropil_insert_callback = (error, _id) ->
     console.log "neuropil_insert_callback with error:", error
     return
 
+# @remove_neuropil is defined in ../vpn.coffee
+
 @save_neuropil = (info, template) ->
   result = {}
 

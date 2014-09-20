@@ -29,7 +29,7 @@ Router.map ->
 
   return
 
-remove_driver_line = (my_id) ->
+@remove_driver_line = (my_id) ->
   rdl = (doc) ->
     setter = {}
     for i of @fields
@@ -50,7 +50,7 @@ remove_driver_line = (my_id) ->
   DriverLines.remove my_id
   return
 
-remove_binary_data = (my_id) ->
+@remove_binary_data = (my_id) ->
   rnt = (doc) ->
     index = doc[@field_name].indexOf(@my_id)
     
@@ -76,7 +76,7 @@ remove_binary_data = (my_id) ->
   BinaryData.remove my_id
   return
 
-remove_neuron_type = (my_id) ->
+@remove_neuron_type = (my_id) ->
   rnt = (doc) ->
     index = doc.neuron_types.indexOf(@my_id)
     
@@ -94,7 +94,7 @@ remove_neuron_type = (my_id) ->
   NeuronTypes.remove my_id
   return
 
-remove_neuropil = (my_id) ->
+@remove_neuropil = (my_id) ->
   rn = (doc) ->
     index = doc.neuropils.indexOf(@my_id)
     

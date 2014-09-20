@@ -8,6 +8,8 @@ Template.binary_data_from_id_block.binary_data_from_id = ->
     my_id = @valueOf() # unbox it
   BinaryData.findOne my_id
 
+# @remove_binary_data is defined in ../vpn.coffee
+
 insert_image_save_func = (info, template) ->
   fb = template.find("#insert_image")
   fo = fb.files
