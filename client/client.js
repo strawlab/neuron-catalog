@@ -52,7 +52,7 @@ window.get_collection_from_name = function(name) {
 // Returns an event map that handles the "escape" and "return" keys and
 // "blur" events on a text input (given by selector) and interprets them
 // as "ok" or "cancel".
-var okCancelEvents = function (selector, callbacks) {
+window.okCancelEvents = function (selector, callbacks) {
   var ok = callbacks.ok || function () {};
   var cancel = callbacks.cancel || function () {};
 
@@ -93,9 +93,9 @@ Template.show_dialog.events({
   'click .delete': function(e) {
     e.preventDefault();
     info = Session.get("modal_info");
-    jump_table[info.collection].remove(info.my_id);
+    window.jump_table[info.collection].remove(info.my_id);
     $("#show_dialog_id").modal('hide');
-    var route_name = jump_table[info.collection].base_route;
+    var route_name = window.jump_table[info.collection].base_route;
     Router.go(route_name);
   },
   'click .save': function(event, template) {
@@ -111,7 +111,7 @@ Template.show_dialog.events({
   }
 });
 
-var jump_table = {
+window.jump_table = {
   'DriverLines': {'remove': function (x) { return remove_driver_line(x); },
 		  'save': function(info, template) { return this.save_driver_line(info,template); },
 		  'insert_template_name': "driver_line_insert",
@@ -162,7 +162,7 @@ Template.name_field.events({
     ni.value = this.name;
     activateInput(ni);
   }});
-Template.name_field.events(okCancelEvents(
+Template.name_field.events(window.okCancelEvents(
     '#name_input',
     {
       ok: function (value) {
@@ -181,7 +181,7 @@ Template.delete_button.events({
     Session.set("modal_info", {title: "Do you want to delete this?",
 			       collection: this.collection,
 			       my_id: this.my_id,
-			       body_template_name: jump_table[this.collection].delete_template_name,
+			       body_template_name: window.jump_table[this.collection].delete_template_name,
 			       body_template_data: this.my_id,
 			       is_delete_modal: true
 			      });
@@ -249,9 +249,9 @@ Template.driver_lines.events({
     var coll = "DriverLines";
     Session.set("modal_info", {title: "Add driver line",
 			       collection: coll,
-			       body_template_name: jump_table[coll].insert_template_name
+			       body_template_name: window.jump_table[coll].insert_template_name
 			      });
-    window.modal_save_func = jump_table[coll].save;
+    window.modal_save_func = window.jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -271,9 +271,9 @@ Template.neuron_types.events({
     var coll = "NeuronTypes";
     Session.set("modal_info", {title: "Add neuron type",
 			       collection: coll,
-			       body_template_name: jump_table[coll].insert_template_name
+			       body_template_name: window.jump_table[coll].insert_template_name
 			      });
-    window.modal_save_func = jump_table[coll].save;
+    window.modal_save_func = window.jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -290,9 +290,9 @@ Template.neuropils.events({
     var coll = "Neuropils";
     Session.set("modal_info", {title: "Add neuropil",
 			       collection: coll,
-			       body_template_name: jump_table[coll].insert_template_name
+			       body_template_name: window.jump_table[coll].insert_template_name
 			      });
-    window.modal_save_func = jump_table[coll].save;
+    window.modal_save_func = window.jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -413,26 +413,3 @@ edit_neuron_types_save_func = function (info, template) {
   collection.update(my_id, {$set:{'neuron_types':neuron_types}});
   return {};
 }
-
-edit_neuropils_save_func = function (info, template) {
-  var neuropils=[];
-  var my_id = Session.get("modal_info").body_template_data.my_id
-
-  var r1 = template.findAll(".neuropils");
-  for (i in r1) {
-    node = r1[i];
-    if (node.checked) {
-      neuropils.push( node.id );
-    }
-  }
-  var coll_name = Session.get("modal_info").body_template_data.collection_name;
-  var collection;
-  if (coll_name=="DriverLines") {
-    collection = DriverLines;
-  } else if (coll_name=="NeuronTypes") {
-    collection = NeuronTypes;
-  }
-  collection.update(my_id, {$set:{'neuropils':neuropils}});
-  return {};
-}
-

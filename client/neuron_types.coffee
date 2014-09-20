@@ -56,7 +56,7 @@ Template.edit_neuron_types.neuron_types = ->
 
   result
 
-Template.neuron_type_show.events okCancelEvents("#edit_synonym_input",
+Template.neuron_type_show.events window.okCancelEvents("#edit_synonym_input",
   ok: (value) ->
     NeuronTypes.update @_id,
       $addToSet:
@@ -100,7 +100,7 @@ Template.neuron_type_show.events
     e.preventDefault()
     Session.set "modal_info",
       title: "Edit best driver lines"
-      body_template_name: jump_table["NeuronTypes"].edit_driver_lines_template_name
+      body_template_name: window.jump_table["NeuronTypes"].edit_driver_lines_template_name
       body_template_data:
         my_id: @_id
         collection_name: "NeuronTypes"
@@ -113,7 +113,7 @@ Template.neuron_type_show.events
     e.preventDefault()
     Session.set "modal_info",
       title: "Edit neuropils"
-      body_template_name: jump_table["NeuronTypes"].edit_neuropils_template_name
+      body_template_name: window.jump_table["NeuronTypes"].edit_neuropils_template_name
       body_template_data:
         my_id: @_id
         collection_name: "NeuronTypes"

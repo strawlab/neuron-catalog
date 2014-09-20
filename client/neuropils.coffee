@@ -40,3 +40,18 @@ Template.edit_neuropils.neuropils = ->
     return
 
   result
+
+@edit_neuropils_save_func = (info, template) ->
+  neuropils = []
+  my_id = Session.get("modal_info").body_template_data.my_id
+  r1 = template.findAll(".neuropils")
+  for i of r1
+    node = r1[i]
+    neuropils.push node.id  if node.checked
+  coll_name = Session.get("modal_info").body_template_data.collection_name
+  collection = window.get_collection_from_name(coll_name)
+  collection.update my_id,
+    $set:
+      neuropils: neuropils
+
+  {}
