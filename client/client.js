@@ -370,25 +370,3 @@ Template.neuron_type_show.synonym_dicts = function () {
   return result;
 }
 
-edit_driver_lines_save_func = function (info, template) {
-  var driver_lines=[];
-  var my_id = Session.get("modal_info").body_template_data.my_id
-
-  var r1 = template.findAll(".driver_lines");
-  for (i in r1) {
-    node = r1[i];
-    if (node.checked) {
-      driver_lines.push( node.id );
-    }
-  }
-  var coll_name = Session.get("modal_info").body_template_data.collection_name;
-  var collection;
-  if (coll_name=="DriverLines") {
-    collection = DriverLines;
-  } else if (coll_name=="NeuronTypes") {
-    collection = NeuronTypes;
-  }
-  collection.update(my_id, {$set:{'best_driver_lines':driver_lines}});
-  return {};
-}
-

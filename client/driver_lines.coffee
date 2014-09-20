@@ -78,3 +78,18 @@ Template.driver_line_show.events
     window.modal_save_func = edit_neuropils_save_func
     $("#show_dialog_id").modal "show"
     return
+
+@edit_driver_lines_save_func = (info, template) ->
+  driver_lines = []
+  my_id = Session.get("modal_info").body_template_data.my_id
+  r1 = template.findAll(".driver_lines")
+  for i of r1
+    node = r1[i]
+    driver_lines.push node.id  if node.checked
+  coll_name = Session.get("modal_info").body_template_data.collection_name
+  collection = window.get_collection_from_name(coll_name)
+  collection.update my_id,
+    $set:
+      best_driver_lines: driver_lines
+
+  {}
