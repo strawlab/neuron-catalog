@@ -190,42 +190,6 @@ Template.delete_button.events({
   }
 });
 
-
-// -------------
-
-Template.driver_line_from_id_block.driver_line_from_id = function () {
-  if (this._id) { // already a doc
-    return this;
-  }
-  var my_id = this;
-  if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
-    my_id = this.valueOf(); // unbox it
-  }
-  return DriverLines.findOne(my_id);
-}
-
-Template.binary_data_from_id_block.binary_data_from_id = function () {
-  if (this._id) { // already a doc
-    return this;
-  }
-  var my_id = this;
-  if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
-    my_id = this.valueOf(); // unbox it
-  }
-  return BinaryData.findOne(my_id);
-}
-
-Template.neuron_type_from_id_block.neuron_type_from_id = function () {
-  if (this._id) { // already a doc
-    return this;
-  }
-  var my_id = this;
-  if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
-    my_id = this.valueOf(); // unbox it
-  }
-  return NeuronTypes.findOne(my_id);
-}
-
 // ------- tab layout stuff ----
 
 Template.MyLayout.tab_attrs_home = function () {

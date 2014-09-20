@@ -1,4 +1,12 @@
-# These functions deal with images (uploads, etc.)
+Template.binary_data_from_id_block.binary_data_from_id = ->
+  if @_id
+    # already a doc
+    return this
+  my_id = this
+  if @valueOf
+    # If we have "valueOf" function, "this" is boxed.
+    my_id = @valueOf() # unbox it
+  BinaryData.findOne my_id
 
 insert_image_save_func = (info, template) ->
   fb = template.find("#insert_image")

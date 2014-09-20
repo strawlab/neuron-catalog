@@ -4,9 +4,9 @@ Template.neuropil_from_id_block.neuropil_from_id = ->
     return this
 
   my_id = this
-  if @valueOf # unbox it
+  if @valueOf
     # If we have "valueOf" function, "this" is boxed.
-    my_id = @valueOf()
+    my_id = @valueOf() # unbox it
 
   Neuropils.findOne my_id
 

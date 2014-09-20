@@ -1,3 +1,13 @@
+Template.neuron_type_from_id_block.neuron_type_from_id = ->
+  if @_id
+    # already a doc
+    return this
+  my_id = this
+  if @valueOf
+    # If we have "valueOf" function, "this" is boxed.
+    my_id = @valueOf() # unbox it
+  NeuronTypes.findOne my_id
+
 Template.neuron_type_insert.driver_lines = ->
   DriverLines.find()
 
