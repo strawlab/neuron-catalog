@@ -136,3 +136,19 @@ Template.neuron_type_show.events
       neuron_types: neuron_types
 
   {}
+
+Template.neuron_type_show.adding_synonym = ->
+  Session.equals "editing_add_synonym", @_id
+
+Template.neuron_type_show.synonym_dicts = ->
+  result = []
+  for i of @synonyms
+    tmp =
+      name: @synonyms[i]
+      _id: @_id
+
+    result.push tmp
+  result
+
+Template.neuron_type_show.driver_lines_referencing_me = ->
+  DriverLines.find neuron_types: @_id

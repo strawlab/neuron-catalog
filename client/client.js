@@ -337,36 +337,3 @@ Template.MyLayout.tab_attrs_neuropils = function () {
     return {'class':"active"};
   }
 }
-
-// ------------
-
-Template.neuron_type_show.driver_lines_referencing_me = function () {
-  return DriverLines.find( {'neuron_types': this._id} );
-}
-
-Template.neuropil_show.driver_lines_referencing_me = function () {
-  return DriverLines.find( {'neuropils': this._id} );
-}
-
-Template.neuropil_table.driver_lines_referencing_me = Template.neuropil_show.driver_lines_referencing_me;
-
-Template.neuropil_show.neuron_types_referencing_me = function () {
-  return NeuronTypes.find( {'neuropils': this._id} );
-}
-Template.neuropil_table.neuron_types_referencing_me = Template.neuropil_show.neuron_types_referencing_me;
-
-// -------------
-Template.neuron_type_show.adding_synonym = function () {
-  return Session.equals('editing_add_synonym',this._id);
-}
-
-Template.neuron_type_show.synonym_dicts = function () {
-  var result = [];
-  for (i in this.synonyms) {
-    var tmp = {'name':this.synonyms[i],
-	       '_id':this._id};
-    result.push(tmp);
-  }
-  return result;
-}
-
