@@ -282,25 +282,6 @@ Template.neuron_types.neuron_type_cursor = function () {
   return NeuronTypes.find({});
 }
 
-// -------------
-
-Template.neuropils.events({
-  'click .insert': function(e) {
-    e.preventDefault();
-    var coll = "Neuropils";
-    Session.set("modal_info", {title: "Add neuropil",
-			       collection: coll,
-			       body_template_name: window.jump_table[coll].insert_template_name
-			      });
-    window.modal_save_func = window.jump_table[coll].save;
-    $("#show_dialog_id").modal('show');
-  }
-});
-
-Template.neuropils.neuropil_cursor = function () {
-  return Neuropils.find({});
-}
-
 // ------- tab layout stuff ----
 
 Template.MyLayout.tab_attrs_home = function () {

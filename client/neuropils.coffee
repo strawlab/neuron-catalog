@@ -64,3 +64,18 @@ Template.neuropil_show.neuron_types_referencing_me = ->
   NeuronTypes.find neuropils: @_id
 
 Template.neuropil_table.neuron_types_referencing_me = Template.neuropil_show.neuron_types_referencing_me
+
+Template.neuropils.events "click .insert": (e) ->
+  e.preventDefault()
+  coll = "Neuropils"
+  Session.set "modal_info",
+    title: "Add neuropil"
+    collection: coll
+    body_template_name: window.jump_table[coll].insert_template_name
+
+  window.modal_save_func = window.jump_table[coll].save
+  $("#show_dialog_id").modal "show"
+  return
+
+Template.neuropils.neuropil_cursor = ->
+  Neuropils.find {}
