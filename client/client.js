@@ -122,7 +122,7 @@ var jump_table = {
 		  'edit_neuropils_template_name':'edit_neuropils'
 		 },
   'NeuronTypes': {'remove': function (x) { return remove_neuron_type(x); },
-		  'save': function(info, template) { return save_neuron_type(info,template); },
+		  'save': function(info, template) { return this.save_neuron_type(info,template); },
 		  'insert_template_name': "neuron_type_insert",
 		  'delete_template_name': "neuron_type_show_brief",
 		  'element_route': 'neuron_type_show',
@@ -633,68 +633,5 @@ save_driver_line = function(info,template) {
 
   // save result
   DriverLines.insert(doc, driver_line_insert_callback);
-  return result;
-}
-
-// -------------
-
-Template.neuron_type_insert.driver_lines = function () {
-  return DriverLines.find();
-}
-
-Template.neuron_type_insert.neuropils = function () {
-  return Neuropils.find();
-}
-
-neuron_type_insert_callback = function(error, _id) {
-  // FIXME: be more useful. E.g. hide a "saving... popup"
-  if (error) {
-    console.log("neuron_type_insert_callback with error:",error);
-  }
-}
-
-save_neuron_type = function(info,template) {
-  var result = {};
-  var doc = {};
-  var errors = [];
-
-  // parse
-  doc.name = template.find(".name").value;
-  if (doc.name.length<1) {
-    errors.push("Name is required.");
-  }
-
-  doc.best_driver_lines = [];
-  /*
-  var r1 = template.findAll(".best_driver_lines");
-  for (i in r1) {
-    node = r1[i];
-    if (node.checked) {
-      doc.best_driver_lines.push( node.id );
-    }
-  }
-  */
-
-  doc.neuropils = [];
-  var r1 = template.findAll(".neuropils");
-  for (i in r1) {
-    node = r1[i];
-    if (node.checked) {
-      doc.neuropils.push( node.id );
-    }
-  }
-
-  // report errors
-  if (errors.length>0) {
-    if (errors.length==1) {
-      result.error="Error: " + errors[0];
-    } else if (errors.length>1) {
-      result.error="Errors: " + errors.join(", ");
-    }
-    return result;
-  }
-
-  // save result
-  NeuronTypes.insert(doc, neuron_type_insert_callback);
   return result;
 }
