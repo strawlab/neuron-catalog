@@ -39,3 +39,15 @@ driver_line_insert_callback = (error, _id) ->
   # save result
   DriverLines.insert doc, driver_line_insert_callback
   result
+
+Template.edit_driver_lines.driver_lines = ->
+  result = []
+  collection = window.get_collection_from_name(@collection_name)
+  myself = collection.findOne(_id: @my_id)
+  DriverLines.find().forEach (doc) ->
+    doc.is_checked = false
+    doc.is_checked = true  unless myself.best_driver_lines.indexOf(doc._id) is -1  if myself.hasOwnProperty("best_driver_lines")
+    result.push doc
+    return
+
+  result

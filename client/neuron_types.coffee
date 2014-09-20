@@ -41,3 +41,17 @@ neuron_type_insert_callback = (error, _id) ->
   # save result
   NeuronTypes.insert doc, neuron_type_insert_callback
   result
+
+Template.edit_neuron_types.neuron_types = ->
+  result = []
+  collection = window.get_collection_from_name(@collection_name)
+  myself = collection.findOne(_id: @my_id)
+  NeuronTypes.find().forEach (doc) ->
+    if myself.neuron_types.indexOf(doc._id) is -1
+      doc.is_checked = false
+    else
+      doc.is_checked = true
+    result.push doc
+    return
+
+  result

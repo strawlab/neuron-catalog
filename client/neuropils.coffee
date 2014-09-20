@@ -29,10 +29,7 @@ neuropil_insert_callback = (error, _id) ->
 
 Template.edit_neuropils.neuropils = ->
   result = []
-  collection = undefined
-  if @collection_name is "DriverLines"
-    collection = DriverLines
-  else collection = NeuronTypes  if @collection_name is "NeuronTypes"
+  collection = window.get_collection_from_name(@collection_name)
   myself = collection.findOne(_id: @my_id)
   Neuropils.find().forEach (doc) ->
     if myself.neuropils.indexOf(doc._id) is -1
