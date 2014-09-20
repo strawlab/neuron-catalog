@@ -93,3 +93,18 @@ Template.driver_line_show.events
       best_driver_lines: driver_lines
 
   {}
+
+Template.driver_lines.driver_line_cursor = ->
+  DriverLines.find {}
+
+Template.driver_lines.events "click .insert": (e) ->
+  e.preventDefault()
+  coll = "DriverLines"
+  Session.set "modal_info",
+    title: "Add driver line"
+    collection: coll
+    body_template_name: window.jump_table[coll].insert_template_name
+
+  window.modal_save_func = window.jump_table[coll].save
+  $("#show_dialog_id").modal "show"
+  return

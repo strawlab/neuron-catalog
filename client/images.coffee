@@ -53,3 +53,6 @@ Template.add_image_code.events "click .insert": (e, tmpl) ->
   window.modal_save_func = insert_image_save_func
   $("#show_dialog_id").modal "show"
   return
+
+Template.binary_data.binary_data_cursor = ->
+  BinaryData.find {}

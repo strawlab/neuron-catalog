@@ -226,43 +226,6 @@ Template.neuron_type_from_id_block.neuron_type_from_id = function () {
   return NeuronTypes.findOne(my_id);
 }
 
-Template.neuropil_from_id_block.neuropil_from_id = function () {
-  if (this._id) { // already a doc
-    return this;
-  }
-  var my_id = this;
-  if (this.valueOf) { // If we have "valueOf" function, "this" is boxed.
-    my_id = this.valueOf(); // unbox it
-  }
-  return Neuropils.findOne(my_id);
-}
-
-// -------------
-
-Template.driver_lines.driver_line_cursor = function () {
-  return DriverLines.find({});
-}
-
-Template.driver_lines.events({
-  'click .insert': function(e) {
-    e.preventDefault();
-    var coll = "DriverLines";
-    Session.set("modal_info", {title: "Add driver line",
-			       collection: coll,
-			       body_template_name: window.jump_table[coll].insert_template_name
-			      });
-    window.modal_save_func = window.jump_table[coll].save;
-    $("#show_dialog_id").modal('show');
-  }
-});
-
-
-// -------------
-
-Template.binary_data.binary_data_cursor = function () {
-  return BinaryData.find({});
-}
-
 // ------- tab layout stuff ----
 
 Template.MyLayout.tab_attrs_home = function () {

@@ -1,3 +1,15 @@
+Template.neuropil_from_id_block.neuropil_from_id = ->
+  if @_id
+    # already a doc
+    return this
+
+  my_id = this
+  if @valueOf # unbox it
+    # If we have "valueOf" function, "this" is boxed.
+    my_id = @valueOf()
+
+  Neuropils.findOne my_id
+
 neuropil_insert_callback = (error, _id) ->
   # FIXME: be more useful. E.g. hide a "saving... popup"
   if error?
