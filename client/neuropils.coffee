@@ -26,3 +26,20 @@ neuropil_insert_callback = (error, _id) ->
     name: name
   , neuropil_insert_callback
   result
+
+Template.edit_neuropils.neuropils = ->
+  result = []
+  collection = undefined
+  if @collection_name is "DriverLines"
+    collection = DriverLines
+  else collection = NeuronTypes  if @collection_name is "NeuronTypes"
+  myself = collection.findOne(_id: @my_id)
+  Neuropils.find().forEach (doc) ->
+    if myself.neuropils.indexOf(doc._id) is -1
+      doc.is_checked = false
+    else
+      doc.is_checked = true
+    result.push doc
+    return
+
+  result

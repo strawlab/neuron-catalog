@@ -554,23 +554,3 @@ Template.edit_neuron_types.neuron_types = function () {
   });
   return result;
 }
-
-Template.edit_neuropils.neuropils = function () {
-  var result = [];
-  var collection;
-  if (this.collection_name=="DriverLines") {
-    collection = DriverLines;
-  } else if (this.collection_name=="NeuronTypes") {
-    collection = NeuronTypes;
-  }
-  var myself = collection.findOne({_id:this.my_id});
-  Neuropils.find().forEach( function (doc) {
-    if (myself.neuropils.indexOf(doc._id)==-1) {
-      doc.is_checked = false;
-    } else {
-      doc.is_checked = true;
-    }
-    result.push( doc );
-  });
-  return result;
-}
