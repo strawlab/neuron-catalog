@@ -29,7 +29,7 @@ Session.setDefault("modal_info",null);
 Session.setDefault("comment_preview_mode",false);
 Session.setDefault("comment_preview_html",null);
 
-var modal_save_func = null;
+this.modal_save_func = null;
 
 
 // --------------------------------------------
@@ -103,7 +103,7 @@ Template.show_dialog.events({
   'click .save': function(event, template) {
     event.preventDefault();
     info = Session.get("modal_info");
-    var result = modal_save_func(info,template);
+    var result = this.modal_save_func(info,template);
     if (result.error) {
       info.error = result.error;
       Session.set("modal_info",info);
@@ -187,7 +187,7 @@ Template.delete_button.events({
 			       body_template_data: this.my_id,
 			       is_delete_modal: true
 			      });
-    modal_save_func = null;
+    this.modal_save_func = null;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -253,7 +253,7 @@ Template.driver_lines.events({
 			       collection: coll,
 			       body_template_name: jump_table[coll].insert_template_name
 			      });
-    modal_save_func = jump_table[coll].save;
+    this.modal_save_func = jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -275,7 +275,7 @@ Template.neuron_types.events({
 			       collection: coll,
 			       body_template_name: jump_table[coll].insert_template_name
 			      });
-    modal_save_func = jump_table[coll].save;
+    this.modal_save_func = jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -294,7 +294,7 @@ Template.neuropils.events({
 			       collection: coll,
 			       body_template_name: jump_table[coll].insert_template_name
 			      });
-    modal_save_func = jump_table[coll].save;
+    this.modal_save_func = jump_table[coll].save;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -447,7 +447,7 @@ Template.driver_line_show.events({
 						    collection_name: "DriverLines"}
 			      });
 
-    modal_save_func = edit_neuron_types_save_func;
+    this.modal_save_func = edit_neuron_types_save_func;
     $("#show_dialog_id").modal('show');
   },
   'click .edit-neuropils': function(e) {
@@ -458,7 +458,7 @@ Template.driver_line_show.events({
 						    collection_name: "DriverLines"}
 			      });
 
-    modal_save_func = edit_neuropils_save_func;
+    this.modal_save_func = edit_neuropils_save_func;
     $("#show_dialog_id").modal('show');
   }
 });
@@ -488,7 +488,7 @@ Template.neuron_type_show.events({
 						    collection_name:"NeuronTypes"}
 			      });
 
-    modal_save_func = edit_driver_lines_save_func;
+    this.modal_save_func = edit_driver_lines_save_func;
     $("#show_dialog_id").modal('show');
   },
   'click .edit-neuropils': function(e) {
@@ -499,7 +499,7 @@ Template.neuron_type_show.events({
 						    collection_name:"NeuronTypes"}
 			      });
 
-    modal_save_func = edit_neuropils_save_func;
+    this.modal_save_func = edit_neuropils_save_func;
     $("#show_dialog_id").modal('show');
   }
 });
