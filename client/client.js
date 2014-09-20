@@ -819,25 +819,3 @@ Template.show_comments.events({
 
 // -------------
 
-UI.body.getData = function () {
-  return 'data';
-};
-
-// -------
-
-Template.registerHelper("zxkp", function () {
-//  return {'class':'label label-default'};
-  return {'class':'zxkp'};
-});
-
-Template.registerHelper("currentUser", function () {
-  // Mimic the normal meteor accounts system from IronRouter template.
-  return Meteor.user();
-});
-
-Template.registerHelper("login_message", function () {
-  // Mimic the normal meteor accounts system from IronRouter template.
-  return "You must be logged in to see or add data.";
-});
-
-// --------
