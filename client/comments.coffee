@@ -34,7 +34,7 @@ Template.comments_panel.events
     comments_raw = ta.value
     ta.value = ""
     Session.set "comment_preview_html", null
-    collection = get_collection_from_name(@show_name)
+    collection = window.get_collection_from_name(@show_name)
     cdict = comment: comments_raw # FIXME: add auth stuff and timestamp on server.
     collection.update @_id,
       $push:
@@ -57,7 +57,7 @@ Template.show_comments.wrapped_comments = ->
   result
 
 Template.show_comments.events "click .delete": (evt, tmpl) ->
-  collection = get_collection_from_name(@parent_show_name)
+  collection = window.get_collection_from_name(@parent_show_name)
   collection.update
     _id: @parent_id
   ,

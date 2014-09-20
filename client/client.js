@@ -32,7 +32,7 @@ window.modal_save_func = null;
 
 // --------------------------------------------
 // helper functions
-get_collection_from_name = function(name) {
+window.get_collection_from_name = function(name) {
   var coll;
   if (name=="DriverLines") {
     coll = DriverLines;
@@ -166,7 +166,7 @@ Template.name_field.events(okCancelEvents(
     '#name_input',
     {
       ok: function (value) {
-	var coll = get_collection_from_name(this.collection);
+	var coll = window.get_collection_from_name(this.collection);
 	coll.update(this.my_id, {$set :{"name":value}});
 	Session.set('editing_name', null);
       },

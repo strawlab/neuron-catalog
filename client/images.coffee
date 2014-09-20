@@ -24,7 +24,7 @@ insert_image_save_func = (info, template) ->
         console.log "image_insert_callback with error:", error
         return
       data = info.body_template_data
-      coll = get_collection_from_name(data.collection)
+      coll = window.get_collection_from_name(data.collection)
       orig = coll.findOne(_id: data.my_id)
       myarr = []
       myarr = orig[data.field_name]  if orig.hasOwnProperty(data.field_name)
