@@ -51,3 +51,30 @@ Template.edit_driver_lines.driver_lines = ->
     return
 
   result
+
+Template.driver_line_show.events
+  "click .edit-neuron-types": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Edit neuron types"
+      body_template_name: jump_table["DriverLines"].edit_neuron_types_template_name
+      body_template_data:
+        my_id: @_id
+        collection_name: "DriverLines"
+
+    window.modal_save_func = edit_neuron_types_save_func
+    $("#show_dialog_id").modal "show"
+    return
+
+  "click .edit-neuropils": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Edit neuropils"
+      body_template_name: jump_table["DriverLines"].edit_neuropils_template_name
+      body_template_data:
+        my_id: @_id
+        collection_name: "DriverLines"
+
+    window.modal_save_func = edit_neuropils_save_func
+    $("#show_dialog_id").modal "show"
+    return
