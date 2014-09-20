@@ -131,7 +131,7 @@ var jump_table = {
 		  'edit_neuropils_template_name':'edit_neuropils'
 		 },
   'Neuropils':  {'remove': function (x) { return remove_neuropil(x); },
-		  'save': function(info, template) { return save_neuropil(info,template); },
+		  'save': function(info, template) { return this.save_neuropil(info,template); },
 		  'insert_template_name': "neuropil_insert",
 		  'delete_template_name': "neuropil_show_brief",
 		  'element_route': 'neuropil_show',
@@ -698,42 +698,3 @@ save_neuron_type = function(info,template) {
   NeuronTypes.insert(doc, neuron_type_insert_callback);
   return result;
 }
-
-// -------------
-
-neuropil_insert_callback = function(error, _id) {
-  // FIXME: be more useful. E.g. hide a "saving... popup"
-  if (error) {
-    console.log("neuropil_insert_callback with error:",error);
-  }
-}
-
-save_neuropil = function(info,template) {
-  var result = {};
-
-  // parse
-  var name = template.find(".name").value;
-
-  // find errors
-  var errors = [];
-  if (name.length<1) {
-    errors.push("Name is required.");
-  }
-
-  // report errors
-  if (errors.length>0) {
-    if (errors.length==1) {
-      result.error="Error: " + errors[0];
-    } else if (errors.length>1) {
-      result.error="Errors: " + errors.join(", ");
-    }
-    return result;
-  }
-
-  // save result
-  Neuropils.insert({"name":name}, neuropil_insert_callback);
-  return result;
-}
-
-// -------------
-
