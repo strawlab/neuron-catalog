@@ -19,8 +19,6 @@ Meteor.subscribe('neuron_types');
 Meteor.subscribe('neuropils');
 Meteor.subscribe('binary_data');
 
-var converter = new Showdown.converter();
-
 // --------------------------------------------
 // session variables
 Session.setDefault('editing_name', null);
@@ -736,86 +734,6 @@ save_neuropil = function(info,template) {
   Neuropils.insert({"name":name}, neuropil_insert_callback);
   return result;
 }
-
-// -------------
-
-Template.comments_panel.comment_preview = function () {
-  return Session.get("comment_preview_html");
-}
-
-Template.comments_panel.is_previewing_comment = function () {
-  return Session.equals("comment_preview_mode",true);
-}
-
-Template.comments_panel.is_writing_attrs = function () {
-  if (Session.equals("comment_preview_mode",true)) {
-    return "vis-hidden";
-  }
-}
-
-Template.comments_panel.is_previewing_attrs = function () {
-  if (Session.equals("comment_preview_mode",false)) {
-    return "vis-hidden";
-  }
-}
-
-Template.comments_panel.events({
-  'click .write-comment': function(event, template) {
-    event.preventDefault();
-    Session.set("comment_preview_mode",false);
-    Session.set("comment_preview_html",null);
-  },
-  'click .preview-comment': function(event, template) {
-    event.preventDefault();
-    var ta = template.find("textarea.comments");
-    var comments_raw = ta.value;
-    var result = converter.makeHtml(comments_raw);
-    Session.set("comment_preview_mode",true);
-    Session.set("comment_preview_html",result);
-  },
-  'click .save': function(event, template) {
-    event.preventDefault();
-    var ta = template.find("textarea.comments");
-    var comments_raw = ta.value;
-    ta.value = "";
-    Session.set("comment_preview_html",null);
-    var collection = get_collection_from_name(this.show_name);
-    var cdict = {comment:comments_raw}; // FIXME: add auth stuff and timestamp on server.
-    collection.update(this._id, {$push: {comments: cdict}});
-  }
-});
-
-Template.show_comments.show_markdown = function (comment) {
-  var result = converter.makeHtml(comment.comment);
-  return result;
-}
-
-Template.show_comments.wrapped_comments = function () {
-  var result = [];
-  for (i in this.comments) {
-    var doc = {};
-    doc.comment = this.comments[i];
-    doc.parent_show_name = this.show_name;
-    doc.parent_id = this._id;
-    result.push(doc);
-  }
-  return result;
-}
-
-Template.show_comments.events({
-  'click .delete':function (evt,tmpl) {
-    var collection;
-    if (this.parent_show_name=="DriverLines") {
-      collection = DriverLines;
-    } else if (this.parent_show_name=="NeuronTypes") {
-      collection = NeuronTypes;
-    } else if (this.parent_show_name=="Neuropils") {
-      collection = Neuropils;
-    }
-    collection.update({_id:this.parent_id},
-		      {$pull: {comments: this.comment}});
-  }
-});
 
 // -------------
 
