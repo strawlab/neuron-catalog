@@ -392,24 +392,3 @@ edit_driver_lines_save_func = function (info, template) {
   return {};
 }
 
-edit_neuron_types_save_func = function (info, template) {
-  var neuron_types=[];
-  var my_id = Session.get("modal_info").body_template_data.my_id
-
-  var r1 = template.findAll(".neuron_types");
-  for (i in r1) {
-    node = r1[i];
-    if (node.checked) {
-      neuron_types.push( node.id );
-    }
-  }
-  var coll_name = Session.get("modal_info").body_template_data.collection_name;
-  var collection;
-  if (coll_name=="DriverLines") {
-    collection = DriverLines;
-  } else if (coll_name=="NeuronTypes") {
-    collection = NeuronTypes;
-  }
-  collection.update(my_id, {$set:{'neuron_types':neuron_types}});
-  return {};
-}

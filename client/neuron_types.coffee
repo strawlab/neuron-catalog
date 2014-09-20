@@ -121,3 +121,18 @@ Template.neuron_type_show.events
     window.modal_save_func = edit_neuropils_save_func
     $("#show_dialog_id").modal "show"
     return
+
+@edit_neuron_types_save_func = (info, template) ->
+  neuron_types = []
+  my_id = Session.get("modal_info").body_template_data.my_id
+  r1 = template.findAll(".neuron_types")
+  for i of r1
+    node = r1[i]
+    neuron_types.push node.id  if node.checked
+  coll_name = Session.get("modal_info").body_template_data.collection_name
+  collection = window.get_collection_from_name(coll_name)
+  collection.update my_id,
+    $set:
+      neuron_types: neuron_types
+
+  {}
