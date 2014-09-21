@@ -1,3 +1,5 @@
+# ---- Template.driver_line_from_id_block -------------
+
 Template.driver_line_from_id_block.driver_line_from_id = ->
   if @_id
     # already a doc
@@ -8,16 +10,80 @@ Template.driver_line_from_id_block.driver_line_from_id = ->
     my_id = @valueOf() # unbox it
   DriverLines.findOne my_id
 
+# ---- Template.driver_line_insert -------------
+
 Template.driver_line_insert.neuron_types = ->
   NeuronTypes.find()
 
 Template.driver_line_insert.neuropils = ->
   Neuropils.find()
 
-driver_line_insert_callback = (error, _id) ->
+# ---- Template.edit_driver_lines -------------
 
-  # FIXME: be more useful. E.g. hide a "saving... popup"
-  console.log "driver_line_insert_callback with error:", error  if error
+Template.edit_driver_lines.driver_lines = ->
+  result = []
+  collection = window.get_collection_from_name(@collection_name)
+  myself = collection.findOne(_id: @my_id)
+  DriverLines.find().forEach (doc) ->
+    doc.is_checked = false
+    doc.is_checked = true  unless myself.best_driver_lines.indexOf(doc._id) is -1  if myself.hasOwnProperty("best_driver_lines")
+    result.push doc
+    return
+
+  result
+
+# ---- Template.driver_line_show -------------
+
+Template.driver_line_show.events
+  "click .edit-neuron-types": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Edit neuron types"
+      body_template_name: window.jump_table["DriverLines"].edit_neuron_types_template_name
+      body_template_data:
+        my_id: @_id
+        collection_name: "DriverLines"
+
+    window.modal_save_func = edit_neuron_types_save_func
+    $("#show_dialog_id").modal "show"
+    return
+
+  "click .edit-neuropils": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Edit neuropils"
+      body_template_name: window.jump_table["DriverLines"].edit_neuropils_template_name
+      body_template_data:
+        my_id: @_id
+        collection_name: "DriverLines"
+
+    window.modal_save_func = edit_neuropils_save_func
+    $("#show_dialog_id").modal "show"
+    return
+
+# ---- Template.driver_lines -------------
+
+Template.driver_lines.driver_line_cursor = ->
+  DriverLines.find {}
+
+Template.driver_lines.events "click .insert": (e) ->
+  e.preventDefault()
+  coll = "DriverLines"
+  Session.set "modal_info",
+    title: "Add driver line"
+    collection: coll
+    body_template_name: window.jump_table[coll].insert_template_name
+
+  window.modal_save_func = window.jump_table[coll].save
+  $("#show_dialog_id").modal "show"
+  return
+
+# ------------- general functions --------
+
+driver_line_insert_callback = (error, _id) ->
+  if error?
+    # FIXME: be more useful. E.g. hide a "saving... popup"
+    console.log "driver_line_insert_callback with error:", error
   return
 
 # @remove_driver_line is defined in ../vpn.coffee
@@ -52,45 +118,6 @@ driver_line_insert_callback = (error, _id) ->
   DriverLines.insert doc, driver_line_insert_callback
   result
 
-Template.edit_driver_lines.driver_lines = ->
-  result = []
-  collection = window.get_collection_from_name(@collection_name)
-  myself = collection.findOne(_id: @my_id)
-  DriverLines.find().forEach (doc) ->
-    doc.is_checked = false
-    doc.is_checked = true  unless myself.best_driver_lines.indexOf(doc._id) is -1  if myself.hasOwnProperty("best_driver_lines")
-    result.push doc
-    return
-
-  result
-
-Template.driver_line_show.events
-  "click .edit-neuron-types": (e) ->
-    e.preventDefault()
-    Session.set "modal_info",
-      title: "Edit neuron types"
-      body_template_name: window.jump_table["DriverLines"].edit_neuron_types_template_name
-      body_template_data:
-        my_id: @_id
-        collection_name: "DriverLines"
-
-    window.modal_save_func = edit_neuron_types_save_func
-    $("#show_dialog_id").modal "show"
-    return
-
-  "click .edit-neuropils": (e) ->
-    e.preventDefault()
-    Session.set "modal_info",
-      title: "Edit neuropils"
-      body_template_name: window.jump_table["DriverLines"].edit_neuropils_template_name
-      body_template_data:
-        my_id: @_id
-        collection_name: "DriverLines"
-
-    window.modal_save_func = edit_neuropils_save_func
-    $("#show_dialog_id").modal "show"
-    return
-
 @edit_driver_lines_save_func = (info, template) ->
   driver_lines = []
   my_id = Session.get("modal_info").body_template_data.my_id
@@ -105,18 +132,3 @@ Template.driver_line_show.events
       best_driver_lines: driver_lines
 
   {}
-
-Template.driver_lines.driver_line_cursor = ->
-  DriverLines.find {}
-
-Template.driver_lines.events "click .insert": (e) ->
-  e.preventDefault()
-  coll = "DriverLines"
-  Session.set "modal_info",
-    title: "Add driver line"
-    collection: coll
-    body_template_name: window.jump_table[coll].insert_template_name
-
-  window.modal_save_func = window.jump_table[coll].save
-  $("#show_dialog_id").modal "show"
-  return
