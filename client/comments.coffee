@@ -43,8 +43,9 @@ Template.comments_panel.events
     return
 
 Template.show_comments.show_markdown = (comment) ->
-  result = converter.makeHtml(comment.comment)
-  result
+  untrustedCode = converter.makeHtml(comment.comment)
+  sanitized = html_sanitize( untrustedCode )
+  sanitized
 
 Template.show_comments.wrapped_comments = ->
   result = []
