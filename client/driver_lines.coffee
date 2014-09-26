@@ -1,6 +1,6 @@
 # ---- Template.driver_line_from_id_block -------------
 
-enhance_doc = (doc) ->
+enhance_driver_line_doc = (doc) ->
   if not doc?
     return
 
@@ -36,12 +36,12 @@ enhance_doc = (doc) ->
 Template.driver_line_from_id_block.driver_line_from_id = ->
   if @_id
     # already a doc
-    return enhance_doc(this)
+    return enhance_driver_line_doc(this)
   my_id = this
   if @valueOf
     # If we have "valueOf" function, "this" is boxed.
     my_id = @valueOf() # unbox it
-  enhance_doc(DriverLines.findOne(my_id))
+  enhance_driver_line_doc(DriverLines.findOne(my_id))
 
 # ---- Template.driver_line_insert -------------
 
