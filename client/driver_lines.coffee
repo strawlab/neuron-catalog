@@ -112,9 +112,6 @@ Template.driver_lines.events "click .insert": (e) ->
 
 # ------------- general functions --------
 
-endsWith = (str, suffix) ->
-  str.indexOf(suffix, str.length - suffix.length) isnt -1
-
 driver_line_insert_callback = (error, _id) ->
   if error?
     # FIXME: be more useful. E.g. hide a "saving... popup"

@@ -27,6 +27,10 @@ window.modal_save_func = null
 
 # --------------------------------------------
 # helper functions
+
+@endsWith = (str, suffix) ->
+  str.indexOf(suffix, str.length - suffix.length) isnt -1
+
 window.get_collection_from_name = (name) ->
   coll = undefined
   if name is "DriverLines"
