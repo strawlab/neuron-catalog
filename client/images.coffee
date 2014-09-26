@@ -1,12 +1,40 @@
+
+# ---- Template.binary_data_from_id_block -------------
+
+enhance_image_doc = (doc) ->
+  if not doc?
+    return
+
+  if doc.secure_url_notif?
+    # already performed this check
+    return doc
+
+  url_lower = doc.secure_url.toLowerCase()
+  if endsWith(url_lower,".tif")
+    # see https://gist.github.com/jlong/2428561 for parser trick
+    parser = document.createElement('a');
+    parser.href = doc.secure_url
+    path_parts = parser.pathname.split('/')
+    [blank, bucket, images, fname] = path_parts
+    pathname = [blank, bucket, 'cached', fname+'.png'].join('/')
+    newurl = parser.protocol + '//' + parser.host + pathname
+    doc.secure_url_notif = newurl
+  else
+    doc.secure_url_notif = doc.secure_url
+  doc
+
 Template.binary_data_from_id_block.binary_data_from_id = ->
+
   if @_id
     # already a doc
-    return this
+    return enhance_image_doc(this)
   my_id = this
   if @valueOf
     # If we have "valueOf" function, "this" is boxed.
     my_id = @valueOf() # unbox it
-  BinaryData.findOne my_id
+  enhance_image_doc(BinaryData.findOne(my_id))
+
+# -------------------------------------------------------
 
 # @remove_binary_data is defined in ../vpn.coffee
 
