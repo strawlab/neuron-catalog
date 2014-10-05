@@ -2,19 +2,23 @@
 
     bin/build-docker.sh
 
-2. Run the docker container initially with:
+2. Run the database initially with:
+
+    bin/run-mongo.sh
+
+3. Run the docker container initially with:
 
     bin/run.sh
 
-3. Stop and restart the docker container with:
+4. Stop and restart the docker container with:
 
-    docker stop fly-neuron-catalog
-    docker start fly-neuron-catalog
-
+    docker stop neuron-catalog
+    docker start neuron-catalog
 
 # ---------------------
 
-To update once edits are made, stop the container, rebuild and do an
-initial run.sh. This will require re-naming the old container. FIXME:
-how to do this non-destructively. That would seem to require a
-solution to this: https://github.com/docker/docker/issues/3036
+To update (e.g. after editing the source), remove the old container:
+
+    docker rm -f neuron-catalog
+
+Then, repeat the above.
