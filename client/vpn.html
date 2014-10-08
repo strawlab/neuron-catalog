@@ -791,5 +791,20 @@
 </template>
 
 <template name="insert_image_dialog">
-  <input type="file" id="insert_image">
+  <div id="file_form_div">
+    <form role="form" id="insert_image_form">
+      <input type="file" id="insert_image">
+    </form>
+  </div>
+  <div class="upload_progress">
+    {{#each files}}
+      {{#if uploading}}
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent_uploaded}}%">
+            <span class="sr-only">{{percent_uploaded}}% Complete</span>
+	  </div>
+	</div>
+      {{/if}}
+    {{/each}}
+  </div>
 </template>

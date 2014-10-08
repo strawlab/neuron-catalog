@@ -39,22 +39,31 @@ Template.binary_data_from_id_block.binary_data_from_id = ->
 # @remove_binary_data is defined in ../vpn.coffee
 
 insert_image_save_func = (info, template) ->
+  # FIXME: disable save/cancel button
   fb = template.find("#insert_image")
-  fo = fb.files
+  upload_files = fb.files
+  # FIXME: assert size(upload_files)==1
   s3_dirname = "/" + info.body_template_data.field_name
-  S3.upload fo, s3_dirname, (error, result) ->
+  S3.upload upload_files, s3_dirname, (error, result) ->
+    # FIXME: close uploading dialog
+    # close dialog from launch_upload_progress_dialog
+    # Reenable the user to close the dialog.
+    $("#show_dialog_id").modal
+          backdrop: true
+          keyboard: true
+    $("#show_dialog_id").modal "hide"
+
     if error?
       # FIXME: do something on error
       console.log "ERROR"
       return
     doc =
-      name: fo[0].name
-      lastModifiedDate: fo[0].lastModifiedDate
+      name: upload_files[0].name
+      lastModifiedDate: upload_files[0].lastModifiedDate
       type: info.body_template_data.field_name
       url: result.url
       secure_url: result.secure_url
       relative_url: result.relative_url
-
     BinaryData.insert doc, (error, _id) ->
 
       # FIXME: be more useful. E.g. hide a "saving... popup"
@@ -71,14 +80,13 @@ insert_image_save_func = (info, template) ->
       t2[data.field_name] = myarr
       coll.update data["my_id"],
         $set: t2
-
+      template.find("#insert_image_form").reset() # remove filename
       return
-
     return
+  $("#file_form_div").hide()
+  {'launch_upload_progress_dialog':true}
 
-  {}
-
-Template.add_image_code.events "click .insert": (e, tmpl) ->
+Template.add_image_code.events "click .insert": (e, template) ->
   e.preventDefault()
   Session.set "modal_info",
     title: "Insert image"
@@ -89,8 +97,12 @@ Template.add_image_code.events "click .insert": (e, tmpl) ->
       field_name: "images"
 
   window.modal_save_func = insert_image_save_func
+  $("#file_form_div").show()
   $("#show_dialog_id").modal "show"
   return
 
 Template.binary_data.binary_data_cursor = ->
   BinaryData.find {}
+
+Template.insert_image_dialog.files = ->
+  S3.collection.find()

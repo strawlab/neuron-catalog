@@ -100,7 +100,13 @@ Template.show_dialog.events
       info.error = result.error
       Session.set "modal_info", info
     else
-      $("#show_dialog_id").modal "hide"
+      if result.launch_upload_progress_dialog
+        # Prevent the user from closing the dialog.
+        $("#show_dialog_id").modal
+          backdrop: "static"
+          keyboard: false
+      else
+        $("#show_dialog_id").modal "hide"
     return
 
 window.jump_table =
