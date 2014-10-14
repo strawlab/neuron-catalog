@@ -8,13 +8,15 @@ set -o errexit
 # and monthly backups going back for a year.
 
 # ultimate backup location -----------
-BACKUP_DIR=/var/lib/neuron-catalog-backups
+BACKUP_DIR1=/var/lib/neuron-catalog-backups/daily
+BACKUP_DIR2=/var/lib/neuron-catalog-backups/monthly
 WEEKDAY=$(date +"%A")
 MONTH=$(date +"%B")
-TARGET1="${BACKUP_DIR}/neuron-catalog-backup.${WEEKDAY}.tar.gz"
-TARGET2="${BACKUP_DIR}/neuron-catalog-backup.${MONTH}.tar.gz"
+TARGET1="${BACKUP_DIR1}/neuron-catalog-backup.${WEEKDAY}.tar.gz"
+TARGET2="${BACKUP_DIR2}/neuron-catalog-backup.${MONTH}.tar.gz"
 
-mkdir -p ${BACKUP_DIR}
+mkdir -p ${BACKUP_DIR1}
+mkdir -p ${BACKUP_DIR2}
 
 # make temp dir ----------------------
 TMPDIR="$(mktemp -d)"
