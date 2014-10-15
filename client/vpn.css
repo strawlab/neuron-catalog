@@ -140,3 +140,7 @@ div.image_square {
     max-width: 100%;
     max-height: 100%;
 }
+
+.bold {
+  font-weight: bold;
+}

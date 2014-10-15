@@ -15,6 +15,7 @@ Meteor.subscribe "driver_lines"
 Meteor.subscribe "neuron_types"
 Meteor.subscribe "neuropils"
 Meteor.subscribe "binary_data"
+Meteor.subscribe "neuron_catalog_config"
 
 # --------------------------------------------
 # session variables
@@ -235,3 +236,21 @@ Template.registerHelper "currentUser", ->
 Template.registerHelper "login_message", ->
   # Mimic the normal meteor accounts system from IronRouter template.
   "You must be logged in to see or add data."
+
+Template.registerHelper "config", ->
+  NeuronCatalogConfig.findOne({})
+
+setTitle = () ->
+  cfg = NeuronCatalogConfig.findOne {}
+  if cfg?
+    document.title = cfg.project_name
+  else
+    setTimeout(setTitle, 100)
+  return
+
+Meteor.startup ->
+  Deps.autorun ->
+    setTitle()
+    return
+
+  return

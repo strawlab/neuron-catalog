@@ -1,5 +1,5 @@
 <head>
-  <title>VPN project</title>
+  <title>neuron catalog</title>
 </head>
 
 <body>
@@ -64,24 +64,31 @@
   <h1>Neuron Catalog</h1>
 
   <p>
+    {{#with config}}
+      The data here are from the
+      project <span class="bold">{{{project_name}}}</span> by
+      <span class="bold">{{{data_authors}}}</span>. {{{blurb}}}
+    {{/with}}
+  </p>
+
+  <p>
     {{#if currentUser}}
-    Welcome back to our database.
+      Welcome back.
     {{else}}
-    Welcome to our database. {{login_message}}
+      Welcome. {{login_message}}
     {{/if}}
   </p>
 
   <p>This software was developed by
   the <a href="http://strawlab.org/">Straw Lab</a> and is based
-  on <a href="http://meteor.com/">Meteor</a>. The work was supported
-  by <a href="http://erc.europa.eu/">ERC</a> Starting Grant 281884
-  FlyVisualCircuits, by <a href="http://www.imp.ac.at/">IMP</a> core
-  funding, and an <a href="https://www.ffg.at/en">FFG</a> Competence
-  Headquarter grant 834223.</p>
-
-  Our project page is on GitHub <i class="fa fa-github"></i>
-  as <a href="https://github.com/strawlab/neuron-catalog">strawlab/neuron-catalog</a>.
-
+  on <a href="http://meteor.com/">Meteor</a>. The software development
+  was supported by <a href="http://erc.europa.eu/">ERC</a> Starting
+  Grant 281884 FlyVisualCircuits,
+  by <a href="http://www.imp.ac.at/">IMP</a> core funding. Software
+  development happens on GitHub <i class="fa fa-github"></i> in
+  the <a href="https://github.com/strawlab/neuron-catalog">strawlab/neuron-catalog</a>
+  project.
+  </p>
 
 </template>
 

@@ -2,6 +2,9 @@
 # Loaded on both the client and the server
 
 #////////////////////////////////////////////////////
+@NeuronCatalogConfig = new Meteor.Collection("neuron_catalog_config")
+
+#////////////////////////////////////////////////////
 @DriverLines = new Meteor.Collection("driver_lines")
 
 #
@@ -44,6 +47,19 @@
 #  x3dom_models: [ BinaryData(id), ... ]
 #
 if Meteor.isServer
+
+  Meteor.startup ->
+    if NeuronCatalogConfig.find().count() is 0
+      doc =
+        project_name: "neuron catalog"
+        data_authors: "authors"
+        blurb: ""
+      NeuronCatalogConfig.insert doc
+    return
+
+  Meteor.publish "neuron_catalog_config", ->
+    NeuronCatalogConfig.find {}
+
   Meteor.publish "driver_lines", ->
     DriverLines.find {}  if @userId
 
