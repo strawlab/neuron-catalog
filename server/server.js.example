@@ -1,4 +1,0 @@
-S3.config = {'key':"yourkey",
-	     'secret':"yoursecret",
-	     'bucket':"yourbucket",
-	     'region':"yourregion-optional"}
