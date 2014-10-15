@@ -61,15 +61,9 @@
 </template>
 
 <template name="home">
-  <h1>Neuron Catalog</h1>
-
-  <p>
-    {{#with config}}
-      The data here are from the
-      project <span class="bold">{{{project_name}}}</span> by
-      <span class="bold">{{{data_authors}}}</span>. {{{blurb}}}
-    {{/with}}
-  </p>
+  {{#with config}}
+    <h1>{{project_name}}</h1>
+  {{/with}}
 
   <p>
     {{#if currentUser}}
@@ -78,6 +72,28 @@
       Welcome. {{login_message}}
     {{/if}}
   </p>
+
+  {{#detail_block}}
+    {{#detail_title}}
+	About the data
+    {{/detail_title}}
+    {{#detail_main}}
+
+  <p>
+    {{#with config}}
+      The data here are from the
+      project <span class="bold">{{project_name}}</span> by
+      <span class="bold">{{{data_authors}}}</span>. {{{blurb}}}
+    {{/with}}
+  </p>
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+	About this website software
+    {{/detail_title}}
+    {{#detail_main}}
 
   <p>This software was developed by
   the <a href="http://strawlab.org/">Straw Lab</a> and is based
@@ -89,6 +105,9 @@
   the <a href="https://github.com/strawlab/neuron-catalog">strawlab/neuron-catalog</a>
   project.
   </p>
+
+    {{/detail_main}}
+  {{/detail_block}}
 
 </template>
 
