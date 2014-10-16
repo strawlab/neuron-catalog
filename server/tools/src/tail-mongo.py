@@ -20,8 +20,6 @@ def is_tiff(orig_rel_url):
     return orig_rel_url_lower.endswith('.tif') or orig_rel_url_lower.endswith('.tiff')
 
 def make_cache(doc, cache_url):
-    print("making cache for %s at URL_BASE%s"%( doc['secure_url'], cache_url ))
-
     cwd = tempfile.mkdtemp()
 
     try:
@@ -46,11 +44,10 @@ def make_cache(doc, cache_url):
         new_fname = os.path.split(cache_url)[-1]
         out_full = os.path.join( cwd, new_fname)
         convert(filename, out_full)
-        print("OUTPUT",out_full,"to",cache_url)
+        #print("OUTPUT",out_full,"to",cache_url)
         neuron_catalog_tools.upload(out_full, cache_url)
     finally:
         shutil.rmtree(cwd)
-        #print("see %r"%cwd)
 
 def convert(input_fname, output_fname):
     assert os.path.exists(input_fname)
@@ -66,20 +63,17 @@ def convert(input_fname, output_fname):
     assert os.path.exists(output_fname)
 
 def make_cache_if_needed(doc):
-    show_doc(doc)
+    #show_doc(doc)
 
     full_url = doc['secure_url']
     orig_rel_url = doc['relative_url']
     assert full_url.endswith(orig_rel_url)
     prefix = full_url[:-len(orig_rel_url)]
-    print('prefix',prefix)
     orig_prefix = '/images/'
     assert orig_rel_url.startswith(orig_prefix)
     if is_tiff(orig_rel_url):
         cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + '.png'
         if cache_url not in cache_urls:
-            print("cache_url not in cache_urls")
-            print("%s not in %s"%(cache_url, cache_urls))
             skip=False
             if 1:
                 # Check for cached image with raw HTTP HEAD
@@ -118,7 +112,7 @@ if 1:
     fill_cache()
     pump_new()
 
-    print('processed backlog, waiting for new images')
+    #print('processed backlog, waiting for new images')
 
     while 1:
         for doc in coll.find():
