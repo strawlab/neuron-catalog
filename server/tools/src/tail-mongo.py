@@ -1,10 +1,6 @@
-# see http://jwage.com/post/30490196727/mongodb-tailable-cursors
 from __future__ import print_function
-from pymongo import MongoClient
-import boto
 import os, sys, time
-
-mongodb_url = os.environ.get('MONGO_URL')
+import neuron_catalog_tools
 
 def show_doc(doc):
     print('---- %s -----'%doc['_id'])
@@ -42,7 +38,7 @@ def pump_new():
         result = make_cache_if_needed(doc)
 
 if 1:
-    db = MongoClient(mongodb_url).meteor
+    db = neuron_catalog_tools.get_db()
     coll = db.binary_data
 
     for doc in coll.find():
