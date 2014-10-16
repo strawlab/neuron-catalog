@@ -1,5 +1,6 @@
 #!/bin/bash
 
-docker run --rm \
+docker run -d \
     --link neuron-catalog-db:db \
+    --name neuron-catalog-upload-processor \
     strawlab/neuron-catalog-binary-upload-processor

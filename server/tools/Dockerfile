@@ -2,7 +2,7 @@ FROM dockerfile/mongodb
 RUN apt-get update
 RUN apt-get upgrade -y
 
-RUN apt-get install -y python-pymongo-ext python-boto
+RUN apt-get install -y python-pymongo-ext python-boto imagemagick
 ADD src /binary-upload-processor
 
 WORKDIR /binary-upload-processor
