@@ -10,13 +10,13 @@ enhance_image_doc = (doc) ->
     return doc
 
   url_lower = doc.secure_url.toLowerCase()
-  if endsWith(url_lower,".tif")
+  if endsWith(url_lower,".tif") or endsWith(url_lower,".tiff")
     # see https://gist.github.com/jlong/2428561 for parser trick
     parser = document.createElement('a');
     parser.href = doc.secure_url
     path_parts = parser.pathname.split('/')
     [blank, bucket, images, fname] = path_parts
-    pathname = [blank, bucket, 'cached', fname+'.png'].join('/')
+    pathname = [blank, bucket, 'cache', fname+'.png'].join('/')
     newurl = parser.protocol + '//' + parser.host + pathname
     doc.secure_url_notif = newurl
   else
