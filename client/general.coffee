@@ -101,13 +101,7 @@ Template.show_dialog.events
       info.error = result.error
       Session.set "modal_info", info
     else
-      if result.launch_upload_progress_dialog
-        # Prevent the user from closing the dialog.
-        $("#show_dialog_id").modal
-          backdrop: "static"
-          keyboard: false
-      else
-        $("#show_dialog_id").modal "hide"
+      $("#show_dialog_id").modal "hide"
     return
 
 window.jump_table =
@@ -200,6 +194,10 @@ Template.delete_button.events "click .delete": (e) ->
   $("#show_dialog_id").modal "show"
   return
 
+# -------------
+
+Template.show_upload_progress.files = ->
+  S3.collection.find()
 
 # ------- tab layout stuff ----
 Template.MyLayout.tab_attrs_home = ->
