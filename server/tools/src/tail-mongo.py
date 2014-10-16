@@ -66,33 +66,43 @@ def convert(input_fname, output_fname):
     subprocess.check_call(cmd, shell=True)
     assert os.path.exists(output_fname)
 
-def make_cache_if_needed(doc):
-    #show_doc(doc)
-
+def parse_urls_from_doc(doc):
     full_url = doc['secure_url']
     orig_rel_url = doc['relative_url']
     assert full_url.endswith(orig_rel_url)
     prefix = full_url[:-len(orig_rel_url)]
     orig_prefix = '/images/'
     assert orig_rel_url.startswith(orig_prefix)
+    cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + \
+                '.' + CACHE_FORMAT_EXTENSION
+    full_cache_url = prefix + '/'+ cache_url
+    return {'cache_url':cache_url,
+            'prefix':prefix,
+            'full_cache_url':full_cache_url,
+        }
+
+def make_cache_if_needed(doc):
+    #show_doc(doc)
+
+    z = parse_urls_from_doc(doc)
+
+    orig_rel_url = doc['relative_url']
     if is_tiff(orig_rel_url):
-        cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + \
-                    '.' + CACHE_FORMAT_EXTENSION
-        if cache_url not in cache_urls:
+        if z['cache_url'] not in cache_urls:
             skip=False
             if 1:
                 # Check for cached image with raw HTTP HEAD
                 # request. (Why is it not in boto cache? Maybe another
                 # process already made it.)
-                full_cache_url = prefix + '/'+ cache_url
-                resp = requests.head(full_cache_url)
+
+                resp = requests.head(z['full_cache_url'])
                 if resp.status_code==200:
                     # file already present
-                    cache_urls.add(cache_url)
+                    cache_urls.add(z['cache_url'])
                     skip = True
             if not skip:
-                make_cache(doc, cache_url)
-                cache_urls.add(cache_url)
+                make_cache(doc, z['cache_url'])
+                cache_urls.add(z['cache_url'])
 
 def pump_new():
     while len(new_docs):
@@ -120,10 +130,20 @@ if 1:
     #print('processed backlog, waiting for new images')
 
     while 1:
+        this_cache_urls = set()
         for doc in coll.find():
             d_id = doc['_id']
             if d_id not in seen_docs:
                 new_docs.append( doc )
                 seen_docs.add( d_id )
+            this_cache_urls.add( parse_urls_from_doc(doc)['cache_url'] )
+
+        delete_cache_set = cache_urls - this_cache_urls
+        for cache_url in delete_cache_set:
+            # delete stale cached image
+            bucket = neuron_catalog_tools.get_s3_bucket()
+            bucket.delete_key(cache_url)
+            cache_urls.remove( cache_url )
+
         pump_new()
-        time.sleep(0.5)
+        time.sleep(2.0)
