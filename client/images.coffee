@@ -16,7 +16,7 @@ enhance_image_doc = (doc) ->
     parser.href = doc.secure_url
     path_parts = parser.pathname.split('/')
     [blank, bucket, images, fname] = path_parts
-    pathname = [blank, bucket, 'cache', fname+'.png'].join('/')
+    pathname = [blank, bucket, 'cache', fname+'.jpg'].join('/')
     newurl = parser.protocol + '//' + parser.host + pathname
     doc.secure_url_notif = newurl
   else

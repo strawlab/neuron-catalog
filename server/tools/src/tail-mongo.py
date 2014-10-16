@@ -3,6 +3,10 @@ import os, sys, time, tempfile, subprocess, shutil
 import requests
 import neuron_catalog_tools
 
+CACHE_DIR_NAME = 'cache'
+CACHE_FORMAT_EXTENSION = 'jpg'
+CACHE_FORMAT_SIPS_NAME = 'jpeg'
+
 def show_doc(doc):
     print('---- %s -----'%doc['_id'])
     for k in doc:
@@ -13,7 +17,6 @@ def show_doc(doc):
 new_docs = []
 seen_docs = set()
 cache_urls = set()
-CACHE_DIR_NAME = 'cache'
 
 def is_tiff(orig_rel_url):
     orig_rel_url_lower = orig_rel_url.lower()
@@ -54,7 +57,8 @@ def convert(input_fname, output_fname):
     assert not os.path.exists(output_fname)
 
     if sys.platform.startswith('darwin'):
-        cmd = "sips -s format png %s --out %s"%(input_fname, output_fname)
+        cmd = "sips -s format %s %s --out %s"%(CACHE_FORMAT_SIPS_NAME,
+                                               input_fname, output_fname)
     else:
         assert sys.platform.startswith('linux')
         cmd = ['convert',input_fname,output_fname]
@@ -72,7 +76,8 @@ def make_cache_if_needed(doc):
     orig_prefix = '/images/'
     assert orig_rel_url.startswith(orig_prefix)
     if is_tiff(orig_rel_url):
-        cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + '.png'
+        cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + \
+                    '.' + CACHE_FORMAT_EXTENSION
         if cache_url not in cache_urls:
             skip=False
             if 1:
