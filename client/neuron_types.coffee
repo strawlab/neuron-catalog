@@ -126,7 +126,7 @@ Template.neuron_type_show.events
     e.preventDefault()
     Session.set "modal_info",
       title: "Edit neuropils"
-      body_template_name: window.jump_table["NeuronTypes"].edit_neuropils_template_name
+      body_template_name: "edit_neuropils"
       body_template_data:
         my_id: @_id
         collection_name: "NeuronTypes"

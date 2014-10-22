@@ -123,7 +123,6 @@ window.jump_table =
     element_route: "driver_line_show"
     base_route: "driver_lines"
     edit_neuron_types_template_name: "edit_neuron_types"
-    edit_neuropils_template_name: "edit_neuropils"
 
   NeuronTypes:
     remove: (x) ->
@@ -137,7 +136,6 @@ window.jump_table =
     element_route: "neuron_type_show"
     base_route: "neuron_types"
     edit_driver_lines_template_name: "edit_driver_lines"
-    edit_neuropils_template_name: "edit_neuropils"
 
   Neuropils:
     remove: (x) ->
