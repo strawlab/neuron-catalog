@@ -42,10 +42,12 @@ Template.comments_panel.events
 
     return
 
+url_converter = (url) ->
+  url
+
 Template.show_comments.show_markdown = (comment) ->
   untrustedCode = converter.makeHtml(comment.comment)
-  sanitized = html_sanitize( untrustedCode )
-  sanitized
+  html_sanitize( untrustedCode, url_converter )
 
 Template.show_comments.wrapped_comments = ->
   result = []
