@@ -112,7 +112,7 @@ Template.neuron_type_show.events
     e.preventDefault()
     Session.set "modal_info",
       title: "Edit best driver lines"
-      body_template_name: window.jump_table["NeuronTypes"].edit_driver_lines_template_name
+      body_template_name: "edit_driver_lines"
       body_template_data:
         my_id: @_id
         collection_name: "NeuronTypes"

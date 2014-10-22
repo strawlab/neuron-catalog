@@ -135,7 +135,6 @@ window.jump_table =
     delete_template_name: "neuron_type_show_brief"
     element_route: "neuron_type_show"
     base_route: "neuron_types"
-    edit_driver_lines_template_name: "edit_driver_lines"
 
   Neuropils:
     remove: (x) ->
