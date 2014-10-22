@@ -116,6 +116,7 @@ Template.neuron_type_show.events
       body_template_data:
         my_id: @_id
         collection_name: "NeuronTypes"
+      is_save_modal: true
 
     window.modal_save_func = edit_driver_lines_save_func
     $("#show_dialog_id").modal "show"
@@ -129,6 +130,7 @@ Template.neuron_type_show.events
       body_template_data:
         my_id: @_id
         collection_name: "NeuronTypes"
+      is_save_modal: true
 
     window.modal_save_func = edit_neuropils_save_func
     $("#show_dialog_id").modal "show"
@@ -172,6 +174,7 @@ Template.neuron_types.events "click .insert": (e) ->
     title: "Add neuron type"
     collection: coll
     body_template_name: window.jump_table[coll].insert_template_name
+    is_save_modal: true
 
   window.modal_save_func = window.jump_table[coll].save
   $("#show_dialog_id").modal "show"

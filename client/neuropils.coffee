@@ -86,6 +86,7 @@ Template.neuropils.events "click .insert": (e) ->
     title: "Add neuropil"
     collection: coll
     body_template_name: window.jump_table[coll].insert_template_name
+    is_save_modal: true
 
   window.modal_save_func = window.jump_table[coll].save
   $("#show_dialog_id").modal "show"

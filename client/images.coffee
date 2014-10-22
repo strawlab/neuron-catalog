@@ -109,6 +109,7 @@ Template.add_image_code.events "click .insert": (e, template) ->
       my_id: @my_id
       collection: @collection
       field_name: "images"
+    is_save_modal: true
 
   window.modal_save_func = insert_image_save_func
   $("#file_form_div").show()

@@ -79,9 +79,15 @@ activateInput = (input) ->
 
 
 # --------------------------------------------
+Template.raw_document_view.raw_document = ->
+  coll = window.get_collection_from_name(@collection)
+  doc = coll.findOne({_id: @my_id})
+  JSON.stringify doc, `undefined`, 2
+
+# --------------------------------------------
+
 Template.show_dialog.modal_info = ->
-  tmp = Session.get("modal_info")
-  tmp
+  Session.get("modal_info")
 
 Template.show_dialog.events
   "click .delete": (e) ->
@@ -180,6 +186,7 @@ Template.name_field.events window.okCancelEvents("#name_input",
     Session.set "editing_name", null
     return
 )
+
 Template.delete_button.events "click .delete": (e) ->
   e.preventDefault()
   Session.set "modal_info",
@@ -189,6 +196,23 @@ Template.delete_button.events "click .delete": (e) ->
     body_template_name: window.jump_table[@collection].delete_template_name
     body_template_data: @my_id
     is_delete_modal: true
+
+  window.modal_save_func = null
+  $("#show_dialog_id").modal "show"
+  return
+
+# -------------
+
+Template.raw_button.events "click .raw": (e) ->
+  e.preventDefault()
+  Session.set "modal_info",
+    title: "Raw document view"
+    collection: @collection
+    my_id: @my_id
+    body_template_name: "raw_document_view"
+    body_template_data:
+      collection: @collection
+      my_id: @my_id
 
   window.modal_save_func = null
   $("#show_dialog_id").modal "show"

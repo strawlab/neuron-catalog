@@ -75,6 +75,7 @@ Template.driver_line_show.events
       body_template_data:
         my_id: @_id
         collection_name: "DriverLines"
+      is_save_modal: true
 
     window.modal_save_func = edit_neuron_types_save_func
     $("#show_dialog_id").modal "show"
@@ -88,6 +89,7 @@ Template.driver_line_show.events
       body_template_data:
         my_id: @_id
         collection_name: "DriverLines"
+      is_save_modal: true
 
     window.modal_save_func = edit_neuropils_save_func
     $("#show_dialog_id").modal "show"
@@ -105,6 +107,7 @@ Template.driver_lines.events "click .insert": (e) ->
     title: "Add driver line"
     collection: coll
     body_template_name: window.jump_table[coll].insert_template_name
+    is_save_modal: true
 
   window.modal_save_func = window.jump_table[coll].save
   $("#show_dialog_id").modal "show"

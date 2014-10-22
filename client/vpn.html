@@ -126,6 +126,19 @@
   <a class="btn btn-danger btn-small delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
 </template>
 
+<template name="raw_button">
+  <a class="btn btn-default btn-small right-buttons raw" href="#"><i class="fa fa-terminal"></i> View raw document</a>
+</template>
+
+<template name="raw_document_view">
+  <div>
+    This document is in the collection: <span class="code">{{collection}}</span>
+  </div>
+  <div>
+    <pre>{{raw_document}}</pre>
+  </div>
+</template>
+
 <template name="driver_line_from_id_block">
   {{#with driver_line_from_id}}
     {{> UI.contentBlock this}}
@@ -328,6 +341,7 @@
         Driver Line:
         {{> name_field collection="DriverLines" my_id=_id name=name}}
         {{> delete_button collection="DriverLines" my_id=_id}}
+        {{> raw_button collection="DriverLines" my_id=_id}}
     {{/detail_title_top}}
   {{/detail_block_top}}
 
@@ -429,6 +443,7 @@
         Image:
         {{> name_field collection="BinaryData" my_id=_id name=name}}
         {{> delete_button collection="BinaryData" my_id=_id}}
+        {{> raw_button collection="BinaryData" my_id=_id}}
     {{/detail_title_top}}
   {{/detail_block_top}}
 
@@ -495,6 +510,7 @@
 	Neuron type:
         {{> name_field collection="NeuronTypes" my_id=_id name=name}}
         {{> delete_button collection="NeuronTypes" my_id=_id}}
+        {{> raw_button collection="NeuronTypes" my_id=_id}}
     {{/detail_title_top}}
   {{/detail_block_top}}
 
@@ -642,6 +658,7 @@
       Neuropil:
       {{> name_field collection="Neuropils" my_id=_id name=name}}
       {{> delete_button collection="Neuropils" my_id=_id}}
+      {{> raw_button collection="Neuropils" my_id=_id}}
     {{/detail_title_top}}
   {{/detail_block_top}}
 
@@ -714,9 +731,10 @@
 	<div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	  {{#if is_delete_modal}}
-          <button type="button" class="btn btn-danger delete">Delete</button>
-	  {{else}}
-          <button type="button" class="btn btn-primary save">Save</button>
+            <button type="button" class="btn btn-danger delete">Delete</button>
+	  {{/if}}
+	  {{#if is_save_modal}}
+            <button type="button" class="btn btn-primary save">Save</button>
 	  {{/if}}
 	</div>
       </div><!-- /.modal-content -->
@@ -831,6 +849,7 @@
     <a href="{{pathFor 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url_notif}}" alt={{name}}></a>
     {{name}}
     {{> delete_button collection="BinaryData" my_id=_id}}
+    {{> raw_button collection="BinaryData" my_id=_id}}
   </div>
   {{/binary_data_from_id_block}}
   {{/each}}
