@@ -78,12 +78,13 @@ div.indiv-comment {
     border: 1px solid;
     margin: 5px;
     padding: 3px;
-    margin-right:50px;
+    margin-right:63px;
 }
 
 div.remove-indiv-comment {
-    width:45px;
+    width:55px;
     float:right;
+    margin-right:3px;
 }
 
 div.detail-title-top {

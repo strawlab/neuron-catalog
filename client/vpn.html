@@ -831,7 +831,14 @@
   {{#each wrapped_comments}}
   <div>
     <div class="remove-indiv-comment">
-      <a class="btn btn-danger delete" href="#" title="delete comment"><i class="fa fa-trash-o"></i></a>
+      <div>
+	<a class="btn btn-danger btn-small delete" href="#" title="delete comment"><i class="fa fa-trash-o"></i> delete</a>
+      </div>
+<!--
+      <div>
+	<a class="btn btn-default btn-small edit" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      </div>
+-->
     </div>
     <div class="indiv-comment">
       {{{show_markdown comment}}}
