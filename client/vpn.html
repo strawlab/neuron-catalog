@@ -62,9 +62,13 @@
 </template>
 
 <template name="home">
-  {{#with config}}
-    <h1>{{project_name}}</h1>
-  {{/with}}
+  {{#detail_block_top}}
+    {{#detail_title_top}}
+      {{#with config}}
+        {{project_name}}
+      {{/with}}
+    {{/detail_title_top}}
+  {{/detail_block_top}}
 
   <p>
     {{#if currentUser}}
@@ -351,6 +355,8 @@
     {{#detail_title_top}}
       All Driver Lines
     {{/detail_title_top}}
+  {{/detail_block_top}}
+  {{#detail_block}}
     {{#detail_main}}
 
       {{> driver_line_table driver_lines=driver_line_cursor}}
@@ -362,7 +368,7 @@
         {{login_message}}
       {{/if}}
     {{/detail_main}}
-  {{/detail_block_top}}
+  {{/detail_block}}
 
 </template>
 
@@ -467,11 +473,13 @@
     {{#detail_title_top}}
       All Binary Data
     {{/detail_title_top}}
+  {{/detail_block_top}}
+  {{#detail_block}}
     {{#detail_main}}
         <br/>
         {{> binary_data_table binary_data=binary_data_cursor}}
     {{/detail_main}}
-  {{/detail_block_top}}
+  {{/detail_block}}
 </template>
 
 <template name="binary_data_show">
@@ -521,6 +529,9 @@
     {{#detail_title_top}}
   All Neuron Types
     {{/detail_title_top}}
+  {{/detail_block_top}}
+
+  {{#detail_block}}
     {{#detail_main}}
 
   {{> neuron_type_table neuron_types=neuron_type_cursor}}
@@ -532,7 +543,7 @@
   {{login_message}}
   {{/if}}
     {{/detail_main}}
-  {{/detail_block_top}}
+  {{/detail_block}}
 </template>
 
 <template name="neuron_type_show_brief">
@@ -687,6 +698,8 @@
     {{#detail_title_top}}
       All Neuropils
     {{/detail_title_top}}
+  {{/detail_block_top}}
+  {{#detail_block}}
     {{#detail_main}}
   {{> neuropil_table neuropils=neuropil_cursor}}
 
@@ -697,7 +710,7 @@
   {{login_message}}
   {{/if}}
     {{/detail_main}}
-  {{/detail_block_top}}
+  {{/detail_block}}
 
 </template>
 
