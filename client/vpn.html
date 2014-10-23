@@ -513,7 +513,7 @@
   {{/detail_block_top}}
 
   {{#detail_block}}
-  <div class="image_square">
+  <div class="image-square">
     <a href="{{pathFor 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url_notif}}" alt={{name}}></a>
     {{name}}
   </div>
@@ -960,7 +960,7 @@
 <template name="binary_data_table">
   {{#each binary_data}}
   {{#binary_data_from_id_block}}
-  <div class="image_square">
+  <div class="image-square">
     <a href="{{pathFor 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url_notif}}" alt={{name}}></a>
     {{name}}
     {{> delete_button collection="BinaryData" my_id=_id}}
