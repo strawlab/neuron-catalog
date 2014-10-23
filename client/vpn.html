@@ -62,13 +62,11 @@
 </template>
 
 <template name="home">
-  {{#detail_block_top}}
-    {{#detail_title_top}}
-      {{#with config}}
-        {{project_name}}
-      {{/with}}
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{#top_content_row}}
+    {{#with config}}
+      {{project_name}}
+    {{/with}}
+  {{/top_content_row}}
 
   <p>
     {{#if currentUser}}
@@ -165,16 +163,6 @@
   {{#with neuropil_from_id}}
     {{> UI.contentBlock this}}
   {{/with}}
-</template>
-
-<template name="detail_block_top">
-  {{> UI.contentBlock this}}
-</template>
-
-<template name="detail_title_top">
-  <div class="detail-title-top sticky-top">
-    {{> UI.contentBlock this}}
-  </div>
 </template>
 
 <template name="detail_block">
@@ -350,12 +338,17 @@
 
 <!-- --------------------------- -->
 
+<template name="top_content_row">
+  <div class="detail-title-top sticky-top">
+    {{> UI.contentBlock this}}
+  </div>
+</template>
+
 <template name="driver_lines">
-  {{#detail_block_top}}
-    {{#detail_title_top}}
+  {{#top_content_row}}
       All Driver Lines
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{/top_content_row}}
+
   {{#detail_block}}
     {{#detail_main}}
 
@@ -380,14 +373,12 @@
 
 <template name="driver_line_show">
   {{#driver_line_from_id_block}}
-  {{#detail_block_top}}
-    {{#detail_title_top}}
+  {{#top_content_row}}
         Driver Line:
         {{> name_field collection="DriverLines" my_id=_id name=name}}
         {{> delete_button collection="DriverLines" my_id=_id}}
         {{> raw_button collection="DriverLines" my_id=_id}}
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{/top_content_row}}
 
   {{#if is_vt_gal4_line}}
   {{#detail_block}}
@@ -469,11 +460,10 @@
 <!-- --------------------------- -->
 
 <template name="binary_data">
-  {{#detail_block_top}}
-    {{#detail_title_top}}
+  {{#top_content_row}}
       All Binary Data
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{/top_content_row}}
+
   {{#detail_block}}
     {{#detail_main}}
         <br/>
@@ -484,14 +474,12 @@
 
 <template name="binary_data_show">
   {{#binary_data_from_id_block}}
-  {{#detail_block_top}}
-    {{#detail_title_top}}
+  {{#top_content_row}}
         Image:
         {{> name_field collection="BinaryData" my_id=_id name=name}}
         {{> delete_button collection="BinaryData" my_id=_id}}
         {{> raw_button collection="BinaryData" my_id=_id}}
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{/top_content_row}}
 
   {{#detail_block}}
 
@@ -506,11 +494,9 @@
 
 <template name="binary_data_show_brief">
   {{#binary_data_from_id_block}}
-  {{#detail_block_top}}
-    {{#detail_title_top}}
-        Image: {{name}}
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{#top_content_row}}
+    Image: {{name}}
+  {{/top_content_row}}
 
   {{#detail_block}}
   <div class="image-square">
@@ -525,11 +511,9 @@
 <!-- --------------------------- -->
 
 <template name="neuron_types">
-  {{#detail_block_top}}
-    {{#detail_title_top}}
-  All Neuron Types
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{#top_content_row}}
+    All Neuron Types
+  {{/top_content_row}}
 
   {{#detail_block}}
     {{#detail_main}}
@@ -554,14 +538,12 @@
 
 <template name="neuron_type_show">
   {{#neuron_type_from_id_block}}
-  {{#detail_block_top}}
-    {{#detail_title_top}}
+  {{#top_content_row}}
 	Neuron type:
         {{> name_field collection="NeuronTypes" my_id=_id name=name}}
         {{> delete_button collection="NeuronTypes" my_id=_id}}
         {{> raw_button collection="NeuronTypes" my_id=_id}}
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{/top_content_row}}
 
   {{#detail_block}}
     {{#detail_title}}
@@ -694,11 +676,10 @@
 <!-- --------------------------- -->
 
 <template name="neuropils">
-  {{#detail_block_top}}
-    {{#detail_title_top}}
+  {{#top_content_row}}
       All Neuropils
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{/top_content_row}}
+
   {{#detail_block}}
     {{#detail_main}}
   {{> neuropil_table neuropils=neuropil_cursor}}
@@ -723,14 +704,12 @@
 <template name="neuropil_show">
   {{#neuropil_from_id_block}}
 
-  {{#detail_block_top}}
-    {{#detail_title_top}}
+  {{#top_content_row}}
       Neuropil:
       {{> name_field collection="Neuropils" my_id=_id name=name}}
       {{> delete_button collection="Neuropils" my_id=_id}}
       {{> raw_button collection="Neuropils" my_id=_id}}
-    {{/detail_title_top}}
-  {{/detail_block_top}}
+  {{/top_content_row}}
 
   {{#detail_block}}
     {{#detail_title}}
