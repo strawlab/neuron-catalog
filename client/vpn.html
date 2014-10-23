@@ -249,7 +249,9 @@
 	<th>Neuron type</th>
 	<th>Synonyms</th>
 	<th>Best driver lines</th>
-	<th>Neuropils</th>
+	<th>Neuropils (nonspecific expression)</th>
+	<th>Output neuropils</th>
+	<th>Input neuropils</th>
       </tr>
     </thead>
     <tbody>
@@ -272,10 +274,24 @@
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each neuropils}}
-          {{#neuropil_from_id_block}}
-          <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
-          {{/neuropil_from_id_block}}
+	  {{#each get_neuropils this "unspecified"}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_neuropils this "output"}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_neuropils this "input"}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
 	  {{/each}}
 	</td>
       </tr>
