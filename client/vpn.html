@@ -276,6 +276,7 @@
 	<th>Neuropil</th>
 	<th>Driver lines</th>
 	<th>Neuron types</th>
+	<th>Expression type</th>
       </tr>
     </thead>
     <tbody>
@@ -297,6 +298,11 @@
           {{#neuron_type_from_id_block}}
           <a href="{{pathFor 'neuron_type_show'}}"><span {{zxkp}}>{{name}}</span></a>
           {{/neuron_type_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each my_types}}
+	    {{this}}
 	  {{/each}}
 	</td>
       </tr>

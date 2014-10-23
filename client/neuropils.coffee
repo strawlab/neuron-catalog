@@ -1,14 +1,32 @@
 Template.neuropil_from_id_block.neuropil_from_id = ->
-  if @_id
-    # already a doc
-    return this
+# We can get called 3 ways:
+# 1) From something that keeps track of what expression type is in the neuropil.
+# 2) Already as a full document from the database.
+# 3) As just an id to the neuropil.
+  if @type?
+    # This is case #1 described above.
+    # object with keys ["_id", "type"]:
+    my_id = @_id
+    my_types = @type
+    insert_types = true
+  else
+    insert_types = false
+    if @_id?
+      # This is case #2 described above.
+      # already a doc
+      return this
 
-  my_id = this
-  if @valueOf
-    # If we have "valueOf" function, "this" is boxed.
-    my_id = @valueOf() # unbox it
+    # This is case #3 described above.
+    my_id = this
 
-  Neuropils.findOne my_id
+    if @valueOf
+      # If we have "valueOf" function, "this" is boxed.
+      my_id = @valueOf() # unbox it
+
+  result = Neuropils.findOne my_id
+  if insert_types
+    result.my_types = my_types
+  result
 
 neuropil_insert_callback = (error, _id) ->
   # FIXME: be more useful. E.g. hide a "saving... popup"
@@ -64,17 +82,20 @@ Template.edit_neuropils.neuropils = ->
   result
 
 fill_from = (selector, template, neuropil_type, result) ->
-  for node of template.findAll(selector)
+  for node in template.findAll(selector)
+    console.log node
     if node.checked
       if !result.hasOwnProperty(node.id)
         result[node.id] = []
       result[node.id].push neuropil_type
+      console.log "adding ",neuropil_type,"to",node.id
+  console.log "new result",result
   return
 
 dict2arr = (neuropils) ->
   result = []
   for _id, tarr of neuropils
-    result.push( [_id, tarr] )
+    result.push( {"_id":_id, "type":tarr} )
   result
 
 @edit_neuropils_save_func = (info, template) ->
