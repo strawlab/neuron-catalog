@@ -244,6 +244,15 @@ Template.MyLayout.tab_attrs_neuropils = ->
 UI.body.getData = ->
   "data"
 
+# --------
+
+Template.registerHelper "get_neuropils", (doc,type) ->
+  result = []
+  for neuropil in doc.neuropils
+    if type in neuropil.type
+      result.push neuropil
+  result
+
 Template.registerHelper "zxkp", ->
   #  return {'class':'label label-default'};
   class: "zxkp"

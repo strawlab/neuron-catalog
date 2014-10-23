@@ -115,11 +115,15 @@ dict2arr = (neuropils) ->
   {}
 
 Template.neuropil_show.driver_lines_referencing_me = ->
-  DriverLines.find neuropils: @_id
+  DriverLines.find neuropils:
+    $elemMatch:
+      _id: @_id
 
 Template.neuropil_table.driver_lines_referencing_me = Template.neuropil_show.driver_lines_referencing_me
 Template.neuropil_show.neuron_types_referencing_me = ->
-  NeuronTypes.find neuropils: @_id
+  NeuronTypes.find neuropils:
+    $elemMatch:
+      _id: @_id
 
 Template.neuropil_table.neuron_types_referencing_me = Template.neuropil_show.neuron_types_referencing_me
 
