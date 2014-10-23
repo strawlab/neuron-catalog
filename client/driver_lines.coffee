@@ -70,7 +70,7 @@ Template.driver_line_show.events
   "click .edit-neuron-types": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit neuron types"
+      title: "Edit neuron types for driver line "+@name
       body_template_name: window.jump_table["DriverLines"].edit_neuron_types_template_name
       body_template_data:
         my_id: @_id
@@ -84,7 +84,7 @@ Template.driver_line_show.events
   "click .edit-neuropils": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit neuropils"
+      title: "Edit neuropils for driver line "+@name
       body_template_name: "edit_neuropils"
       body_template_data:
         my_id: @_id
@@ -106,7 +106,7 @@ Template.driver_lines.events "click .insert": (e) ->
   Session.set "modal_info",
     title: "Add driver line"
     collection: coll
-    body_template_name: window.jump_table[coll].insert_template_name
+    body_template_name: "driver_line_insert"
     is_save_modal: true
 
   window.modal_save_func = window.jump_table[coll].save
@@ -136,11 +136,14 @@ driver_line_insert_callback = (error, _id) ->
   for i of r1
     node = r1[i]
     doc.neuron_types.push node.id  if node.checked
-  doc.neuropils = []
-  r1 = template.findAll(".neuropils")
-  for i of r1
-    node = r1[i]
-    doc.neuropils.push node.id  if node.checked
+
+  neuropils = {}
+  neuropil_fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
+  neuropil_fill_from(".neuropils-output",template,"output",neuropils)
+  neuropil_fill_from(".neuropils-input",template,"input",neuropils)
+  neuropils = neuropil_dict2arr(neuropils)
+
+  doc.neuropils = neuropils
 
   # report errors
   if errors.length > 0

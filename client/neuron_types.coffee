@@ -1,3 +1,5 @@
+# ---- Template.neuron_type_from_id_block ---------------
+
 Template.neuron_type_from_id_block.neuron_type_from_id = ->
   if @_id
     # already a doc
@@ -7,6 +9,8 @@ Template.neuron_type_from_id_block.neuron_type_from_id = ->
     # If we have "valueOf" function, "this" is boxed.
     my_id = @valueOf() # unbox it
   NeuronTypes.findOne my_id
+
+# ---- Template.neuron_type_insert ---------------
 
 Template.neuron_type_insert.driver_lines = ->
   DriverLines.find()
@@ -37,11 +41,13 @@ neuron_type_insert_callback = (error, _id) ->
   #   node = r1[i]
   #   doc.best_driver_lines.push node.id  if node.checked
 
-  doc.neuropils = []
-  r1 = template.findAll(".neuropils")
-  for i of r1
-    node = r1[i]
-    doc.neuropils.push node.id  if node.checked
+  neuropils = {}
+  neuropil_fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
+  neuropil_fill_from(".neuropils-output",template,"output",neuropils)
+  neuropil_fill_from(".neuropils-input",template,"input",neuropils)
+  neuropils = neuropil_dict2arr(neuropils)
+
+  doc.neuropils = neuropils
 
   # report errors
   if errors.length > 0
@@ -53,6 +59,8 @@ neuron_type_insert_callback = (error, _id) ->
   # save result
   NeuronTypes.insert doc, neuron_type_insert_callback
   result
+
+# ---- Template.edit_neuron_types -----------------
 
 Template.edit_neuron_types.neuron_types = ->
   result = []
@@ -67,6 +75,8 @@ Template.edit_neuron_types.neuron_types = ->
     return
 
   result
+
+# ---- Template.neuron_type_show ---------------
 
 Template.neuron_type_show.events window.okCancelEvents("#edit_synonym_input",
   ok: (value) ->
@@ -111,7 +121,7 @@ Template.neuron_type_show.events
   "click .edit-driver-lines": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit best driver lines"
+      title: "Edit best driver lines for neuron type "+@name
       body_template_name: "edit_driver_lines"
       body_template_data:
         my_id: @_id
@@ -125,7 +135,7 @@ Template.neuron_type_show.events
   "click .edit-neuropils": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit neuropils"
+      title: "Edit neuropils for neuron type "+@name
       body_template_name: "edit_neuropils"
       body_template_data:
         my_id: @_id
@@ -167,13 +177,15 @@ Template.neuron_type_show.synonym_dicts = ->
 Template.neuron_type_show.driver_lines_referencing_me = ->
   DriverLines.find neuron_types: @_id
 
+# ---- Template.neuron_types ---------------
+
 Template.neuron_types.events "click .insert": (e) ->
   e.preventDefault()
   coll = "NeuronTypes"
   Session.set "modal_info",
     title: "Add neuron type"
     collection: coll
-    body_template_name: window.jump_table[coll].insert_template_name
+    body_template_name: "neuron_type_insert"
     is_save_modal: true
 
   window.modal_save_func = window.jump_table[coll].save

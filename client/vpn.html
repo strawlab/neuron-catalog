@@ -195,7 +195,9 @@
       <tr>
 	<th>Driver line</th>
 	<th>Neuron types</th>
-	<th>Neuropils</th>
+	<th>Neuropils (nonspecific expression)</th>
+	<th>Output neuropils</th>
+	<th>Input neuropils</th>
       </tr>
     </thead>
     <tbody>
@@ -203,19 +205,33 @@
       {{#driver_line_from_id_block}}
       <tr>
 	<td>
-	  <a href="{{pathFor 'driver_line_show'}}"><span {{zxkp}}>{{name}}</span></a>
+	  <a href="{{pathFor 'driver_line_show'}}"><span class="keep-together">{{name}}</span></a>
 	</td>
 	<td>
 	  {{#each neuron_types}}
 	  {{#neuron_type_from_id_block}}
-	  <a href="{{pathFor 'neuron_type_show'}}"><span {{zxkp}}>{{name}}</span></a>
+	  <a href="{{pathFor 'neuron_type_show'}}"><span class="keep-together">{{name}}</span></a>
 	  {{/neuron_type_from_id_block}}
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each neuropils}}
+	  {{#each get_neuropils this "unspecified"}}
 	  {{#neuropil_from_id_block}}
-	  <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
+	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_neuropils this "output"}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_neuropils this "input"}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
 	  {{/neuropil_from_id_block}}
 	  {{/each}}
 	</td>
@@ -233,7 +249,9 @@
 	<th>Neuron type</th>
 	<th>Synonyms</th>
 	<th>Best driver lines</th>
-	<th>Neuropils</th>
+	<th>Neuropils (nonspecific expression)</th>
+	<th>Output neuropils</th>
+	<th>Input neuropils</th>
       </tr>
     </thead>
     <tbody>
@@ -241,25 +259,39 @@
       {{#neuron_type_from_id_block}}
       <tr>
 	<td>
-	  <a href="{{pathFor 'neuron_type_show'}}"><span {{zxkp}}>{{name}}</span></a>
+	  <a href="{{pathFor 'neuron_type_show'}}"><span class="keep-together">{{name}}</span></a>
 	</td>
 	<td>
 	  {{#each synonyms}}
-	  <span {{zxkp}}>{{this}}</span>
+	  <span class="keep-together">{{this}}</span>
 	  {{/each}}
 	</td>
 	<td>
 	  {{#each best_driver_lines}}
           {{#driver_line_from_id_block}}
-            <a href="{{pathFor 'driver_line_show'}}"><span {{zxkp}}>{{name}}</span></a>
+            <a href="{{pathFor 'driver_line_show'}}"><span class="keep-together">{{name}}</span></a>
           {{/driver_line_from_id_block}}
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each neuropils}}
-          {{#neuropil_from_id_block}}
-          <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
-          {{/neuropil_from_id_block}}
+	  {{#each get_neuropils this "unspecified"}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_neuropils this "output"}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_neuropils this "input"}}
+	  {{#neuropil_from_id_block}}
+	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/neuropil_from_id_block}}
 	  {{/each}}
 	</td>
       </tr>
@@ -276,6 +308,7 @@
 	<th>Neuropil</th>
 	<th>Driver lines</th>
 	<th>Neuron types</th>
+	<th>Expression type</th>
       </tr>
     </thead>
     <tbody>
@@ -283,20 +316,25 @@
       {{#neuropil_from_id_block}}
       <tr>
 	<td>
-          <a href="{{pathFor 'neuropil_show'}}"><span {{zxkp}}>{{name}}</span></a>
+          <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
 	</td>
 	<td>
 	  {{#each driver_lines_referencing_me}}
           {{#driver_line_from_id_block}}
-          <a href="{{pathFor 'driver_line_show'}}"><span {{zxkp}}>{{name}}</span></a>
+          <a href="{{pathFor 'driver_line_show'}}"><span class="keep-together">{{name}}</span></a>
           {{/driver_line_from_id_block}}
 	  {{/each}}
 	</td>
 	<td>
 	  {{#each neuron_types_referencing_me}}
           {{#neuron_type_from_id_block}}
-          <a href="{{pathFor 'neuron_type_show'}}"><span {{zxkp}}>{{name}}</span></a>
+          <a href="{{pathFor 'neuron_type_show'}}"><span class="keep-together">{{name}}</span></a>
           {{/neuron_type_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each my_types}}
+	    {{this}}
 	  {{/each}}
 	</td>
       </tr>
@@ -612,13 +650,32 @@
   <div>
     <div><h4>neuropils</h4></div>
     <div>
+      <table class="table table-striped">
+	<thead><tr>
+	    <td>unspecific</td>
+	    <td>output regions (presynaptic)</td>
+	    <td>input regions (postsynaptic)</td>
+	    <td>name</td>
+	</tr></thead>
+	<tbody>
       {{#each neuropils}}
-      <div class="checkbox">
-	<label>
-	  <input type="checkbox" class="neuropils" id={{_id}} checked={{is_checked}}> {{name}}
-	</label>
-      </div>
+	<tr>
+	  <td>
+            <input type="checkbox" class="neuropils-unspecified" id={{_id}} checked={{unspecific_is_checked}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="neuropils-output" id={{_id}} checked={{output_is_checked}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="neuropils-input" id={{_id}} checked={{input_is_checked}}>
+	  </td>
+	  <td>
+            {{name}}
+	  </td>
+	</tr>
       {{/each}}
+	</tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -766,13 +823,32 @@
     <div>
       <div><h4>neuropils</h4></div>
       <div>
+      <table class="table table-striped">
+	<thead><tr>
+	    <td>unspecific</td>
+	    <td>output regions (presynaptic)</td>
+	    <td>input regions (postsynaptic)</td>
+	    <td>name</td>
+	</tr></thead>
+	<tbody>
 	{{#each neuropils}}
-	<div class="checkbox">
-	  <label>
-	    <input type="checkbox" class="neuropils" id={{_id}}> {{name}}
-	  </label>
-	</div>
+	<tr>
+	  <td>
+            <input type="checkbox" class="neuropils-unspecified" id={{_id}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="neuropils-output" id={{_id}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="neuropils-input" id={{_id}}>
+	  </td>
+	  <td>
+            {{name}}
+	  </td>
+	</tr>
 	{{/each}}
+	</tbody>
+      </table>
       </div>
     </div>
   </form>
@@ -786,13 +862,32 @@
     <div>
       <div><h4>neuropils</h4></div>
       <div>
+      <table class="table table-striped">
+	<thead><tr>
+	    <td>unspecific</td>
+	    <td>output regions (presynaptic)</td>
+	    <td>input regions (postsynaptic)</td>
+	    <td>name</td>
+	</tr></thead>
+	<tbody>
 	{{#each neuropils}}
-	<div class="checkbox">
-	  <label>
-	    <input type="checkbox" class="neuropils" id={{_id}}> {{name}}
-	  </label>
-	</div>
+	<tr>
+	  <td>
+            <input type="checkbox" class="neuropils-unspecified" id={{_id}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="neuropils-output" id={{_id}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="neuropils-input" id={{_id}}>
+	  </td>
+	  <td>
+            {{name}}
+	  </td>
+	</tr>
 	{{/each}}
+	</tbody>
+      </table>
       </div>
     </div>
 

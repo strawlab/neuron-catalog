@@ -118,7 +118,6 @@ window.jump_table =
     save: (info, template) ->
       save_driver_line info, template
 
-    insert_template_name: "driver_line_insert"
     delete_template_name: "driver_line_show_brief"
     element_route: "driver_line_show"
     base_route: "driver_lines"
@@ -131,7 +130,6 @@ window.jump_table =
     save: (info, template) ->
       save_neuron_type info, template
 
-    insert_template_name: "neuron_type_insert"
     delete_template_name: "neuron_type_show_brief"
     element_route: "neuron_type_show"
     base_route: "neuron_types"
@@ -143,7 +141,6 @@ window.jump_table =
     save: (info, template) ->
       save_neuropil info, template
 
-    insert_template_name: "neuropil_insert"
     delete_template_name: "neuropil_show_brief"
     element_route: "neuropil_show"
     base_route: "neuropils"
@@ -244,9 +241,14 @@ Template.MyLayout.tab_attrs_neuropils = ->
 UI.body.getData = ->
   "data"
 
-Template.registerHelper "zxkp", ->
-  #  return {'class':'label label-default'};
-  class: "zxkp"
+# --------
+
+Template.registerHelper "get_neuropils", (doc,type) ->
+  result = []
+  for neuropil in doc.neuropils
+    if type in neuropil.type
+      result.push neuropil
+  result
 
 Template.registerHelper "currentUser", ->
   # Mimic the normal meteor accounts system from IronRouter template.
