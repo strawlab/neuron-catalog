@@ -84,13 +84,10 @@ Template.edit_neuropils.neuropils = ->
 
 @neuropil_fill_from = (selector, template, neuropil_type, result) ->
   for node in template.findAll(selector)
-    console.log node
     if node.checked
       if !result.hasOwnProperty(node.id)
         result[node.id] = []
       result[node.id].push neuropil_type
-      console.log "adding ",neuropil_type,"to",node.id
-  console.log "new result",result
   return
 
 @neuropil_dict2arr = (neuropils) ->
