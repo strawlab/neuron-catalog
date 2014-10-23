@@ -121,7 +121,7 @@ Template.neuron_type_show.events
   "click .edit-driver-lines": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit best driver lines"
+      title: "Edit best driver lines for neuron type "+@name
       body_template_name: "edit_driver_lines"
       body_template_data:
         my_id: @_id
@@ -135,7 +135,7 @@ Template.neuron_type_show.events
   "click .edit-neuropils": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit neuropils"
+      title: "Edit neuropils for neuron type "+@name
       body_template_name: "edit_neuropils"
       body_template_data:
         my_id: @_id

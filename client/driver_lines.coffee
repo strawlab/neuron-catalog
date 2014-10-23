@@ -70,7 +70,7 @@ Template.driver_line_show.events
   "click .edit-neuron-types": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit neuron types"
+      title: "Edit neuron types for driver line "+@name
       body_template_name: window.jump_table["DriverLines"].edit_neuron_types_template_name
       body_template_data:
         my_id: @_id
@@ -84,7 +84,7 @@ Template.driver_line_show.events
   "click .edit-neuropils": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit neuropils"
+      title: "Edit neuropils for driver line "+@name
       body_template_name: "edit_neuropils"
       body_template_data:
         my_id: @_id
