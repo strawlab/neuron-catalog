@@ -24,6 +24,7 @@ Template.neuropil_from_id_block.neuropil_from_id = ->
       my_id = @valueOf() # unbox it
 
   result = Neuropils.findOne my_id
+  result.my_types = []
   if insert_types
     result.my_types = my_types
   result
