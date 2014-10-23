@@ -80,7 +80,7 @@ Template.edit_neuropils.neuropils = ->
 
   result
 
-fill_from = (selector, template, neuropil_type, result) ->
+@neuropil_fill_from = (selector, template, neuropil_type, result) ->
   for node in template.findAll(selector)
     console.log node
     if node.checked
@@ -91,7 +91,7 @@ fill_from = (selector, template, neuropil_type, result) ->
   console.log "new result",result
   return
 
-dict2arr = (neuropils) ->
+@neuropil_dict2arr = (neuropils) ->
   result = []
   for _id, tarr of neuropils
     result.push( {"_id":_id, "type":tarr} )
@@ -101,10 +101,10 @@ dict2arr = (neuropils) ->
   my_id = Session.get("modal_info").body_template_data.my_id
 
   neuropils = {}
-  fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
-  fill_from(".neuropils-output",template,"output",neuropils)
-  fill_from(".neuropils-input",template,"input",neuropils)
-  neuropils = dict2arr(neuropils)
+  neuropil_fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
+  neuropil_fill_from(".neuropils-output",template,"output",neuropils)
+  neuropil_fill_from(".neuropils-input",template,"input",neuropils)
+  neuropils = neuropil_dict2arr(neuropils)
 
   coll_name = Session.get("modal_info").body_template_data.collection_name
   collection = window.get_collection_from_name(coll_name)
