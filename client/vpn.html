@@ -10,7 +10,7 @@
   {{> show_upload_progress}}
   <div class="container-fluid">
 
-   <div class="row">
+   <div class="row sticky-top">
     <div class="col-md-10 col-md-offset-1">
       <div class="right-buttons">
 	<div class="side-by-side">
@@ -22,7 +22,7 @@
       </div>
     </div>
    </div>
-   <div class="row">
+   <div class="row sticky-top">
     <div class="col-md-10 col-md-offset-1">
       <ul class="nav nav-tabs" role="tablist">
 	<li {{tab_attrs_home}}><a href="{{pathFor 'home'}}">home</a></li>
@@ -172,7 +172,7 @@
 </template>
 
 <template name="detail_title_top">
-  <div class="detail-title-top">
+  <div class="detail-title-top sticky-top">
     {{> UI.contentBlock this}}
   </div>
 </template>

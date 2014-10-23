@@ -97,6 +97,9 @@ div.detail-title-top {
      width: 100%;
 }
 
+.sticky-top {
+}
+
 div.detail-title {
      display: inline-block;
      line-height: 1.1;
