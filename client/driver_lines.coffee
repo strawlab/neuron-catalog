@@ -136,11 +136,14 @@ driver_line_insert_callback = (error, _id) ->
   for i of r1
     node = r1[i]
     doc.neuron_types.push node.id  if node.checked
-  doc.neuropils = []
-  r1 = template.findAll(".neuropils")
-  for i of r1
-    node = r1[i]
-    doc.neuropils.push node.id  if node.checked
+
+  neuropils = {}
+  neuropil_fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
+  neuropil_fill_from(".neuropils-output",template,"output",neuropils)
+  neuropil_fill_from(".neuropils-input",template,"input",neuropils)
+  neuropils = neuropil_dict2arr(neuropils)
+
+  doc.neuropils = neuropils
 
   # report errors
   if errors.length > 0

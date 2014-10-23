@@ -817,13 +817,32 @@
     <div>
       <div><h4>neuropils</h4></div>
       <div>
+      <table class="table table-striped">
+	<thead><tr>
+	    <td>unspecific</td>
+	    <td>output regions (presynaptic)</td>
+	    <td>input regions (postsynaptic)</td>
+	    <td>name</td>
+	</tr></thead>
+	<tbody>
 	{{#each neuropils}}
-	<div class="checkbox">
-	  <label>
-	    <input type="checkbox" class="neuropils" id={{_id}}> {{name}}
-	  </label>
-	</div>
+	<tr>
+	  <td>
+            <input type="checkbox" class="neuropils-unspecified" id={{_id}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="neuropils-output" id={{_id}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="neuropils-input" id={{_id}}>
+	  </td>
+	  <td>
+            {{name}}
+	  </td>
+	</tr>
 	{{/each}}
+	</tbody>
+      </table>
       </div>
     </div>
   </form>
