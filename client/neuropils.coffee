@@ -68,12 +68,14 @@ Template.edit_neuropils.neuropils = ->
     doc.output_is_checked = false
     doc.input_is_checked = false
 
-    if myself.neuropils_unspecific? and myself.neuropils_unspecific.indexOf(doc._id) != -1
-      doc.unspecific_is_checked = true
-    if myself.neuropils_output? and myself.neuropils_output.indexOf(doc._id) != -1
-      doc.output_is_checked = true
-    if myself.neuropils_input? and myself.neuropils_input.indexOf(doc._id) != -1
-      doc.input_is_checked = true
+    for tmp in myself.neuropils
+      if tmp._id == doc._id
+        if "unspecific" in tmp.type
+          doc.unspecific_is_checked = true
+        if "output" in tmp.type
+          doc.output_is_checked = true
+        if "input" in tmp.type
+          doc.input_is_checked = true
 
     result.push doc
     return
