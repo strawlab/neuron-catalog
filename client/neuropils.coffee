@@ -71,7 +71,7 @@ Template.edit_neuropils.neuropils = ->
 
     for tmp in myself.neuropils
       if tmp._id == doc._id
-        if "unspecific" in tmp.type
+        if "unspecified" in tmp.type
           doc.unspecific_is_checked = true
         if "output" in tmp.type
           doc.output_is_checked = true
