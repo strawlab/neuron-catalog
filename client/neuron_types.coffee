@@ -1,3 +1,5 @@
+# ---- Template.neuron_type_from_id_block ---------------
+
 Template.neuron_type_from_id_block.neuron_type_from_id = ->
   if @_id
     # already a doc
@@ -7,6 +9,8 @@ Template.neuron_type_from_id_block.neuron_type_from_id = ->
     # If we have "valueOf" function, "this" is boxed.
     my_id = @valueOf() # unbox it
   NeuronTypes.findOne my_id
+
+# ---- Template.neuron_type_insert ---------------
 
 Template.neuron_type_insert.driver_lines = ->
   DriverLines.find()
@@ -54,6 +58,8 @@ neuron_type_insert_callback = (error, _id) ->
   NeuronTypes.insert doc, neuron_type_insert_callback
   result
 
+# ---- Template.edit_neuron_types -----------------
+
 Template.edit_neuron_types.neuron_types = ->
   result = []
   collection = window.get_collection_from_name(@collection_name)
@@ -67,6 +73,8 @@ Template.edit_neuron_types.neuron_types = ->
     return
 
   result
+
+# ---- Template.neuron_type_show ---------------
 
 Template.neuron_type_show.events window.okCancelEvents("#edit_synonym_input",
   ok: (value) ->
@@ -166,6 +174,8 @@ Template.neuron_type_show.synonym_dicts = ->
 
 Template.neuron_type_show.driver_lines_referencing_me = ->
   DriverLines.find neuron_types: @_id
+
+# ---- Template.neuron_types ---------------
 
 Template.neuron_types.events "click .insert": (e) ->
   e.preventDefault()
