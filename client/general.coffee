@@ -253,10 +253,6 @@ Template.registerHelper "get_neuropils", (doc,type) ->
       result.push neuropil
   result
 
-Template.registerHelper "zxkp", ->
-  #  return {'class':'label label-default'};
-  class: "zxkp"
-
 Template.registerHelper "currentUser", ->
   # Mimic the normal meteor accounts system from IronRouter template.
   Meteor.user()
