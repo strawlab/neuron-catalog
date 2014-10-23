@@ -106,7 +106,7 @@ Template.driver_lines.events "click .insert": (e) ->
   Session.set "modal_info",
     title: "Add driver line"
     collection: coll
-    body_template_name: window.jump_table[coll].insert_template_name
+    body_template_name: "driver_line_insert"
     is_save_modal: true
 
   window.modal_save_func = window.jump_table[coll].save

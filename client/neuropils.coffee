@@ -133,7 +133,7 @@ Template.neuropils.events "click .insert": (e) ->
   Session.set "modal_info",
     title: "Add neuropil"
     collection: coll
-    body_template_name: window.jump_table[coll].insert_template_name
+    body_template_name: "neuropil_insert"
     is_save_modal: true
 
   window.modal_save_func = window.jump_table[coll].save
