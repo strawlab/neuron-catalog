@@ -64,16 +64,15 @@ Template.edit_neuropils.neuropils = ->
   collection = window.get_collection_from_name(@collection_name)
   myself = collection.findOne(_id: @my_id)
   Neuropils.find().forEach (doc) ->
-    if myself.neuropils.indexOf(doc._id) is -1
-      doc.unspecific_is_checked = false
-    else
-      doc.unspecific_is_checked = true
+    doc.unspecific_is_checked = false
     doc.output_is_checked = false
     doc.input_is_checked = false
 
-    if myself.output_neuropils? and myself.output_neuropils.indexOf(doc._id) != -1
+    if myself.neuropils_unspecific? and myself.neuropils_unspecific.indexOf(doc._id) != -1
+      doc.unspecific_is_checked = true
+    if myself.neuropils_output? and myself.neuropils_output.indexOf(doc._id) != -1
       doc.output_is_checked = true
-    if myself.input_neuropils? and myself.input_neuropils.indexOf(doc._id) != -1
+    if myself.neuropils_input? and myself.neuropils_input.indexOf(doc._id) != -1
       doc.input_is_checked = true
 
     result.push doc
