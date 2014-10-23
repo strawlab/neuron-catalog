@@ -101,9 +101,9 @@ dict2arr = (neuropils) ->
   my_id = Session.get("modal_info").body_template_data.my_id
 
   neuropils = {}
-  fill_from(".neuropils",template,"unspecified",neuropils)
-  fill_from(".output-neuropils",template,"output",neuropils)
-  fill_from(".input-neuropils",template,"input",neuropils)
+  fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
+  fill_from(".neuropils-output",template,"output",neuropils)
+  fill_from(".neuropils-input",template,"input",neuropils)
   neuropils = dict2arr(neuropils)
 
   coll_name = Session.get("modal_info").body_template_data.collection_name
