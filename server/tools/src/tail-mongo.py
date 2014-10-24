@@ -71,7 +71,16 @@ def parse_urls_from_doc(doc):
     orig_rel_url = doc['relative_url']
     assert full_url.endswith(orig_rel_url)
     prefix = full_url[:-len(orig_rel_url)]
-    orig_prefix = '/images/'
+
+    if orig_rel_url.startswith('/images/'):
+        my_type = 'images'
+    elif orig_rel_url.startswith('/volumes/'):
+        my_type = 'volumes'
+    else:
+        raise RuntimeError('unknown directory: %r'%orig_rel_url)
+
+    orig_prefix = '/'+my_type+'/'
+
     assert orig_rel_url.startswith(orig_prefix)
     cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + \
                 '.' + CACHE_FORMAT_EXTENSION
@@ -79,6 +88,7 @@ def parse_urls_from_doc(doc):
     return {'cache_url':cache_url,
             'prefix':prefix,
             'full_cache_url':full_cache_url,
+            'type':my_type,
         }
 
 def make_cache_if_needed(doc):
