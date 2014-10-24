@@ -35,6 +35,10 @@ Template.binary_data_from_id_block.binary_data_from_id = ->
   enhance_image_doc(BinaryData.findOne(my_id))
 
 # -------------------------------------------------------
+Template.binary_data_show.binary_data_type = ->
+  @type.slice(0,-1)
+
+# -------------------------------------------------------
 
 # @remove_binary_data is defined in ../vpn.coffee
 
