@@ -28,13 +28,18 @@
 }
 
 span.keep-together {
-display: inline;
-padding: .2em .6em .3em;
-line-height: 1;
-text-align: center;
-white-space: nowrap;
-vertical-align: baseline;
-border-radius: .25em;
+    display: inline;
+    padding: .1em;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border: 1px solid;
+
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -o-border-radius: .25em;
 }
 
 .synonyms_div {
