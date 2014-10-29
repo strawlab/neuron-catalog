@@ -33,36 +33,39 @@ enhance_driver_line_doc = (doc) ->
     doc.brainbase_url = "http://brainbase.imp.ac.at/bbweb/#6?st=byline&q="+vt_number_str
   doc
 
-Template.driver_line_from_id_block.driver_line_from_id = ->
-  if @_id
-    # already a doc
-    return enhance_driver_line_doc(this)
-  my_id = this
-  if @valueOf
-    # If we have "valueOf" function, "this" is boxed.
-    my_id = @valueOf() # unbox it
-  enhance_driver_line_doc(DriverLines.findOne(my_id))
+Template.driver_line_from_id_block.helpers
+  driver_line_from_id: ->
+    if @_id
+      # already a doc
+      return enhance_driver_line_doc(this)
+    my_id = this
+    if @valueOf
+      # If we have "valueOf" function, "this" is boxed.
+      my_id = @valueOf() # unbox it
+    enhance_driver_line_doc(DriverLines.findOne(my_id))
 
 # ---- Template.driver_line_insert -------------
 
-Template.driver_line_insert.neuron_types = ->
-  NeuronTypes.find()
+Template.driver_line_insert.helpers
+  neuron_types: ->
+    NeuronTypes.find()
 
-Template.driver_line_insert.neuropils = ->
-  Neuropils.find()
+  neuropils: ->
+    Neuropils.find()
 
 # ---- Template.edit_driver_lines -------------
 
-Template.edit_driver_lines.driver_lines = ->
-  result = []
-  collection = window.get_collection_from_name(@collection_name)
-  myself = collection.findOne(_id: @my_id)
-  DriverLines.find().forEach (doc) ->
-    doc.is_checked = false
-    doc.is_checked = true  unless myself.best_driver_lines.indexOf(doc._id) is -1  if myself.hasOwnProperty("best_driver_lines")
-    result.push doc
-    return
-  result
+Template.edit_driver_lines.helpers
+  driver_lines: ->
+    result = []
+    collection = window.get_collection_from_name(@collection_name)
+    myself = collection.findOne(_id: @my_id)
+    DriverLines.find().forEach (doc) ->
+      doc.is_checked = false
+      doc.is_checked = true  unless myself.best_driver_lines.indexOf(doc._id) is -1  if myself.hasOwnProperty("best_driver_lines")
+      result.push doc
+      return
+    result
 
 # ---- Template.driver_line_show -------------
 
@@ -97,21 +100,23 @@ Template.driver_line_show.events
 
 # ---- Template.driver_lines -------------
 
-Template.driver_lines.driver_line_cursor = ->
-  DriverLines.find {}
+Template.driver_lines.helpers
+  driver_line_cursor: ->
+    DriverLines.find {}
 
-Template.driver_lines.events "click .insert": (e) ->
-  e.preventDefault()
-  coll = "DriverLines"
-  Session.set "modal_info",
-    title: "Add driver line"
-    collection: coll
-    body_template_name: "driver_line_insert"
-    is_save_modal: true
+Template.driver_lines.events
+  "click .insert": (e) ->
+    e.preventDefault()
+    coll = "DriverLines"
+    Session.set "modal_info",
+      title: "Add driver line"
+      collection: coll
+      body_template_name: "driver_line_insert"
+      is_save_modal: true
 
-  window.modal_save_func = window.jump_table[coll].save
-  $("#show_dialog_id").modal "show"
-  return
+    window.modal_save_func = window.jump_table[coll].save
+    $("#show_dialog_id").modal "show"
+    return
 
 # ------------- general functions --------
 

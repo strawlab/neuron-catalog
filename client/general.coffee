@@ -79,14 +79,15 @@ activateInput = (input) ->
 
 
 # --------------------------------------------
-Template.raw_document_view.raw_document = ->
-  coll = window.get_collection_from_name(@collection)
-  doc = coll.findOne({_id: @my_id})
-  JSON.stringify doc, `undefined`, 2
+Template.raw_document_view.helpers
+  raw_document: ->
+    coll = window.get_collection_from_name(@collection)
+    doc = coll.findOne({_id: @my_id})
+    JSON.stringify doc, `undefined`, 2
 
 # --------------------------------------------
 
-Template.show_dialog.modal_info = ->
+Template.show_dialog.helpers modal_info: ->
   Session.get("modal_info")
 
 Template.show_dialog.events
@@ -152,94 +153,101 @@ window.jump_table =
     delete_template_name: "binary_data_show_brief"
     base_route: "binary_data"
 
-Template.name_field.editing_name = ->
-  d = Session.get("editing_name")
-  return false  unless d?
-  return true  if @my_id is d.my_id & @collection is d.collection
-  false
+Template.name_field.helpers
+  editing_name: ->
+    d = Session.get("editing_name")
+    return false  unless d?
+    return true  if @my_id is d.my_id & @collection is d.collection
+    false
 
-Template.name_field.events "click .edit-name": (e, tmpl) ->
-  Session.set "editing_name", tmpl.data
-  Deps.flush() # update DOM before focus
-  ni = tmpl.find("#name_input")
-  ni.value = @name
-  activateInput ni
-  return
-
-Template.name_field.events window.okCancelEvents("#name_input",
-  ok: (value) ->
-    coll = window.get_collection_from_name(@collection)
-    coll.update @my_id,
-      $set:
-        name: value
-
-    Session.set "editing_name", null
+Template.name_field.events
+  "click .edit-name": (e, tmpl) ->
+    Session.set "editing_name", tmpl.data
+    Deps.flush() # update DOM before focus
+    ni = tmpl.find("#name_input")
+    ni.value = @name
+    activateInput ni
     return
 
-  cancel: ->
-    Session.set "editing_name", null
-    return
-)
+  window.okCancelEvents("#name_input",
+    ok: (value) ->
+      coll = window.get_collection_from_name(@collection)
+      coll.update @my_id,
+        $set:
+          name: value
 
-Template.delete_button.events "click .delete": (e) ->
-  e.preventDefault()
-  Session.set "modal_info",
-    title: "Do you want to delete this?"
-    collection: @collection
-    my_id: @my_id
-    body_template_name: window.jump_table[@collection].delete_template_name
-    body_template_data: @my_id
-    is_delete_modal: true
+      Session.set "editing_name", null
+      return
 
-  window.modal_save_func = null
-  $("#show_dialog_id").modal "show"
-  return
+    cancel: ->
+      Session.set "editing_name", null
+      return
+  )
 
-# -------------
-
-Template.raw_button.events "click .raw": (e) ->
-  e.preventDefault()
-  Session.set "modal_info",
-    title: "Raw document view"
-    collection: @collection
-    my_id: @my_id
-    body_template_name: "raw_document_view"
-    body_template_data:
+Template.delete_button.events
+  "click .delete": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Do you want to delete this?"
       collection: @collection
       my_id: @my_id
+      body_template_name: window.jump_table[@collection].delete_template_name
+      body_template_data: @my_id
+      is_delete_modal: true
 
-  window.modal_save_func = null
-  $("#show_dialog_id").modal "show"
-  return
+    window.modal_save_func = null
+    $("#show_dialog_id").modal "show"
+    return
 
 # -------------
 
-Template.show_upload_progress.files = ->
-  S3.collection.find()
+Template.raw_button.events
+  "click .raw": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Raw document view"
+      collection: @collection
+      my_id: @my_id
+      body_template_name: "raw_document_view"
+      body_template_data:
+        collection: @collection
+        my_id: @my_id
+
+    window.modal_save_func = null
+    $("#show_dialog_id").modal "show"
+    return
+
+# -------------
+
+Template.show_upload_progress.helpers
+  files: ->
+    S3.collection.find()
 
 # ------- tab layout stuff ----
-Template.MyLayout.tab_attrs_home = ->
-  current = Router.current()
-  class: "active"  if current and current.route.name is "home"
+Template.MyLayout.helpers
+  tab_attrs_home: ->
+    current = Router.current()
+    class: "active"  if current and current.route.name is "home"
 
-Template.MyLayout.tab_attrs_driver_lines = ->
-  cur = Router.current()
-  class: "active"  if cur and cur.route.name is "driver_lines" or cur.route.name is "driver_line_show"
+  tab_attrs_driver_lines: ->
+    cur = Router.current()
+    class: "active"  if cur and cur.route.name is "driver_lines" or cur.route.name is "driver_line_show"
 
-Template.MyLayout.tab_attrs_binary_data = ->
-  cur = Router.current()
-  class: "active"  if cur and cur.route.name is "binary_data" or cur.route.name is "binary_data_show"
+  tab_attrs_binary_data: ->
+    cur = Router.current()
+    class: "active"  if cur and cur.route.name is "binary_data" or cur.route.name is "binary_data_show"
 
-Template.MyLayout.tab_attrs_neuron_types = ->
-  cur = Router.current()
-  class: "active"  if cur and cur.route.name is "neuron_types" or cur.route.name is "neuron_type_show"
+  tab_attrs_neuron_types: ->
+    cur = Router.current()
+    class: "active"  if cur and cur.route.name is "neuron_types" or cur.route.name is "neuron_type_show"
 
-Template.MyLayout.tab_attrs_neuropils = ->
-  cur = Router.current()
-  class: "active"  if cur and cur.route.name is "neuropils" or cur.route.name is "neuropil_show"
+  tab_attrs_neuropils: ->
+    cur = Router.current()
+    class: "active"  if cur and cur.route.name is "neuropils" or cur.route.name is "neuropil_show"
 
-UI.body.getData = ->
-  "data"
+UI.body.helpers
+  getData: ->
+    "data"
 
 # --------
 

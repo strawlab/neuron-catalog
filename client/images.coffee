@@ -23,20 +23,22 @@ enhance_image_doc = (doc) ->
     doc.secure_url_notif = doc.secure_url
   doc
 
-Template.binary_data_from_id_block.binary_data_from_id = ->
+Template.binary_data_from_id_block.helpers
+  binary_data_from_id: ->
 
-  if @_id
-    # already a doc
-    return enhance_image_doc(this)
-  my_id = this
-  if @valueOf
-    # If we have "valueOf" function, "this" is boxed.
-    my_id = @valueOf() # unbox it
-  enhance_image_doc(BinaryData.findOne(my_id))
+    if @_id
+      # already a doc
+      return enhance_image_doc(this)
+    my_id = this
+    if @valueOf
+      # If we have "valueOf" function, "this" is boxed.
+      my_id = @valueOf() # unbox it
+    enhance_image_doc(BinaryData.findOne(my_id))
 
 # -------------------------------------------------------
-Template.binary_data_show.binary_data_type = ->
-  @type.slice(0,-1)
+Template.binary_data_show.helpers
+  binary_data_type: ->
+    @type.slice(0,-1)
 
 # -------------------------------------------------------
 
@@ -104,21 +106,24 @@ insert_image_save_func = (info, template) ->
   $("#file_form_div").hide()
   return {}
 
-Template.add_image_code.events "click .insert": (e, template) ->
-  e.preventDefault()
-  Session.set "modal_info",
-    title: "Insert "+@what
-    body_template_name: "insert_image_dialog"
-    body_template_data:
-      my_id: @my_id
-      collection: @collection
-      field_name: @what + "s"
-    is_save_modal: true
 
-  window.modal_save_func = insert_image_save_func
-  $("#file_form_div").show()
-  $("#show_dialog_id").modal "show"
-  return
+Template.add_image_code.events
+  "click .insert": (e, template) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Insert "+@what
+      body_template_name: "insert_image_dialog"
+      body_template_data:
+        my_id: @my_id
+        collection: @collection
+        field_name: @what + "s"
+      is_save_modal: true
 
-Template.binary_data.binary_data_cursor = ->
-  BinaryData.find {}
+    window.modal_save_func = insert_image_save_func
+    $("#file_form_div").show()
+    $("#show_dialog_id").modal "show"
+    return
+
+Template.binary_data.helpers
+  binary_data_cursor: ->
+    BinaryData.find {}

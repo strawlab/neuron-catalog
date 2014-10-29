@@ -1,16 +1,17 @@
 converter = new Showdown.converter();
 
-Template.comments_panel.comment_preview = ->
-  Session.get "comment_preview_html"
+Template.comments_panel.helpers
+  comment_preview: ->
+    Session.get "comment_preview_html"
 
-Template.comments_panel.is_previewing_comment = ->
-  Session.equals "comment_preview_mode", true
+  is_previewing_comment: ->
+    Session.equals "comment_preview_mode", true
 
-Template.comments_panel.is_writing_attrs = ->
-  "vis-hidden"  if Session.equals("comment_preview_mode", true)
+  is_writing_attrs: ->
+    "vis-hidden"  if Session.equals("comment_preview_mode", true)
 
-Template.comments_panel.is_previewing_attrs = ->
-  "vis-hidden"  if Session.equals("comment_preview_mode", false)
+  is_previewing_attrs: ->
+    "vis-hidden"  if Session.equals("comment_preview_mode", false)
 
 Template.comments_panel.events
   "click .write-comment": (event, template) ->
@@ -45,26 +46,28 @@ Template.comments_panel.events
 url_converter = (url) ->
   url
 
-Template.show_comments.show_markdown = (comment) ->
-  untrustedCode = converter.makeHtml(comment.comment)
-  html_sanitize( untrustedCode, url_converter )
+Template.show_comments.helpers
+  show_markdown: (comment) ->
+    untrustedCode = converter.makeHtml(comment.comment)
+    html_sanitize( untrustedCode, url_converter )
 
-Template.show_comments.wrapped_comments = ->
-  result = []
-  for i of @comments
-    doc = {}
-    doc.comment = @comments[i]
-    doc.parent_show_name = @show_name
-    doc.parent_id = @_id
-    result.push doc
-  result
+  wrapped_comments: ->
+    result = []
+    for i of @comments
+      doc = {}
+      doc.comment = @comments[i]
+      doc.parent_show_name = @show_name
+      doc.parent_id = @_id
+      result.push doc
+    result
 
-Template.show_comments.events "click .delete": (evt, tmpl) ->
-  collection = window.get_collection_from_name(@parent_show_name)
-  collection.update
-    _id: @parent_id
-  ,
-    $pull:
-      comments: @comment
+Template.show_comments.events
+  "click .delete": (evt, tmpl) ->
+    collection = window.get_collection_from_name(@parent_show_name)
+    collection.update
+      _id: @parent_id
+    ,
+      $pull:
+        comments: @comment
 
-  return
+    return

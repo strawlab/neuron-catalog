@@ -1,33 +1,34 @@
-Template.neuropil_from_id_block.neuropil_from_id = ->
-# We can get called 3 ways:
-# 1) From something that keeps track of what expression type is in the neuropil.
-# 2) Already as a full document from the database.
-# 3) As just an id to the neuropil.
-  if @type?
-    # This is case #1 described above.
-    # object with keys ["_id", "type"]:
-    my_id = @_id
-    my_types = @type
-    insert_types = true
-  else
-    insert_types = false
-    if @_id?
-      # This is case #2 described above.
-      # already a doc
-      return this
+Template.neuropil_from_id_block.helpers
+  neuropil_from_id: ->
+  # We can get called 3 ways:
+  # 1) From something that keeps track of what expression type is in the neuropil.
+  # 2) Already as a full document from the database.
+  # 3) As just an id to the neuropil.
+    if @type?
+      # This is case #1 described above.
+      # object with keys ["_id", "type"]:
+      my_id = @_id
+      my_types = @type
+      insert_types = true
+    else
+      insert_types = false
+      if @_id?
+        # This is case #2 described above.
+        # already a doc
+        return this
 
-    # This is case #3 described above.
-    my_id = this
+      # This is case #3 described above.
+      my_id = this
 
-    if @valueOf
-      # If we have "valueOf" function, "this" is boxed.
-      my_id = @valueOf() # unbox it
+      if @valueOf
+        # If we have "valueOf" function, "this" is boxed.
+        my_id = @valueOf() # unbox it
 
-  result = Neuropils.findOne my_id
-  result.my_types = []
-  if insert_types
-    result.my_types = my_types
-  result
+    result = Neuropils.findOne my_id
+    result.my_types = []
+    if insert_types
+      result.my_types = my_types
+    result
 
 neuropil_insert_callback = (error, _id) ->
   # FIXME: be more useful. E.g. hide a "saving... popup"
@@ -60,28 +61,29 @@ neuropil_insert_callback = (error, _id) ->
   , neuropil_insert_callback
   result
 
-Template.edit_neuropils.neuropils = ->
-  result = []
-  collection = window.get_collection_from_name(@collection_name)
-  myself = collection.findOne(_id: @my_id)
-  Neuropils.find().forEach (doc) ->
-    doc.unspecific_is_checked = false
-    doc.output_is_checked = false
-    doc.input_is_checked = false
+Template.edit_neuropils.helpers
+  neuropils: ->
+    result = []
+    collection = window.get_collection_from_name(@collection_name)
+    myself = collection.findOne(_id: @my_id)
+    Neuropils.find().forEach (doc) ->
+      doc.unspecific_is_checked = false
+      doc.output_is_checked = false
+      doc.input_is_checked = false
 
-    for tmp in myself.neuropils
-      if tmp._id == doc._id
-        if "unspecified" in tmp.type
-          doc.unspecific_is_checked = true
-        if "output" in tmp.type
-          doc.output_is_checked = true
-        if "input" in tmp.type
-          doc.input_is_checked = true
+      for tmp in myself.neuropils
+        if tmp._id == doc._id
+          if "unspecified" in tmp.type
+            doc.unspecific_is_checked = true
+          if "output" in tmp.type
+            doc.output_is_checked = true
+          if "input" in tmp.type
+            doc.input_is_checked = true
 
-    result.push doc
-    return
+      result.push doc
+      return
 
-  result
+    result
 
 @neuropil_fill_from = (selector, template, neuropil_type, result) ->
   for node in template.findAll(selector)
@@ -113,31 +115,44 @@ Template.edit_neuropils.neuropils = ->
       neuropils: neuropils
   {}
 
-Template.neuropil_show.driver_lines_referencing_me = ->
-  DriverLines.find neuropils:
-    $elemMatch:
-      _id: @_id
+Template.neuropil_show.helpers
+  driver_lines_referencing_me: ->
+    DriverLines = window.get_collection_from_name("DriverLines") # FIXME: why do I need this?
+    DriverLines.find neuropils:
+      $elemMatch:
+        _id: @_id
 
-Template.neuropil_table.driver_lines_referencing_me = Template.neuropil_show.driver_lines_referencing_me
-Template.neuropil_show.neuron_types_referencing_me = ->
-  NeuronTypes.find neuropils:
-    $elemMatch:
-      _id: @_id
+  neuron_types_referencing_me: ->
+    NeuronTypes.find neuropils:
+      $elemMatch:
+        _id: @_id
 
-Template.neuropil_table.neuron_types_referencing_me = Template.neuropil_show.neuron_types_referencing_me
+Template.neuropil_table.helpers
+  driver_lines_referencing_me: ->
+    DriverLines = window.get_collection_from_name("DriverLines") # FIXME: why do I need this?
+    DriverLines.find neuropils:
+      $elemMatch:
+        _id: @_id
 
-Template.neuropils.events "click .insert": (e) ->
-  e.preventDefault()
-  coll = "Neuropils"
-  Session.set "modal_info",
-    title: "Add neuropil"
-    collection: coll
-    body_template_name: "neuropil_insert"
-    is_save_modal: true
+  neuron_types_referencing_me: ->
+    NeuronTypes.find neuropils:
+      $elemMatch:
+        _id: @_id
 
-  window.modal_save_func = window.jump_table[coll].save
-  $("#show_dialog_id").modal "show"
-  return
+Template.neuropils.events
+  "click .insert": (e) ->
+    e.preventDefault()
+    coll = "Neuropils"
+    Session.set "modal_info",
+      title: "Add neuropil"
+      collection: coll
+      body_template_name: "neuropil_insert"
+      is_save_modal: true
 
-Template.neuropils.neuropil_cursor = ->
-  Neuropils.find {}
+    window.modal_save_func = window.jump_table[coll].save
+    $("#show_dialog_id").modal "show"
+    return
+
+Template.neuropils.helpers
+  neuropil_cursor: ->
+    Neuropils.find {}

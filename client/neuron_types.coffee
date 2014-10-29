@@ -1,22 +1,24 @@
 # ---- Template.neuron_type_from_id_block ---------------
 
-Template.neuron_type_from_id_block.neuron_type_from_id = ->
-  if @_id
-    # already a doc
-    return this
-  my_id = this
-  if @valueOf
-    # If we have "valueOf" function, "this" is boxed.
-    my_id = @valueOf() # unbox it
-  NeuronTypes.findOne my_id
+Template.neuron_type_from_id_block.helpers
+  neuron_type_from_id: ->
+    if @_id
+      # already a doc
+      return this
+    my_id = this
+    if @valueOf
+      # If we have "valueOf" function, "this" is boxed.
+      my_id = @valueOf() # unbox it
+    NeuronTypes.findOne my_id
 
 # ---- Template.neuron_type_insert ---------------
 
-Template.neuron_type_insert.driver_lines = ->
-  DriverLines.find()
+Template.neuron_type_insert.helpers
+  driver_lines: ->
+    DriverLines.find()
 
-Template.neuron_type_insert.neuropils = ->
-  Neuropils.find()
+  neuropils: ->
+    Neuropils.find()
 
 neuron_type_insert_callback = (error, _id) ->
   if error?
@@ -62,19 +64,20 @@ neuron_type_insert_callback = (error, _id) ->
 
 # ---- Template.edit_neuron_types -----------------
 
-Template.edit_neuron_types.neuron_types = ->
-  result = []
-  collection = window.get_collection_from_name(@collection_name)
-  myself = collection.findOne(_id: @my_id)
-  NeuronTypes.find().forEach (doc) ->
-    if myself.neuron_types.indexOf(doc._id) is -1
-      doc.is_checked = false
-    else
-      doc.is_checked = true
-    result.push doc
-    return
+Template.edit_neuron_types.helpers
+  neuron_types: ->
+    result = []
+    collection = window.get_collection_from_name(@collection_name)
+    myself = collection.findOne(_id: @my_id)
+    NeuronTypes.find().forEach (doc) ->
+      if myself.neuron_types.indexOf(doc._id) is -1
+        doc.is_checked = false
+      else
+        doc.is_checked = true
+      result.push doc
+      return
 
-  result
+    result
 
 # ---- Template.neuron_type_show ---------------
 
@@ -161,21 +164,22 @@ Template.neuron_type_show.events
 
   {}
 
-Template.neuron_type_show.adding_synonym = ->
-  Session.equals "editing_add_synonym", @_id
+Template.neuron_type_show.helpers
+  adding_synonym: ->
+    Session.equals "editing_add_synonym", @_id
 
-Template.neuron_type_show.synonym_dicts = ->
-  result = []
-  for i of @synonyms
-    tmp =
-      name: @synonyms[i]
-      _id: @_id
+  synonym_dicts: ->
+    result = []
+    for i of @synonyms
+      tmp =
+        name: @synonyms[i]
+        _id: @_id
 
-    result.push tmp
-  result
+      result.push tmp
+    result
 
-Template.neuron_type_show.driver_lines_referencing_me = ->
-  DriverLines.find neuron_types: @_id
+  driver_lines_referencing_me: ->
+    DriverLines.find neuron_types: @_id
 
 # ---- Template.neuron_types ---------------
 
@@ -192,5 +196,6 @@ Template.neuron_types.events "click .insert": (e) ->
   $("#show_dialog_id").modal "show"
   return
 
-Template.neuron_types.neuron_type_cursor = ->
-  NeuronTypes.find {}
+Template.neuron_types.helpers
+  neuron_type_cursor: ->
+    NeuronTypes.find {}
