@@ -392,12 +392,12 @@
 
   {{#detail_block}}
     {{#detail_title}}
-      Images
+      Images and volumes
     {{/detail_title}}
     {{#detail_main}}
       <br/>
         {{> binary_data_table binary_data=images}}
-        {{> add_image_code collection="DriverLines" my_id=_id what="image"}}
+        {{> add_image_code collection="DriverLines" my_id=_id}}
     {{/detail_main}}
   {{/detail_block}}
 
@@ -459,7 +459,7 @@
 
 <template name="binary_data">
   {{#top_content_row}}
-      All Binary Data
+      Images and volumes
   {{/top_content_row}}
 
   {{#detail_block}}
@@ -711,12 +711,12 @@
 
   {{#detail_block}}
     {{#detail_title}}
-      Volumes
+      Images and volumes
     {{/detail_title}}
     {{#detail_main}}
       <br/>
         {{> binary_data_table binary_data=volumes}}
-        {{> add_image_code collection="Neuropils" my_id=_id what="volume"}}
+        {{> add_image_code collection="Neuropils" my_id=_id}}
     {{/detail_main}}
   {{/detail_block}}
 
@@ -970,7 +970,7 @@
 <template name="add_image_code">
   <div class="add_image">
     <a class="btn btn-default btn-small insert" href="#">
-      <i class="fa fa-plus"></i> Add {{what}}</a>
+      <i class="fa fa-plus"></i> Add image or volume</a>
   </div>
 </template>
 
