@@ -73,7 +73,7 @@ window.okCancelEvents = (selector, callbacks) ->
 
   events
 
-activateInput = (input) ->
+window.activateInput = (input) ->
   input.focus()
   input.select()
   return
@@ -167,7 +167,7 @@ Template.name_field.events
     Deps.flush() # update DOM before focus
     ni = tmpl.find("#name_input")
     ni.value = @name
-    activateInput ni
+    window.activateInput ni
     return
 
   window.okCancelEvents("#name_input",

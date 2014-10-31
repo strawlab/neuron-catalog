@@ -101,7 +101,7 @@ Template.neuron_type_show.events
     # inspiration: meteor TODO app
     Session.set "editing_add_synonym", @_id
     Deps.flush() # update DOM before focus
-    activateInput tmpl.find("#edit_synonym_input")
+    window.activateInput tmpl.find("#edit_synonym_input")
     return
 
   "click .remove": (evt) ->
