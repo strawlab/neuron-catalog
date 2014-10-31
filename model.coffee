@@ -72,6 +72,33 @@ if Meteor.isServer
 
   # ----------------------------------------
 
+  insert_hook = (userId, doc) ->
+    doc.edits = [{'time':Date.now(),'userId':userId}]
+    return
+
+  DriverLines.before.insert insert_hook
+  NeuronTypes.before.insert insert_hook
+  Neuropils.before.insert insert_hook
+  BinaryData.before.insert insert_hook
+
+  update_hook = (userId, doc, fieldNames, modifier, options) ->
+    now = Date.now()
+    if modifier.$push? and modifier.$push.comments?
+        # save comment creation information
+        modifier.$push.comments.time = now
+        modifier.$push.comments.userId = userId
+
+    modifier.$push = modifier.$push or {}
+    modifier.$push.edits = {'time':now,'userId':userId}
+    return
+
+  DriverLines.before.update update_hook
+  NeuronTypes.before.update update_hook
+  Neuropils.before.update update_hook
+  BinaryData.before.update update_hook
+
+  # ----------------------------------------
+
   logged_in_allow =
     insert: (userId, doc) ->
       !!userId
