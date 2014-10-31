@@ -49,7 +49,7 @@ Template.binary_data_show.helpers
     for collname in coll_types
       coll = window.get_collection_from_name(collname)
       coll.find(query).forEach (doc) ->
-        result.push {"collection":collname,"doc":doc}
+        result.push {"collection":collname,"doc":doc,"my_id":doc._id}
     result
 
 # -------------------------------------------------------

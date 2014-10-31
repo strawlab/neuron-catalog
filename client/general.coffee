@@ -34,6 +34,17 @@ window.modal_save_func = null
 @endsWith = (str, suffix) ->
   str.indexOf(suffix, str.length - suffix.length) isnt -1
 
+window.get_route_from_name = (name) ->
+  route = undefined
+  if name is "DriverLines"
+    route = Router.routes['driver_line_show']
+  else if name is "NeuronTypes"
+    route = Router.routes['neuron_type_show']
+  else if name is "Neuropils"
+    route = Router.routes['neuropil_show']
+  else route = Router.routes['binary_data_show']  if name is "BinaryData"
+  route
+
 window.get_collection_from_name = (name) ->
   coll = undefined
   if name is "DriverLines"
@@ -81,11 +92,18 @@ window.activateInput = (input) ->
 
 
 # --------------------------------------------
+
 Template.raw_document_view.helpers
   raw_document: ->
     coll = window.get_collection_from_name(@collection)
     doc = coll.findOne({_id: @my_id})
     JSON.stringify doc, `undefined`, 2
+
+Template.linkout.helpers
+  path: ->
+    window.get_route_from_name(@collection).path({_id:@my_id})
+  name: ->
+    @doc.name
 
 # --------------------------------------------
 
