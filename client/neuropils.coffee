@@ -1,5 +1,8 @@
 Template.neuropil_from_id_block.helpers
   neuropil_from_id: ->
+    if !this? or Object.keys(this).length ==0
+      return # Cannot deal with this situation...
+
   # We can get called 3 ways:
   # 1) From something that keeps track of what expression type is in the neuropil.
   # 2) Already as a full document from the database.
