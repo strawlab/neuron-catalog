@@ -40,6 +40,18 @@ Template.binary_data_show.helpers
   binary_data_type: ->
     @type.slice(0,-1)
 
+  find_references: ->
+    coll_types = ["DriverLines","NeuronTypes","Neuropils"]
+    image_id = @_id
+    query =
+      images: image_id
+    result = []
+    for collname in coll_types
+      coll = window.get_collection_from_name(collname)
+      coll.find(query).forEach (doc) ->
+        result.push {"collection":collname,"doc":doc}
+    result
+
 # -------------------------------------------------------
 
 # @remove_binary_data is defined in ../vpn.coffee
