@@ -925,7 +925,7 @@
 
 <template name="show_comments">
   {{#each wrapped_comments}}
-  <div>
+  <div class="entire-comment-region">
     <div class="remove-indiv-comment">
       <div>
 	<a class="btn btn-danger btn-small delete" href="#" title="delete comment"><i class="fa fa-trash-o"></i> delete</a>
@@ -938,9 +938,18 @@
     </div>
     <div class="indiv-comment">
       {{{show_markdown comment}}}
+      <div class="comment-user-date">
+        {{> show_user_date comment}}
+      </div>
     </div>
   </div>
   {{/each}}
+</template>
+
+<!-- ---------------------------- -->
+
+<template name="show_user_date">
+   {{pretty_time}} by {{pretty_username}}
 </template>
 
 <!-- ---------------------------- -->

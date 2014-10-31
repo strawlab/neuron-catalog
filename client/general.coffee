@@ -16,6 +16,7 @@ Meteor.subscribe "neuron_types"
 Meteor.subscribe "neuropils"
 Meteor.subscribe "binary_data"
 Meteor.subscribe "neuron_catalog_config"
+Meteor.subscribe "userData"
 
 # --------------------------------------------
 # session variables
@@ -216,6 +217,19 @@ Template.raw_button.events
     window.modal_save_func = null
     $("#show_dialog_id").modal "show"
     return
+
+# -------------
+
+Template.show_user_date.helpers
+  pretty_username: ->
+    doc = Meteor.users.findOne {_id:this.userId}
+    if doc? and doc.emails? and doc.emails.length>0
+      return doc.emails[0].address
+    "userID "+this.userId
+
+  pretty_time: ->
+    timestamp = Date(this.time)
+    moment(this.time).fromNow()
 
 # -------------
 

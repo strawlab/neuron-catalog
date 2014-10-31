@@ -91,6 +91,12 @@ div.remove-indiv-comment {
     margin-right:3px;
 }
 
+.comment-user-date {
+    text-align: right;
+    margin-bottom:5px;
+    font-size: 0.8em;
+}
+
 div.detail-title-top {
      display: inline-block;
      line-height: 1.1;
