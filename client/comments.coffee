@@ -35,6 +35,9 @@ Template.comments_panel.events
     comments_raw = ta.value
     ta.value = ""
     Session.set "comment_preview_html", null
+    if comments_raw == ""
+      # nothing to do. don't bother saving.
+      return
     collection = window.get_collection_from_name(@show_name)
     cdict = comment: comments_raw # FIXME: add auth stuff and timestamp on server.
     collection.update @_id,
