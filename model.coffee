@@ -57,20 +57,20 @@ if Meteor.isServer
       NeuronCatalogConfig.insert doc
     return
 
+  # ----------------------------------------
   Meteor.publish "neuron_catalog_config", ->
     NeuronCatalogConfig.find {}
 
   Meteor.publish "driver_lines", ->
     DriverLines.find {}  if @userId
-
+  Meteor.publish "neuron_types", ->
+    NeuronTypes.find {}  if @userId
+  Meteor.publish "neuropils", ->
+    Neuropils.find {}  if @userId
   Meteor.publish "binary_data", ->
     BinaryData.find {}  if @userId
 
-  Meteor.publish "neuron_types", ->
-    NeuronTypes.find {}  if @userId
-
-  Meteor.publish "neuropils", ->
-    Neuropils.find {}  if @userId
+  # ----------------------------------------
 
   logged_in_allow =
     insert: (userId, doc) ->
