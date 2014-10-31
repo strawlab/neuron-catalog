@@ -111,12 +111,12 @@ Template.add_image_code.events
   "click .insert": (e, template) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Insert "+@what
+      title: "Insert image or volume"
       body_template_name: "insert_image_dialog"
       body_template_data:
         my_id: @my_id
         collection: @collection
-        field_name: @what + "s"
+        field_name: "images"
       is_save_modal: true
 
     window.modal_save_func = insert_image_save_func
