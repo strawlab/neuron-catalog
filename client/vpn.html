@@ -378,6 +378,8 @@
         {{> raw_button collection="DriverLines" my_id=_id}}
   {{/top_content_row}}
 
+  {{> tags_panel tags=tags collection="DriverLines" _id=_id}}
+
   {{#if is_vt_gal4_line}}
   {{#detail_block}}
     {{#detail_title}}
@@ -450,6 +452,39 @@
 	</div>
 	<div class="comment-ui-field2 {{is_previewing_attrs}}" id="comment-preview">{{{comment_preview}}}</div>
 	<button type="button" class="btn btn-primary save">Save comment</button>
+      </div>
+    {{/detail_main}}
+  {{/detail_block}}
+</template>
+
+<!-- --------------------------- -->
+
+<template name="tags_panel">
+  {{#detail_block}}
+    {{#detail_title}}
+      Tags
+    {{/detail_title}}
+    {{#detail_main}}
+      <p></p>
+      <div class="tags-div">
+	<div class="item-tags">
+          {{#each tag_dicts}}
+<div class="btn btn-default btn-small">
+	    <div class="pzp1 name">{{name}}</div>
+	    <div class="pzp2 remove"><i class="fa fa-trash-o"></i></div>
+	  </div>
+	  {{/each}}
+	  {{#if adding_tag}}
+	  <div class="tag edit-tag">
+	    <input type="text" id="edit-tag-input" value="" >
+	  </div>
+	  {{else}}
+	  <div class="tag add-tag">
+	    <a class="btn btn-default btn-small insert" href="#">
+	      <i class="fa fa-plus"></i> Add tag</a>
+	  </div>
+	  {{/if}}
+	</div>
       </div>
     {{/detail_main}}
   {{/detail_block}}
@@ -542,6 +577,8 @@
         {{> delete_button collection="NeuronTypes" my_id=_id}}
         {{> raw_button collection="NeuronTypes" my_id=_id}}
   {{/top_content_row}}
+
+  {{> tags_panel tags=tags collection="NeuronTypes" _id=_id}}
 
   {{#detail_block}}
     {{#detail_title}}
@@ -708,6 +745,8 @@
       {{> delete_button collection="Neuropils" my_id=_id}}
       {{> raw_button collection="Neuropils" my_id=_id}}
   {{/top_content_row}}
+
+  {{> tags_panel tags=tags collection="Neuropils" _id=_id}}
 
   {{#detail_block}}
     {{#detail_title}}

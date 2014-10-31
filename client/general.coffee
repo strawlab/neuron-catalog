@@ -22,6 +22,7 @@ Meteor.subscribe "userData"
 # session variables
 Session.setDefault "editing_name", null
 Session.setDefault "editing_add_synonym", null
+Session.setDefault "editing_add_tag", null
 Session.setDefault "modal_info", null
 Session.setDefault "comment_preview_mode", false
 Session.setDefault "comment_preview_html", null

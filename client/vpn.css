@@ -41,11 +41,11 @@ span.keep-together {
     -o-border-radius: .25em;
 }
 
-.synonyms_div {
+.synonyms_div .tags-div {
   display: inline;
 }
 
-.synonym {
+.synonym .tag {
     margin: 5px;
     padding: 2px 7px;
     font-size: 80%;
@@ -64,7 +64,7 @@ span.keep-together {
     display: inline;
 }
 
-.item-synonyms {
+.item-synonyms .item-tags {
     margin-right: 8px;
     display: inline;
 }
