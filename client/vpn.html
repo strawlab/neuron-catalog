@@ -343,30 +343,28 @@
 </template>
 
 <template name="top_content_row2">
-  {{#top_content_row}}
-     <div>
-      <span class="center">
+<div class="detail-title-top-text">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
 	{{type_name}}:
-      </span>
-    </div>
-    <div>
-      <span class="left">
-        Previous: {{> next_previous_button collection=collection my_id=_id which="previous"}}
-      </span>
-      <span class="center">
-        {{> name_field collection=collection my_id=_id name=name}}
-      </span>
-      <span class="right">
-        Next: {{> next_previous_button collection=collection my_id=_id which="next"}}
-      </span>
-    </div>
-    <div>
-      <span class="center">
+	{{> name_field collection=collection my_id=_id name=name}}
 	{{> delete_button collection=collection my_id=_id}}
-      </span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      Previous: {{> next_previous_button collection=collection my_id=_id which="previous"}}
+    </div>
+    <div class="col-sm-4 col-sm-offset-4">
+      Next: {{> next_previous_button collection=collection my_id=_id which="next"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2 col-sm-offset-10">
       {{> raw_button collection=collection my_id=_id}}
     </div>
-  {{/top_content_row}}
+  </div>
+</div>
 </template>
 
 <template name="driver_lines">

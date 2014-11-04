@@ -107,6 +107,12 @@ div.detail-title-top {
      width: 100%;
 }
 
+.detail-title-top-text {
+     line-height: 1.1;
+     font-weight: 500;
+     font-size: 24px;
+}
+
 div.detail-title {
      display: inline-block;
      line-height: 1.1;
