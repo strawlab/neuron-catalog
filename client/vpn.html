@@ -10,7 +10,7 @@
   {{> show_upload_progress}}
   <div class="container-fluid">
 
-   <div class="row sticky-top">
+   <div class="row">
     <div class="col-md-5 col-md-offset-6">
       <span class="side-by-side">
 	<a href="https://github.com/strawlab/neuron-catalog/issues/new">Report an issue <i class="fa fa-github"></i></a>
@@ -20,7 +20,7 @@
       </span>
     </div>
    </div>
-   <div class="row sticky-top">
+   <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <ul class="nav nav-tabs" role="tablist">
 	<li {{tab_attrs_home}}><a href="{{pathFor 'home'}}">home</a></li>
@@ -337,7 +337,7 @@
 <!-- --------------------------- -->
 
 <template name="top_content_row">
-  <div class="detail-title-top sticky-top">
+  <div class="detail-title-top">
     {{> UI.contentBlock this}}
   </div>
 </template>
