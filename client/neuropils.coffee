@@ -30,6 +30,8 @@ Template.neuropil_from_id_block.helpers
         my_id = @valueOf() # unbox it
 
     result = Neuropils.findOne my_id
+    if !result?
+      return
     result.my_types = []
     if insert_types
       result.my_types = my_types
