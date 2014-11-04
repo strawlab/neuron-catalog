@@ -342,6 +342,33 @@
   </div>
 </template>
 
+<template name="top_content_row2">
+  {{#top_content_row}}
+     <div>
+      <span class="center">
+	{{type_name}}:
+      </span>
+    </div>
+    <div>
+      <span class="left">
+        Previous: {{> next_previous_button collection=collection my_id=_id which="previous"}}
+      </span>
+      <span class="center">
+        {{> name_field collection=collection my_id=_id name=name}}
+      </span>
+      <span class="right">
+        Next: {{> next_previous_button collection=collection my_id=_id which="next"}}
+      </span>
+    </div>
+    <div>
+      <span class="center">
+	{{> delete_button collection=collection my_id=_id}}
+      </span>
+      {{> raw_button collection=collection my_id=_id}}
+    </div>
+  {{/top_content_row}}
+</template>
+
 <template name="driver_lines">
   {{#top_content_row}}
       All Driver Lines
@@ -375,16 +402,7 @@
 
 <template name="driver_line_show">
   {{#driver_line_from_id_block}}
-  {{#top_content_row}}
-        Driver Line:
-        {{> name_field collection="DriverLines" my_id=_id name=name}}
-        {{> delete_button collection="DriverLines" my_id=_id}}
-        <div>
-          {{> next_previous_button collection="DriverLines" my_id=_id which="previous"}}
-          {{> next_previous_button collection="DriverLines" my_id=_id which="next"}}
-	</div>
-        {{> raw_button collection="DriverLines" my_id=_id}}
-  {{/top_content_row}}
+  {{>top_content_row2 type_name="Driver Line" collection="DriverLines" _id=_id name=name}}
 
   {{> tags_panel tags=tags collection="DriverLines" _id=_id}}
 
@@ -521,12 +539,7 @@
 
 <template name="binary_data_show">
   {{#binary_data_from_id_block}}
-  {{#top_content_row}}
-        {{binary_data_type}}:
-        {{> name_field collection="BinaryData" my_id=_id name=name}}
-        {{> delete_button collection="BinaryData" my_id=_id}}
-        {{> raw_button collection="BinaryData" my_id=_id}}
-  {{/top_content_row}}
+  {{>top_content_row2 type_name=binary_data_type collection="BinaryData" _id=_id name=name}}
 
   Documents referencing this:{{#each find_references}} {{>linkout collection=collection my_id=my_id doc=doc}} {{/each}}
 
@@ -587,12 +600,7 @@
 
 <template name="neuron_type_show">
   {{#neuron_type_from_id_block}}
-  {{#top_content_row}}
-	Neuron type:
-        {{> name_field collection="NeuronTypes" my_id=_id name=name}}
-        {{> delete_button collection="NeuronTypes" my_id=_id}}
-        {{> raw_button collection="NeuronTypes" my_id=_id}}
-  {{/top_content_row}}
+  {{>top_content_row2 type_name="Neuron type" collection="NeuronTypes" _id=_id name=name}}
 
   {{> tags_panel tags=tags collection="NeuronTypes" _id=_id}}
 
@@ -755,12 +763,7 @@
 <template name="neuropil_show">
   {{#neuropil_from_id_block}}
 
-  {{#top_content_row}}
-      Neuropil:
-      {{> name_field collection="Neuropils" my_id=_id name=name}}
-      {{> delete_button collection="Neuropils" my_id=_id}}
-      {{> raw_button collection="Neuropils" my_id=_id}}
-  {{/top_content_row}}
+  {{>top_content_row2 type_name="Neuropil" collection="Neuropils" _id=_id name=name}}
 
   {{> tags_panel tags=tags collection="Neuropils" _id=_id}}
 
