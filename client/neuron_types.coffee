@@ -1,3 +1,4 @@
+neuron_types_sort = {'_id':1}
 # ---- Template.neuron_type_from_id_block ---------------
 
 Template.neuron_type_from_id_block.helpers
@@ -15,10 +16,10 @@ Template.neuron_type_from_id_block.helpers
 
 Template.neuron_type_insert.helpers
   driver_lines: ->
-    DriverLines.find()
+    DriverLines.find({},{'sort':driver_lines_sort})
 
   neuropils: ->
-    Neuropils.find()
+    Neuropils.find({},{'sort':neuropils_sort})
 
 neuron_type_insert_callback = (error, _id) ->
   if error?
@@ -69,7 +70,7 @@ Template.edit_neuron_types.helpers
     result = []
     collection = window.get_collection_from_name(@collection_name)
     myself = collection.findOne(_id: @my_id)
-    NeuronTypes.find().forEach (doc) ->
+    NeuronTypes.find({},{'sort':neuron_types_sort}).forEach (doc) ->
       if myself.neuron_types.indexOf(doc._id) is -1
         doc.is_checked = false
       else
@@ -198,4 +199,4 @@ Template.neuron_types.events "click .insert": (e) ->
 
 Template.neuron_types.helpers
   neuron_type_cursor: ->
-    NeuronTypes.find {}
+    NeuronTypes.find {},{'sort':neuron_types_sort}

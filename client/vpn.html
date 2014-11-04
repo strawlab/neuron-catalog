@@ -369,12 +369,20 @@
   {{/driver_line_from_id_block}}
 </template>
 
+<template name="next_previous_button">
+  {{>linkout get_linkout}}
+</template>
+
 <template name="driver_line_show">
   {{#driver_line_from_id_block}}
   {{#top_content_row}}
         Driver Line:
         {{> name_field collection="DriverLines" my_id=_id name=name}}
         {{> delete_button collection="DriverLines" my_id=_id}}
+        <div>
+          {{> next_previous_button collection="DriverLines" my_id=_id which="previous"}}
+          {{> next_previous_button collection="DriverLines" my_id=_id which="next"}}
+	</div>
         {{> raw_button collection="DriverLines" my_id=_id}}
   {{/top_content_row}}
 
@@ -506,7 +514,9 @@
 </template>
 
 <template name="linkout">
-  <a href={{path}}><span class="keep-together">{{name}}</span></a>
+  {{#if this}}
+    <a href={{path}}><span class="keep-together">{{name}}</span></a>
+  {{/if}}
 </template>
 
 <template name="binary_data_show">

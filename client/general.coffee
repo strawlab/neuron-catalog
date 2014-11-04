@@ -105,6 +105,31 @@ Template.linkout.helpers
   name: ->
     @doc.name
 
+Template.next_previous_button.helpers
+  get_linkout: ->
+    coll = window.get_collection_from_name(@collection)
+    if @which=="next"
+      op = "$gt"
+      direction = 1
+    else
+      op = "$lt"
+      direction = -1
+      # assert @which=="previous"
+    query = {}
+    query["_id"] = {}
+    query["_id"][op]=@my_id
+    options = {'sort':{'_id':direction},limit:1}
+    cursor = coll.find(query,options)
+    if cursor.count() == 0
+      return
+    arr = cursor.fetch()
+    doc = arr[0]
+    result = {}
+    result["collection"]=@collection
+    result["my_id"]=doc['_id']
+    result["doc"]=doc
+    result
+
 # --------------------------------------------
 
 Template.show_dialog.helpers modal_info: ->

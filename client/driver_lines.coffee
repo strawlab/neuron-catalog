@@ -1,3 +1,5 @@
+driver_lines_sort = {'_id':1}
+
 # ---- Template.driver_line_from_id_block -------------
 
 enhance_driver_line_doc = (doc) ->
@@ -102,7 +104,7 @@ Template.driver_line_show.events
 
 Template.driver_lines.helpers
   driver_line_cursor: ->
-    DriverLines.find {}
+    DriverLines.find {}, {'sort':driver_lines_sort}
 
 Template.driver_lines.events
   "click .insert": (e) ->

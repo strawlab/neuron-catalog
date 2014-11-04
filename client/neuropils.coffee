@@ -1,3 +1,5 @@
+neuropils_sort = {'_id':1}
+#----------
 Template.neuropil_from_id_block.helpers
   neuropil_from_id: ->
     if !this? or Object.keys(this).length ==0
@@ -69,7 +71,7 @@ Template.edit_neuropils.helpers
     result = []
     collection = window.get_collection_from_name(@collection_name)
     myself = collection.findOne(_id: @my_id)
-    Neuropils.find().forEach (doc) ->
+    Neuropils.find({},{'sort':neuropils_sort}).forEach (doc) ->
       doc.unspecific_is_checked = false
       doc.output_is_checked = false
       doc.input_is_checked = false
@@ -158,4 +160,4 @@ Template.neuropils.events
 
 Template.neuropils.helpers
   neuropil_cursor: ->
-    Neuropils.find {}
+    Neuropils.find {},{'sort':neuropils_sort}
