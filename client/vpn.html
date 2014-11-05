@@ -1015,8 +1015,9 @@
     {{#each binary_data}}
       {{#binary_data_from_id_block}}
         <div class="item" data-w={{width}} data-h={{height}}>
-          <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" data-src="{{secure_url_notif}}">
-          <div class="over"><a href="{{pathFor 'binary_data_show'}}">{{name}}</a></div>
+	  <a href="{{pathFor 'binary_data_show'}}">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" data-src="{{secure_url_notif}}">
+	  </a>
         </div>
       {{/binary_data_from_id_block}}
     {{/each}}
