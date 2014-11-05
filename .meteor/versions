@@ -32,7 +32,7 @@ iron:router@0.9.4
 jquery@1.0.1
 json@1.0.1
 launch-screen@1.0.0
-lepozepo:s3@4.0.3
+lepozepo:s3@4.1.1
 lepozepo:streams@0.2.0
 less@1.0.11
 livedata@1.0.11
