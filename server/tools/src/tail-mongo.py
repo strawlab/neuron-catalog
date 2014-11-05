@@ -76,6 +76,8 @@ def parse_urls_from_doc(doc):
     full_url = doc['secure_url']
     orig_rel_url = doc['relative_url']
     assert full_url.endswith(orig_rel_url)
+    if not orig_rel_url.startswith('/'):
+        orig_rel_url = '/' + orig_rel_url
     prefix = full_url[:-len(orig_rel_url)]
 
     if orig_rel_url.startswith('/images/'):
