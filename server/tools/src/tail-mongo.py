@@ -50,6 +50,10 @@ def make_cache(doc, cache_url, options):
         convert(filename, out_full)
         #print("OUTPUT",out_full,"to",cache_url)
         neuron_catalog_tools.upload(out_full, cache_url)
+    except:
+        print("ERROR while processing doc")
+        show_doc(doc)
+        raise
     finally:
         if not options.keep:
             shutil.rmtree(cwd)
