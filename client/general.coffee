@@ -28,6 +28,7 @@ Session.setDefault "modal_info", null
 Session.setDefault "comment_preview_mode", false
 Session.setDefault "comment_preview_html", null
 Session.setDefault "upload_processor_has_error", false
+Session.setDefault "recent_changes_n_days", 2
 
 window.modal_save_func = null
 
@@ -340,6 +341,10 @@ Template.MyLayout.helpers
   tab_attrs_neuropils: ->
     cur = Router.current()
     class: "active"  if cur and cur.route.name is "neuropils" or cur.route.name is "neuropil_show"
+
+  tab_attrs_recent_changes: ->
+    cur = Router.current()
+    class: "active"  if cur and cur.route.name is "RecentChanges"
 
 UI.body.helpers
   getData: ->

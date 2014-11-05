@@ -27,6 +27,7 @@ Router.map ->
     data: ->
       BinaryData.findOne @params._id
 
+  @route "RecentChanges"
   return
 
 @remove_driver_line = (my_id) ->
