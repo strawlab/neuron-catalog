@@ -1,6 +1,7 @@
 from __future__ import print_function
 import os, sys, time, tempfile, subprocess, shutil
 import requests
+from PIL import Image
 import argparse
 import neuron_catalog_tools
 
@@ -93,16 +94,40 @@ def parse_urls_from_doc(doc):
     cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + \
                 '.' + CACHE_FORMAT_EXTENSION
     full_cache_url = prefix + '/'+ cache_url
+    extension = os.path.splitext(orig_rel_url)[1]
     return {'cache_url':cache_url,
             'prefix':prefix,
             'full_cache_url':full_cache_url,
             'type':my_type,
+            'extension':extension,
         }
 
-def make_cache_if_needed(doc, options):
+def get_image_properties(filename):
+    im = Image.open(filename)
+    w,h = im.size
+    return dict(width=w, height=h)
+
+def make_cache_if_needed(coll, doc, options):
     #show_doc(doc)
 
     z = parse_urls_from_doc(doc)
+
+    if doc['type']=='images':
+        if 'width' not in doc or 'height' not in doc:
+            r = requests.get(doc['secure_url'])
+            tmpdir = tempfile.mkdtemp()
+            try:
+                filename = os.path.join(tmpdir,'image'+z['extension'])
+                with open(filename, 'wb') as fd:
+                    fd.write(r.content)
+                props = get_image_properties(filename)
+            finally:
+                if not options.keep:
+                    shutil.rmtree(tmpdir)
+            for key in ['width','height']:
+                doc[key] = props[key]
+            r = coll.save(doc)
+            print("updated width and height of",doc['_id'])
 
     orig_rel_url = doc['relative_url']
     if is_tiff(orig_rel_url):
@@ -122,11 +147,10 @@ def make_cache_if_needed(doc, options):
                 make_cache(doc, z['cache_url'], options)
                 cache_urls.add(z['cache_url'])
 
-def pump_new(options):
+def pump_new(coll,options):
     while len(new_docs):
         doc = new_docs.pop(0)
-        # FIXME: actually make cache if needed
-        result = make_cache_if_needed(doc,options)
+        result = make_cache_if_needed(coll,doc,options)
 
 def fill_cache():
     bucket = neuron_catalog_tools.get_s3_bucket()
@@ -143,7 +167,7 @@ def infinite_poll_loop(options):
         seen_docs.add( doc['_id'] )
 
     fill_cache()
-    pump_new(options)
+    pump_new(coll,options)
 
     #print('processed backlog, waiting for new images')
 
@@ -163,7 +187,7 @@ def infinite_poll_loop(options):
             bucket.delete_key(cache_url)
             cache_urls.remove( cache_url )
 
-        pump_new(options)
+        pump_new(coll,options)
         time.sleep(2.0)
 
 if __name__=='__main__':

@@ -139,3 +139,7 @@ Template.add_image_code.events
 Template.binary_data.helpers
   binary_data_cursor: ->
     BinaryData.find {}
+
+Template.binary_data_table.rendered = ->
+  $('.flex-images').flexImages({rowHeight: 200});
+  return
