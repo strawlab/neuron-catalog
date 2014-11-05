@@ -1,6 +1,7 @@
 from __future__ import print_function
 import os, sys, time, tempfile, subprocess, shutil
 import requests
+import argparse
 import neuron_catalog_tools
 
 CACHE_DIR_NAME = 'cache'
@@ -22,7 +23,7 @@ def is_tiff(orig_rel_url):
     orig_rel_url_lower = orig_rel_url.lower()
     return orig_rel_url_lower.endswith('.tif') or orig_rel_url_lower.endswith('.tiff')
 
-def make_cache(doc, cache_url):
+def make_cache(doc, cache_url, options):
     cwd = tempfile.mkdtemp()
 
     try:
@@ -50,7 +51,8 @@ def make_cache(doc, cache_url):
         #print("OUTPUT",out_full,"to",cache_url)
         neuron_catalog_tools.upload(out_full, cache_url)
     finally:
-        shutil.rmtree(cwd)
+        if not options.keep:
+            shutil.rmtree(cwd)
 
 def convert(input_fname, output_fname):
     assert os.path.exists(input_fname)
@@ -91,7 +93,7 @@ def parse_urls_from_doc(doc):
             'type':my_type,
         }
 
-def make_cache_if_needed(doc):
+def make_cache_if_needed(doc, options):
     #show_doc(doc)
 
     z = parse_urls_from_doc(doc)
@@ -111,14 +113,14 @@ def make_cache_if_needed(doc):
                     cache_urls.add(z['cache_url'])
                     skip = True
             if not skip:
-                make_cache(doc, z['cache_url'])
+                make_cache(doc, z['cache_url'], options)
                 cache_urls.add(z['cache_url'])
 
-def pump_new():
+def pump_new(options):
     while len(new_docs):
         doc = new_docs.pop(0)
         # FIXME: actually make cache if needed
-        result = make_cache_if_needed(doc)
+        result = make_cache_if_needed(doc,options)
 
 def fill_cache():
     bucket = neuron_catalog_tools.get_s3_bucket()
@@ -126,7 +128,7 @@ def fill_cache():
     for key in rs:
         cache_urls.add(key.name)
 
-if 1:
+def infinite_poll_loop(options):
     db = neuron_catalog_tools.get_db()
     coll = db.binary_data
 
@@ -135,7 +137,7 @@ if 1:
         seen_docs.add( doc['_id'] )
 
     fill_cache()
-    pump_new()
+    pump_new(options)
 
     #print('processed backlog, waiting for new images')
 
@@ -155,5 +157,14 @@ if 1:
             bucket.delete_key(cache_url)
             cache_urls.remove( cache_url )
 
-        pump_new()
+        pump_new(options)
         time.sleep(2.0)
+
+if __name__=='__main__':
+    parser = argparse.ArgumentParser(
+        description="poll for new images and data and process if needed",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--keep", action="store_true", default=False,
+                        help="do not delete temporary files")
+    args = parser.parse_args()
+    infinite_poll_loop(args)
