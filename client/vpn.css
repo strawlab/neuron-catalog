@@ -19,6 +19,10 @@
     float: right;
 }
 
+.right-text {
+    text-align: right;
+}
+
 .side-by-side {
     margin: 10px;
 }
@@ -39,8 +43,8 @@
 
 span.keep-together {
     display: inline;
-    padding: .1em;
-    line-height: 1;
+    line-height: 1.5em;
+    padding: 0.1em;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
