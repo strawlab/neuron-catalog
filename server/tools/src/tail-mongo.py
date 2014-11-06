@@ -26,6 +26,8 @@ def is_tiff(orig_rel_url):
 
 def make_cache(doc, cache_url, options):
     cwd = tempfile.mkdtemp()
+    if options.verbose:
+        print("made temp dir",cwd)
 
     try:
         orig_url = doc['secure_url']
@@ -116,6 +118,8 @@ def make_cache_if_needed(coll, doc, options):
         if 'width' not in doc or 'height' not in doc:
             r = requests.get(doc['secure_url'])
             tmpdir = tempfile.mkdtemp()
+            if options.verbose:
+                print("getting image size: made temp dir",tmpdir)
             try:
                 filename = os.path.join(tmpdir,'image'+z['extension'])
                 with open(filename, 'wb') as fd:
@@ -127,7 +131,8 @@ def make_cache_if_needed(coll, doc, options):
             for key in ['width','height']:
                 doc[key] = props[key]
             r = coll.save(doc)
-            print("updated width and height of",doc['_id'])
+            if options.verbose:
+                print("updated width and height of",doc['_id'])
 
     orig_rel_url = doc['relative_url']
     if is_tiff(orig_rel_url):
@@ -194,6 +199,8 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser(
         description="poll for new images and data and process if needed",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--verbose", action="store_true", default=False,
+                        help="be verbose")
     parser.add_argument("--keep", action="store_true", default=False,
                         help="do not delete temporary files")
     args = parser.parse_args()
