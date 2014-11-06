@@ -73,7 +73,10 @@ if Meteor.isServer
   # ----------------------------------------
 
   insert_hook = (userId, doc) ->
-    doc.edits = [{'time':Date.now(),'userId':userId}]
+    now = Date.now()
+    doc.edits = [{'time':now,'userId':userId}]
+    doc.last_edit_time = now
+    doc.last_edit_userId = userId
     return
 
   DriverLines.before.insert insert_hook
@@ -90,6 +93,11 @@ if Meteor.isServer
 
     modifier.$push = modifier.$push or {}
     modifier.$push.edits = {'time':now,'userId':userId}
+
+    modifier.$set = modifier.$set or {}
+    modifier.$set.last_edit_time = now
+    modifier.$set.last_edit_userId = userId
+
     return
 
   DriverLines.before.update update_hook
