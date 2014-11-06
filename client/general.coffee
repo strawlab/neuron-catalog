@@ -205,29 +205,28 @@ Template.name_field.helpers
     return true  if @my_id is d.my_id & @collection is d.collection
     false
 
-Template.name_field.events
-  "click .edit-name": (e, tmpl) ->
-    Session.set "editing_name", tmpl.data
-    Deps.flush() # update DOM before focus
-    ni = tmpl.find("#name_input")
-    ni.value = @name
-    window.activateInput ni
+Template.name_field.events "click .edit-name": (e, tmpl) ->
+  Session.set "editing_name", tmpl.data
+  Deps.flush() # update DOM before focus
+  ni = tmpl.find("#name_input")
+  ni.value = @name
+  window.activateInput ni
+  return
+
+Template.name_field.events window.okCancelEvents("#name_input",
+  ok: (value) ->
+    coll = window.get_collection_from_name(@collection)
+    coll.update @my_id,
+      $set:
+        name: value
+
+    Session.set "editing_name", null
     return
 
-  window.okCancelEvents("#name_input",
-    ok: (value) ->
-      coll = window.get_collection_from_name(@collection)
-      coll.update @my_id,
-        $set:
-          name: value
-
-      Session.set "editing_name", null
-      return
-
-    cancel: ->
-      Session.set "editing_name", null
-      return
-  )
+  cancel: ->
+    Session.set "editing_name", null
+    return
+)
 
 Template.delete_button.events
   "click .delete": (e) ->
