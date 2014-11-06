@@ -533,8 +533,15 @@
     {{#detail_main}}
         <br/>
         {{> binary_data_table binary_data=binary_data_cursor}}
+
+        {{#if currentUser}}
+        {{else}}
+          {{login_message}}
+        {{/if}}
+
     {{/detail_main}}
   {{/detail_block}}
+
 </template>
 
 <template name="linkout">
