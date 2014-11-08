@@ -110,7 +110,14 @@ def get_image_properties(filename):
     return dict(width=w, height=h)
 
 def make_cache_if_needed(coll, doc, options):
-    #show_doc(doc)
+    if options.verbose:
+        print("new document:")
+        show_doc(doc)
+
+
+    if options.verbose:
+        print()
+
 
     z = parse_urls_from_doc(doc)
 
@@ -174,7 +181,8 @@ def infinite_poll_loop(options):
     fill_cache()
     pump_new(coll,options)
 
-    #print('processed backlog, waiting for new images')
+    if options.verbose:
+        print('processed backlog, waiting for new images')
 
     while 1:
         this_cache_urls = set()
