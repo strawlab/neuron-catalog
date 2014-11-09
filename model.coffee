@@ -44,6 +44,11 @@ if Meteor.isServer
     found = UploadProcessorStatus.find($where: 'function() { var diff_msec, doc_time, now;        doc_time = new Date(this.time);         now = Date.now();         diff_msec = now - doc_time;             if (diff_msec < 10000) {           return true;         }         return false;      }')
     found
 
+  Meteor.publish "userData", ->
+    Meteor.users.find {},
+      fields:
+        username: 1
+
   # ----------------------------------------
 
   insert_hook = (userId, doc) ->

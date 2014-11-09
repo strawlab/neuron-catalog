@@ -300,8 +300,8 @@ Template.raw_button.events
 Template.show_user_date.helpers
   pretty_username: ->
     doc = Meteor.users.findOne {_id:this.userId}
-    if doc? and doc.emails? and doc.emails.length>0
-      return doc.emails[0].address
+    if doc? and doc.username?
+      return doc.username
     "userID "+this.userId
 
   pretty_time: ->
