@@ -125,6 +125,7 @@ Template.linkout.helpers
 Template.next_previous_button.helpers
   get_linkout: ->
     coll = window.get_collection_from_name(@collection)
+    my_doc = coll.findOne({_id:@my_id})
     if @which=="next"
       op = "$gt"
       direction = 1
@@ -132,10 +133,18 @@ Template.next_previous_button.helpers
       op = "$lt"
       direction = -1
       # assert @which=="previous"
+
+    # Did I mention how much I do not understand how JavaScript and
+    # Coffeescript automatically quote string literals unless using
+    # square brackets?
+    sort_key = get_sort_key(@collection)
     query = {}
-    query["_id"] = {}
-    query["_id"][op]=@my_id
-    options = {'sort':{'_id':direction},limit:1}
+    query[sort_key] = {}
+    query[sort_key][op]=my_doc[sort_key]
+    sort_options = {}
+    sort_options[sort_key]=direction
+    options = {limit:1}
+    options['sort'] = sort_options
     cursor = coll.find(query,options)
     if cursor.count() == 0
       return

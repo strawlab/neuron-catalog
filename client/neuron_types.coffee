@@ -1,4 +1,6 @@
-neuron_types_sort = {'_id':1}
+neuron_types_sort = {}
+neuron_types_sort[get_sort_key("NeuronTypes")]=1
+
 # ---- Template.neuron_type_from_id_block ---------------
 
 Template.neuron_type_from_id_block.helpers
