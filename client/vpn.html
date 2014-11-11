@@ -357,28 +357,22 @@
 	  <span class="edit-name">{{name}}</span>
 	{{/if}}
       </div>
-      <div>
-	<a class="btn btn-default btn-small edit-name" href="#"><i class="fa fa-pencil-square-o"></i> Edit name</a>
-        {{> raw_button collection=collection my_id=_id}}
-	{{> delete_button collection=collection my_id=_id}}
-      </div>
     </div>
   </div>
 </div>
 <div>
   <div class="row">
-    <div class="col-sm-6">
-      Previous:
-    </div>
-    <div class="col-sm-6 right-text">
-      Next:
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-2">
+      <div>Previous:</div>
       {{> next_previous_button collection=collection my_id=_id which="previous"}}
     </div>
-    <div class="col-sm-6 right-text">
+    <div class="col-sm-8 align-center">
+      <a class="btn btn-default btn-small edit-name" href="#"><i class="fa fa-pencil-square-o"></i> Edit name</a>
+      {{> raw_button collection=collection my_id=_id}}
+      {{> delete_button collection=collection my_id=_id}}
+    </div>
+    <div class="col-sm-2 right-text">
+      <div>Next:</div>
       {{> next_previous_button collection=collection my_id=_id which="next"}}
     </div>
   </div>
