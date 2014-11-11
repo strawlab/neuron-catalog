@@ -4,6 +4,20 @@
     display: inline;
 }
 
+.fixed-top {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100pc;
+    height: 50px;
+    z-index:10;
+}
+
+.top50 {
+   margin-top: 50px;
+   z-index:5;
+}
+
 .over { position: absolute;
         bottom: 0;
         left: 0;

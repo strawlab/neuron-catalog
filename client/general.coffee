@@ -311,6 +311,13 @@ Template.show_upload_progress.helpers
 
 # ------- tab layout stuff ----
 Template.MyLayout.helpers
+  top_margin_class_attrs: ->
+    if Session.get("upload_processor_has_error")
+      result = 'container-fluid top50'
+    else
+      result = 'container-fluid'
+    result
+
   tab_attrs_home: ->
     current = Router.current()
     class: "active"  if current and current.route.name is "home"

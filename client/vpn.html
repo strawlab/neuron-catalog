@@ -9,7 +9,7 @@
   {{>UploadProcessorStatus}}
   {{> show_dialog}}
   {{> show_upload_progress}}
-  <div class="container-fluid">
+  <div class="{{top_margin_class_attrs}}">
 
    <div class="row">
     <div class="col-md-5 col-md-offset-6">
@@ -115,9 +115,12 @@
 
 <template name="UploadProcessorStatus">
   {{#if get_upload_processor_has_error}}
-     <div class="alert alert-danger" role="alert">
+     <div class="alert alert-danger fixed-top" role="alert">
+
        <p>There is currently a problem on the server. New images and
-       other binary data are not being processed. </p>
+       other binary data are not being processed. You can still upload
+       files, but they may not display correctly.</p>
+
      </div>
   {{/if}}
 </template>
