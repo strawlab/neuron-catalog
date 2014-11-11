@@ -114,18 +114,12 @@
 </template>
 
 <template name="UploadProcessorStatus">
-  {{#with get_upload_processor_status}}
-    {{#if show_error}}
+  {{#if get_upload_processor_has_error}}
      <div class="alert alert-danger" role="alert">
-
        <p>There is currently a problem on the server. New images and
-       other binary data are not being processed. Please contact your
-       administrator with the following status message: </p>
-
-       <p><code>{{message}}</code></p>
+       other binary data are not being processed. </p>
      </div>
-    {{/if}}
-  {{/with}}
+  {{/if}}
 </template>
 
 <template name="name_field">

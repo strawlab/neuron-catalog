@@ -34,7 +34,15 @@ if Meteor.isServer
   Meteor.publish "binary_data", ->
     BinaryData.find {}  if @userId
   Meteor.publish "upload_processor_status", ->
-    UploadProcessorStatus.find {} if @userId
+    # We test if status document is less than 10 seconds old. We must
+    # do this test on the server to deal with cases in which the
+    # client and server clocks are not synchronized.
+    # Only return document if server is OK.
+
+    # Ugh, to get this to work, I had to include the javascript
+    # definition as a string. This seems to be undocumented.
+    found = UploadProcessorStatus.find($where: 'function() { var diff_msec, doc_time, now;        doc_time = new Date(this.time);         now = Date.now();         diff_msec = now - doc_time;             if (diff_msec < 10000) {           return true;         }         return false;      }')
+    found
 
   # ----------------------------------------
 
