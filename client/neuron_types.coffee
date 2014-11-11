@@ -1,5 +1,5 @@
 neuron_types_sort = {}
-neuron_types_sort[get_sort_key("NeuronTypes")]=1
+neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
 
 # ---- Template.neuron_type_from_id_block ---------------
 

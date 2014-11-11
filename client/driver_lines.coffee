@@ -1,5 +1,5 @@
 driver_lines_sort = {}
-driver_lines_sort[get_sort_key("DriverLines")] = 1
+driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 
 # ---- Template.driver_line_from_id_block -------------
 

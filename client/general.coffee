@@ -137,7 +137,7 @@ Template.next_previous_button.helpers
     # Did I mention how much I do not understand how JavaScript and
     # Coffeescript automatically quote string literals unless using
     # square brackets?
-    sort_key = get_sort_key(@collection)
+    sort_key = window.get_sort_key(@collection)
     query = {}
     query[sort_key] = {}
     query[sort_key][op]=my_doc[sort_key]

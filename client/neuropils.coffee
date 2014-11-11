@@ -1,5 +1,5 @@
 neuropils_sort = {}
-neuropils_sort[get_sort_key("Neuropils")] = 1
+neuropils_sort[window.get_sort_key("Neuropils")] = 1
 
 #----------
 Template.neuropil_from_id_block.helpers
