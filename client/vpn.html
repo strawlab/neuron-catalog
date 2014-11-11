@@ -6,6 +6,7 @@
 </body>
 
 <template name="MyLayout">
+  {{>UploadProcessorStatus}}
   {{> show_dialog}}
   {{> show_upload_progress}}
   <div class="container-fluid">
@@ -110,6 +111,21 @@
     {{/detail_main}}
   {{/detail_block}}
 
+</template>
+
+<template name="UploadProcessorStatus">
+  {{#with get_upload_processor_status}}
+    {{#if show_error}}
+     <div class="alert alert-danger" role="alert">
+
+       <p>There is currently a problem on the server. New images and
+       other binary data are not being processed. Please contact your
+       administrator with the following status message: </p>
+
+       <p><code>{{message}}</code></p>
+     </div>
+    {{/if}}
+  {{/with}}
 </template>
 
 <template name="name_field">

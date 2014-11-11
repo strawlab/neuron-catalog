@@ -17,6 +17,7 @@ Meteor.subscribe "neuropils"
 Meteor.subscribe "binary_data"
 Meteor.subscribe "neuron_catalog_config"
 Meteor.subscribe "userData"
+Meteor.subscribe "upload_processor_status"
 
 # --------------------------------------------
 # session variables
@@ -26,7 +27,44 @@ Session.setDefault "editing_add_tag", null
 Session.setDefault "modal_info", null
 Session.setDefault "comment_preview_mode", false
 Session.setDefault "comment_preview_html", null
+Session.setDefault "upload_processor_status", null
+
 window.modal_save_func = null
+
+# --------------------------------------------
+# timer functions
+
+update_upload_processor_status = ->
+  if !Meteor.user()
+    result =
+      show_error: false
+    Session.set("upload_processor_status",result)
+    return
+
+  doc = UploadProcessorStatus.findOne({'_id':'status'})
+
+  if !doc?
+    result =
+      show_error: true
+      message: "No status reported. (Ensure the binary upload processor is running on the server.)"
+    Session.set("upload_processor_status",result)
+    return
+
+  now = Date.now()
+  doc_time = new Date(doc.time)
+  diff_msec = now-doc_time
+  if diff_msec > 10000 # this value should be longer than sleep cycle duration on the server
+    result =
+      show_error: true
+      message: "No binary processing is ongoing. Last status update is from "+moment(doc_time).fromNow()+"."
+    Session.set("upload_processor_status",result)
+    return
+  result =
+    show_error: false
+  Session.set("upload_processor_status",result)
+  return
+
+Meteor.setInterval(update_upload_processor_status, 5000) # check status every 5 seconds
 
 # --------------------------------------------
 # helper functions
@@ -129,6 +167,9 @@ Template.next_previous_button.helpers
     result["my_id"]=doc['_id']
     result["doc"]=doc
     result
+
+Template.UploadProcessorStatus.helpers get_upload_processor_status: ->
+  Session.get("upload_processor_status")
 
 # --------------------------------------------
 

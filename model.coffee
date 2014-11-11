@@ -7,6 +7,9 @@
 @NeuronTypes = new Meteor.Collection("neuron_types")
 @Neuropils = new Meteor.Collection("neuropils")
 
+# Create a capped collection to describe the upload processor status.
+@UploadProcessorStatus = new Meteor.Collection("upload_processor_status")
+
 if Meteor.isServer
 
   Meteor.startup ->
@@ -30,6 +33,8 @@ if Meteor.isServer
     Neuropils.find {}  if @userId
   Meteor.publish "binary_data", ->
     BinaryData.find {}  if @userId
+  Meteor.publish "upload_processor_status", ->
+    UploadProcessorStatus.find {} if @userId
 
   # ----------------------------------------
 
@@ -82,3 +87,4 @@ if Meteor.isServer
   BinaryData.allow logged_in_allow
   NeuronTypes.allow logged_in_allow
   Neuropils.allow logged_in_allow
+  UploadProcessorStatus.allow logged_in_allow

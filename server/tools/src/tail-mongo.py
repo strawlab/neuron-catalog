@@ -1,5 +1,6 @@
 from __future__ import print_function
 import os, sys, time, tempfile, subprocess, shutil
+from email.Utils import formatdate
 import requests
 from PIL import Image
 import argparse
@@ -184,6 +185,12 @@ def infinite_poll_loop(options):
     if options.verbose:
         print('processed backlog, waiting for new images')
 
+    status_collection_name = "upload_processor_status"
+    status_doc_query = {'_id':'status'}
+    status_coll = db[status_collection_name]
+    status_coll.remove(status_doc_query)
+    assert status_coll.find().count()==0
+
     while 1:
         this_cache_urls = set()
         for doc in coll.find():
@@ -192,6 +199,13 @@ def infinite_poll_loop(options):
                 new_docs.append( doc )
                 seen_docs.add( d_id )
             this_cache_urls.add( parse_urls_from_doc(doc)['cache_url'] )
+        status_doc = status_coll.find_one(status_doc_query)
+
+        for_js = formatdate()
+        status_coll.update(status_doc_query,{'$set':{'time':for_js,
+                                                     'status':'ok',
+                                                 }},
+                           upsert=True)
 
         delete_cache_set = cache_urls - this_cache_urls
         for cache_url in delete_cache_set:
