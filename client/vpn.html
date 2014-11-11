@@ -125,22 +125,12 @@
   {{/if}}
 </template>
 
-<template name="name_field">
-  {{#if editing_name}}
-  <input type="text" id="name_input">
-  {{else}}
-  <div class="name-field edit-name">{{name}}
-    <a class="btn btn-default btn-small edit-name" href="#"><i class="fa fa-pencil-square-o"></i> Edit name</a>
-  </div>
-  {{/if}}
-</template>
-
 <template name="delete_button">
   <a class="btn btn-danger btn-small delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
 </template>
 
 <template name="raw_button">
-  <a class="btn btn-default btn-small right-buttons raw" href="#"><i class="fa fa-terminal"></i> View raw document</a>
+  <a class="btn btn-default btn-small raw" href="#"><i class="fa fa-terminal"></i> View raw document</a>
 </template>
 
 <template name="raw_document_view">
@@ -358,12 +348,24 @@
 <template name="top_content_row2">
 <div class="detail-title-top-text">
   <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
-	{{type_name}}:
-	{{> name_field collection=collection my_id=_id name=name}}
+    <div class="col-sm-8 col-sm-offset-2 align-center">
+      <div>
+        {{type_name}}:
+        {{#if editing_name}}
+          <input type="text" id="name-input">
+	{{else}}
+	  <span class="edit-name">{{name}}</span>
+	{{/if}}
+      </div>
+      <div>
+	<a class="btn btn-default btn-small edit-name" href="#"><i class="fa fa-pencil-square-o"></i> Edit name</a>
+        {{> raw_button collection=collection my_id=_id}}
 	{{> delete_button collection=collection my_id=_id}}
+      </div>
     </div>
   </div>
+</div>
+<div>
   <div class="row">
     <div class="col-sm-6">
       Previous:
@@ -378,11 +380,6 @@
     </div>
     <div class="col-sm-6 right-text">
       {{> next_previous_button collection=collection my_id=_id which="next"}}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-2 col-sm-offset-10">
-      {{> raw_button collection=collection my_id=_id}}
     </div>
   </div>
 </div>

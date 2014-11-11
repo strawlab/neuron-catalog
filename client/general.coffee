@@ -227,32 +227,35 @@ window.jump_table =
     delete_template_name: "binary_data_show_brief"
     base_route: "binary_data"
 
-Template.name_field.helpers
+Template.top_content_row2.helpers
   editing_name: ->
     d = Session.get("editing_name")
-    return false  unless d?
-    return true  if @my_id is d.my_id & @collection is d.collection
+    return false unless d?
+    return true if @_id is d._id & @collection is d.collection
     false
 
-Template.name_field.events "click .edit-name": (e, tmpl) ->
+Template.top_content_row2.events "click .edit-name": (e, tmpl) ->
   Session.set "editing_name", tmpl.data
   Deps.flush() # update DOM before focus
-  ni = tmpl.find("#name_input")
+  ni = tmpl.find("#name-input")
   ni.value = @name
   window.activateInput ni
   return
 
-Template.name_field.events window.okCancelEvents("#name_input",
-  ok: (value) ->
+Template.top_content_row2.events window.okCancelEvents("#name-input",
+  ok: (value,evt) ->
+    if Session.get("editing_name") == null
+      # Hmm, why do we get here? Cancel was clicked.
+      return
     coll = window.get_collection_from_name(@collection)
-    coll.update @my_id,
+    coll.update @_id,
       $set:
         name: value
 
     Session.set "editing_name", null
     return
 
-  cancel: ->
+  cancel: (evt) ->
     Session.set "editing_name", null
     return
 )
