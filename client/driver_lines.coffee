@@ -1,4 +1,4 @@
-driver_lines_sort = {'_id':1}
+driver_lines_sort = {'name':1}
 
 # ---- Template.driver_line_from_id_block -------------
 
