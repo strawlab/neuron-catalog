@@ -5,6 +5,7 @@ import requests
 from PIL import Image
 import argparse
 import neuron_catalog_tools
+import collections
 
 CACHE_DIR_NAME = 'cache'
 CACHE_FORMAT_EXTENSION = 'jpg'
@@ -20,6 +21,7 @@ def show_doc(doc):
 new_docs = []
 seen_docs = set()
 cache_urls = set()
+skip_image_file_for_now = collections.defaultdict( list )
 
 def is_tiff(orig_rel_url):
     orig_rel_url_lower = orig_rel_url.lower()
@@ -124,23 +126,37 @@ def make_cache_if_needed(coll, doc, options):
 
     if doc['type']=='images':
         if 'width' not in doc or 'height' not in doc:
-            r = requests.get(doc['secure_url'])
-            tmpdir = tempfile.mkdtemp()
-            if options.verbose:
-                print("getting image size: made temp dir",tmpdir)
-            try:
-                filename = os.path.join(tmpdir,'image'+z['extension'])
-                with open(filename, 'wb') as fd:
-                    fd.write(r.content)
-                props = get_image_properties(filename)
-            finally:
-                if not options.keep:
-                    shutil.rmtree(tmpdir)
-            for key in ['width','height']:
-                doc[key] = props[key]
-            r = coll.save(doc)
-            if options.verbose:
-                print("updated width and height of",doc['_id'])
+            skip_doc = False
+            if doc['_id'] in skip_image_file_for_now:
+                bad_relative_urls = skip_image_file_for_now[ doc['_id'] ]
+                if doc['relative_url'] in bad_relative_urls:
+                    skip_doc = True
+
+            if not skip_doc:
+                r = requests.get(doc['secure_url'])
+                tmpdir = tempfile.mkdtemp()
+                if options.verbose:
+                    print("getting image size: made temp dir",tmpdir)
+                try:
+                    filename = os.path.join(tmpdir,'image'+z['extension'])
+                    with open(filename, 'wb') as fd:
+                        fd.write(r.content)
+                    if options.verbose:
+                        print('getting image properties for %r (doc id %r)'%(filename,doc['_id']))
+                    props = get_image_properties(filename)
+                except:
+                    if options.verbose:
+                        print('problems with this document, ignoring for now')
+                    skip_image_file_for_now[ doc['_id'] ].append( doc['relative_url'] )
+                else:
+                    for key in ['width','height']:
+                        doc[key] = props[key]
+                    r = coll.save(doc)
+                    if options.verbose:
+                        print("updated width and height of",doc['_id'])
+                finally:
+                    if not options.keep:
+                        shutil.rmtree(tmpdir)
 
     orig_rel_url = doc['relative_url']
     if is_tiff(orig_rel_url):
