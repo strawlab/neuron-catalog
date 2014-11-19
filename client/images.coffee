@@ -61,6 +61,10 @@ Template.binary_data_show.helpers
 
 # @remove_binary_data is defined in ../vpn.coffee
 
+link_image_save_func = (info, template) ->
+  # FIXME: not implemented.
+  return
+
 insert_image_save_func = (info, template) ->
   # FIXME: disable save/cancel button
   fb = template.find("#insert_image")
@@ -141,9 +145,20 @@ Template.add_image_code.events
     $("#show_dialog_id").modal "show"
     return
 
-Template.binary_data.helpers
-  binary_data_cursor: ->
-    BinaryData.find {}
+  "click .link-existing-image": (e) ->
+    e.preventDefault()
+    Session.set "modal_info",
+      title: "Link existing image or volume"
+      body_template_name: "LinkExistingImageDialog"
+      body_template_data:
+        my_id: @_id
+        collection_name: @collection
+        field_name: "images"
+      is_save_modal: true
+
+    window.modal_save_func = link_image_save_func
+    $("#show_dialog_id").modal "show"
+    return
 
 Template.binary_data_table.rendered = ->
   $('.flex-images').flexImages({rowHeight: 200});

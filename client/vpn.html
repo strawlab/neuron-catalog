@@ -1173,10 +1173,17 @@
 </template>
 
 <template name="add_image_code">
-  <div class="add_image">
+  <div>
     <a class="btn btn-default btn-small insert" href="#">
       <i class="fa fa-plus"></i> Add new image or volume</a>
+    <a class="btn btn-default btn-small link-existing-image" href="#">
+      <i class="fa fa-pencil-square-o"></i> Link to existing image or volume</a>
   </div>
+</template>
+
+<template name="LinkExistingImageDialog">
+  Select the image(s) to link:
+  {{> binary_data_table binary_data=binary_data_cursor}}
 </template>
 
 <template name="insert_image_dialog">
