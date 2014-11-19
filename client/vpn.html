@@ -682,6 +682,17 @@
 
   {{#detail_block}}
     {{#detail_title}}
+      Images and volumes
+    {{/detail_title}}
+    {{#detail_main}}
+      <br/>
+        {{> binary_data_table binary_data=images}}
+        {{> add_image_code collection="NeuronTypes" my_id=_id}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
       Best driver lines
       <a class="btn btn-default btn-small edit-driver-lines" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     {{/detail_title}}
