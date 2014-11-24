@@ -28,41 +28,52 @@ def is_tiff(orig_rel_url):
     return orig_rel_url_lower.endswith('.tif') or orig_rel_url_lower.endswith('.tiff')
 
 def make_cache(doc, cache_url, options):
-    cwd = tempfile.mkdtemp()
-    if options.verbose:
-        print("made temp dir",cwd)
 
-    try:
-        orig_url = doc['secure_url']
-        orig_rel_url = doc['relative_url']
-        orig_fname = os.path.split( orig_rel_url )[-1]
+    skip_doc = False
+    if doc['_id'] in skip_image_file_for_now:
+        bad_relative_urls = skip_image_file_for_now[ doc['_id'] ]
+        if doc['relative_url'] in bad_relative_urls:
+            skip_doc = True
 
-        filename = os.path.join( cwd, orig_fname)
+    if not skip_doc:
+        cwd = tempfile.mkdtemp()
+        if options.verbose:
+            print("made temp dir",cwd)
 
-        if 0:
-            r = requests.get(orig_url,stream=True)
-            chunk_size=4096
-            with open(filename, 'wb') as fd:
-                for chunk in r.iter_content(chunk_size):
-                    fd.write(chunk)
-                    print("got %d bytes"%len(chunk))
+        try:
+            orig_url = doc['secure_url']
+            orig_rel_url = doc['relative_url']
+            orig_fname = os.path.split( orig_rel_url )[-1]
+
+            filename = os.path.join( cwd, orig_fname)
+
+            if 0:
+                r = requests.get(orig_url,stream=True)
+                chunk_size=4096
+                with open(filename, 'wb') as fd:
+                    for chunk in r.iter_content(chunk_size):
+                        fd.write(chunk)
+                        print("got %d bytes"%len(chunk))
+            else:
+                r = requests.get(orig_url)
+                with open(filename, 'wb') as fd:
+                    fd.write(r.content)
+
+            new_fname = os.path.split(cache_url)[-1]
+            out_full = os.path.join( cwd, new_fname)
+            convert(filename, out_full)
+            #print("OUTPUT",out_full,"to",cache_url)
+        except:
+            if options.verbose:
+                print('problems with this document, ignoring for now')
+                print("ERROR while processing doc")
+                show_doc(doc)
+            skip_image_file_for_now[ doc['_id'] ].append( doc['relative_url'] )
         else:
-            r = requests.get(orig_url)
-            with open(filename, 'wb') as fd:
-                fd.write(r.content)
-
-        new_fname = os.path.split(cache_url)[-1]
-        out_full = os.path.join( cwd, new_fname)
-        convert(filename, out_full)
-        #print("OUTPUT",out_full,"to",cache_url)
-        neuron_catalog_tools.upload(out_full, cache_url)
-    except:
-        print("ERROR while processing doc")
-        show_doc(doc)
-        raise
-    finally:
-        if not options.keep:
-            shutil.rmtree(cwd)
+            neuron_catalog_tools.upload(out_full, cache_url)
+        finally:
+            if not options.keep:
+                shutil.rmtree(cwd)
 
 def convert(input_fname, output_fname):
     assert os.path.exists(input_fname)
