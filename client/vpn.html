@@ -40,6 +40,9 @@
 	<li {{tab_attrs_recent_changes}}>
 	  <a href="{{pathFor 'RecentChanges'}}">Recent Changes</a>
 	</li>
+	<li {{tab_attrs_search}}>
+	  <a href="{{pathFor 'Search'}}">Search</a>
+	</li>
       </ul>
     </div>
    </div>
@@ -530,6 +533,52 @@
 </template>
 
 <!-- --------------------------- -->
+
+<template name="Search">
+  <p>
+    Comments text search:
+    <input type="text" id="comments-search-input" placeholder="search text">
+  </p>
+
+  <p>
+    Limit by tags:
+    {{#each get_tags}}
+      <div class="tag-name btn btn-default btn-small {{is_active_css_class}}" data-tag={{name}}>
+        {{name}}
+      </div>
+    {{/each}}
+  </p>
+
+  <div class="row">
+    <div class="col-md-11">
+      <h4>Search results</h4>
+    </div>
+    <div class="col-md-10 col-md-offset-1">
+      <p>Current search: {{current_search}}</p>
+
+    {{#detail_block}}
+      {{#detail_title}}Driver Lines{{/detail_title}}
+      {{> driver_line_table driver_lines=driver_line_search_cursor}}
+    {{/detail_block}}
+
+    {{#detail_block}}
+      {{#detail_title}}Neuron Types{{/detail_title}}
+      {{> neuron_type_table neuron_types=neuron_type_search_cursor}}
+    {{/detail_block}}
+
+    {{#detail_block}}
+      {{#detail_title}}Neuropils{{/detail_title}}
+      {{> neuropil_table neuropils=neuropil_search_cursor}}
+    {{/detail_block}}
+
+  {{#detail_block}}
+      {{#detail_title}}Images and Binary Data{{/detail_title}}
+      {{> binary_data_table binary_data=binary_data_search_cursor}}
+    {{/detail_block}}
+
+    </div>
+  </div>
+</template>
 
 <template name="RecentChanges">
   <input type="range"

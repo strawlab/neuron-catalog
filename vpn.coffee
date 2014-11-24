@@ -28,7 +28,8 @@ Router.map ->
       BinaryData.findOne @params._id
 
   @route "RecentChanges"
-  return
+
+  @route "Search"
 
 @remove_driver_line = (my_id) ->
   rdl = (doc) ->

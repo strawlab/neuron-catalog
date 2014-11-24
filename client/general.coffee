@@ -29,6 +29,7 @@ Session.setDefault "comment_preview_mode", false
 Session.setDefault "comment_preview_html", null
 Session.setDefault "upload_processor_has_error", false
 Session.setDefault "recent_changes_n_days", 2
+Session.setDefault "all_tags", []
 
 window.modal_save_func = null
 
@@ -346,6 +347,10 @@ Template.MyLayout.helpers
     cur = Router.current()
     class: "active"  if cur and cur.route.name is "RecentChanges"
 
+  tab_attrs_search: ->
+    cur = Router.current()
+    class: "active"  if cur and cur.route.name is "Search"
+
 UI.body.helpers
   getData: ->
     "data"
@@ -369,6 +374,12 @@ Template.registerHelper "login_message", ->
 
 Template.registerHelper "config", ->
   NeuronCatalogConfig.findOne({})
+
+Template.registerHelper "binary_data_cursor", ->
+  BinaryData.find {}
+
+Template.registerHelper "get_all_tags", ->
+  return Session.get("all_tags")
 
 setTitle = () ->
   cfg = NeuronCatalogConfig.findOne {}
