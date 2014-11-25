@@ -29,7 +29,9 @@ Router.map ->
 
   @route "RecentChanges"
 
-  @route "Search"
+  @route "Search",
+    data: ->
+      @params
 
 @remove_driver_line = (my_id) ->
   rdl = (doc) ->

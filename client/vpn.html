@@ -559,9 +559,14 @@
   <div class="row">
     <div class="col-md-11">
       <h4>Search results</h4>
-    </div>
-    <div class="col-md-10 col-md-offset-1">
-      <p>Current search: {{current_search}}</p>
+      Current search:
+      <a class="vpn-chevron collapsed" data-toggle="collapse" data-target="#current_search_code" aria-expanded="true" aria-controls="demo" href="#">
+      </a>
+
+      <div id="current_search_code" class="collapse">
+	<p>This is the MongoDB query currently being executed:</p>
+	<code>{{current_search}}</code>
+      </div>
 
     {{#detail_block}}
       {{#detail_title}}Driver Lines{{/detail_title}}

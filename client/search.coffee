@@ -2,23 +2,44 @@ Session.setDefault "comments_search_text", null
 Session.setDefault "flycircuit_search_text", null
 Session.setDefault "active_tags", {}
 
+update_url_bar = ->
+  q = {}
+
+  cst = Session.get("comments_search_text")
+  if cst?
+    q['text'] = cst
+
+  fst = Session.get("flycircuit_search_text")
+  if fst?
+    q['idid'] = fst
+
+  taglist = Object.keys(Session.get("active_tags"))
+  if taglist.length
+    q['tags'] = JSON.stringify(taglist)
+
+  Router.go("Search", {}, {query:q})
+
 Template.Search.events window.okCancelEvents("#comments-search-input",
   ok: (value,evt) ->
     Session.set "comments_search_text", value
+    update_url_bar()
     return
 
   cancel: (evt) ->
     Session.set "comments_search_text", null
+    update_url_bar()
     return
 )
 
 Template.Search.events window.okCancelEvents("#flycircuit-search-input",
   ok: (value,evt) ->
     Session.set "flycircuit_search_text", value
+    update_url_bar()
     return
 
   cancel: (evt) ->
     Session.set "flycircuit_search_text", null
+    update_url_bar()
     return
 )
 
@@ -33,11 +54,23 @@ Template.Search.events
       # add item
       obj[myname] = true
     Session.set("active_tags",obj)
+    update_url_bar()
 
-build_query_doc = ->
+del = (obj, key) ->
+  val =  obj[key]
+  delete obj[key]
+  val
+
+build_query_doc = (orig_data) ->
+  data = {}
+  for key of orig_data
+    data[key] = orig_data[key]
+
   result = {}
   doing_anything=false
-  cst = Session.get("comments_search_text")
+  delete data['hash'] # iron:router puts this in. we ignore it.
+
+  cst = del(data,'text')
   if cst?
     if cst.length
       search_subsubdoc = {$regex: cst, $options: "i"}
@@ -51,50 +84,53 @@ build_query_doc = ->
       doing_anything=true
 
 
-  fst = Session.get("flycircuit_search_text")
+  fst = del(data,'idid')
   if fst?
     fst = +fst # convert to int
     result.flycircuit_idids = fst # fst must be in array
     doing_anything=true
 
-  atd = Session.get("active_tags")
-  atl = Object.keys(atd)
-  if atl.length
+  atl_json = del(data,'tags')
+  if atl_json? and atl_json.length
+    atl = JSON.parse(atl_json)
     result.tags = {$all: atl} # logical and
     doing_anything=true
   if !doing_anything
     result['not_exist'] = 'not_found'
+
+  if Object.keys(data).length
+    console.log("ERROR: unknown search parameters:",data)
   result
 
 Template.Search.rendered = ->
+  if @data.text?
+    Session.set("comments_search_text",@data.text)
+  if @data.idid?
+    Session.set("flycircuit_search_text",@data.idid)
+  if @data.tags?
+    atl = JSON.parse(@data.tags)
+    taglist = {}
+    for tag in atl
+      taglist[tag] = true
+    Session.set("active_tags",taglist)
   this.find("#comments-search-input").value = Session.get("comments_search_text")
   this.find("#flycircuit-search-input").value = Session.get("flycircuit_search_text")
 
 Template.Search.helpers
   current_search: ->
-    cst = Session.get("comments_search_text")
-    if cst
-      r = "text: '" + cst + "' "
-    else
-      r = ''
-    fst = Session.get("flycircuit_search_text")
-    if fst
-      r = r + 'flycircuit_idid: ' + fst + " "
-    taglist = Object.keys(Session.get("active_tags"))
-    if taglist.length
-      r = r + 'tags: '+ taglist
-    r
+    query_doc = build_query_doc(this)
+    JSON.stringify(query_doc)
   driver_line_search_cursor: ->
-    query_doc = build_query_doc()
+    query_doc = build_query_doc(this)
     DriverLines.find(query_doc)
   neuron_type_search_cursor: ->
-    query_doc = build_query_doc()
+    query_doc = build_query_doc(this)
     NeuronTypes.find(query_doc)
   neuropil_search_cursor: ->
-    query_doc = build_query_doc()
+    query_doc = build_query_doc(this)
     Neuropils.find(query_doc)
   binary_data_search_cursor: ->
-    query_doc = build_query_doc()
+    query_doc = build_query_doc(this)
     BinaryData.find(query_doc)
   get_tags: ->
     result = {}
