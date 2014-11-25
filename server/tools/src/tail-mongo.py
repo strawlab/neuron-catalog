@@ -11,6 +11,12 @@ CACHE_DIR_NAME = 'cache'
 CACHE_FORMAT_EXTENSION = 'jpg'
 CACHE_FORMAT_SIPS_NAME = 'jpeg'
 
+THUMBNAIL_DIR_NAME = 'thumbs'
+THUMBNAIL_FORMAT_EXTENSION = 'jpeg'
+THUMBNAIL_SQUARE_SIZE = 200
+
+SKIP_EXTENSIONS = ['.am']
+
 def show_doc(doc):
     print('---- %s -----'%doc['_id'])
     for k in doc:
@@ -21,13 +27,38 @@ def show_doc(doc):
 new_docs = []
 seen_docs = set()
 cache_urls = set()
+thumbnail_urls = set()
 skip_image_file_for_now = collections.defaultdict( list )
 
 def is_tiff(orig_rel_url):
     orig_rel_url_lower = orig_rel_url.lower()
     return orig_rel_url_lower.endswith('.tif') or orig_rel_url_lower.endswith('.tiff')
 
-def make_cache(doc, cache_url, options):
+def make_thumbnail(coll, doc, thumbnail_url, full_url, options):
+    this_result = make_cache_inner(doc, thumbnail_url, options, _type='thumbnail')
+    if this_result['success']:
+        doc['thumb_src']=full_url
+        doc['thumb_width']=this_result['width']
+        doc['thumb_height']=this_result['height']
+        r = coll.save(doc)
+        if options.verbose:
+            print('saved new thumbnail')
+            show_doc(doc)
+
+def make_cache(coll, doc, cache_url, full_url, options):
+    this_result = make_cache_inner(doc, cache_url, options, _type='cache')
+    if this_result['success']:
+        doc['cache_src']=full_url
+        doc['cache_width']=this_result['width']
+        doc['cache_height']=this_result['height']
+        r = coll.save(doc)
+        if options.verbose:
+            print('saved new cache')
+            show_doc(doc)
+
+def make_cache_inner(doc, cache_url, options, _type='cache'):
+    this_result=dict(success = False)
+    assert _type in ['cache','thumbnail']
 
     skip_doc = False
     if doc['_id'] in skip_image_file_for_now:
@@ -61,32 +92,51 @@ def make_cache(doc, cache_url, options):
 
             new_fname = os.path.split(cache_url)[-1]
             out_full = os.path.join( cwd, new_fname)
-            convert(filename, out_full)
-            #print("OUTPUT",out_full,"to",cache_url)
-        except:
+            if _type=='cache':
+                convert(filename, out_full, options)
+            elif _type=='thumbnail':
+                convert(filename, out_full, options, square_size=THUMBNAIL_SQUARE_SIZE)
+            if options.verbose:
+                print("OUTPUT",out_full,"to",cache_url)
+        except Exception as err:
             if options.verbose:
                 print('problems with this document, ignoring for now')
-                print("ERROR while processing doc")
+                print("ERROR while processing doc: %s"%(err,))
                 show_doc(doc)
             skip_image_file_for_now[ doc['_id'] ].append( doc['relative_url'] )
         else:
+            props = get_image_properties(out_full)
             neuron_catalog_tools.upload(out_full, cache_url)
+            this_result['success'] = True
+            this_result.update(props)
         finally:
             if not options.keep:
                 shutil.rmtree(cwd)
+    return this_result
 
-def convert(input_fname, output_fname):
+def convert(input_fname, output_fname, options, square_size=None):
     assert os.path.exists(input_fname)
     assert not os.path.exists(output_fname)
 
     if sys.platform.startswith('darwin'):
+        if square_size is not None:
+            raise NotImplementedError('setting square_size not implemented')
         cmd = "sips -s format %s %s --out %s"%(CACHE_FORMAT_SIPS_NAME,
                                                input_fname, output_fname)
     else:
         assert sys.platform.startswith('linux')
-        cmd = ['convert',input_fname,output_fname]
-        cmd = ' '.join(cmd)
-    subprocess.check_call(cmd, shell=True)
+        if square_size is None:
+            cmd = ['convert',input_fname,output_fname]
+        else:
+            cmd = ['convert',input_fname,
+                   '-thumbnail','x%d>'%(square_size,),
+                   output_fname,
+                   ]
+        #cmd = ' '.join(cmd)
+    if options.verbose:
+        print('CALLING: %r'%(cmd,))
+    #subprocess.check_call(cmd, shell=True)
+    subprocess.check_call(cmd)
     assert os.path.exists(output_fname)
 
 def parse_urls_from_doc(doc):
@@ -110,10 +160,18 @@ def parse_urls_from_doc(doc):
     cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + \
                 '.' + CACHE_FORMAT_EXTENSION
     full_cache_url = prefix + '/'+ cache_url
+
+    pre_url = THUMBNAIL_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):]
+    pre_url = os.path.splitext(pre_url)[0]
+    thumbnail_url = pre_url + '.' + THUMBNAIL_FORMAT_EXTENSION
+    full_thumbnail_url = prefix + '/'+ thumbnail_url
+
     extension = os.path.splitext(orig_rel_url)[1]
-    return {'cache_url':cache_url,
-            'prefix':prefix,
+    return {'prefix':prefix,
+            'cache_url':cache_url,
             'full_cache_url':full_cache_url,
+            'thumbnail_url':thumbnail_url,
+            'full_thumbnail_url':full_thumbnail_url,
             'type':my_type,
             'extension':extension,
         }
@@ -142,6 +200,8 @@ def make_cache_if_needed(coll, doc, options):
                 bad_relative_urls = skip_image_file_for_now[ doc['_id'] ]
                 if doc['relative_url'] in bad_relative_urls:
                     skip_doc = True
+            if z['extension'] in SKIP_EXTENSIONS:
+                skip_doc=True
 
             if not skip_doc:
                 r = requests.get(doc['secure_url'])
@@ -184,8 +244,29 @@ def make_cache_if_needed(coll, doc, options):
                     cache_urls.add(z['cache_url'])
                     skip = True
             if not skip:
-                make_cache(doc, z['cache_url'], options)
+                make_cache(coll, doc,
+                           z['cache_url'],
+                           z['full_cache_url'],
+                           options)
                 cache_urls.add(z['cache_url'])
+
+    # ensure thumbnail -----
+    if z['thumbnail_url'] not in thumbnail_urls:
+        skip = False
+        if z['extension'] in SKIP_EXTENSIONS:
+            skip=True
+        else:
+            resp = requests.head(z['full_thumbnail_url'])
+            if resp.status_code==200:
+                # file already present
+                thumbnail_urls.add( z['thumbnail_url'] )
+                skip = True
+        if not skip:
+            make_thumbnail(coll, doc,
+                           z['thumbnail_url'],
+                           z['full_thumbnail_url'],
+                           options)
+            thumbnail_urls.add(z['thumbnail_url'])
 
 def pump_new(coll,options):
     while len(new_docs):
@@ -194,9 +275,14 @@ def pump_new(coll,options):
 
 def fill_cache():
     bucket = neuron_catalog_tools.get_s3_bucket()
+
     rs = bucket.list(prefix=CACHE_DIR_NAME+'/')
     for key in rs:
         cache_urls.add(key.name)
+
+    rs = bucket.list(prefix=THUMBNAIL_DIR_NAME+'/')
+    for key in rs:
+        thumbnail_urls.add(key.name)
 
 def infinite_poll_loop(options):
     db = neuron_catalog_tools.get_db()
@@ -220,12 +306,14 @@ def infinite_poll_loop(options):
 
     while 1:
         this_cache_urls = set()
+        this_thumbnail_urls = set()
         for doc in coll.find():
             d_id = doc['_id']
             if d_id not in seen_docs:
                 new_docs.append( doc )
                 seen_docs.add( d_id )
             this_cache_urls.add( parse_urls_from_doc(doc)['cache_url'] )
+            this_thumbnail_urls.add( parse_urls_from_doc(doc)['thumbnail_url'] )
         status_doc = status_coll.find_one(status_doc_query)
 
         for_js = formatdate()
@@ -240,6 +328,13 @@ def infinite_poll_loop(options):
             bucket = neuron_catalog_tools.get_s3_bucket()
             bucket.delete_key(cache_url)
             cache_urls.remove( cache_url )
+
+        delete_thumbnail_set = thumbnail_urls - this_thumbnail_urls
+        for thumbnail_url in delete_thumbnail_set:
+            # delete stale thumbnail image
+            bucket = neuron_catalog_tools.get_s3_bucket()
+            bucket.delete_key(thumbnail_url)
+            thumbnail_urls.remove( thumbnail_url )
 
         pump_new(coll,options)
         time.sleep(2.0)
