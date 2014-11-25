@@ -466,6 +466,8 @@
     {{/detail_main}}
   {{/detail_block}}
 
+  {{> FlyCircuitPanel flycircuit_idids=flycircuit_idids collection="DriverLines" _id=_id}}
+
   {{> comments_panel comments=comments show_name="DriverLines" _id=_id}}
   {{/driver_line_from_id_block}}
 </template>
@@ -768,6 +770,8 @@
       {{> driver_line_table driver_lines=driver_lines_referencing_me}}
     {{/detail_main}}
   {{/detail_block}}
+
+  {{> FlyCircuitPanel flycircuit_idids=flycircuit_idids collection="NeuronTypes" _id=_id}}
 
   {{> comments_panel comments=comments show_name="NeuronTypes" _id=_id}}
   {{/neuron_type_from_id_block}}
@@ -1085,6 +1089,37 @@
 </template>
 
 <!-- ---------------------------- -->
+
+<template name="FlyCircuitPanel">
+  {{#detail_block}}
+    {{#detail_title}}
+      FlyCircuit.tw links
+    {{/detail_title}}
+    {{#detail_main}}
+      <p></p>
+      <div class="tags-div">
+	<div class="item-tags">
+          {{#each idid_dicts}}
+<div class="btn btn-default btn-small">
+	    <div class="pzp1 name"><a href="http://flycircuit.tw/modules.php?name=clearpage&op=detail_table&idid={{name}}">{{name}}</a></div>
+	    <div class="pzp2 remove"><i class="fa fa-trash-o"></i></div>
+	  </div>
+	  {{/each}}
+          {{#if adding_flycircuit_idid}}
+            <div class="tag edit-flycircuit-idid">
+              <input type="text" id="edit-flycircuit-input" value="" >
+            </div>
+          {{else}}
+            <div class="tag add-flycircuit-idid">
+              <a class="btn btn-default btn-small insert" href="#">
+               <i class="fa fa-plus"></i> Add idid</a>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    {{/detail_main}}
+  {{/detail_block}}
+</template>
 
 <template name="show_comments">
   {{#each wrapped_comments}}
