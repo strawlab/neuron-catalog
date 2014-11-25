@@ -21,6 +21,11 @@ enhance_image_doc = (doc) ->
     doc.secure_url_notif = newurl
   else
     doc.secure_url_notif = doc.secure_url
+
+  if doc.thumb_src?
+    doc.has_thumb = true
+  else
+    doc.has_thumb = false
   doc
 
 Template.binary_data_from_id_block.helpers

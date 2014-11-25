@@ -9,6 +9,11 @@
     z-index:10;
 }
 
+.no-thumb-item {
+    width: 150px;
+    height: 200px;
+}
+
 .top50 {
    margin-top: 50px;
    z-index:5;

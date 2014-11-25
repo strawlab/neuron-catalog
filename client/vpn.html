@@ -1034,11 +1034,18 @@
   <div class="flex-images">
     {{#each binary_data}}
       {{#binary_data_from_id_block}}
-        <div class="item" data-w={{width}} data-h={{height}}>
-	  <a href="{{pathFor 'binary_data_show'}}">
-            <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" data-src="{{secure_url_notif}}">
-	  </a>
-        </div>
+        {{#if has_thumb}}
+          <div class="item" data-w={{thumb_width}} data-h={{thumb_height}}>
+            <a href="{{pathFor 'binary_data_show'}}">
+              <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
+            </a>
+          </div>
+        {{else}}
+          <div class="item no-thumb-item" data-w="150" data-h="200">
+            <a href="{{pathFor 'binary_data_show'}}">{{name}}</a>
+	    <p>No thumbnail available.</p>
+          </div>
+        {{/if}}
       {{/binary_data_from_id_block}}
     {{/each}}
   </div>
