@@ -41,7 +41,7 @@ build_query_doc = ->
   atd = Session.get("active_tags")
   atl = Object.keys(atd)
   if atl.length
-    result.tags = {$in: atl} # logical or
+    result.tags = {$all: atl} # logical and
     doing_anything=true
   if !doing_anything
     result['not_exist'] = 'not_found'
