@@ -29,7 +29,14 @@ build_query_doc = ->
   cst = Session.get("comments_search_text")
   if cst?
     if cst.length
-      result['comments.comment'] = {$regex: cst, $options: "i"}
+      search_subsubdoc = {$regex: cst, $options: "i"}
+      all_text_field_names = ["comments.comment","name","synonyms"]
+      or_docs = []
+      for tfn in all_text_field_names
+        search_subdoc = {}
+        search_subdoc[tfn] = search_subsubdoc
+        or_docs.push search_subdoc
+      result['$or'] = or_docs
       doing_anything=true
   atd = Session.get("active_tags")
   atl = Object.keys(atd)
@@ -47,7 +54,7 @@ Template.Search.helpers
   current_search: ->
     cst = Session.get("comments_search_text")
     if cst
-      r = "comment text: '" + cst + "' "
+      r = "text: '" + cst + "' "
     else
       r = ''
     taglist = Object.keys(Session.get("active_tags"))
