@@ -44,9 +44,13 @@ Template.tags_panel.helpers
 
   tag_dicts: ->
     result = []
-    for i of @tags
+
+    if !@tags?
+      return result
+
+    for name in @tags
       tmp =
-        name: @tags[i]
+        name: name
         parent_id: @_id
         collection: @collection
 
