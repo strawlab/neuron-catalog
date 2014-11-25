@@ -1,4 +1,5 @@
 Session.setDefault "comments_search_text", null
+Session.setDefault "flycircuit_search_text", null
 Session.setDefault "active_tags", {}
 
 Template.Search.events window.okCancelEvents("#comments-search-input",
@@ -8,6 +9,16 @@ Template.Search.events window.okCancelEvents("#comments-search-input",
 
   cancel: (evt) ->
     Session.set "comments_search_text", null
+    return
+)
+
+Template.Search.events window.okCancelEvents("#flycircuit-search-input",
+  ok: (value,evt) ->
+    Session.set "flycircuit_search_text", value
+    return
+
+  cancel: (evt) ->
+    Session.set "flycircuit_search_text", null
     return
 )
 
@@ -38,6 +49,14 @@ build_query_doc = ->
         or_docs.push search_subdoc
       result['$or'] = or_docs
       doing_anything=true
+
+
+  fst = Session.get("flycircuit_search_text")
+  if fst?
+    fst = +fst # convert to int
+    result.flycircuit_idids = fst # fst must be in array
+    doing_anything=true
+
   atd = Session.get("active_tags")
   atl = Object.keys(atd)
   if atl.length
@@ -49,6 +68,7 @@ build_query_doc = ->
 
 Template.Search.rendered = ->
   this.find("#comments-search-input").value = Session.get("comments_search_text")
+  this.find("#flycircuit-search-input").value = Session.get("flycircuit_search_text")
 
 Template.Search.helpers
   current_search: ->
@@ -57,6 +77,9 @@ Template.Search.helpers
       r = "text: '" + cst + "' "
     else
       r = ''
+    fst = Session.get("flycircuit_search_text")
+    if fst
+      r = r + 'flycircuit_idid: ' + fst + " "
     taglist = Object.keys(Session.get("active_tags"))
     if taglist.length
       r = r + 'tags: '+ taglist
