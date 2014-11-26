@@ -24,7 +24,7 @@
    <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <ul class="nav nav-tabs" role="tablist">
-	<li {{tab_attrs_home}}><a href="{{pathFor 'home'}}">home</a></li>
+	<li {{tab_attrs_home}}><a href="{{pathFor 'home'}}">Home</a></li>
 	<li {{tab_attrs_driver_lines}}>
 	  <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
 	</li>
@@ -556,40 +556,34 @@
     {{/each}}
   </p>
 
-  <div class="row">
-    <div class="col-md-11">
-      <h4>Search results</h4>
-      Current search:
-      <a class="vpn-chevron collapsed" data-toggle="collapse" data-target="#current_search_code" aria-expanded="true" aria-controls="demo" href="#">
-      </a>
+  <h4>Search results</h4>
 
-      <div id="current_search_code" class="collapse">
-	<p>This is the MongoDB query currently being executed:</p>
-	<code>{{current_search}}</code>
-      </div>
-
-    {{#detail_block}}
-      {{#detail_title}}Driver Lines{{/detail_title}}
-      {{> driver_line_table driver_lines=driver_line_search_cursor}}
-    {{/detail_block}}
-
-    {{#detail_block}}
-      {{#detail_title}}Neuron Types{{/detail_title}}
-      {{> neuron_type_table neuron_types=neuron_type_search_cursor}}
-    {{/detail_block}}
-
-    {{#detail_block}}
-      {{#detail_title}}Neuropils{{/detail_title}}
-      {{> neuropil_table neuropils=neuropil_search_cursor}}
-    {{/detail_block}}
+  Current search:
+  <a class="vpn-chevron collapsed" data-toggle="collapse" data-target="#current_search_code" aria-expanded="true" aria-controls="demo" href="#"></a>
+  <div id="current_search_code" class="collapse">
+    <p>This is the MongoDB query currently being executed:</p>
+    <code>{{current_search}}</code>
+  </div>
 
   {{#detail_block}}
-      {{#detail_title}}Images and Binary Data{{/detail_title}}
-      {{> binary_data_table binary_data=binary_data_search_cursor}}
-    {{/detail_block}}
+    {{#detail_title}}Driver Lines{{/detail_title}}
+    {{> driver_line_table driver_lines=driver_line_search_cursor}}
+  {{/detail_block}}
 
-    </div>
-  </div>
+  {{#detail_block}}
+    {{#detail_title}}Neuron Types{{/detail_title}}
+    {{> neuron_type_table neuron_types=neuron_type_search_cursor}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}Neuropils{{/detail_title}}
+    {{> neuropil_table neuropils=neuropil_search_cursor}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}Images and Binary Data{{/detail_title}}
+    {{> binary_data_table binary_data=binary_data_search_cursor}}
+  {{/detail_block}}
 </template>
 
 <template name="RecentChanges">
