@@ -85,8 +85,11 @@ build_query_doc = (orig_data) ->
 
   fst = del(data,'idid')
   if fst?
-    fst = +fst # convert to int
-    result.flycircuit_idids = fst # fst must be in array
+    if fst=="*"
+      result.flycircuit_idids = {$exists:1}
+    else
+      fst = +fst # convert to int
+      result.flycircuit_idids = fst # fst must be in array
     doing_anything=true
 
   atl_json = del(data,'tags')
