@@ -323,34 +323,6 @@ Template.MyLayout.helpers
       result = 'container-fluid'
     result
 
-  tab_attrs_home: ->
-    current = Router.current()
-    class: "active"  if current and current.route.name is "home"
-
-  tab_attrs_driver_lines: ->
-    cur = Router.current()
-    class: "active"  if cur and cur.route.name is "driver_lines" or cur.route.name is "driver_line_show"
-
-  tab_attrs_binary_data: ->
-    cur = Router.current()
-    class: "active"  if cur and cur.route.name is "binary_data" or cur.route.name is "binary_data_show"
-
-  tab_attrs_neuron_types: ->
-    cur = Router.current()
-    class: "active"  if cur and cur.route.name is "neuron_types" or cur.route.name is "neuron_type_show"
-
-  tab_attrs_neuropils: ->
-    cur = Router.current()
-    class: "active"  if cur and cur.route.name is "neuropils" or cur.route.name is "neuropil_show"
-
-  tab_attrs_recent_changes: ->
-    cur = Router.current()
-    class: "active"  if cur and cur.route.name is "RecentChanges"
-
-  tab_attrs_search: ->
-    cur = Router.current()
-    class: "active"  if cur and cur.route.name is "Search"
-
 UI.body.helpers
   getData: ->
     "data"

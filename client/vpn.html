@@ -24,23 +24,23 @@
    <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <ul class="nav nav-tabs" role="tablist">
-	<li {{tab_attrs_home}}><a href="{{pathFor 'home'}}">Home</a></li>
-	<li {{tab_attrs_driver_lines}}>
+	<li class="{{activeIfTemplateIs 'home'}}"><a href="{{pathFor 'home'}}">Home</a></li>
+	<li class="{{activeIfTemplateIs 'driver_lines'}}">
 	  <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
 	</li>
-	<li {{tab_attrs_neuron_types}}>
+	<li class="{{activeIfTemplateIs 'neuron_types'}}">
 	  <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
 	</li>
-	<li {{tab_attrs_neuropils}}>
+	<li class="{{activeIfTemplateIs 'neuropils'}}">
 	  <a href="{{pathFor 'neuropils'}}">Neuropils</a>
 	</li>
-	<li {{tab_attrs_binary_data}}>
+	<li class="{{activeIfTemplateIs 'binary_data'}}">
 	  <a href="{{pathFor 'binary_data'}}">Binary Data</a>
 	</li>
-	<li {{tab_attrs_recent_changes}}>
+	<li class="{{activeIfTemplateIs 'RecentChanges'}}">
 	  <a href="{{pathFor 'RecentChanges'}}">Recent Changes</a>
 	</li>
-	<li {{tab_attrs_search}}>
+	<li class="{{activeIfTemplateIs 'Search'}}">
 	  <a href="{{pathFor 'Search'}}">Search</a>
 	</li>
       </ul>
