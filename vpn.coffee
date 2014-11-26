@@ -33,6 +33,10 @@ Router.map ->
     data: ->
       @params
 
+  @route "404",
+    path: "/*"
+    template: 'PageNotFound'
+
 @remove_driver_line = (my_id) ->
   rdl = (doc) ->
     setter = {}
