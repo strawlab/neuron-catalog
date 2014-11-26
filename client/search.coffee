@@ -83,7 +83,6 @@ build_query_doc = (orig_data) ->
       result['$or'] = or_docs
       doing_anything=true
 
-
   fst = del(data,'idid')
   if fst?
     fst = +fst # convert to int
@@ -96,7 +95,7 @@ build_query_doc = (orig_data) ->
     result.tags = {$all: atl} # logical and
     doing_anything=true
   if !doing_anything
-    result['not_exist'] = 'not_found'
+    return
 
   if Object.keys(data).length
     console.log("ERROR: unknown search parameters:",data)
@@ -119,19 +118,24 @@ Template.Search.rendered = ->
 Template.Search.helpers
   current_search: ->
     query_doc = build_query_doc(this)
-    JSON.stringify(query_doc)
+    if query_doc?
+      JSON.stringify(query_doc)
   driver_line_search_cursor: ->
     query_doc = build_query_doc(this)
-    DriverLines.find(query_doc)
+    if query_doc?
+      DriverLines.find(query_doc)
   neuron_type_search_cursor: ->
     query_doc = build_query_doc(this)
-    NeuronTypes.find(query_doc)
+    if query_doc?
+      NeuronTypes.find(query_doc)
   neuropil_search_cursor: ->
     query_doc = build_query_doc(this)
-    Neuropils.find(query_doc)
+    if query_doc?
+      Neuropils.find(query_doc)
   binary_data_search_cursor: ->
     query_doc = build_query_doc(this)
-    BinaryData.find(query_doc)
+    if query_doc?
+      BinaryData.find(query_doc)
   get_tags: ->
     result = {}
     query_doc = {tags: {$exists: true}}

@@ -556,6 +556,7 @@
     {{/each}}
   </p>
 
+  {{#if current_search}}
   <h4>Search results</h4>
 
   Current search:
@@ -584,6 +585,7 @@
     {{#detail_title}}Images and Binary Data{{/detail_title}}
     {{> binary_data_table binary_data=binary_data_search_cursor}}
   {{/detail_block}}
+  {{/if}}
 </template>
 
 <template name="RecentChanges">
