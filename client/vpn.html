@@ -24,23 +24,23 @@
    <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <ul class="nav nav-tabs" role="tablist">
-	<li class="{{activeIfTemplateIs 'home'}}"><a href="{{pathFor 'home'}}">Home</a></li>
-	<li class="{{activeIfTemplateIs 'driver_lines'}}">
+	<li class="{{activeIfTemplateIn 'home'}}"><a href="{{pathFor 'home'}}">Home</a></li>
+	<li class="{{activeIfTemplateIn 'driver_lines' 'driver_line_show'}}">
 	  <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
 	</li>
-	<li class="{{activeIfTemplateIs 'neuron_types'}}">
+	<li class="{{activeIfTemplateIn 'neuron_types' 'neuron_type_show'}}">
 	  <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
 	</li>
-	<li class="{{activeIfTemplateIs 'neuropils'}}">
+	<li class="{{activeIfTemplateIn 'neuropils' 'neuropil_show'}}">
 	  <a href="{{pathFor 'neuropils'}}">Neuropils</a>
 	</li>
-	<li class="{{activeIfTemplateIs 'binary_data'}}">
+	<li class="{{activeIfTemplateIn 'binary_data' 'binary_data_show'}}">
 	  <a href="{{pathFor 'binary_data'}}">Binary Data</a>
 	</li>
-	<li class="{{activeIfTemplateIs 'RecentChanges'}}">
+	<li class="{{activeIfTemplateIn 'RecentChanges'}}">
 	  <a href="{{pathFor 'RecentChanges'}}">Recent Changes</a>
 	</li>
-	<li class="{{activeIfTemplateIs 'Search'}}">
+	<li class="{{activeIfTemplateIn 'Search'}}">
 	  <a href="{{pathFor 'Search'}}">Search</a>
 	</li>
       </ul>

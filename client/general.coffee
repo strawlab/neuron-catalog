@@ -336,12 +336,13 @@ Template.registerHelper "get_neuropils", (doc,type) ->
       result.push neuropil
   result
 
-Template.registerHelper "activeIfTemplateIs", (template) ->
+Template.registerHelper "activeIfTemplateIn", () ->
   currentRoute = Router.current()
-  if currentRoute and template is currentRoute.lookupTemplate()
-    return "active"
-  else
-    return ""
+  if currentRoute
+    for arg in arguments
+      if arg is currentRoute.lookupTemplate()
+        return "active"
+  return ""
 
 Template.registerHelper "currentUser", ->
   # Mimic the normal meteor accounts system from IronRouter template.
