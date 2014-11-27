@@ -1156,20 +1156,33 @@
     {{#each binary_data}}
       {{#binary_data_from_id_block}}
         {{#if has_thumb}}
-          <div class="item" data-w={{thumb_width}} data-h={{thumb_height}}>
-            <a href="{{pathFor 'binary_data_show'}}">
+          <div class="item selectable" data-w={{thumb_width}} data-h={{thumb_height}}>
+	    {{#if ../../selectable_not_clickable}}
               <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
-            </a>
+	    {{else}}
+              <a href="{{pathFor 'binary_data_show'}}">
+                <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
+              </a>
+	    {{/if}}
           </div>
         {{else}}
-          <div class="item no-thumb-item" data-w="150" data-h="200">
-            <a href="{{pathFor 'binary_data_show'}}">{{name}}</a>
+          <div class="item no-thumb-item selectable" data-w="150" data-h="200">
+	    {{#if ../../selectable_not_clickable}}
+	      {{name}}
+	    {{else}}
+              <a href="{{pathFor 'binary_data_show'}}">{{name}}</a>
+	    {{/if}}
 	    <p>No thumbnail available.</p>
           </div>
         {{/if}}
       {{/binary_data_from_id_block}}
     {{/each}}
   </div>
+  {{#if selectable_not_clickable}}
+    <div class="right-text">
+      {{get_n_selected}} selected.
+    </div>
+  {{/if}}
 </template>
 
 <template name="add_image_code">
@@ -1183,7 +1196,7 @@
 
 <template name="LinkExistingImageDialog">
   Select the image(s) to link:
-  {{> binary_data_table binary_data=binary_data_cursor}}
+  {{> binary_data_table binary_data=binary_data_cursor selectable_not_clickable=true}}
 </template>
 
 <template name="insert_image_dialog">

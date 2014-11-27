@@ -1,3 +1,4 @@
+Session.setDefault "N_selected", 0
 
 # ---- Template.binary_data_from_id_block -------------
 
@@ -162,4 +163,26 @@ Template.add_image_code.events
 
 Template.binary_data_table.rendered = ->
   $('.flex-images').flexImages({rowHeight: 200});
+  template = Template.instance()
+  update_selected(template)
   return
+
+Template.binary_data_table.helpers
+  get_n_selected: ->
+    N = Session.get("N_selected",N)
+    if N==1
+      return "1 image"
+    else
+      return N+" images"
+
+update_selected = (template) ->
+  elements = template.findAll(".selected")
+  N = elements.length
+  Session.set("N_selected",N)
+
+Template.binary_data_table.events
+  "click .selectable": (event, template) ->
+    $this = $(event.currentTarget)
+    $this.toggleClass('selected')
+
+    update_selected(template)
