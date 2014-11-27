@@ -32,6 +32,7 @@ Session.setDefault "recent_changes_n_days", 2
 Session.setDefault "all_tags", []
 
 window.modal_save_func = null
+window.modal_shown_callback = null
 
 # --------------------------------------------
 # timer functions
@@ -187,6 +188,12 @@ Template.show_dialog.events
       $("#show_dialog_id").modal "hide"
     return
 
+  "shown.bs.modal": (event, template) ->
+    if window.modal_shown_callback?
+      info = Session.get("modal_info")
+      window.modal_shown_callback(info, template, event)
+    return
+
 window.jump_table =
   DriverLines:
     remove: (x) ->
@@ -274,6 +281,8 @@ Template.delete_button.events
       is_delete_modal: true
 
     window.modal_save_func = null
+    window.modal_shown_callback = null
+
     $("#show_dialog_id").modal "show"
     return
 
@@ -292,6 +301,7 @@ Template.raw_button.events
         my_id: @my_id
 
     window.modal_save_func = null
+    window.modal_shown_callback = null
     $("#show_dialog_id").modal "show"
     return
 
