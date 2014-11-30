@@ -285,7 +285,11 @@ def fill_cache():
         thumbnail_urls.add(key.name)
 
 def infinite_poll_loop(options):
+    if options.verbose:
+        print("Connecting to mongo.")
     db = neuron_catalog_tools.get_db()
+    if options.verbose:
+        print("Connected to mongo, processing backlog.")
     coll = db.binary_data
 
     for doc in coll.find():
@@ -303,6 +307,9 @@ def infinite_poll_loop(options):
     status_coll = db[status_collection_name]
     status_coll.remove(status_doc_query)
     assert status_coll.find().count()==0
+
+    if options.verbose:
+        print("Finished processing backlog, now waiting for new images.")
 
     while 1:
         this_cache_urls = set()
