@@ -429,7 +429,7 @@
 
   {{#detail_block}}
     {{#detail_title}}
-      Images and volumes
+        {{> AddImageCode2 collection="DriverLines" my_id=_id}}
     {{/detail_title}}
     {{#detail_main}}
       <br/>
@@ -613,6 +613,7 @@
 
   {{#detail_block}}
     {{#detail_main}}
+        {{> add_image_code}}
         <br/>
         {{> binary_data_table binary_data=binary_data_cursor}}
 
@@ -731,7 +732,7 @@
 
   {{#detail_block}}
     {{#detail_title}}
-      Images and volumes
+      {{> AddImageCode2 collection="NeuronTypes" my_id=_id}}
     {{/detail_title}}
     {{#detail_main}}
       <br/>
@@ -877,7 +878,7 @@
 
   {{#detail_block}}
     {{#detail_title}}
-      Images and volumes
+      {{> AddImageCode2 collection="Neuropils" my_id=_id}}
     {{/detail_title}}
     {{#detail_main}}
       <br/>
@@ -1156,27 +1157,57 @@
     {{#each binary_data}}
       {{#binary_data_from_id_block}}
         {{#if has_thumb}}
-          <div class="item" data-w={{thumb_width}} data-h={{thumb_height}}>
-            <a href="{{pathFor 'binary_data_show'}}">
+          <div class="item {{selectable_class}}" id={{_id}} data-w={{thumb_width}} data-h={{thumb_height}}>
+	    {{#if ../../selectable_not_clickable}}
               <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
-            </a>
+	    {{else}}
+              <a href="{{pathFor 'binary_data_show'}}">
+                <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
+              </a>
+	    {{/if}}
           </div>
         {{else}}
-          <div class="item no-thumb-item" data-w="150" data-h="200">
-            <a href="{{pathFor 'binary_data_show'}}">{{name}}</a>
+          <div class="item no-thumb-item {{selectable_class}}" id={{_id}} data-w="150" data-h="200">
+	    {{#if ../../selectable_not_clickable}}
+	      {{name}}
+	    {{else}}
+              <a href="{{pathFor 'binary_data_show'}}">{{name}}</a>
+	    {{/if}}
 	    <p>No thumbnail available.</p>
           </div>
         {{/if}}
       {{/binary_data_from_id_block}}
     {{/each}}
   </div>
+  {{#if selectable_not_clickable}}
+    <div class="right-text">
+      {{get_n_selected}} selected.
+    </div>
+  {{/if}}
+</template>
+
+<template name="AddImageCode2">
+  <div>
+      Images and volumes
+      <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+  </div>
 </template>
 
 <template name="add_image_code">
-  <div class="add_image">
+  <div>
     <a class="btn btn-default btn-small insert" href="#">
       <i class="fa fa-plus"></i> Add new image or volume</a>
   </div>
+</template>
+
+<template name="LinkExistingImageDialog">
+  <p>Select images and volumes to link from {{friendly_item_name}}</p>
+  <div class="alert alert-warning" role="alert">
+    <i class="fa fa-exclamation-triangle"></i>This will adjust all
+    images linked from {{friendly_item_name}}. Removing the originally selected
+    images will remove their links permanently.
+  </div>
+  {{> binary_data_table binary_data=binary_data_cursor selectable_not_clickable=true}}
 </template>
 
 <template name="insert_image_dialog">

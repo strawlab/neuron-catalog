@@ -202,3 +202,10 @@ div.image-square {
     /* symbol for "collapsed" panels */
     content: "\e080";    /* adjust as needed, taken from bootstrap.css */
 }
+
+.selectable.selected {
+    /* fleximages .item have a 4px margin and 1px grey. So we keep total
+       to 5px to keep layout */
+    border: 3px solid #77f;
+    margin: 2px;
+}
