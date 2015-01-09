@@ -12,7 +12,7 @@ Router.route "/", (->
   name: "home"
 
 Router.route "/driver_lines"
-Router.route "/driver_lines/:_id", (->
+Router.route "/driver_lines/:_id/:name?", (->
   @render "driver_line_show",
     data: ->
       DriverLines.findOne _id: @params._id
@@ -20,7 +20,7 @@ Router.route "/driver_lines/:_id", (->
   name: "driver_line_show"
 
 Router.route "/neuron_types"
-Router.route "/neuron_types/:_id", (->
+Router.route "/neuron_types/:_id/:name?", (->
   @render "neuron_type_show",
     data: ->
       NeuronTypes.findOne _id: @params._id
@@ -28,7 +28,7 @@ Router.route "/neuron_types/:_id", (->
   name: "neuron_type_show"
 
 Router.route "/neuropils"
-Router.route "/neuropils/:_id", (->
+Router.route "/neuropils/:_id/:name?", (->
   @render "neuropil_show",
     data: ->
       Neuropils.findOne _id: @params._id
@@ -36,7 +36,7 @@ Router.route "/neuropils/:_id", (->
   name: "neuropil_show"
 
 Router.route "/binary_data"
-Router.route "/binary_data/:_id", (->
+Router.route "/binary_data/:_id/:name?", (->
   @render "binary_data_show",
     data: ->
       BinaryData.findOne _id: @params._id

@@ -121,7 +121,9 @@ Template.raw_document_view.helpers
 
 Template.linkout.helpers
   path: ->
-    window.get_route_from_name(@collection).path({_id:@my_id})
+    coll = window.get_collection_from_name(@collection)
+    doc = coll.findOne({_id: @my_id})
+    window.get_route_from_name(@collection).path(doc)
   name: ->
     @doc.name
 
