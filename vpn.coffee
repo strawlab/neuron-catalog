@@ -1,41 +1,54 @@
-Router.configure layoutTemplate: "MyLayout"
-Router.map ->
-  @route "home",
-    path: "/"
+Router.configure
+  layoutTemplate: "MyLayout"
+  notFoundTemplate: "PageNotFound"
 
-  @route "driver_lines"
-  @route "driver_line_show",
-    path: "/driver_lines/:_id"
+Router.setTemplateNameConverter (str) ->
+  str
+
+Router.route "/", (->
+  @render "Home"
+  return
+),
+  name: "home"
+
+Router.route "driver_lines"
+Router.route "/driver_lines/:_id", (->
+  @render "driver_line_show",
     data: ->
-      DriverLines.findOne @params._id
+      DriverLines.findOne _id: @params._id
+),
+  name: "driver_line_show"
 
-  @route "neuron_types"
-  @route "neuron_type_show",
-    path: "/neuron_types/:_id"
+Router.route "neuron_types"
+Router.route "/neuron_types/:_id", (->
+  @render "neuron_type_show",
     data: ->
-      NeuronTypes.findOne @params._id
+      NeuronTypes.findOne _id: @params._id
+),
+  name: "neuron_type_show"
 
-  @route "neuropils"
-  @route "neuropil_show",
-    path: "/neuropils/:_id"
+Router.route "neuropils"
+Router.route "/neuropils/:_id", (->
+  @render "neuropil_show",
     data: ->
-      Neuropils.findOne @params._id
+      Neuropils.findOne _id: @params._id
+),
+  name: "neuropil_show"
 
-  @route "binary_data"
-  @route "binary_data_show",
-    path: "/binary_data/:_id"
+Router.route "binary_data"
+Router.route "/binary_data/:_id", (->
+  @render "binary_data_show",
     data: ->
-      BinaryData.findOne @params._id
+      BinaryData.findOne _id: @params._id
+),
+  name: "binary_data_show"
 
-  @route "RecentChanges"
+Router.route "RecentChanges"
 
-  @route "Search",
+Router.route "Search", ->
+  @render "Search",
     data: ->
       @params
-
-  @route "404",
-    path: "/*"
-    template: 'PageNotFound'
 
 @remove_driver_line = (my_id) ->
   rdl = (doc) ->
