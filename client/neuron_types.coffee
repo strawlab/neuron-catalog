@@ -29,7 +29,7 @@ neuron_type_insert_callback = (error, _id) ->
     console.log "neuron_type_insert_callback with error:", error
     return
 
-# @remove_neuron_type is defined in ../vpn.coffee
+# @remove_neuron_type is defined in ../neuron-catalog.coffee
 
 @save_neuron_type = (info, template) ->
   result = {}

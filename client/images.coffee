@@ -60,7 +60,7 @@ Template.binary_data_show.helpers
 
 # -------------------------------------------------------
 
-# @remove_binary_data is defined in ../vpn.coffee
+# @remove_binary_data is defined in ../neuron-catalog.coffee
 
 link_image_save_func = (info, template) ->
   d = info.body_template_data
