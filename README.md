@@ -70,9 +70,9 @@ neuron-catalog.
            </CORSRule>
        </CORSConfiguration>
 
-4. In the IAM configuration, create a user and group for performing
-the uploads. Note the Access Key and the Secret Key - you will need to
-enter these.
+4. In the Identity & Access Management (IAM) configuration, create a
+user and group for performing the uploads. Note the Access Key and the
+Secret Key - you will need to enter these.
 
 5. Still in IAM, set the group policy to the following (substitute
 `your-bucket-name` for the name of your bucket):
