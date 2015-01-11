@@ -15,7 +15,24 @@ Router.route "/driver_lines"
 Router.route "/driver_lines/:_id/:name?",
   name: "driver_line_show"
   action: ->
-    @render "driver_line_show"
+    using_canonical_name=false
+    doc = DriverLines.findOne _id: @params._id
+    if @params.name?
+      if doc? and @params.name == doc.name
+        using_canonical_name = true
+
+    if doc?
+      if using_canonical_name
+        @render "driver_line_show"
+      else
+        @redirect( "driver_line_show", {_id:@params._id,name:doc.name} )
+    else
+      # The _id is not in the database. Should maybe do a 404. For
+      # now, render with blank data.
+      # FIXME in the future (See
+      # https://github.com/EventedMind/iron-router/issues/237 )
+      @render "PageNotFound"
+
   data: ->
     DriverLines.findOne _id: @params._id
 
@@ -78,7 +95,7 @@ Router.route "/Search", ->
 @remove_binary_data = (my_id) ->
   rnt = (doc) ->
     index = doc[@field_name].indexOf(@my_id)
-    
+
     # No need to check for index==-1 because we know it does not (except race condition).
     doc[@field_name].splice index, 1
     t2 = {}
@@ -96,7 +113,7 @@ Router.route "/Search", ->
     field_name: field_name
 
   doc = BinaryData.findOne(my_id)
-  
+
   S3.delete doc.relative_url
   BinaryData.remove my_id
   return
@@ -104,7 +121,7 @@ Router.route "/Search", ->
 @remove_neuron_type = (my_id) ->
   rnt = (doc) ->
     index = doc.neuron_types.indexOf(@my_id)
-    
+
     # No need to check for index==-1 because we know it does not (except race condition).
     doc.neuron_types.splice index, 1
     @coll.update doc._id,
@@ -122,7 +139,7 @@ Router.route "/Search", ->
 @remove_neuropil = (my_id) ->
   rn = (doc) ->
     index = doc.neuropils.indexOf(@my_id)
-    
+
     # No need to check for index==-1 because we know it does not (except race condition).
     doc.neuropils.splice index, 1
     @coll.update doc._id,
