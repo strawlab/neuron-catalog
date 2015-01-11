@@ -1,4 +1,3 @@
 {"s3_key": "key",
  "s3_secret": "secret",
- "s3_bucket": "bucket",
- "s3_region": "region"}
+ "s3_bucket": "bucket"}

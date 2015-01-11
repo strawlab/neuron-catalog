@@ -6,12 +6,24 @@ if AdminConfig.find().count() is 0
     s3_key: "yourkey"
     s3_secret: "yoursecret"
     s3_bucket: "yourbucket"
-    s3_region: "yourregion-optional"
   AdminConfig.insert doc
 
 cfg = AdminConfig.findOne()
-S3.config =
-  key    : cfg['s3_key']
-  secret : cfg['s3_secret']
-  bucket : cfg['s3_bucket']
-  region : cfg['s3_region']
+
+options =
+  bucket: cfg['s3_bucket']
+  AWSAccessKeyId: cfg['s3_key']
+  AWSSecretAccessKey: cfg['s3_secret']
+  allowedFileTypes: null # all file types
+  maxSize: 0 # any size
+  acl: "public-read"
+  authorize: ->
+    #Deny uploads if user is not logged in.
+    unless @userId
+      message = "Please login before posting files"
+      throw new Meteor.Error("Login Required", message)
+    true
+  key: (file) ->
+    "images/"+file.name
+
+Slingshot.createDirective "myFileUploads", Slingshot.S3Storage, options

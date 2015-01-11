@@ -81,10 +81,11 @@ insert_image_save_func = (info, template) ->
   fb = template.find("#insert_image")
   upload_files = fb.files
   # FIXME: assert size(upload_files)==1
+  upload_file = upload_files[0]
   s3_dirname = "/images"
   $("#show_upload_progress_id").modal("show")
 
-  S3.upload upload_files, s3_dirname, (error, result) ->
+  window.uploader.send upload_file, (error, downloadUrl) ->
     # This callback is called when the upload is complete (or on error).
     $("#show_upload_progress_id").modal("hide")
     if error?
@@ -94,21 +95,10 @@ insert_image_save_func = (info, template) ->
       return
 
     doc =
-      name: upload_files[0].name
-      lastModifiedDate: upload_files[0].lastModifiedDate
+      name: upload_file.name
+      lastModifiedDate: upload_file.lastModifiedDate
       type: "images"
-      url: result.url
-      secure_url: result.secure_url
-      relative_url: result.relative_url
-
-    if !result.url?
-      # S3.upload (server side) can get wedged into a situation where
-      # no error is returned but the file has not uploaded.
-      console.log "NOT inserting",doc
-      alert("There was an unanticipated error uploading the file.")
-      # FIXME: do something on error
-      console.log("ERROR", error)
-      return
+      secure_url: downloadUrl
 
     # Need to get _id of newly inserted image document to put into
     # original referencing document.
