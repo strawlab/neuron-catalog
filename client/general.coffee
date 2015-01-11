@@ -133,6 +133,8 @@ Template.next_previous_button.helpers
   get_linkout: ->
     coll = window.get_collection_from_name(@collection)
     my_doc = coll.findOne({_id:@my_id})
+    if !my_doc?
+      return
     if @which=="next"
       op = "$gt"
       direction = 1
