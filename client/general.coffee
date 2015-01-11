@@ -76,8 +76,6 @@ window.get_collection_from_name = (name) ->
   else coll = BinaryData  if name is "BinaryData"
   coll
 
-window.uploader = new Slingshot.Upload("myFileUploads")
-
 # --------------------------------------------
 # from: meteor TODO app
 
@@ -328,6 +326,8 @@ Template.show_user_date.helpers
 
 Template.show_upload_progress.helpers
   percent_uploaded: ->
+    if !window.uploader?
+      return
     Math.round(window.uploader.progress() * 100);
 
 # ------- tab layout stuff ----

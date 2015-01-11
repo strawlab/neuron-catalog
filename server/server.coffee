@@ -23,7 +23,16 @@ options =
       message = "Please login before posting files"
       throw new Meteor.Error("Login Required", message)
     true
-  key: (file) ->
-    "images/"+file.name
+  key: (upload_file, ctx) ->
+    doc =
+      name: upload_file.name
+      lastModifiedDate: ctx.lastModifiedDate
+      type: "images"
+      status: "uploading"
+
+    # Need to get _id of newly inserted image document to put into
+    # S3 key
+    _id = BinaryData.insert(doc) # errors will be thrown
+    "images/" + _id + "/" + doc.name
 
 Slingshot.createDirective "myFileUploads", Slingshot.S3Storage, options
