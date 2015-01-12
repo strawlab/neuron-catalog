@@ -4,6 +4,7 @@ from email.Utils import formatdate
 import requests
 from PIL import Image
 import argparse
+import urlparse
 import neuron_catalog_tools
 import collections
 
@@ -62,8 +63,8 @@ def make_cache_inner(doc, cache_url, options, _type='cache'):
 
     skip_doc = False
     if doc['_id'] in skip_image_file_for_now:
-        bad_relative_urls = skip_image_file_for_now[ doc['_id'] ]
-        if doc['relative_url'] in bad_relative_urls:
+        bad_urls = skip_image_file_for_now[ doc['_id'] ]
+        if doc['secure_url'] in bad_urls:
             skip_doc = True
 
     if not skip_doc:
@@ -73,7 +74,7 @@ def make_cache_inner(doc, cache_url, options, _type='cache'):
 
         try:
             orig_url = doc['secure_url']
-            orig_rel_url = doc['relative_url']
+            orig_rel_url = get_rel_url(orig_url)
             orig_fname = os.path.split( orig_rel_url )[-1]
 
             filename = os.path.join( cwd, orig_fname)
@@ -103,7 +104,7 @@ def make_cache_inner(doc, cache_url, options, _type='cache'):
                 print('problems with this document, ignoring for now')
                 print("ERROR while processing doc: %s"%(err,))
                 show_doc(doc)
-            skip_image_file_for_now[ doc['_id'] ].append( doc['relative_url'] )
+            skip_image_file_for_now[ doc['_id'] ].append( doc['secure_url'] )
         else:
             props = get_image_properties(out_full)
             neuron_catalog_tools.upload(out_full, cache_url)
@@ -140,9 +141,23 @@ def convert(input_fname, output_fname, options, square_size=None):
     subprocess.check_call(cmd, shell=use_shell)
     assert os.path.exists(output_fname)
 
+def get_rel_url(url):
+    parts = urlparse.urlparse(url)
+    path = parts.path
+    pp = path.split('/')
+    assert pp[0]==''
+    pp.pop(0)
+
+    if pp[0]!='images':
+        assert pp[1]=='images'
+        bucket_name = pp.pop(0)
+
+    key_in_bucket = '/'.join(pp)
+    return key_in_bucket
+
 def parse_urls_from_doc(doc):
     full_url = doc['secure_url']
-    orig_rel_url = doc['relative_url']
+    orig_rel_url = get_rel_url(full_url)
     assert full_url.endswith(orig_rel_url)
     if not orig_rel_url.startswith('/'):
         orig_rel_url = '/' + orig_rel_url
@@ -203,8 +218,8 @@ def make_cache_if_needed(coll, doc, options):
         if 'width' not in doc or 'height' not in doc:
             skip_doc = False
             if doc['_id'] in skip_image_file_for_now:
-                bad_relative_urls = skip_image_file_for_now[ doc['_id'] ]
-                if doc['relative_url'] in bad_relative_urls:
+                bad_urls = skip_image_file_for_now[ doc['_id'] ]
+                if doc['secure_url'] in bad_urls:
                     skip_doc = True
             if z['extension'] in SKIP_EXTENSIONS:
                 skip_doc=True
@@ -224,7 +239,7 @@ def make_cache_if_needed(coll, doc, options):
                 except:
                     if options.verbose:
                         print('problems with this document, ignoring for now')
-                    skip_image_file_for_now[ doc['_id'] ].append( doc['relative_url'] )
+                    skip_image_file_for_now[ doc['_id'] ].append( doc['secure_url'] )
                 else:
                     for key in ['width','height']:
                         doc[key] = props[key]
@@ -235,7 +250,8 @@ def make_cache_if_needed(coll, doc, options):
                     if not options.keep:
                         shutil.rmtree(tmpdir)
 
-    orig_rel_url = doc['relative_url']
+    full_url = doc['secure_url']
+    orig_rel_url = get_rel_url(full_url)
     if is_tiff(orig_rel_url):
         if z['cache_url'] not in cache_urls:
             skip=False

@@ -32,14 +32,8 @@ def get_admin_config():
 
 def get_s3_bucket():
     cfg = get_admin_config()
-    if cfg['s3_region']:
-        conn = boto.s3.connect_to_region(cfg['s3_region'],
-                                         aws_access_key_id=cfg['AWSAccessKeyId'],
-                                         aws_secret_access_key=cfg['AWSSecretAccessKey'],
-                                         is_secure=True)
-    else:
-        conn = boto.s3.connection.S3Connection(cfg['AWSAccessKeyId'],cfg['AWSSecretAccessKey'],
-                                               is_secure=True)
+    conn = boto.s3.connection.S3Connection(cfg['AWSAccessKeyId'],cfg['AWSSecretAccessKey'],
+                                           is_secure=True)
     bucket = conn.get_bucket(cfg['S3Bucket'])
     return bucket
 
