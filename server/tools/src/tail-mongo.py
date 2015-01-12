@@ -117,12 +117,14 @@ def make_cache_inner(doc, cache_url, options, _type='cache'):
 def convert(input_fname, output_fname, options, square_size=None):
     assert os.path.exists(input_fname)
     assert not os.path.exists(output_fname)
+    use_shell = False
 
     if sys.platform.startswith('darwin'):
-        if square_size is not None:
-            raise NotImplementedError('setting square_size not implemented')
-        cmd = "sips -s format %s %s --out %s"%(CACHE_FORMAT_SIPS_NAME,
+        cmd = "/usr/bin/sips -s format %s %s --out %s"%(CACHE_FORMAT_SIPS_NAME,
                                                input_fname, output_fname)
+        if square_size is not None:
+            cmd += ' --resampleHeightWidthMax %d'%(square_size,)
+        use_shell = True
     else:
         assert sys.platform.startswith('linux')
         if square_size is None:
@@ -135,8 +137,7 @@ def convert(input_fname, output_fname, options, square_size=None):
         #cmd = ' '.join(cmd)
     if options.verbose:
         print('CALLING: %r'%(cmd,))
-    #subprocess.check_call(cmd, shell=True)
-    subprocess.check_call(cmd)
+    subprocess.check_call(cmd, shell=use_shell)
     assert os.path.exists(output_fname)
 
 def parse_urls_from_doc(doc):
