@@ -48,8 +48,8 @@ neuron-catalog.
 
 2. Create an S3 Bucket. Keep in mind the following points:
 
-   a) The software was only tested using buckets in the `US Standard`
-      region.
+   a) Use the `US Standard` region for the bucket. Otherwise, Meteor
+      Slingshot has trouble uploading.
 
    b) The bucket name must not have dots (no `.`). Otherwise, secure
       uploads will fail due to the HTTPS certificate wildcards only
@@ -70,12 +70,34 @@ neuron-catalog.
            </CORSRule>
        </CORSConfiguration>
 
-4. In the Identity & Access Management (IAM) configuration, create a
+4. Enable static website hosting for this S3 bucket by selecting
+`Enable website hosting` in the AWS Console. Also set "Index Document"
+to `index.html`.
+
+5. Set the bucket policy to (substitute the name of your bucket for
+`your-bucket-name`):
+
+   {
+   	"Version": "2008-10-17",
+   	"Statement": [
+   		{
+   			"Sid": "AllowPublicRead",
+   			"Effect": "Allow",
+   			"Principal": {
+   				"AWS": "*"
+   			},
+   			"Action": "s3:GetObject",
+   			"Resource": "arn:aws:s3:::your-bucket-name/*"
+   		}
+   	]
+   }
+
+6. In the Identity & Access Management (IAM) configuration, create a
 user and group for performing the uploads. Note the Access Key and the
 Secret Key - you will need to enter these.
 
-5. Still in IAM, set the group policy to the following (substitute
-`your-bucket-name` for the name of your bucket):
+7. Still in IAM, set the group policy to the following (again,
+substitute the name of your bucket for `your-bucket-name`):
 
        {
          "Version": "2012-10-17",
