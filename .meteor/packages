@@ -11,10 +11,10 @@ showdown
 accounts-base
 accounts-ui
 accounts-password
-lepozepo:s3
 coffeescript
 matb33:collection-hooks
 mrt:moment
 astraw:jquery-fleximages
 reactive-var
 
+edgee:slingshot

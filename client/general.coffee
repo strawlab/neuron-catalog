@@ -131,6 +131,8 @@ Template.next_previous_button.helpers
   get_linkout: ->
     coll = window.get_collection_from_name(@collection)
     my_doc = coll.findOne({_id:@my_id})
+    if !my_doc?
+      return
     if @which=="next"
       op = "$gt"
       direction = 1
@@ -323,8 +325,10 @@ Template.show_user_date.helpers
 # -------------
 
 Template.show_upload_progress.helpers
-  files: ->
-    S3.collection.find()
+  percent_uploaded: ->
+    if !window.uploader?
+      return
+    Math.round(window.uploader.progress() * 100);
 
 # ------- tab layout stuff ----
 Template.MyLayout.helpers

@@ -117,7 +117,7 @@ Router.route "/Search", ->
 
   doc = BinaryData.findOne(my_id)
 
-  S3.delete doc.relative_url
+  console.log "warning: should delete file on server.",doc.secure_url
   BinaryData.remove my_id
   return
 

@@ -76,66 +76,62 @@ link_image_save_func = (info, template) ->
 
   return {}
 
+get_id_from_downloadUrl = (url) ->
+  parser = document.createElement('a')
+  parser.href = url
+  arr = parser.pathname.split("/")
+  if arr.length == 4
+    if arr[0] == ""
+      if arr[1]=="images"
+        _id = arr[2]
+  return _id
+
 insert_image_save_func = (info, template) ->
   # FIXME: disable save/cancel button
   fb = template.find("#insert_image")
   upload_files = fb.files
   # FIXME: assert size(upload_files)==1
+  upload_file = upload_files[0]
   s3_dirname = "/images"
   $("#show_upload_progress_id").modal("show")
 
-  S3.upload upload_files, s3_dirname, (error, result) ->
+  ctx =
+    lastModifiedDate: upload_file.lastModifiedDate
+
+  window.uploader = new Slingshot.Upload("myFileUploads",ctx)
+  window.uploader.send upload_file, (error, downloadUrl) ->
     # This callback is called when the upload is complete (or on error).
     $("#show_upload_progress_id").modal("hide")
+    window.uploader = null
+
     if error?
       alert("There was an error uploading the file")
       # FIXME: do something on error
       console.log("ERROR", error)
       return
 
-    doc =
-      name: upload_files[0].name
-      lastModifiedDate: upload_files[0].lastModifiedDate
-      type: "images"
-      url: result.url
-      secure_url: result.secure_url
-      relative_url: result.relative_url
+    _id = get_id_from_downloadUrl( downloadUrl )
+    updater_doc =
+      $set:
+        status: "uploaded"
+        secure_url: downloadUrl
+    BinaryData.update _id, updater_doc
 
-    if !result.url?
-      # S3.upload (server side) can get wedged into a situation where
-      # no error is returned but the file has not uploaded.
-      console.log "NOT inserting",doc
-      alert("There was an unanticipated error uploading the file.")
-      # FIXME: do something on error
-      console.log("ERROR", error)
-      return
-
-    # Need to get _id of newly inserted image document to put into
-    # original referencing document.
-    BinaryData.insert doc, (error, _id) ->
-      # This is a callback called when our BinaryData collection is updated.
-
-      # FIXME: be more useful. E.g. hide a "saving... popup"
-      if error?
-        console.log "image_insert_callback with error:", error
-        return
-
-      # get information from referencing collection
-      data = info.body_template_data
-      if data.collection? and data.my_id?
-        coll = window.get_collection_from_name(data.collection) # e.g. DriverLines
-        orig = coll.findOne(_id: data.my_id) # get the document to which this image is being added
-        myarr = []
-        myarr = orig[data.field_name]  if orig.hasOwnProperty(data.field_name)
-        myarr.push _id # append our new _id
-        t2 = {}
-        t2[data.field_name] = myarr
-        coll.update data["my_id"],
-          $set: t2
-      template.find("#insert_image_form").reset() # remove filename
-      return
-
+    # get information from referencing collection
+    data = info.body_template_data
+    if data.collection? and data.my_id?
+      coll = window.get_collection_from_name(data.collection) # e.g. DriverLines
+      orig = coll.findOne(_id: data.my_id) # get the document to which this image is being added
+      myarr = []
+      myarr = orig[data.field_name]  if orig.hasOwnProperty(data.field_name)
+      myarr.push _id # append our new _id
+      t2 = {}
+      t2[data.field_name] = myarr
+      coll.update data["my_id"],
+        $set: t2
+    template.find("#insert_image_form").reset() # remove filename
     return
+
   $("#file_form_div").hide()
   return {}
 
