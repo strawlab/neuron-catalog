@@ -158,9 +158,14 @@ def parse_urls_from_doc(doc):
     orig_prefix = '/'+my_type+'/'
 
     assert orig_rel_url.startswith(orig_prefix)
-    cache_url = CACHE_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):] + \
+    cache_url = CACHE_DIR_NAME+'/thumb-' + orig_rel_url[len(orig_prefix):] + \
                 '.' + CACHE_FORMAT_EXTENSION
     full_cache_url = prefix + '/'+ cache_url
+
+    # just ensure that we have a different name...
+    tmp_input_fname = os.path.split(orig_rel_url)[1]
+    tmp_output_fname = os.path.split(cache_url)[1]
+    assert tmp_input_fname.lower() != tmp_output_fname.lower()
 
     pre_url = THUMBNAIL_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):]
     pre_url = os.path.splitext(pre_url)[0]
