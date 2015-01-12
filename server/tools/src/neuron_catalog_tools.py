@@ -29,13 +29,13 @@ def get_s3_bucket():
     cfg = get_admin_config()
     if cfg['s3_region']:
         conn = boto.s3.connect_to_region(cfg['s3_region'],
-                                         aws_access_key_id=cfg['s3_key'],
-                                         aws_secret_access_key=cfg['s3_secret'],
+                                         aws_access_key_id=cfg['AWSAccessKeyId'],
+                                         aws_secret_access_key=cfg['AWSSecretAccessKey'],
                                          is_secure=True)
     else:
-        conn = boto.s3.connection.S3Connection(cfg['s3_key'],cfg['s3_secret'],
+        conn = boto.s3.connection.S3Connection(cfg['AWSAccessKeyId'],cfg['AWSSecretAccessKey'],
                                                is_secure=True)
-    bucket = conn.get_bucket(cfg['s3_bucket'])
+    bucket = conn.get_bucket(cfg['S3Bucket'])
     return bucket
 
 def upload(local_filename, path):
@@ -64,7 +64,7 @@ def ensure_public_read():
 			"Resource": "arn:aws:s3:::%s/*"
 		}
 	]
-}"""%(cfg['s3_bucket'],)
+}"""%(cfg['S3Bucket'],)
     desired_policy = normalize_json(desired_policy)
 
     try:

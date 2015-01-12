@@ -1,3 +1,3 @@
-{"s3_key": "key",
- "s3_secret": "secret",
- "s3_bucket": "bucket"}
+{"AWSAccessKeyId": "key",
+ "AWSSecretAccessKey": "secret",
+ "S3Bucket": "bucket"}
