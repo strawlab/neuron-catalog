@@ -21,20 +21,14 @@ instructions.
 
 Run the following commands in your bash console
 
-    # In one console, run the Meteor webserver and Mongo database
-    meteor run
-
-    # after the above is running, get the URL for the database
-    export MONGO_URL=`meteor mongo --url`
-
     # copy the example server configuration
     cp server/server-config.json.example server/server-config.json
 
     # edit the server configuration
     <your favorite editor> server/server-config.json
 
-    # load the server configuration
-    cat server/server-config.json | python server/tools/src/admin-config.py set
+    # In one console, run the Meteor webserver and Mongo database
+    meteor run --settings server/server-config.json
 
 ### AWS Setup and Configuration
 
