@@ -293,6 +293,8 @@ def fill_cache():
 def infinite_poll_loop(options):
     if options.verbose:
         print("Connecting to mongo.")
+    neuron_catalog_tools.set_settings_filename(options.settings)
+
     db = neuron_catalog_tools.get_db()
     if options.verbose:
         print("Connected to mongo, processing backlog.")
@@ -360,5 +362,7 @@ if __name__=='__main__':
                         help="be verbose")
     parser.add_argument("--keep", action="store_true", default=False,
                         help="do not delete temporary files")
+    parser.add_argument("--settings", type=str, default=None,
+                        help="filename of JSON file for Meteor.settings")
     args = parser.parse_args()
     infinite_poll_loop(args)

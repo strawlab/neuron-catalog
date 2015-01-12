@@ -19,11 +19,16 @@ def get_db():
     _db = MongoClient(mongodb_url).meteor
     return _db
 
+global settings
+settings = None
+
+def set_settings_filename(fname):
+    global settings
+    settings = json.loads( open(fname,mode='r').read() )
+
 def get_admin_config():
-    db = get_db()
-    assert db.admin_config.find().count()==1
-    doc = db.admin_config.find_one()
-    return doc
+    global settings
+    return settings
 
 def get_s3_bucket():
     cfg = get_admin_config()

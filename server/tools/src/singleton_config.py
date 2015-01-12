@@ -4,9 +4,10 @@ import argparse
 import neuron_catalog_tools
 import json
 
-def run_config_program(desc=None,collection_name="admin_config"):
+def run_config_program(desc=None,collection_name=None):
     if desc is None:
         desc = "get or set neuron catalog administrative configuration"
+    assert collection_name is not None
     parser = argparse.ArgumentParser(
         description=desc,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
