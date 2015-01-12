@@ -1217,5 +1217,9 @@
 <template name="PageNotFound">
     <div>
         <h2>404 - page not found</h2>
+	<p>The page you requested may not exist or you may not have
+	permission to see it.</p>
+
+	{{#if currentUser}}{{else}}<p>{{login_message}}</p>{{/if}}
     </div>
 </template>
