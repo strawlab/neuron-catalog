@@ -1,42 +1,93 @@
-//var AWS = Meteor.npmRequire('aws-sdk');
+// This modules requires global variable AWS from peerlibrary:aws-sdk
 
-// Get AWS credentials from Meteor.settings
-AWS.config.update({accessKeyId: Meteor.settings.AWSAccessKeyId, secretAccessKey: Meteor.settings.AWSSecretAccessKey});
+function _append_CORS_failures( cors, failures ) {
+  var found_OK=false;
+  for (var idx in cors.CORSRules) {
+    var rule = cors.CORSRules[idx];
+    if (rule.AllowedOrigins.indexOf('*')!=-1) {
+      if (rule.AllowedMethods.length==4) {
+	if (rule.AllowedMethods.indexOf('PUT')!=-1 & rule.AllowedMethods.indexOf('POST')!=-1 &
+	    rule.AllowedMethods.indexOf('GET')!=-1 & rule.AllowedMethods.indexOf('HEAD')!=-1) {
+	  found_OK=true;
+	}
+      }
+    }
+  }
+  if (!found_OK) {
+    failures.push("No CORS rule to allow PUT, POST, GET, HEAD from any origin.")
+  }
+}
 
-// Load IAM credentials
-//console.log(Meteor.settings);
+function get_slingshot_AWS_failures() {
+  // Get AWS credentials from Meteor.settings
+  AWS.config.update({accessKeyId: Meteor.settings.AWSAccessKeyId,
+		     secretAccessKey: Meteor.settings.AWSSecretAccessKey});
+  var params = {Bucket: Meteor.settings.S3Bucket};
 
-var s3 = new AWS.S3();
-//console.log("s3",s3);
+  var s3 = new AWS.S3();
+  failures = [];
 
-//console.log("s3.listBucketsSync()",s3.listBuckets());
+  // Verify that bucket name has no dots ("."). This causes Amazon's
+  // wildcard HTTPS certificate to fail.
+  if (Meteor.settings.S3Bucket.indexOf(".") != -1) {
+    failures.push('There are dots (".") in your bucket name "'+Meteor.settings.S3Bucket+'"')
+  }
 
-var params = {Bucket: Meteor.settings.S3Bucket};
-console.log(params);
-var list = s3.listObjectsSync( params );
-console.log("list",list);
+  // verify that bucket is in US Standard region
+  try {
+    var location = s3.getBucketLocationSync( params );
+  } catch (ex) {
+    if (ex.name == "SignatureDoesNotMatch") {
+      failures.push('Signature does not match. Are your AWSAccessKeyId and AWSSecretAccessKey settings correct?');
+      // Give up on finding more failures.
+      return failures;
+    }
+    throw ex;
+  }
+
+  if (location.LocationConstraint) {
+    if (location.LocationConstraint!="") {
+      failures.push('Your bucket is not located in the US Standard region, but rather in "'+
+		    location.LocationConstraint+'"');
+    }
+  }
+
+  // verify bucket CORS config
+  var have_cors = false;
+  try {
+    var cors = s3.getBucketCorsSync( params );
+    have_cors = true;
+  } catch(ex) {
+    failures.push('Could not get CORS for bucket: '+ex.name+': '+ex.message);
+  }
+
+  if (have_cors) {
+    _append_CORS_failures( cors, failures );
+  }
+
+  // verify bucket policy
+  var have_policy = false;
+  try {
+    var policy = s3.getBucketPolicySync( params );
+    have_policy = true;
+  } catch (ex) {
+    failures.push('Could not get policy for bucket: '+ex.name+': '+ex.message);
+  }
+
+  if (have_policy) {
+    // FIXME: actually check the policy
+    //console.log("policy",policy);
+  }
+
+  // FIXME: implement the rest of this stuff
+  // verify we have IAM permission to upload to bucket
+
+  // optional?: verify bucket has website hosting enabled
+
+  return failures;
+}
 
 /*
-s3.listObjects( params, function(err,result) {
-  console.log("err",err);
-  console.log("result",result);
-});
+var failures = get_slingshot_AWS_failures();
+console.log("failures", failures);
 */
-
-//var list = s3.listObjectsSync( params );
-//console.log("list",list);
-//var cors = s3.getBucketCorsSync( params );
-//var cors = s3.GetBucketCorsSync( params );
-//var cors = s3.GetBucketCors( params );
-
-// verify that bucket is in US Standard region
-
-// verify that bucket name has no dots
-
-// verify bucket CORS config
-
-// verify bucket policy
-
-// verify we have IAM permission to upload to bucket
-
-// optional?: verify bucket has website hosting enabled
