@@ -126,7 +126,7 @@ Template.driver_lines.events
 driver_line_insert_callback = (error, _id) ->
   if error?
     # FIXME: be more useful. E.g. hide a "saving... popup"
-    console.log "driver_line_insert_callback with error:", error
+    console.error "driver_line_insert_callback with error:", error
   return
 
 # @remove_driver_line is defined in ../neuron-catalog.coffee
