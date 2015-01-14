@@ -25,6 +25,7 @@ Schemas.NeuronCatalogConfig = new SimpleSchema(
   blurb:
     type: String
     label: "blurb"
+    optional: true
 )
 NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig);
 
