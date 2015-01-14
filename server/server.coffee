@@ -19,4 +19,7 @@ options =
     _id = BinaryData.insert(doc)
     "images/" + _id + "/" + doc.name
 
-Slingshot.createDirective "myFileUploads", Slingshot.S3Storage, options
+if Meteor.settings.AWSAccessKeyId
+  Slingshot.createDirective "myFileUploads", Slingshot.S3Storage, options
+else
+  console.warn "No AWSAccessKeyId in Meteor settings. No uploads will be possible."
