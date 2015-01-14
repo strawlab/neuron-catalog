@@ -12,7 +12,6 @@ accounts-base
 accounts-ui
 accounts-password
 coffeescript
-matb33:collection-hooks
 mrt:moment
 astraw:jquery-fleximages
 reactive-var
