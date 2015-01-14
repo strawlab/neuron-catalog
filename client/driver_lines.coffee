@@ -157,6 +157,8 @@ driver_line_insert_callback = (error, _id) ->
   neuropils = neuropil_dict2arr(neuropils)
 
   doc.neuropils = neuropils
+  doc.tags = []
+  doc.images = []
 
   # report errors
   if errors.length > 0

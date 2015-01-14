@@ -30,10 +30,83 @@ Schemas.NeuronCatalogConfig = new SimpleSchema(
 )
 NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig)
 
-Schemas.DriverLines = new SimpleSchema(
+compose = (args...) ->
+  result = {}
+  for obj in args
+    for attrname of obj
+      result[attrname] = obj[attrname]
+  result
+
+NamedWithTagsImagesHistoryComments =
   name:
     type: String
 
+  tags:
+    label: "Tags"
+    type: [Object]
+
+  "tags.$":
+    type: String
+
+  images:
+    label: "Images and volumes"
+    type: [Object]
+
+  "images.$":
+    type: String
+    label: "_id of doc in BinaryData collection"
+
+  # Force value to be current date (on server) upon update.
+  last_edit_time:
+    type: Number
+    autoValue: ->
+      Date.now()
+
+  # Force value to be current date (on server) upon update.
+  last_edit_userId:
+    type: String
+    autoValue: ->
+      @userId
+
+  # Automatically update a history array.
+  edits:
+    type: [Object]
+    autoValue: ->
+      if @isInsert
+        [
+          time: Date.now()
+          userId: @userId
+        ]
+      else
+        $push:
+          time: Date.now()
+          userId: @userId
+
+  "edits.$.time":
+    type: Number
+    optional: true
+
+  "edits.$.userId":
+    type: String
+    optional: true
+
+  comments:
+    type: [Object]
+
+  "comments.$.comment":
+    type: String
+
+  "comments.$.time":
+    type: Number
+    autoValue: ->
+      Date.now()
+
+  "comments.$.userId":
+    type: String
+    autoValue: ->
+      @userId
+
+LinksNeuronTypes =
   neuron_types:
     type: [Object]
 
@@ -41,30 +114,23 @@ Schemas.DriverLines = new SimpleSchema(
     type: String
     label: "_id of doc in NeuronTypes collection"
 
+LinksNeuropils =
   neuropils:
     type: [Object]
 
-  "neuropils.$":
+  "neuropils.$._id":
     type: String
     label: "_id of doc in Neuropils collection"
 
-  edits:
+  "neuropils.$.type":
     type: [Object]
 
-  "edits.$.time":
-    type: Date
-
-  "edits.$.userId":
+  "neuropils.$.type.$":
     type: String
-    label: "_id of doc in Users collection"
+    allowedValues: ["input", "output", "unspecified"]
 
-  "last_edit_time":
-    type: Date
-
-  "last_edit_userId":
-    type: String
-    label: "_id of doc in Users collection"
-)
+Schemas.DriverLines = new SimpleSchema(
+  compose(NamedWithTagsImagesHistoryComments, LinksNeuronTypes, LinksNeuropils))
 DriverLines.attachSchema( Schemas.DriverLines )
 
 if Meteor.isServer
@@ -115,7 +181,6 @@ if Meteor.isServer
     doc.last_edit_userId = userId
     return
 
-  DriverLines.before.insert insert_hook
   NeuronTypes.before.insert insert_hook
   Neuropils.before.insert insert_hook
   BinaryData.before.insert insert_hook
@@ -136,7 +201,6 @@ if Meteor.isServer
 
     return
 
-  DriverLines.before.update update_hook
   NeuronTypes.before.update update_hook
   Neuropils.before.update update_hook
   BinaryData.before.update update_hook
