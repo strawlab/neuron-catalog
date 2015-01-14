@@ -10,6 +10,24 @@
 # Create a capped collection to describe the upload processor status.
 @UploadProcessorStatus = new Meteor.Collection("upload_processor_status")
 
+# define our schemas
+
+Schemas = {}
+Schemas.NeuronCatalogConfig = new SimpleSchema(
+  project_name:
+    type: String
+    label: "project_name"
+
+  data_authors:
+    type: String
+    label: "data_authors"
+
+  blurb:
+    type: String
+    label: "blurb"
+)
+NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig);
+
 if Meteor.isServer
 
   Meteor.startup ->
