@@ -44,9 +44,9 @@ Template.neuropil_from_id_block.helpers
     result
 
 neuropil_insert_callback = (error, _id) ->
-  # FIXME: be more useful. E.g. hide a "saving... popup"
   if error?
-    console.log "neuropil_insert_callback with error:", error
+    console.error "neuropil_insert_callback with error:", error
+    alert "Saving failed: "+error
     return
 
 # @remove_neuropil is defined in ../neuron-catalog.coffee
@@ -71,6 +71,9 @@ neuropil_insert_callback = (error, _id) ->
   # save result
   Neuropils.insert
     name: name
+    tags: []
+    comments: []
+    images: []
   , neuropil_insert_callback
   result
 

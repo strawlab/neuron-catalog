@@ -30,31 +30,30 @@ Schemas.NeuronCatalogConfig = new SimpleSchema(
 )
 NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig)
 
-compose = (args...) ->
+shallow_copy = (obj) ->
+  newobj = {}
+  for attrname of obj
+    newobj[attrname] = obj[attrname]
+  newobj
+
+compose = (objects...) ->
+  # This merges N objects while making shallow copies one level deep.
   result = {}
-  for obj in args
+  for obj in objects
     for attrname of obj
-      result[attrname] = obj[attrname]
+      result[attrname] = shallow_copy(obj[attrname])
   result
 
-NamedWithTagsImagesHistoryComments =
+NamedWithTagsHistoryComments =
   name:
     type: String
 
   tags:
     label: "Tags"
-    type: [Object]
+    type: [String]
 
   "tags.$":
     type: String
-
-  images:
-    label: "Images and volumes"
-    type: [Object]
-
-  "images.$":
-    type: String
-    label: "_id of doc in BinaryData collection"
 
   # Force value to be current date (on server) upon update.
   last_edit_time:
@@ -106,9 +105,20 @@ NamedWithTagsImagesHistoryComments =
     autoValue: ->
       @userId
 
+LinksImages =
+  images:
+    label: "Images and volumes"
+    type: [String]
+
+  "images.$":
+    type: String
+    label: "_id of doc in BinaryData collection"
+
+NamedWithTagsImagesHistoryComments = compose(NamedWithTagsHistoryComments,LinksImages)
+
 LinksNeuronTypes =
   neuron_types:
-    type: [Object]
+    type: [String]
 
   "neuron_types.$":
     type: String
@@ -123,15 +133,76 @@ LinksNeuropils =
     label: "_id of doc in Neuropils collection"
 
   "neuropils.$.type":
-    type: [Object]
+    type: [String]
 
   "neuropils.$.type.$":
     type: String
     allowedValues: ["input", "output", "unspecified"]
 
+HasSynonyms =
+  synonyms:
+    type: [String]
+
+  "synonyms.$":
+    type: String
+    label: "synonym to name"
+
+HasBestDriverLines =
+  best_driver_lines:
+    type: [String]
+
+  "best_driver_lines.$":
+    type: String
+    label: "_id of doc in DriverLines collection"
+
+HasFlyCircuitIdids =
+  flycircuit_idids:
+    type: [Number]
+
+  "flycircuit_idids.$":
+    type: Number
+    label: "idid value in Flycircuit.tw database"
+
+# Schemas.DriverLines -------------------
 Schemas.DriverLines = new SimpleSchema(
   compose(NamedWithTagsImagesHistoryComments, LinksNeuronTypes, LinksNeuropils))
 DriverLines.attachSchema( Schemas.DriverLines )
+
+# Schemas.NeuronTypes ------------------
+Schemas.NeuronTypes = new SimpleSchema(
+  compose(NamedWithTagsImagesHistoryComments, HasSynonyms, HasBestDriverLines, HasFlyCircuitIdids, LinksNeuropils))
+NeuronTypes.attachSchema( Schemas.NeuronTypes )
+
+# Schemas.Neuropils ------------------
+Schemas.Neuropils = new SimpleSchema(
+  compose(NamedWithTagsImagesHistoryComments))
+Neuropils.attachSchema( Schemas.Neuropils )
+
+# Schemas.BinaryData ------------------
+BinaryDataSpec =
+  thumb_src:
+    type: String
+    optional: true
+  secure_url:
+    type: String
+  lastModifiedDate:
+    type: Date
+  thumb_width:
+    type: Number
+    optional: true
+  thumb_height:
+    type: Number
+    optional: true
+  width:
+    type: Number
+    optional: true
+  height:
+    type: Number
+    optional: true
+
+Schemas.BinaryData = new SimpleSchema(
+  compose(NamedWithTagsHistoryComments,BinaryDataSpec))
+BinaryData.attachSchema( Schemas.BinaryData )
 
 if Meteor.isServer
 
@@ -180,30 +251,6 @@ if Meteor.isServer
     doc.last_edit_time = now
     doc.last_edit_userId = userId
     return
-
-  NeuronTypes.before.insert insert_hook
-  Neuropils.before.insert insert_hook
-  BinaryData.before.insert insert_hook
-
-  update_hook = (userId, doc, fieldNames, modifier, options) ->
-    now = Date.now()
-    if modifier.$push? and modifier.$push.comments?
-        # save comment creation information
-        modifier.$push.comments.time = now
-        modifier.$push.comments.userId = userId
-
-    modifier.$push = modifier.$push or {}
-    modifier.$push.edits = {'time':now,'userId':userId}
-
-    modifier.$set = modifier.$set or {}
-    modifier.$set.last_edit_time = now
-    modifier.$set.last_edit_userId = userId
-
-    return
-
-  NeuronTypes.before.update update_hook
-  Neuropils.before.update update_hook
-  BinaryData.before.update update_hook
 
   # ----------------------------------------
 

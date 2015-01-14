@@ -29,8 +29,8 @@ Template.neuron_type_insert.helpers
 
 neuron_type_insert_callback = (error, _id) ->
   if error?
-    # FIXME: be more useful. E.g. hide a "saving... popup"
-    console.log "neuron_type_insert_callback with error:", error
+    console.error "neuron_type_insert_callback with error:", error
+    alert "Saving failed: "+error
     return
 
 # @remove_neuron_type is defined in ../neuron-catalog.coffee
@@ -57,6 +57,11 @@ neuron_type_insert_callback = (error, _id) ->
   neuropils = neuropil_dict2arr(neuropils)
 
   doc.neuropils = neuropils
+  doc.tags = []
+  doc.comments = []
+  doc.images = []
+  doc.synonyms = []
+  doc.flycircuit_idids = []
 
   # report errors
   if errors.length > 0

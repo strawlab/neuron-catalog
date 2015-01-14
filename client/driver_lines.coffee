@@ -129,7 +129,6 @@ Template.driver_lines.events
 
 driver_line_insert_callback = (error, _id) ->
   if error?
-    # FIXME: be more useful. E.g. hide a "saving... popup"
     console.error "driver_line_insert_callback with error:", error
     alert "Saving failed: "+error
   return
@@ -159,6 +158,7 @@ driver_line_insert_callback = (error, _id) ->
   doc.neuropils = neuropils
   doc.tags = []
   doc.images = []
+  doc.comments = []
 
   # report errors
   if errors.length > 0
