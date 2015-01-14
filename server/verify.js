@@ -1,4 +1,4 @@
-var AWS = Meteor.npmRequire('aws-sdk');
+//var AWS = Meteor.npmRequire('aws-sdk');
 
 // Get AWS credentials from Meteor.settings
 AWS.config.update({accessKeyId: Meteor.settings.AWSAccessKeyId, secretAccessKey: Meteor.settings.AWSSecretAccessKey});
@@ -13,10 +13,16 @@ var s3 = new AWS.S3();
 
 var params = {Bucket: Meteor.settings.S3Bucket};
 console.log(params);
+var list = s3.listObjectsSync( params );
+console.log("list",list);
+
+/*
 s3.listObjects( params, function(err,result) {
   console.log("err",err);
   console.log("result",result);
 });
+*/
+
 //var list = s3.listObjectsSync( params );
 //console.log("list",list);
 //var cors = s3.getBucketCorsSync( params );
