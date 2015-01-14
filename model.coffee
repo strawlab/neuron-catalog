@@ -30,6 +30,42 @@ Schemas.NeuronCatalogConfig = new SimpleSchema(
 )
 NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig)
 
+Schemas.DriverLines = new SimpleSchema(
+  name:
+    type: String
+
+  neuron_types:
+    type: [Object]
+
+  "neuron_types.$":
+    type: String
+    label: "_id of doc in NeuronTypes collection"
+
+  neuropils:
+    type: [Object]
+
+  "neuropils.$":
+    type: String
+    label: "_id of doc in Neuropils collection"
+
+  edits:
+    type: [Object]
+
+  "edits.$.time":
+    type: Date
+
+  "edits.$.userId":
+    type: String
+    label: "_id of doc in Users collection"
+
+  "last_edit_time":
+    type: Date
+
+  "last_edit_userId":
+    type: String
+    label: "_id of doc in Users collection"
+)
+DriverLines.attachSchema( Schemas.DriverLines )
 
 if Meteor.isServer
 
