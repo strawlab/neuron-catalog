@@ -1,5 +1,9 @@
 driver_lines_sort = {}
 driver_lines_sort[window.get_sort_key("DriverLines")] = 1
+neuron_types_sort = {}
+neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
+neuropils_sort = {}
+neuropils_sort[window.get_sort_key("Neuropils")] = 1
 
 # ---- Template.driver_line_from_id_block -------------
 
