@@ -76,14 +76,11 @@ link_image_save_func = (info, template) ->
 
   return {}
 
-get_id_from_downloadUrl = (url) ->
-  parser = document.createElement('a')
-  parser.href = url
-  arr = parser.pathname.split("/")
-  if arr.length == 4
-    if arr[0] == ""
-      if arr[1]=="images"
-        _id = arr[2]
+get_id_from_key = (key) ->
+  arr = key.split("/")
+  if arr.length == 3
+    if arr[0]=="images"
+      _id = arr[1]
   return _id
 
 insert_image_save_func = (info, template) ->
@@ -102,19 +99,23 @@ insert_image_save_func = (info, template) ->
   window.uploader.send upload_file, (error, downloadUrl) ->
     # This callback is called when the upload is complete (or on error).
     $("#show_upload_progress_id").modal("hide")
-    window.uploader = null
 
     if error?
+      window.uploader = null
       alert("There was an error uploading the file")
       # FIXME: do something on error
-      console.log("ERROR", error)
+      console.error(error)
       return
 
-    _id = get_id_from_downloadUrl( downloadUrl )
+    s3_key = window.uploader.param('key')
+    window.uploader = null
+
+    _id = get_id_from_key( s3_key )
     updater_doc =
       $set:
         status: "uploaded"
         secure_url: downloadUrl
+        s3_key: s3_key
     BinaryData.update _id, updater_doc
 
     # get information from referencing collection
