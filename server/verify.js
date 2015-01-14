@@ -28,7 +28,7 @@ function get_slingshot_AWS_failures() {
   failures = [];
 
   // Verify that bucket name has no dots ("."). This causes Amazon's
-  // wildcard HTTPS certificate to fail.
+  // wildcard HTTPS certificate for "*.s3.amazonaws.com" to fail.
   if (Meteor.settings.S3Bucket.indexOf(".") != -1) {
     failures.push('There are dots (".") in your bucket name "'+Meteor.settings.S3Bucket+'"')
   }
