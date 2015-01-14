@@ -13,21 +13,23 @@
 # define our schemas
 
 Schemas = {}
+
 Schemas.NeuronCatalogConfig = new SimpleSchema(
   project_name:
     type: String
-    label: "project_name"
+    label: "A short string giving the name of the project"
 
   data_authors:
     type: String
-    label: "data_authors"
+    label: "A short string giving the name of the contributors to the data"
 
   blurb:
     type: String
-    label: "blurb"
+    label: "An optional string with more information describing the project. Can contain raw HTML."
     optional: true
 )
-NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig);
+NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig)
+
 
 if Meteor.isServer
 
