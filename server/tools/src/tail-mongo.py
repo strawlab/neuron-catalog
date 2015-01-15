@@ -309,7 +309,8 @@ def fill_cache():
 def infinite_poll_loop(options):
     if options.verbose:
         print("Connecting to mongo.")
-    neuron_catalog_tools.set_settings_filename(options.settings)
+    if options.settings:
+        neuron_catalog_tools.set_settings_filename(options.settings)
 
     db = neuron_catalog_tools.get_db()
     if options.verbose:

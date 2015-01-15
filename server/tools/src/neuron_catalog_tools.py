@@ -26,8 +26,18 @@ def set_settings_filename(fname):
     global settings
     settings = json.loads( open(fname,mode='r').read() )
 
+def set_settings_from_env():
+    global settings
+    buf = os.environ.get('METEOR_SETTINGS',None)
+    if buf is not None:
+        settings = json.loads( buf )
+
 def get_admin_config():
     global settings
+    if settings is None:
+        set_settings_from_env()
+    if settings is None:
+        raise RuntimeError('Meteor settings not set from CLI or environment')
     return settings
 
 def get_s3_bucket():
