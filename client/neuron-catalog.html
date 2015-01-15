@@ -1232,6 +1232,14 @@
     Configuration
   {{/top_content_row}}
 
-  <button type="button" class="btn btn-default verify-aws">Verify AWS configuration</button>
-
+  <ul>
+    <li>
+      <button type="button" class="btn btn-default verify-aws">Verify AWS configuration</button>
+    </li>
+    {{#each collection_names}}
+    <li>
+      <button type="button" class="btn btn-default validate-docs" data-collection={{this}}>Validate all documents in {{this}} collection</button> (see javascript console)
+    </li>
+    {{/each}}
+  </ul>
 </template>

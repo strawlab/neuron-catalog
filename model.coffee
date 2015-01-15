@@ -45,6 +45,9 @@ compose = (objects...) ->
   result
 
 NamedWithTagsHistoryComments =
+  _id:
+    type: String
+
   name:
     type: String
 
