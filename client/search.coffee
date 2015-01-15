@@ -61,7 +61,8 @@ del = (obj, key) ->
   delete obj[key]
   val
 
-build_query_doc = (orig_data) ->
+build_query_doc = (orig) ->
+  orig_data = orig.query
   data = {}
   for key of orig_data
     data[key] = orig_data[key]
