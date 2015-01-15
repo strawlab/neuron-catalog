@@ -30,6 +30,8 @@ Router.route "/",
   action: ->
     @render "Home"
 
+Router.route "/config"
+
 Router.route "/driver_lines"
 
 Router.route "/driver_lines/:_id/:name?",

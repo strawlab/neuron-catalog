@@ -43,6 +43,9 @@
 	<li class="{{activeIfTemplateIn 'Search'}}">
 	  <a href="{{pathFor 'Search'}}">Search</a>
 	</li>
+	<li class="{{activeIfTemplateIn 'config'}}">
+	  <a href="{{pathFor 'config'}}">Config</a>
+	</li>
       </ul>
     </div>
    </div>
@@ -1222,4 +1225,13 @@
 
 	{{#if currentUser}}{{else}}<p>{{login_message}}</p>{{/if}}
     </div>
+</template>
+
+<template name="config">
+  {{#top_content_row}}
+    Configuration
+  {{/top_content_row}}
+
+  <button type="button" class="btn btn-default verify-aws">Verify AWS configuration</button>
+
 </template>

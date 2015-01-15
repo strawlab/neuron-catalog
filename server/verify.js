@@ -19,13 +19,19 @@ function _append_CORS_failures( cors, failures ) {
 }
 
 function get_slingshot_AWS_failures() {
+  failures = [];
+  if (Meteor.settings.AWSAccessKeyId) {
+  } else {
+    failures.push('No AWS credentials in Meteor.settings');
+    return failures;
+  }
+
   // Get AWS credentials from Meteor.settings
   AWS.config.update({accessKeyId: Meteor.settings.AWSAccessKeyId,
 		     secretAccessKey: Meteor.settings.AWSSecretAccessKey});
   var params = {Bucket: Meteor.settings.S3Bucket};
 
   var s3 = new AWS.S3();
-  failures = [];
 
   // Verify that bucket name has no dots ("."). This causes Amazon's
   // wildcard HTTPS certificate for "*.s3.amazonaws.com" to fail.
@@ -87,7 +93,9 @@ function get_slingshot_AWS_failures() {
   return failures;
 }
 
-/*
-var failures = get_slingshot_AWS_failures();
-console.log("failures", failures);
-*/
+Meteor.methods({
+  verify_AWS_configuration: function () {
+    var failures = get_slingshot_AWS_failures();
+    return failures;
+  }
+});
