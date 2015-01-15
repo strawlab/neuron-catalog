@@ -159,6 +159,7 @@ driver_line_insert_callback = (error, _id) ->
   doc.tags = []
   doc.images = []
   doc.comments = []
+  doc.flycircuit_idids = []
 
   # report errors
   if errors.length > 0
