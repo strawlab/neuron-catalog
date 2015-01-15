@@ -103,7 +103,7 @@ build_query_doc = (orig) ->
     return
 
   if Object.keys(data).length
-    console.log("ERROR: unknown search parameters:",data)
+    console.error("ERROR: unknown search parameters:",data)
   result
 
 Template.Search.rendered = ->
