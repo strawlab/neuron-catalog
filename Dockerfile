@@ -6,14 +6,14 @@ RUN curl https://install.meteor.com/ | sh
 
 # ---- install node ---------
 WORKDIR /tmp/node
-RUN echo "126ed002d88315b8d37cec1ee4915454  node-v0.10.32-linux-x64.tar.gz" > checksum
+RUN echo "f3b33eed97772ce3a9341bbeb67511d7  node-v0.10.35-linux-x64.tar.gz" > checksum
 
-RUN curl -O http://nodejs.org/dist/v0.10.32/node-v0.10.32-linux-x64.tar.gz
+RUN curl -O http://nodejs.org/dist/v0.10.35/node-v0.10.35-linux-x64.tar.gz
 RUN md5sum --strict --check checksum
 RUN rm checksum
 
 WORKDIR /usr/local
-RUN tar xzf /tmp/node/node-v0.10.32-linux-x64.tar.gz --strip 1
+RUN tar xzf /tmp/node/node-v0.10.35-linux-x64.tar.gz --strip 1
 # -----------
 
 ADD . /neuron-catalog
