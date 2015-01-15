@@ -168,7 +168,7 @@ HasFlyCircuitIdids =
 
 # Schemas.DriverLines -------------------
 Schemas.DriverLines = new SimpleSchema(
-  compose(NamedWithTagsImagesHistoryComments, LinksNeuronTypes, LinksNeuropils))
+  compose(NamedWithTagsImagesHistoryComments, LinksNeuronTypes, HasFlyCircuitIdids, LinksNeuropils))
 DriverLines.attachSchema( Schemas.DriverLines )
 
 # Schemas.NeuronTypes ------------------
