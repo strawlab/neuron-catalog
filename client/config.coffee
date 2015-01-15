@@ -14,7 +14,7 @@ check_doc = (doc) ->
   my_context.validate(doc)
   invalid_keys = my_context.invalidKeys()
   if invalid_keys.length > 0
-    conslog.log "for doc",doc
+    console.log "for doc",doc
     console.warn "invalid keys",invalid_keys
   return
 
