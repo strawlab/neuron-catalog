@@ -88,6 +88,7 @@ build_query_doc = (orig) ->
   if fst?
     if fst=="*"
       result.flycircuit_idids = {$exists:1}
+      result['$where'] = 'this.flycircuit_idids.length>=1'
     else
       fst = +fst # convert to int
       result.flycircuit_idids = fst # fst must be in array
