@@ -7,6 +7,12 @@ on_verify_callback = (error, failures) ->
     alert("AWS not properly configured: "+failures)
   $('.verify-aws').prop('disabled', false)
 
+update_callback = (error, result) ->
+  console.log "update complete"
+  if error?
+    console.error "update error:",error
+  console.log "update result:",result
+
 check_doc = (doc) ->
   coll = window.get_collection_from_name(@name)
   my_context = coll.simpleSchema().namedContext()
@@ -22,23 +28,26 @@ check_doc = (doc) ->
         if el.type=="required"
           if el.value==null
             if el.name == "tags"
-              setter.tags = []
+              setter[el.name] = []
               modified = true
             if el.name == "comments"
-              setter.comments = []
+              setter[el.name] = []
               modified = true
             if el.name == "images"
-              setter.images = []
+              setter[el.name] = []
               modified = true
             if el.name == "synonyms"
-              setter.synonyms = []
+              setter[el.name] = []
               modified = true
             if el.name == "flycircuit_idids"
-              setter.flycircuit_idids = []
+              setter[el.name] = []
               modified = true
       if modified
-        coll.update({_id: doc._id},{$set: setter})
-        console.log "called update with",setter
+        modifier = {}
+        if setter?
+          modifier["$set"]=setter
+        console.log "calling update on ", @name, doc._id ,"with",modifier
+        coll.update({_id: doc._id},modifier,update_callback)
   return
 
 Template.config.events

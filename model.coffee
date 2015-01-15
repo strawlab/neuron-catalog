@@ -182,6 +182,7 @@ Schemas.Neuropils = new SimpleSchema(
 Neuropils.attachSchema( Schemas.Neuropils )
 
 # Schemas.BinaryData ------------------
+#  This schema has grown organically and should be cleaned up!
 BinaryDataSpec =
   thumb_src:
     type: String
@@ -201,6 +202,18 @@ BinaryDataSpec =
     optional: true
   height:
     type: Number
+    optional: true
+  cache_width:
+    type: Number
+    optional: true
+  cache_height:
+    type: Number
+    optional: true
+  cache_src:
+    type: String
+    optional: true
+  type:
+    type: String
     optional: true
 
 Schemas.BinaryData = new SimpleSchema(
