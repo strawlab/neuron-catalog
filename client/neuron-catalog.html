@@ -1238,7 +1238,7 @@
     </li>
     {{#each collection_names}}
     <li>
-      <button type="button" class="btn btn-default validate-docs" data-collection={{this}}>Validate all documents in {{this}} collection</button> (see javascript console)
+      {{this}} <button type="button" class="btn btn-default validate-docs" data-repair="0" data-collection={{this}}>Validate</button> <button type="button" class="btn btn-default validate-docs" data-repair="1" data-collection={{this}}>Attempt repair</button> (see javascript console)
     </li>
     {{/each}}
   </ul>
