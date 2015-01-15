@@ -47,6 +47,7 @@ compose = (objects...) ->
 NamedWithTagsHistoryComments =
   _id:
     type: String
+    optional: true # let Meteor/Mongo create one if not specified
 
   name:
     type: String
