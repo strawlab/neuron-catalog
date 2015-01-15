@@ -102,9 +102,8 @@ insert_image_save_func = (info, template) ->
 
     if error?
       window.uploader = null
-      alert("There was an error uploading the file")
-      # FIXME: do something on error
       console.error(error)
+      alert("There was an error uploading the file")
       return
 
     s3_key = window.uploader.param('key')
@@ -113,7 +112,6 @@ insert_image_save_func = (info, template) ->
     _id = get_id_from_key( s3_key )
     updater_doc =
       $set:
-        status: "uploaded"
         secure_url: downloadUrl
         s3_key: s3_key
     BinaryData.update _id, updater_doc

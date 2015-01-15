@@ -65,7 +65,7 @@ NamedWithTagsHistoryComments =
     autoValue: ->
       Date.now()
 
-  # Force value to be current date (on server) upon update.
+  # Force value to be current user upon update.
   last_edit_userId:
     type: String
     autoValue: ->
@@ -259,15 +259,6 @@ if Meteor.isServer
     Meteor.users.find {},
       fields:
         username: 1
-
-  # ----------------------------------------
-
-  insert_hook = (userId, doc) ->
-    now = Date.now()
-    doc.edits = [{'time':now,'userId':userId}]
-    doc.last_edit_time = now
-    doc.last_edit_userId = userId
-    return
 
   # ----------------------------------------
 

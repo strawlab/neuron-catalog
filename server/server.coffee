@@ -1,5 +1,5 @@
 options =
-  allowedFileTypes: null # all file types
+  allowedFileTypes: new RegExp(".*")
   maxSize: 0 # any size
   acl: "public-read"
   authorize: ->
@@ -13,10 +13,16 @@ options =
       name: upload_file.name
       lastModifiedDate: ctx.lastModifiedDate
       type: "images"
-      status: "uploading"
+      tags: []
+      comments: []
+      secure_url: "(uploading)" # will be re-set later
+
     # Need to get _id of newly inserted image document to put into
-    # S3 key
-    _id = BinaryData.insert(doc)
+    # S3 key.
+    # No validation because @userId is null on server.
+    # Also skip inserting auto values.
+    _id = BinaryData.insert(doc,{validate: false, getAutoValues: false})
+
     "images/" + _id + "/" + doc.name
 
 if Meteor.settings.AWSAccessKeyId
