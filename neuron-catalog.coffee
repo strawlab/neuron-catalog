@@ -5,11 +5,14 @@ Router.configure
 Router.setTemplateNameConverter (str) ->
   str
 
+make_safe = (name) ->
+  encodeURIComponent(name)
+
 always_include_name_in_path_action = (controller, coll, template_name) ->
   using_canonical_name=false
   doc = coll.findOne _id: controller.params._id
   if controller.params.name?
-    if doc? and controller.params.name == doc.name
+    if doc? and controller.params.name == make_safe(doc.name)
       using_canonical_name = true
 
   if doc?
@@ -17,7 +20,7 @@ always_include_name_in_path_action = (controller, coll, template_name) ->
       controller.render template_name
     else
       route_name = controller.route.getName()
-      controller.redirect( route_name, {_id:controller.params._id,name:doc.name} )
+      controller.redirect( route_name, {_id:controller.params._id,name:make_safe(doc.name)} )
   else
     # The _id is not in the database. Should maybe do a 404. For
     # now, render with blank data.
