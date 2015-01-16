@@ -644,9 +644,10 @@
 
   {{#detail_block}}
   <div class="image_big">
-    <img class="aspect_image" src="{{secure_url_notif}}" alt={{name}}>
+    <img class="aspect_image loadable {{#if is_image_hidden}}vis-hidden{{/if}}" src="{{secure_url_notif}}" alt={{name}}>
     <p>{{name}} [ <a href="{{secure_url_notif}}">cache</a> | <a download="{{name}}" href="{{secure_url}}">original</a> ]</p>
   </div>
+  {{hack}}
   {{/detail_block}}
 
   {{> comments_panel comments=comments show_name="BinaryData" _id=_id}}
