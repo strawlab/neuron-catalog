@@ -1,6 +1,9 @@
+DEFAULT_TITLE = 'neuron catalog'
 Router.configure
   layoutTemplate: "MyLayout"
   notFoundTemplate: "PageNotFound"
+  onAfterAction: ->
+    document.title = DEFAULT_TITLE
 
 Router.setTemplateNameConverter (str) ->
   str
@@ -43,6 +46,12 @@ Router.route "/driver_lines/:_id/:name?",
     always_include_name_in_path_action(this, DriverLines, "driver_line_show")
   data: ->
     DriverLines.findOne _id: @params._id
+  onAfterAction: ->
+    doc = DriverLines.findOne _id: @params._id
+    if doc?
+      document.title = doc.name + ' - neuron catalog'
+    else
+      document.title = DEFAULT_TITLE
 
 Router.route "/neuron_types"
 
@@ -52,6 +61,12 @@ Router.route "/neuron_types/:_id/:name?",
     always_include_name_in_path_action(this, NeuronTypes, "neuron_type_show")
   data: ->
     NeuronTypes.findOne _id: @params._id
+  onAfterAction: ->
+    doc = NeuronTypes.findOne _id: @params._id
+    if doc?
+      document.title = doc.name + ' - neuron catalog'
+    else
+      document.title = DEFAULT_TITLE
 
 Router.route "/neuropils"
 
@@ -61,6 +76,12 @@ Router.route "/neuropils/:_id/:name?",
     always_include_name_in_path_action(this, Neuropils, "neuropil_show")
   data: ->
     Neuropils.findOne _id: @params._id
+  onAfterAction: ->
+    doc = Neuropils.findOne _id: @params._id
+    if doc?
+      document.title = doc.name + ' - neuron catalog'
+    else
+      document.title = DEFAULT_TITLE
 
 Router.route "/binary_data"
 
@@ -70,6 +91,12 @@ Router.route "/binary_data/:_id/:name?",
     always_include_name_in_path_action(this, BinaryData, "binary_data_show")
   data: ->
     BinaryData.findOne _id: @params._id
+  onAfterAction: ->
+    doc = BinaryData.findOne _id: @params._id
+    if doc?
+      document.title = doc.name + ' - neuron catalog'
+    else
+      document.title = DEFAULT_TITLE
 
 Router.route "/RecentChanges"
 
