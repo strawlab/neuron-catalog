@@ -5,6 +5,7 @@ import requests
 from PIL import Image
 import argparse
 import urlparse
+import urllib
 import neuron_catalog_tools
 import collections
 
@@ -27,18 +28,18 @@ def show_doc(doc):
 
 new_docs = []
 seen_docs = set()
-cache_urls = set()
-thumbnail_urls = set()
+cache_keys = set()
+thumbnail_keys = set()
 skip_image_file_for_now = collections.defaultdict( list )
 
 def is_tiff(orig_rel_url):
     orig_rel_url_lower = orig_rel_url.lower()
     return orig_rel_url_lower.endswith('.tif') or orig_rel_url_lower.endswith('.tiff')
 
-def make_thumbnail(coll, doc, thumbnail_url, full_url, options):
-    this_result = make_cache_inner(doc, thumbnail_url, options, _type='thumbnail')
+def make_thumbnail(coll, doc, upload_key, options):
+    this_result = make_cache_inner(doc, upload_key, options, _type='thumbnail')
     if this_result['success']:
-        doc['thumb_src']=full_url
+        doc['thumb_src']= this_result['download_url']
         doc['thumb_width']=this_result['width']
         doc['thumb_height']=this_result['height']
         r = coll.save(doc)
@@ -46,10 +47,10 @@ def make_thumbnail(coll, doc, thumbnail_url, full_url, options):
             print('saved new thumbnail')
             show_doc(doc)
 
-def make_cache(coll, doc, cache_url, full_url, options):
-    this_result = make_cache_inner(doc, cache_url, options, _type='cache')
+def make_cache(coll, doc, upload_key, options):
+    this_result = make_cache_inner(doc, upload_key, options, _type='cache')
     if this_result['success']:
-        doc['cache_src']=full_url
+        doc['cache_src']=this_result['download_url']
         doc['cache_width']=this_result['width']
         doc['cache_height']=this_result['height']
         r = coll.save(doc)
@@ -57,7 +58,10 @@ def make_cache(coll, doc, cache_url, full_url, options):
             print('saved new cache')
             show_doc(doc)
 
-def make_cache_inner(doc, cache_url, options, _type='cache'):
+def make_cache_inner(doc, upload_key, options, _type='cache'):
+    cfg = neuron_catalog_tools.get_admin_config()
+    bucket_name = cfg['S3Bucket']
+
     this_result=dict(success = False)
     assert _type in ['cache','thumbnail']
 
@@ -91,14 +95,14 @@ def make_cache_inner(doc, cache_url, options, _type='cache'):
                 with open(filename, 'wb') as fd:
                     fd.write(r.content)
 
-            new_fname = os.path.split(cache_url)[-1]
+            new_fname = os.path.split(upload_key)[-1]
             out_full = os.path.join( cwd, new_fname)
             if _type=='cache':
                 convert(filename, out_full, options)
             elif _type=='thumbnail':
                 convert(filename, out_full, options, square_size=THUMBNAIL_SQUARE_SIZE)
             if options.verbose:
-                print("OUTPUT",out_full,"to",cache_url)
+                print("OUTPUT",out_full,"to",upload_key)
         except Exception as err:
             if options.verbose:
                 print('problems with this document, ignoring for now')
@@ -107,9 +111,22 @@ def make_cache_inner(doc, cache_url, options, _type='cache'):
             skip_image_file_for_now[ doc['_id'] ].append( doc['secure_url'] )
         else:
             props = get_image_properties(out_full)
-            neuron_catalog_tools.upload(out_full, cache_url)
-            this_result['success'] = True
-            this_result.update(props)
+            neuron_catalog_tools.upload(out_full, upload_key)
+
+            # compute download URL
+            base_url = 'https://%s.s3.amazonaws.com/'%bucket_name
+            download_url = base_url + urllib.quote( upload_key )
+
+            # verify download available
+            num_tries = 0
+            while num_tries < 10 and not this_result['success']:
+                resp = requests.head(download_url)
+                if resp.status_code==200:
+                    this_result['success'] = True
+                    this_result['download_url'] = download_url
+                    this_result.update(props)
+                num_tries += 1
+                time.sleep(0.2)
         finally:
             if not options.keep:
                 shutil.rmtree(cwd)
@@ -150,7 +167,7 @@ def get_rel_url(url):
 
     if pp[0]!='images':
         assert pp[1]=='images'
-        bucket_name = pp.pop(0)
+        #bucket_name = pp.pop(0)
 
     key_in_bucket = '/'.join(pp)
     return key_in_bucket
@@ -173,25 +190,25 @@ def parse_urls_from_doc(doc):
     orig_prefix = '/'+my_type+'/'
 
     assert orig_rel_url.startswith(orig_prefix)
-    cache_url = CACHE_DIR_NAME+'/thumb-' + orig_rel_url[len(orig_prefix):] + \
+    cache_key = CACHE_DIR_NAME+'/thumb-' + orig_rel_url[len(orig_prefix):] + \
                 '.' + CACHE_FORMAT_EXTENSION
-    full_cache_url = prefix + '/'+ cache_url
+    full_cache_url = prefix + '/'+ urllib.quote(cache_key)
 
     # just ensure that we have a different name...
     tmp_input_fname = os.path.split(orig_rel_url)[1]
-    tmp_output_fname = os.path.split(cache_url)[1]
+    tmp_output_fname = os.path.split(cache_key)[1]
     assert tmp_input_fname.lower() != tmp_output_fname.lower()
 
     pre_url = THUMBNAIL_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):]
     pre_url = os.path.splitext(pre_url)[0]
-    thumbnail_url = pre_url + '.' + THUMBNAIL_FORMAT_EXTENSION
-    full_thumbnail_url = prefix + '/'+ thumbnail_url
+    thumbnail_key = pre_url + '.' + THUMBNAIL_FORMAT_EXTENSION
+    full_thumbnail_url = prefix + '/'+ urllib.quote(thumbnail_key)
 
     extension = os.path.splitext(orig_rel_url)[1]
     return {'prefix':prefix,
-            'cache_url':cache_url,
+            'cache_key':cache_key,
             'full_cache_url':full_cache_url,
-            'thumbnail_url':thumbnail_url,
+            'thumbnail_key':thumbnail_key,
             'full_thumbnail_url':full_thumbnail_url,
             'type':my_type,
             'extension':extension,
@@ -253,42 +270,23 @@ def make_cache_if_needed(coll, doc, options):
     full_url = doc['secure_url']
     orig_rel_url = get_rel_url(full_url)
     if is_tiff(orig_rel_url):
-        if z['cache_url'] not in cache_urls:
-            skip=False
+        if z['cache_key'] not in cache_keys:
             if 1:
-                # Check for cached image with raw HTTP HEAD
-                # request. (Why is it not in boto cache? Maybe another
-                # process already made it.)
-
-                resp = requests.head(z['full_cache_url'])
-                if resp.status_code==200:
-                    # file already present
-                    cache_urls.add(z['cache_url'])
-                    skip = True
-            if not skip:
                 make_cache(coll, doc,
-                           z['cache_url'],
-                           z['full_cache_url'],
+                           z['cache_key'],
                            options)
-                cache_urls.add(z['cache_url'])
+                cache_keys.add(z['cache_key'])
 
     # ensure thumbnail -----
-    if z['thumbnail_url'] not in thumbnail_urls:
+    if z['thumbnail_key'] not in thumbnail_keys:
         skip = False
         if z['extension'] in SKIP_EXTENSIONS:
             skip=True
-        else:
-            resp = requests.head(z['full_thumbnail_url'])
-            if resp.status_code==200:
-                # file already present
-                thumbnail_urls.add( z['thumbnail_url'] )
-                skip = True
         if not skip:
             make_thumbnail(coll, doc,
-                           z['thumbnail_url'],
-                           z['full_thumbnail_url'],
+                           z['thumbnail_key'],
                            options)
-            thumbnail_urls.add(z['thumbnail_url'])
+            thumbnail_keys.add(z['thumbnail_key'])
 
 def pump_new(coll,options):
     while len(new_docs):
@@ -300,11 +298,11 @@ def fill_cache():
 
     rs = bucket.list(prefix=CACHE_DIR_NAME+'/')
     for key in rs:
-        cache_urls.add(key.name)
+        cache_keys.add(key.name)
 
     rs = bucket.list(prefix=THUMBNAIL_DIR_NAME+'/')
     for key in rs:
-        thumbnail_urls.add(key.name)
+        thumbnail_keys.add(key.name)
 
 def infinite_poll_loop(options):
     if options.verbose:
@@ -337,8 +335,8 @@ def infinite_poll_loop(options):
         print("Finished processing backlog, now waiting for new images.")
 
     while 1:
-        this_cache_urls = set()
-        this_thumbnail_urls = set()
+        this_cache_keys = set()
+        this_thumbnail_keys = set()
         for doc in coll.find():
             d_id = doc['_id']
             if doc['secure_url'] == '(uploading)':
@@ -347,8 +345,8 @@ def infinite_poll_loop(options):
             if d_id not in seen_docs:
                 new_docs.append( doc )
                 seen_docs.add( d_id )
-            this_cache_urls.add( parse_urls_from_doc(doc)['cache_url'] )
-            this_thumbnail_urls.add( parse_urls_from_doc(doc)['thumbnail_url'] )
+            this_cache_keys.add( parse_urls_from_doc(doc)['cache_key'] )
+            this_thumbnail_keys.add( parse_urls_from_doc(doc)['thumbnail_key'] )
         status_doc = status_coll.find_one(status_doc_query)
 
         for_js = formatdate()
@@ -357,19 +355,19 @@ def infinite_poll_loop(options):
                                                  }},
                            upsert=True)
 
-        delete_cache_set = cache_urls - this_cache_urls
-        for cache_url in delete_cache_set:
+        delete_cache_set = cache_keys - this_cache_keys
+        for cache_key in delete_cache_set:
             # delete stale cached image
             bucket = neuron_catalog_tools.get_s3_bucket()
-            bucket.delete_key(cache_url)
-            cache_urls.remove( cache_url )
+            bucket.delete_key(cache_key)
+            cache_keys.remove( cache_key )
 
-        delete_thumbnail_set = thumbnail_urls - this_thumbnail_urls
-        for thumbnail_url in delete_thumbnail_set:
+        delete_thumbnail_set = thumbnail_keys - this_thumbnail_keys
+        for thumbnail_key in delete_thumbnail_set:
             # delete stale thumbnail image
             bucket = neuron_catalog_tools.get_s3_bucket()
-            bucket.delete_key(thumbnail_url)
-            thumbnail_urls.remove( thumbnail_url )
+            bucket.delete_key(thumbnail_key)
+            thumbnail_keys.remove( thumbnail_key )
 
         pump_new(coll,options)
         time.sleep(2.0)

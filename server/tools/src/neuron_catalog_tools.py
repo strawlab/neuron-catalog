@@ -47,10 +47,10 @@ def get_s3_bucket():
     bucket = conn.get_bucket(cfg['S3Bucket'])
     return bucket
 
-def upload(local_filename, path):
+def upload(local_filename, key):
     bucket = get_s3_bucket()
     k = Key(bucket)
-    k.key = path
+    k.key = key
     k.set_contents_from_filename(local_filename)
 
 def normalize_json(buf):
