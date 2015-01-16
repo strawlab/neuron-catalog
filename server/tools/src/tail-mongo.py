@@ -341,6 +341,9 @@ def infinite_poll_loop(options):
         this_thumbnail_urls = set()
         for doc in coll.find():
             d_id = doc['_id']
+            if doc['secure_url'] == '(uploading)':
+                # file not done uploading yet... wait...
+                continue
             if d_id not in seen_docs:
                 new_docs.append( doc )
                 seen_docs.add( d_id )
