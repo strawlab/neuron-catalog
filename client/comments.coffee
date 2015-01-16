@@ -64,13 +64,27 @@ Template.show_comments.helpers
       result.push doc
     result
 
+update_callback = (error, result) ->
+  if error?
+    console.error error
+  console.log "result", result
+
+on_delete_comment_callback = (error) ->
+  if error?
+    console.error "Failure during remote call:",error
+
 Template.show_comments.events
   "click .delete": (evt, tmpl) ->
-    collection = window.get_collection_from_name(@parent_show_name)
-    collection.update
-      _id: @parent_id
-    ,
-      $pull:
-        comments: @comment
+    console.log "clicked delete"
 
-    return
+    # Need to do this on server because Collection2 (buggily)
+    # auto-updates .time and .userId fields in our {$pull: {comments:
+    # {comment: "comment text"}}} dict and thereby causes the match to
+    # fail.
+
+    Meteor.call("delete_comment",
+      collection_name: @parent_show_name
+      _id: @parent_id
+      comment: @comment
+    ,
+      on_delete_comment_callback)
