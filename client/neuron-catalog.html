@@ -644,6 +644,7 @@
 
   {{#detail_block}}
   <div class="image_big">
+    <div class="{{#if is_image_hidden}}{{else}}vis-hidden{{/if}}">Loading <code>{{name}}</code>...</div>
     <img class="aspect_image loadable {{#if is_image_hidden}}vis-hidden{{/if}}" src="{{secure_url_notif}}" alt={{name}}>
     <p>{{name}} [ <a href="{{secure_url_notif}}">cache</a> | <a download="{{name}}" href="{{secure_url}}">original</a> ]</p>
   </div>
