@@ -28,8 +28,8 @@ def show_doc(doc):
 
 new_docs = []
 seen_docs = set()
-cache_keys = set()
-thumbnail_keys = set()
+cache_ids = set()
+thumbnail_ids = set()
 skip_image_file_for_now = collections.defaultdict( list )
 
 def is_tiff(orig_rel_url):
@@ -46,6 +46,7 @@ def make_thumbnail(coll, doc, upload_key, options):
         if options.verbose:
             print('saved new thumbnail')
             show_doc(doc)
+    return this_result
 
 def make_cache(coll, doc, upload_key, options):
     this_result = make_cache_inner(doc, upload_key, options, _type='cache')
@@ -57,6 +58,7 @@ def make_cache(coll, doc, upload_key, options):
         if options.verbose:
             print('saved new cache')
             show_doc(doc)
+    return this_result
 
 def make_cache_inner(doc, upload_key, options, _type='cache'):
     cfg = neuron_catalog_tools.get_admin_config()
@@ -83,14 +85,7 @@ def make_cache_inner(doc, upload_key, options, _type='cache'):
 
             filename = os.path.join( cwd, orig_fname)
 
-            if 0:
-                r = requests.get(orig_url,stream=True)
-                chunk_size=4096
-                with open(filename, 'wb') as fd:
-                    for chunk in r.iter_content(chunk_size):
-                        fd.write(chunk)
-                        print("got %d bytes"%len(chunk))
-            else:
+            if 1:
                 r = requests.get(orig_url)
                 with open(filename, 'wb') as fd:
                     fd.write(r.content)
@@ -104,6 +99,8 @@ def make_cache_inner(doc, upload_key, options, _type='cache'):
             if options.verbose:
                 print("OUTPUT",out_full,"to",upload_key)
         except Exception as err:
+            if options.fail:
+                raise
             if options.verbose:
                 print('problems with this document, ignoring for now')
                 print("ERROR while processing doc: %s"%(err,))
@@ -190,8 +187,7 @@ def parse_urls_from_doc(doc):
     orig_prefix = '/'+my_type+'/'
 
     assert orig_rel_url.startswith(orig_prefix)
-    cache_key = CACHE_DIR_NAME+'/thumb-' + orig_rel_url[len(orig_prefix):] + \
-                '.' + CACHE_FORMAT_EXTENSION
+    cache_key = CACHE_DIR_NAME+'/' + doc['_id'] + '/' + doc['name'] + '.' + CACHE_FORMAT_EXTENSION
     full_cache_url = prefix + '/'+ urllib.quote(cache_key)
 
     # just ensure that we have a different name...
@@ -199,9 +195,7 @@ def parse_urls_from_doc(doc):
     tmp_output_fname = os.path.split(cache_key)[1]
     assert tmp_input_fname.lower() != tmp_output_fname.lower()
 
-    pre_url = THUMBNAIL_DIR_NAME+'/' + orig_rel_url[len(orig_prefix):]
-    pre_url = os.path.splitext(pre_url)[0]
-    thumbnail_key = pre_url + '.' + THUMBNAIL_FORMAT_EXTENSION
+    thumbnail_key = THUMBNAIL_DIR_NAME+'/' + doc['_id'] + '/' + doc['name'] + '.' + THUMBNAIL_FORMAT_EXTENSION
     full_thumbnail_url = prefix + '/'+ urllib.quote(thumbnail_key)
 
     extension = os.path.splitext(orig_rel_url)[1]
@@ -224,10 +218,8 @@ def make_cache_if_needed(coll, doc, options):
         print("new document:")
         show_doc(doc)
 
-
     if options.verbose:
         print()
-
 
     z = parse_urls_from_doc(doc)
 
@@ -240,6 +232,9 @@ def make_cache_if_needed(coll, doc, options):
                     skip_doc = True
             if z['extension'] in SKIP_EXTENSIONS:
                 skip_doc=True
+                print("SKIPPING: z['extension']: ",z['extension'])
+            else:
+                print("NOT SKIPPED: z['extension']: ",z['extension'])
 
             if not skip_doc:
                 r = requests.get(doc['secure_url'])
@@ -254,6 +249,8 @@ def make_cache_if_needed(coll, doc, options):
                         print('getting image properties for %r (doc id %r)'%(filename,doc['_id']))
                     props = get_image_properties(filename)
                 except:
+                    if options.fail:
+                        raise
                     if options.verbose:
                         print('problems with this document, ignoring for now')
                     skip_image_file_for_now[ doc['_id'] ].append( doc['secure_url'] )
@@ -270,23 +267,20 @@ def make_cache_if_needed(coll, doc, options):
     full_url = doc['secure_url']
     orig_rel_url = get_rel_url(full_url)
     if is_tiff(orig_rel_url):
-        if z['cache_key'] not in cache_keys:
+        if doc['_id'] not in cache_ids:
             if 1:
                 make_cache(coll, doc,
                            z['cache_key'],
                            options)
-                cache_keys.add(z['cache_key'])
+                cache_ids.add(doc['_id'])
 
     # ensure thumbnail -----
-    if z['thumbnail_key'] not in thumbnail_keys:
-        skip = False
-        if z['extension'] in SKIP_EXTENSIONS:
-            skip=True
-        if not skip:
+    if doc['_id'] not in thumbnail_ids:
+        if z['extension'] not in SKIP_EXTENSIONS: # cannot make thumbnails of these yet
             make_thumbnail(coll, doc,
                            z['thumbnail_key'],
                            options)
-            thumbnail_keys.add(z['thumbnail_key'])
+        thumbnail_ids.add(doc['_id'])
 
 def pump_new(coll,options):
     while len(new_docs):
@@ -294,15 +288,13 @@ def pump_new(coll,options):
         result = make_cache_if_needed(coll,doc,options)
 
 def fill_cache():
-    bucket = neuron_catalog_tools.get_s3_bucket()
+    db = neuron_catalog_tools.get_db()
+    for doc in db.binary_data.find():
+        if 'cache_src' in doc:
+            cache_ids.add( doc['_id'] )
 
-    rs = bucket.list(prefix=CACHE_DIR_NAME+'/')
-    for key in rs:
-        cache_keys.add(key.name)
-
-    rs = bucket.list(prefix=THUMBNAIL_DIR_NAME+'/')
-    for key in rs:
-        thumbnail_keys.add(key.name)
+        if 'thumb_src' in doc:
+            thumbnail_ids.add( doc['_id'] )
 
 def infinite_poll_loop(options):
     if options.verbose:
@@ -335,8 +327,6 @@ def infinite_poll_loop(options):
         print("Finished processing backlog, now waiting for new images.")
 
     while 1:
-        this_cache_keys = set()
-        this_thumbnail_keys = set()
         for doc in coll.find():
             d_id = doc['_id']
             if doc['secure_url'] == '(uploading)':
@@ -345,8 +335,6 @@ def infinite_poll_loop(options):
             if d_id not in seen_docs:
                 new_docs.append( doc )
                 seen_docs.add( d_id )
-            this_cache_keys.add( parse_urls_from_doc(doc)['cache_key'] )
-            this_thumbnail_keys.add( parse_urls_from_doc(doc)['thumbnail_key'] )
         status_doc = status_coll.find_one(status_doc_query)
 
         for_js = formatdate()
@@ -354,20 +342,6 @@ def infinite_poll_loop(options):
                                                      'status':'ok',
                                                  }},
                            upsert=True)
-
-        delete_cache_set = cache_keys - this_cache_keys
-        for cache_key in delete_cache_set:
-            # delete stale cached image
-            bucket = neuron_catalog_tools.get_s3_bucket()
-            bucket.delete_key(cache_key)
-            cache_keys.remove( cache_key )
-
-        delete_thumbnail_set = thumbnail_keys - this_thumbnail_keys
-        for thumbnail_key in delete_thumbnail_set:
-            # delete stale thumbnail image
-            bucket = neuron_catalog_tools.get_s3_bucket()
-            bucket.delete_key(thumbnail_key)
-            thumbnail_keys.remove( thumbnail_key )
 
         pump_new(coll,options)
         time.sleep(2.0)
@@ -378,6 +352,8 @@ if __name__=='__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--verbose", action="store_true", default=False,
                         help="be verbose")
+    parser.add_argument("--fail", action="store_true", default=False,
+                        help="fail on errors instead of keeping going")
     parser.add_argument("--keep", action="store_true", default=False,
                         help="do not delete temporary files")
     parser.add_argument("--settings", type=str, default=None,
