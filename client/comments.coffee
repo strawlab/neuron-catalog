@@ -67,7 +67,6 @@ Template.show_comments.helpers
 update_callback = (error, result) ->
   if error?
     console.error error
-  console.log "result", result
 
 on_delete_comment_callback = (error) ->
   if error?
@@ -75,8 +74,6 @@ on_delete_comment_callback = (error) ->
 
 Template.show_comments.events
   "click .delete": (evt, tmpl) ->
-    console.log "clicked delete"
-
     # Need to do this on server because Collection2 (buggily)
     # auto-updates .time and .userId fields in our {$pull: {comments:
     # {comment: "comment text"}}} dict and thereby causes the match to
