@@ -277,3 +277,5 @@ if Meteor.isServer
   NeuronTypes.allow logged_in_allow
   Neuropils.allow logged_in_allow
   UploadProcessorStatus.allow logged_in_allow
+
+  NeuronCatalogConfig.allow logged_in_allow

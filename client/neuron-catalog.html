@@ -1230,22 +1230,54 @@
 </template>
 
 <template name="config">
-  {{#top_content_row}}
-    Configuration
-  {{/top_content_row}}
+  <h2>Configuration</h2>
 
-  <ul>
-    <li>
+  {{#if currentUser}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+	Website text configuration
+    {{/detail_title}}
+    {{#detail_main}}
+
+    {{#with config_doc}}
+      {{> quickForm collection="NeuronCatalogConfig" doc=this id="{{_id}}" type="update" buttonContent="Save" }}
+    {{/with}}
+
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{/if}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+	Website setup validation
+    {{/detail_title}}
+    {{#detail_main}}
+      <p>
       <button type="button" class="btn btn-default verify-aws">Verify AWS configuration</button>
-    </li>
+      </p>
+    {{/detail_main}}
+  {{/detail_block}}
+
     {{#if currentUser}}
+  {{#detail_block}}
+    {{#detail_title}}
+	Database validation
+    {{/detail_title}}
+    {{#detail_main}}
+  <ul>
     {{#each collection_names}}
     <li>
       {{this}} <button type="button" class="btn btn-default validate-docs" data-repair="0" data-collection={{this}}>Validate</button> <button type="button" class="btn btn-default validate-docs" data-repair="1" data-collection={{this}}>Attempt repair</button> (see javascript console)
     </li>
+
     {{/each}}
+  </ul>
+    {{/detail_main}}
+  {{/detail_block}}
     {{else}}
       <li>Other configuration options available if you log in.</li>
     {{/if}}
-  </ul>
+
 </template>
