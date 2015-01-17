@@ -1238,10 +1238,14 @@
     <li>
       <button type="button" class="btn btn-default verify-aws">Verify AWS configuration</button>
     </li>
+    {{#if currentUser}}
     {{#each collection_names}}
     <li>
       {{this}} <button type="button" class="btn btn-default validate-docs" data-repair="0" data-collection={{this}}>Validate</button> <button type="button" class="btn btn-default validate-docs" data-repair="1" data-collection={{this}}>Attempt repair</button> (see javascript console)
     </li>
     {{/each}}
+    {{else}}
+      <li>Other configuration options available if you log in.</li>
+    {{/if}}
   </ul>
 </template>
