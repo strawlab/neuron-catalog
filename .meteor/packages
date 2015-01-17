@@ -19,3 +19,4 @@ reactive-var
 edgee:slingshot
 peerlibrary:aws-sdk
 aldeed:collection2
+aldeed:autoform
