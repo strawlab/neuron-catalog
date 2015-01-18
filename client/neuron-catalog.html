@@ -23,7 +23,7 @@
    </div>
    <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      <ul class="nav nav-tabs" role="tablist">
+      <ul class="nav navbar-nav" role="tablist">
 	<li class="{{activeIfTemplateIn 'home'}}"><a href="{{pathFor 'home'}}">Home</a></li>
 	<li class="{{activeIfTemplateIn 'driver_lines' 'driver_line_show'}}">
 	  <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
@@ -37,14 +37,16 @@
 	<li class="{{activeIfTemplateIn 'binary_data' 'binary_data_show'}}">
 	  <a href="{{pathFor 'binary_data'}}">Binary Data</a>
 	</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
 	<li class="{{activeIfTemplateIn 'RecentChanges'}}">
-	  <a href="{{pathFor 'RecentChanges'}}">Recent Changes</a>
+	  <a href="{{pathFor 'RecentChanges'}}"><i class="fa fa-line-chart"></i> Recent Changes</a>
 	</li>
 	<li class="{{activeIfTemplateIn 'Search'}}">
-	  <a href="{{pathFor 'Search'}}">Search</a>
+	  <a href="{{pathFor 'Search'}}"><i class="fa fa-search"></i> Search</a>
 	</li>
 	<li class="{{activeIfTemplateIn 'config'}}">
-	  <a href="{{pathFor 'config'}}">Config</a>
+	  <a href="{{pathFor 'config'}}"><i class="fa fa-cog"></i> Config</a>
 	</li>
       </ul>
     </div>
