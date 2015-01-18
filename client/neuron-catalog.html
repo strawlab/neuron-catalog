@@ -132,7 +132,7 @@
 </template>
 
 <template name="raw_button">
-  <a class="btn btn-default btn-small raw" href="#"><i class="fa fa-terminal"></i> View raw document</a>
+  <a class="btn btn-default btn-small raw" href="#"><i class="fa fa-terminal"></i>{{#if button_text}}{{button_text}}{{else}}View raw document{{/if}}</a>
 </template>
 
 <template name="raw_document_view">
@@ -1276,6 +1276,9 @@
   </ul>
     {{/detail_main}}
   {{/detail_block}}
+
+  {{> raw_button collection="Meteor.users" my_id=current_user_id button_text="View user document for current user" }}
+
     {{else}}
       <li>Other configuration options available if you log in.</li>
     {{/if}}

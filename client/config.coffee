@@ -73,3 +73,6 @@ Template.config.helpers
 
   config_doc: ->
     NeuronCatalogConfig.findOne({})
+
+  current_user_id: ->
+    Meteor.userId()

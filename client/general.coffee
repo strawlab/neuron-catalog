@@ -73,7 +73,12 @@ window.get_collection_from_name = (name) ->
     coll = NeuronTypes
   else if name is "Neuropils"
     coll = Neuropils
-  else coll = BinaryData  if name is "BinaryData"
+  else if name is "BinaryData"
+    coll = BinaryData
+  else if name is "Meteor.users"
+    coll = Meteor.users
+  else
+    console.error "unknown collection name "+name
   coll
 
 # --------------------------------------------
