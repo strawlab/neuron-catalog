@@ -107,7 +107,7 @@ insert_image_save_func = (info, template) ->
     if error?
       window.uploader = null
       console.error(error)
-      alert("There was an error uploading the file")
+      bootbox.alert("There was an error uploading the file")
       return
 
     s3_key = window.uploader.param('key')

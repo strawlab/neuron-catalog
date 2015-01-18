@@ -2,9 +2,9 @@ on_verify_callback = (error, failures) ->
   if error?
     console.error "Failure during remote call:",error
   if failures.length==0
-    alert("AWS appears configured properly")
+    bootbox.alert("AWS appears configured properly")
   else
-    alert("AWS not properly configured: "+failures)
+    bootbox.alert("AWS not properly configured: "+failures)
   $('.verify-aws').prop('disabled', false)
 
 update_callback = (error, result) ->

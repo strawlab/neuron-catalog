@@ -30,7 +30,7 @@ Template.neuron_type_insert.helpers
 neuron_type_insert_callback = (error, _id) ->
   if error?
     console.error "neuron_type_insert_callback with error:", error
-    alert "Saving failed: "+error
+    bootbox.alert "Saving failed: "+error
     return
 
 # @remove_neuron_type is defined in ../neuron-catalog.coffee

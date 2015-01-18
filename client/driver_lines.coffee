@@ -130,7 +130,7 @@ Template.driver_lines.events
 driver_line_insert_callback = (error, _id) ->
   if error?
     console.error "driver_line_insert_callback with error:", error
-    alert "Saving failed: "+error
+    bootbox.alert "Saving failed: "+error
   return
 
 # @remove_driver_line is defined in ../neuron-catalog.coffee

@@ -46,7 +46,7 @@ Template.neuropil_from_id_block.helpers
 neuropil_insert_callback = (error, _id) ->
   if error?
     console.error "neuropil_insert_callback with error:", error
-    alert "Saving failed: "+error
+    bootbox.alert "Saving failed: "+error
     return
 
 # @remove_neuropil is defined in ../neuron-catalog.coffee
