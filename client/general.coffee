@@ -115,6 +115,12 @@ window.activateInput = (input) ->
   input.select()
   return
 
+window.renderTmp = (template, data) ->
+  # see http://stackoverflow.com/a/26309004/1633026
+  node = document.createElement("div")
+  document.body.appendChild node
+  UI.renderWithData template, data, node
+  node
 
 # --------------------------------------------
 

@@ -1295,3 +1295,16 @@
     {{/if}}
 
 </template>
+
+<template name="ConfigAWSTestDialog">
+  <h2>AWS configuration test</h2>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped {{is_active}}"  role="progressbar" aria-valuenow="{{percent_done}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent_done}}%">
+	<span class="sr-only">{{percent_done}}% Complete</span>
+      </div>
+    </div>
+  {{#if result}}
+    {{result}}
+  {{else}}
+  {{/if}}
+</template>

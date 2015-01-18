@@ -1,11 +1,15 @@
+Session.setDefault "AWSConfigTestResult", null
+Session.setDefault "AWSConfigTestDone", 0
+
 on_verify_callback = (error, failures) ->
+  Session.set("AWSConfigTestDone", 100)
   if error?
     console.error "Failure during remote call:",error
+
   if failures.length==0
-    bootbox.alert("AWS appears configured properly")
+    Session.set "AWSConfigTestResult", "AWS is correctly configured."
   else
-    bootbox.alert("AWS not properly configured: "+failures)
-  $('.verify-aws').prop('disabled', false)
+    Session.set "AWSConfigTestResult", "AWS not correctly configured: "+failures
 
 update_callback = (error, result) ->
   console.log "update complete"
@@ -50,11 +54,24 @@ check_doc = (doc) ->
         coll.update({_id: doc._id},modifier,update_callback)
   return
 
+Template.ConfigAWSTestDialog.helpers
+  result: ->
+    Session.get "AWSConfigTestResult"
+  percent_done: ->
+    Session.get("AWSConfigTestDone")
+  is_active: ->
+    if Session.get("AWSConfigTestDone") < 100 then "active" else ""
+
 Template.config.events
   "click .verify-aws": (e) ->
-    $('.verify-aws').prop('disabled', true)
+    Session.set "AWSConfigTestResult", null
+    Session.set("AWSConfigTestDone",0)
+    bootbox.dialog message: window.renderTmp(Template.ConfigAWSTestDialog)
     Meteor.call("verify_AWS_configuration", on_verify_callback)
-    return
+    window.setTimeout(->
+      Session.set("AWSConfigTestDone",30)
+    ,
+      300)
 
   "click .validate-docs": (event,template) ->
     button = event.currentTarget
