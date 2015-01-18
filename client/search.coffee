@@ -107,6 +107,8 @@ build_query_doc = (orig) ->
   result
 
 Template.Search.rendered = ->
+  if !@find("#comments-search-input")?
+    return
   if @data.text?
     Session.set("comments_search_text",@data.text)
   if @data.idid?
