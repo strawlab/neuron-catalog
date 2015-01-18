@@ -256,9 +256,10 @@ if Meteor.isServer
     found
 
   Meteor.publish "userData", ->
-    Meteor.users.find {},
-      fields:
-        username: 1
+    if @userId
+      Meteor.users.find {},
+        fields:
+          username: 1
 
   # ----------------------------------------
 
