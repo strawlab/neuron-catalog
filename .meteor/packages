@@ -6,7 +6,6 @@
 standard-app-packages
 iron:layout
 iron:router
-mizzao:bootstrap-3
 showdown
 accounts-base
 accounts-ui
