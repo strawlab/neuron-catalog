@@ -1306,7 +1306,14 @@
       </div>
     </div>
   {{#if result}}
-    {{result}}
+    {{result.msg}}
+    {{#if result.has_error}}
+      <ul>
+      {{#each result.failures}}
+        <li>{{this}}</li>
+      {{/each}}
+      </ul>
+    {{/if}}
   {{else}}
   {{/if}}
 </template>

@@ -7,9 +7,9 @@ on_verify_callback = (error, failures) ->
     console.error "Failure during remote call:",error
 
   if failures.length==0
-    Session.set "AWSConfigTestResult", "AWS is correctly configured."
+    Session.set "AWSConfigTestResult", {has_error: false, msg: "AWS is correctly configured."}
   else
-    Session.set "AWSConfigTestResult", "AWS not correctly configured: "+failures
+    Session.set "AWSConfigTestResult", {has_error: true, msg: "AWS not correctly configured.", failures:failures}
 
 update_callback = (error, result) ->
   console.log "update complete"
