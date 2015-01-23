@@ -159,7 +159,8 @@ def get_rel_url(url):
     parts = urlparse.urlparse(url)
     path = parts.path
     pp = path.split('/')
-    assert pp[0]==''
+    if pp[0]!='':
+        raise ValueError('unexpected parts.path: %r, pp: %r'%(path,pp))
     pp.pop(0)
 
     if pp[0]!='images':
@@ -283,9 +284,15 @@ def make_cache_if_needed(coll, doc, options):
         thumbnail_ids.add(doc['_id'])
 
 def pump_new(coll,options):
+    to_append = []
     while len(new_docs):
         doc = new_docs.pop(0)
-        result = make_cache_if_needed(coll,doc,options)
+        if doc['secure_url'] == '(uploading)':
+            to_append.append(doc)
+        else:
+            result = make_cache_if_needed(coll,doc,options)
+    for doc in to_append:
+        new_docs.append( doc )
 
 def fill_cache():
     db = neuron_catalog_tools.get_db()
