@@ -5,6 +5,8 @@ neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
 neuropils_sort = {}
 neuropils_sort[window.get_sort_key("Neuropils")] = 1
 
+typed_name = Session.setDefault "typed_name", null
+
 # ---- Template.driver_line_from_id_block -------------
 
 enhance_driver_line_doc = (doc) ->
@@ -59,6 +61,26 @@ Template.AddDriverLineDialog.helpers
 
   neuropils: ->
     Neuropils.find()
+
+  count_cursor: (cursor) ->
+    if cursor? and cursor.count? and cursor.count() > 0
+        return true
+    return false
+
+  matching_driver_lines: ->
+    typed_name = Session.get "typed_name"
+    if !typed_name?
+      return []
+    if typed_name.length == 0
+      return []
+    cursor = DriverLines.find({name: {$regex: '^'+typed_name, $options: "i"}})
+
+  get_linkout: ->
+    {collection:"DriverLines", doc: this, my_id: @_id}
+
+Template.AddDriverLineDialog.events
+  "keyup .driver-line-lookup": (event, template) ->
+    Session.set "typed_name", template.find(".name").value
 
 # ---- Template.edit_driver_lines -------------
 
