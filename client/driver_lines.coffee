@@ -141,7 +141,7 @@ Template.driver_lines.events
       message: window.renderTmp(Template.AddDriverLineDialog)
       buttons:
         save:
-          label: "Save2"
+          label: "Save"
           className: "btn-primary"
           callback: ->
             dialog_template = window.dialog_template
