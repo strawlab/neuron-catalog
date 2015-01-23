@@ -51,9 +51,9 @@ Template.driver_line_from_id_block.helpers
       my_id = @valueOf() # unbox it
     enhance_driver_line_doc(DriverLines.findOne(my_id))
 
-# ---- Template.driver_line_insert -------------
+# ---- Template.AddDriverLineDialog -------------
 
-Template.driver_line_insert.helpers
+Template.AddDriverLineDialog.helpers
   neuron_types: ->
     NeuronTypes.find()
 
@@ -112,17 +112,20 @@ Template.driver_lines.helpers
     DriverLines.find {}, {'sort':driver_lines_sort}
 
 Template.driver_lines.events
-  "click .insert": (e) ->
-    e.preventDefault()
-    coll = "DriverLines"
-    Session.set "modal_info",
-      title: "Add driver line"
-      collection: coll
-      body_template_name: "driver_line_insert"
-      is_save_modal: true
-
-    window.modal_save_func = window.jump_table[coll].save
-    $("#show_dialog_id").modal "show"
+  "click .insert": (event, template) ->
+    event.preventDefault()
+    Session.set "typed_name",null
+    window.dialog_template = bootbox.dialog
+      message: window.renderTmp(Template.AddDriverLineDialog)
+      buttons:
+        save:
+          label: "Save2"
+          className: "btn-primary"
+          callback: ->
+            dialog_template = window.dialog_template
+            result = save_driver_line(dialog_template)
+            if result.errors
+              bootbox.alert('Errors: '+result.errors.join(", "))
     return
 
 # ------------- general functions --------
@@ -135,24 +138,28 @@ driver_line_insert_callback = (error, _id) ->
 
 # @remove_driver_line is defined in ../neuron-catalog.coffee
 
-@save_driver_line = (info, template) ->
+save_driver_line = (template) ->
   result = {}
   doc = {}
   errors = []
 
+  # TODO check for duplicates
+
   # parse
-  doc.name = template.find(".name").value
+  if !template.find?
+    console.error "no template.find"
+    return
+  doc.name = template.find(".name")[0].value
   errors.push "Name is required."  if doc.name.length < 1
   doc.neuron_types = []
-  r1 = template.findAll(".neuron_types")
-  for i of r1
-    node = r1[i]
+  r1 = template.find(".neuron_types")
+  for node in r1
     doc.neuron_types.push node.id  if node.checked
 
   neuropils = {}
-  neuropil_fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
-  neuropil_fill_from(".neuropils-output",template,"output",neuropils)
-  neuropil_fill_from(".neuropils-input",template,"input",neuropils)
+  neuropil_fill_from_jquery(".neuropils-unspecified",template,"unspecified",neuropils)
+  neuropil_fill_from_jquery(".neuropils-output",template,"output",neuropils)
+  neuropil_fill_from_jquery(".neuropils-input",template,"input",neuropils)
   neuropils = neuropil_dict2arr(neuropils)
 
   doc.neuropils = neuropils
@@ -163,9 +170,7 @@ driver_line_insert_callback = (error, _id) ->
 
   # report errors
   if errors.length > 0
-    if errors.length is 1
-      result.error = "Error: " + errors[0]
-    else result.error = "Errors: " + errors.join(", ")  if errors.length > 1
+    result.errors = errors
     return result
 
   # save result

@@ -984,11 +984,24 @@
 
 <!-- ----------------------------- -->
 
-<template name="driver_line_insert">
+<template name="SaveTemplate">
+  <h4 class="modal-title">{{title}}</h4>
+  {{> UI.contentBlock this}}
+</template>
+
+<template name="AddDriverLineDialog">
+  {{#SaveTemplate collection_name="DriverLines" title="add driver line"}}
   <form role="form">
     <label>Name</label>
-    <input type="text" class="name span5">
-
+    <input type="text" class="name span5 driver-line-lookup">
+    {{#if count_cursor matching_driver_lines}}
+      <div>
+        <h4>potential duplicate driver lines</h4>
+        {{#each matching_driver_lines}}
+          {{>linkout get_linkout}}
+        {{/each}}
+      </div>
+    {{/if}}
     <div>
       <div><h4>neuron types</h4></div>
       <div>
@@ -1034,6 +1047,7 @@
       </div>
     </div>
   </form>
+  {{/SaveTemplate}}
 </template>
 
 <template name="neuron_type_insert">

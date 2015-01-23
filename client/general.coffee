@@ -119,7 +119,7 @@ window.renderTmp = (template, data) ->
   # see http://stackoverflow.com/a/26309004/1633026
   node = document.createElement("div")
   document.body.appendChild node
-  UI.renderWithData template, data, node
+  window.dialog_template = UI.renderWithData template, data, node
   node
 
 # --------------------------------------------
@@ -213,9 +213,6 @@ window.jump_table =
   DriverLines:
     remove: (x) ->
       remove_driver_line x
-
-    save: (info, template) ->
-      save_driver_line info, template
 
     delete_template_name: "driver_line_show_brief"
     element_route: "driver_line_show"

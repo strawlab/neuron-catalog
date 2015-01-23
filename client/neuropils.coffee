@@ -109,6 +109,14 @@ Template.edit_neuropils.helpers
       result[node.id].push neuropil_type
   return
 
+@neuropil_fill_from_jquery = (selector, template, neuropil_type, result) ->
+  for node in template.find(selector)
+    if node.checked
+      if !result.hasOwnProperty(node.id)
+        result[node.id] = []
+      result[node.id].push neuropil_type
+  return
+
 @neuropil_dict2arr = (neuropils) ->
   result = []
   for _id, tarr of neuropils
