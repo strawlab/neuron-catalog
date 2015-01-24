@@ -129,17 +129,17 @@ LinksNeuronTypes =
     label: "_id of doc in NeuronTypes collection"
 
 LinksBrainRegions =
-  neuropils:
+  brain_regions:
     type: [Object]
 
-  "neuropils.$._id":
+  "brain_regions.$._id":
     type: String
     label: "_id of doc in BrainRegions collection"
 
-  "neuropils.$.type":
+  "brain_regions.$.type":
     type: [String]
 
-  "neuropils.$.type.$":
+  "brain_regions.$.type.$":
     type: String
     allowedValues: ["input", "output", "unspecified"]
 

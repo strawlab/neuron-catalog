@@ -26,4 +26,22 @@ Migrations.add
       BrainRegions.insert(doc,{validate: false, getAutoValues: false})
       OLDNPILS.remove({_id:doc._id})
 
-Migrations.migrateTo(2)
+Migrations.add
+  version: 3
+  name: 'Rename field from neuropils to brain_regions',
+  up: ->
+    for coll in [DriverLines, NeuronTypes]
+      coll.find().forEach (doc) ->
+        coll.update
+          _id: doc._id
+        ,
+          $set:
+            brain_regions: doc.neuropils
+
+          $unset:
+            neuropils: 1
+        ,
+          validate: false
+          getAutoValues: false
+
+Migrations.migrateTo(3)
