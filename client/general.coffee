@@ -13,7 +13,7 @@ head.appendChild style
 # -------------
 Meteor.subscribe "driver_lines"
 Meteor.subscribe "neuron_types"
-Meteor.subscribe "neuropils"
+Meteor.subscribe "brain_regions"
 Meteor.subscribe "binary_data"
 Meteor.subscribe "neuron_catalog_config"
 Meteor.subscribe "userData"

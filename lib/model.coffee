@@ -240,7 +240,7 @@ if Meteor.isServer
     DriverLines.find {}  if @userId
   Meteor.publish "neuron_types", ->
     NeuronTypes.find {}  if @userId
-  Meteor.publish "neuropils", ->
+  Meteor.publish "brain_regions", ->
     BrainRegions.find {}  if @userId
   Meteor.publish "binary_data", ->
     BinaryData.find {}  if @userId
