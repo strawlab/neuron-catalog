@@ -60,6 +60,7 @@ observe-sequence@1.0.4
 ordered-dict@1.0.2
 peerlibrary:aws-sdk@2.1.6_2
 peerlibrary:blocking@0.5.1
+percolate:migrations@0.7.2
 random@1.0.2
 reactive-dict@1.0.5
 reactive-var@1.0.4
