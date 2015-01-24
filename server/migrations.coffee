@@ -16,4 +16,15 @@ Migrations.add
           validate: false
           getAutoValues: false
 
-Migrations.migrateTo(1)
+Migrations.add
+  version: 2
+  name: 'Rename collection from neuropils to brain_regions',
+  up: ->
+    OLDNPILS = new Meteor.Collection("neuropils")
+    BrainRegions = Neuropils
+
+    OLDNPILS.find().forEach (doc) ->
+      BrainRegions.insert(doc,{validate: false, getAutoValues: false})
+      OLDNPILS.remove({_id:doc._id})
+
+Migrations.migrateTo(2)

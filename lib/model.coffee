@@ -5,7 +5,7 @@
 @DriverLines = new Meteor.Collection("driver_lines")
 @BinaryData = new Meteor.Collection("binary_data")
 @NeuronTypes = new Meteor.Collection("neuron_types")
-@Neuropils = new Meteor.Collection("neuropils")
+@Neuropils = new Meteor.Collection("brain_regions")
 
 # Create a capped collection to describe the upload processor status.
 @UploadProcessorStatus = new Meteor.Collection("upload_processor_status")
