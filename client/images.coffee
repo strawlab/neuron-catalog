@@ -51,7 +51,7 @@ Template.binary_data_show.helpers
     @type.slice(0,-1)
 
   find_references: ->
-    coll_types = ["DriverLines","NeuronTypes","Neuropils"]
+    coll_types = ["DriverLines","NeuronTypes","BrainRegions"]
     image_id = @_id
     query =
       images: image_id

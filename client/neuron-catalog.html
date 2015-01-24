@@ -32,7 +32,7 @@
 	  <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
 	</li>
 	<li class="{{activeIfTemplateIn 'neuropils' 'neuropil_show'}}">
-	  <a href="{{pathFor 'neuropils'}}">Neuropils</a>
+	  <a href="{{pathFor 'neuropils'}}">Brain Regions</a>
 	</li>
 	<li class="{{activeIfTemplateIn 'binary_data' 'binary_data_show'}}">
 	  <a href="{{pathFor 'binary_data'}}">Binary Data</a>
@@ -192,7 +192,7 @@
       <tr>
 	<th>Driver line</th>
 	<th>Neuron types</th>
-	<th>Neuropils (nonspecific expression)</th>
+	<th>Brain Regions (nonspecific expression)</th>
 	<th>Output neuropils</th>
 	<th>Input neuropils</th>
       </tr>
@@ -246,7 +246,7 @@
 	<th>Neuron type</th>
 	<th>Synonyms</th>
 	<th>Best driver lines</th>
-	<th>Neuropils (nonspecific expression)</th>
+	<th>Brain Regions (nonspecific expression)</th>
 	<th>Output neuropils</th>
 	<th>Input neuropils</th>
       </tr>
@@ -302,7 +302,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
-	<th>Neuropil</th>
+	<th>Brain Region</th>
 	<th>Driver lines</th>
 	<th>Neuron types</th>
 	<th>Expression type</th>
@@ -456,7 +456,7 @@
 
   {{#detail_block}}
     {{#detail_title}}
-      Neuropils
+      Brain Regions
       <a class="btn btn-default btn-small edit-neuropils" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     {{/detail_title}}
     {{#detail_main}}
@@ -577,7 +577,7 @@
   {{/detail_block}}
 
   {{#detail_block}}
-    {{#detail_title}}Neuropils{{/detail_title}}
+    {{#detail_title}}Brain Regions{{/detail_title}}
     {{> neuropil_table neuropils=neuropil_search_cursor}}
   {{/detail_block}}
 
@@ -603,7 +603,7 @@
   Changes in the last {{last_n_days}} days:
   {{>ChangeList collname="DriverLines" last_n_days=last_n_days}}
   {{>ChangeList collname="NeuronTypes" last_n_days=last_n_days}}
-  {{>ChangeList collname="Neuropils" last_n_days=last_n_days}}
+  {{>ChangeList collname="BrainRegions" last_n_days=last_n_days}}
   {{>ChangeList collname="BinaryData" last_n_days=last_n_days}}
   {{else}}
     {{login_message}}
@@ -771,7 +771,7 @@
 
   {{#detail_block}}
     {{#detail_title}}
-	Neuropils
+	Brain Regions
       <a class="btn btn-default btn-small edit-neuropils" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     {{/detail_title}}
     {{#detail_main}}
@@ -863,7 +863,7 @@
 
 <template name="neuropils">
   {{#top_content_row}}
-      All Neuropils
+      All Brain Regions
   {{/top_content_row}}
 
   {{#detail_block}}
@@ -883,25 +883,25 @@
 
 <template name="neuropil_show_brief">
   {{#neuropil_from_id_block}}
-  <h3>Neuropil: {{name}}</h3>
+  <h3>Brain Region: {{name}}</h3>
   {{/neuropil_from_id_block}}
 </template>
 
 <template name="neuropil_show">
   {{#neuropil_from_id_block}}
 
-  {{>top_content_row2 type_name="Neuropil" collection="Neuropils" _id=_id name=name}}
+  {{>top_content_row2 type_name="Brain Region" collection="BrainRegions" _id=_id name=name}}
 
-  {{> tags_panel tags=tags collection="Neuropils" _id=_id}}
+  {{> tags_panel tags=tags collection="BrainRegions" _id=_id}}
 
   {{#detail_block}}
     {{#detail_title}}
-      {{> AddImageCode2 collection="Neuropils" my_id=_id}}
+      {{> AddImageCode2 collection="BrainRegions" my_id=_id}}
     {{/detail_title}}
     {{#detail_main}}
       <br/>
         {{> binary_data_table binary_data=images}}
-        {{> add_image_code collection="Neuropils" my_id=_id}}
+        {{> add_image_code collection="BrainRegions" my_id=_id}}
     {{/detail_main}}
   {{/detail_block}}
 
@@ -925,7 +925,7 @@
     {{/detail_main}}
   {{/detail_block}}
 
-  {{> comments_panel comments=comments show_name="Neuropils" _id=_id}}
+  {{> comments_panel comments=comments show_name="Brain Regions" _id=_id}}
   {{/neuropil_from_id_block}}
 </template>
 

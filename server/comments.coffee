@@ -4,8 +4,8 @@ get_collection_from_name = (name) ->
     coll = DriverLines
   else if name is "NeuronTypes"
     coll = NeuronTypes
-  else if name is "Neuropils"
-    coll = Neuropils
+  else if name is "BrainRegions"
+    coll = BrainRegions
   else coll = BinaryData  if name is "BinaryData"
   coll
 

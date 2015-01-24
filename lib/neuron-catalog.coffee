@@ -73,11 +73,11 @@ Router.route "/neuropils"
 Router.route "/neuropils/:_id/:name?",
   name: "neuropil_show"
   action: ->
-    always_include_name_in_path_action(this, Neuropils, "neuropil_show")
+    always_include_name_in_path_action(this, BrainRegions, "neuropil_show")
   data: ->
-    Neuropils.findOne _id: @params._id
+    BrainRegions.findOne _id: @params._id
   onAfterAction: ->
-    doc = Neuropils.findOne _id: @params._id
+    doc = BrainRegions.findOne _id: @params._id
     if doc?
       document.title = doc.name + ' - neuron catalog'
     else
@@ -190,5 +190,5 @@ Router.route "/Search", ->
     my_id: my_id
     coll: NeuronTypes
 
-  Neuropils.remove my_id
+  BrainRegions.remove my_id
   return

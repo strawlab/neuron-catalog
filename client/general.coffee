@@ -60,7 +60,7 @@ window.get_route_from_name = (name) ->
     route = Router.routes['driver_line_show']
   else if name is "NeuronTypes"
     route = Router.routes['neuron_type_show']
-  else if name is "Neuropils"
+  else if name is "BrainRegions"
     route = Router.routes['neuropil_show']
   else route = Router.routes['binary_data_show']  if name is "BinaryData"
   route
@@ -71,8 +71,8 @@ window.get_collection_from_name = (name) ->
     coll = DriverLines
   else if name is "NeuronTypes"
     coll = NeuronTypes
-  else if name is "Neuropils"
-    coll = Neuropils
+  else if name is "BrainRegions"
+    coll = BrainRegions
   else if name is "BinaryData"
     coll = BinaryData
   else if name is "Meteor.users"
@@ -230,7 +230,7 @@ window.jump_table =
     element_route: "neuron_type_show"
     base_route: "neuron_types"
 
-  Neuropils:
+  BrainRegions:
     remove: (x) ->
       remove_neuropil x
 

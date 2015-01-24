@@ -3,7 +3,7 @@ driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 neuron_types_sort = {}
 neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
 neuropils_sort = {}
-neuropils_sort[window.get_sort_key("Neuropils")] = 1
+neuropils_sort[window.get_sort_key("BrainRegions")] = 1
 
 typed_name = Session.setDefault "typed_name", null
 
@@ -60,7 +60,7 @@ Template.AddDriverLineDialog.helpers
     NeuronTypes.find()
 
   neuropils: ->
-    Neuropils.find()
+    BrainRegions.find()
 
   count_cursor: (cursor) ->
     if cursor? and cursor.count? and cursor.count() > 0

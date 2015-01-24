@@ -3,7 +3,7 @@ driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 neuron_types_sort = {}
 neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
 neuropils_sort = {}
-neuropils_sort[window.get_sort_key("Neuropils")] = 1
+neuropils_sort[window.get_sort_key("BrainRegions")] = 1
 
 # ---- Template.neuron_type_from_id_block ---------------
 
@@ -25,7 +25,7 @@ Template.neuron_type_insert.helpers
     DriverLines.find({},{'sort':driver_lines_sort})
 
   neuropils: ->
-    Neuropils.find({},{'sort':neuropils_sort})
+    BrainRegions.find({},{'sort':neuropils_sort})
 
 neuron_type_insert_callback = (error, _id) ->
   if error?

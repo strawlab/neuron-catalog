@@ -2,7 +2,7 @@ Migrations.add
   version: 1
   name: 'Rename field "last_edit_userId" -> "last_edit_user"'
   up: ->
-    for coll in [DriverLines, NeuronTypes, Neuropils, BinaryData]
+    for coll in [DriverLines, NeuronTypes, BrainRegions, BinaryData]
       coll.find().forEach (doc) ->
         coll.update
           _id: doc._id
@@ -21,7 +21,6 @@ Migrations.add
   name: 'Rename collection from neuropils to brain_regions',
   up: ->
     OLDNPILS = new Meteor.Collection("neuropils")
-    BrainRegions = Neuropils
 
     OLDNPILS.find().forEach (doc) ->
       BrainRegions.insert(doc,{validate: false, getAutoValues: false})

@@ -3,7 +3,7 @@ driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 neuron_types_sort = {}
 neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
 neuropils_sort = {}
-neuropils_sort[window.get_sort_key("Neuropils")] = 1
+neuropils_sort[window.get_sort_key("BrainRegions")] = 1
 
 #----------
 Template.neuropil_from_id_block.helpers
@@ -35,7 +35,7 @@ Template.neuropil_from_id_block.helpers
         # If we have "valueOf" function, "this" is boxed.
         my_id = @valueOf() # unbox it
 
-    result = Neuropils.findOne my_id
+    result = BrainRegions.findOne my_id
     if !result?
       return
     result.my_types = []
@@ -69,7 +69,7 @@ neuropil_insert_callback = (error, _id) ->
     return result
 
   # save result
-  Neuropils.insert
+  BrainRegions.insert
     name: name
     tags: []
     comments: []
@@ -82,7 +82,7 @@ Template.edit_neuropils.helpers
     result = []
     collection = window.get_collection_from_name(@collection_name)
     myself = collection.findOne(_id: @my_id)
-    Neuropils.find({},{'sort':neuropils_sort}).forEach (doc) ->
+    BrainRegions.find({},{'sort':neuropils_sort}).forEach (doc) ->
       doc.unspecific_is_checked = false
       doc.output_is_checked = false
       doc.input_is_checked = false
@@ -166,7 +166,7 @@ Template.neuropil_table.helpers
 Template.neuropils.events
   "click .insert": (e) ->
     e.preventDefault()
-    coll = "Neuropils"
+    coll = "BrainRegions"
     Session.set "modal_info",
       title: "Add neuropil"
       collection: coll
@@ -179,4 +179,4 @@ Template.neuropils.events
 
 Template.neuropils.helpers
   neuropil_cursor: ->
-    Neuropils.find {},{'sort':neuropils_sort}
+    BrainRegions.find {},{'sort':neuropils_sort}

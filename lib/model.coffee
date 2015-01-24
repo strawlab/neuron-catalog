@@ -5,7 +5,7 @@
 @DriverLines = new Meteor.Collection("driver_lines")
 @BinaryData = new Meteor.Collection("binary_data")
 @NeuronTypes = new Meteor.Collection("neuron_types")
-@Neuropils = new Meteor.Collection("brain_regions")
+@BrainRegions = new Meteor.Collection("brain_regions")
 
 # Create a capped collection to describe the upload processor status.
 @UploadProcessorStatus = new Meteor.Collection("upload_processor_status")
@@ -128,13 +128,13 @@ LinksNeuronTypes =
     type: String
     label: "_id of doc in NeuronTypes collection"
 
-LinksNeuropils =
+LinksBrainRegions =
   neuropils:
     type: [Object]
 
   "neuropils.$._id":
     type: String
-    label: "_id of doc in Neuropils collection"
+    label: "_id of doc in BrainRegions collection"
 
   "neuropils.$.type":
     type: [String]
@@ -169,18 +169,18 @@ HasFlyCircuitIdids =
 
 # Schemas.DriverLines -------------------
 Schemas.DriverLines = new SimpleSchema(
-  compose(NamedWithTagsImagesHistoryComments, LinksNeuronTypes, HasFlyCircuitIdids, LinksNeuropils))
+  compose(NamedWithTagsImagesHistoryComments, LinksNeuronTypes, HasFlyCircuitIdids, LinksBrainRegions))
 DriverLines.attachSchema( Schemas.DriverLines )
 
 # Schemas.NeuronTypes ------------------
 Schemas.NeuronTypes = new SimpleSchema(
-  compose(NamedWithTagsImagesHistoryComments, HasSynonyms, HasBestDriverLines, HasFlyCircuitIdids, LinksNeuropils))
+  compose(NamedWithTagsImagesHistoryComments, HasSynonyms, HasBestDriverLines, HasFlyCircuitIdids, LinksBrainRegions))
 NeuronTypes.attachSchema( Schemas.NeuronTypes )
 
-# Schemas.Neuropils ------------------
-Schemas.Neuropils = new SimpleSchema(
+# Schemas.BrainRegions ------------------
+Schemas.BrainRegions = new SimpleSchema(
   compose(NamedWithTagsImagesHistoryComments))
-Neuropils.attachSchema( Schemas.Neuropils )
+BrainRegions.attachSchema( Schemas.BrainRegions )
 
 # Schemas.BinaryData ------------------
 #  This schema has grown organically and should be cleaned up!
@@ -241,7 +241,7 @@ if Meteor.isServer
   Meteor.publish "neuron_types", ->
     NeuronTypes.find {}  if @userId
   Meteor.publish "neuropils", ->
-    Neuropils.find {}  if @userId
+    BrainRegions.find {}  if @userId
   Meteor.publish "binary_data", ->
     BinaryData.find {}  if @userId
   Meteor.publish "upload_processor_status", ->
@@ -276,7 +276,7 @@ if Meteor.isServer
   DriverLines.allow logged_in_allow
   BinaryData.allow logged_in_allow
   NeuronTypes.allow logged_in_allow
-  Neuropils.allow logged_in_allow
+  BrainRegions.allow logged_in_allow
   UploadProcessorStatus.allow logged_in_allow
 
   NeuronCatalogConfig.allow logged_in_allow
