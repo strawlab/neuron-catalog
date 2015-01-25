@@ -66,7 +66,7 @@ NamedWithTagsHistoryComments =
       Date.now()
 
   # Force value to be current user upon update.
-  last_edit_userId:
+  last_edit_user:
     type: String
     autoValue: ->
       @userId
