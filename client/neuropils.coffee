@@ -2,19 +2,19 @@ driver_lines_sort = {}
 driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 neuron_types_sort = {}
 neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
-neuropils_sort = {}
-neuropils_sort[window.get_sort_key("BrainRegions")] = 1
+brain_regions_sort = {}
+brain_regions_sort[window.get_sort_key("BrainRegions")] = 1
 
 #----------
-Template.neuropil_from_id_block.helpers
-  neuropil_from_id: ->
+Template.brain_region_from_id_block.helpers
+  brain_region_from_id: ->
     if !this? or Object.keys(this).length ==0
       return # Cannot deal with this situation...
 
   # We can get called 3 ways:
-  # 1) From something that keeps track of what expression type is in the neuropil.
+  # 1) From something that keeps track of what expression type is in the brain_region.
   # 2) Already as a full document from the database.
-  # 3) As just an id to the neuropil.
+  # 3) As just an id to the brain_region.
     if @type?
       # This is case #1 described above.
       # object with keys ["_id", "type"]:
@@ -43,15 +43,15 @@ Template.neuropil_from_id_block.helpers
       result.my_types = my_types
     result
 
-neuropil_insert_callback = (error, _id) ->
+brain_region_insert_callback = (error, _id) ->
   if error?
-    console.error "neuropil_insert_callback with error:", error
+    console.error "brain_region_insert_callback with error:", error
     bootbox.alert "Saving failed: "+error
     return
 
-# @remove_neuropil is defined in ../neuron-catalog.coffee
+# @remove_brain_region is defined in ../neuron-catalog.coffee
 
-@save_neuropil = (info, template) ->
+@save_brain_region = (info, template) ->
   result = {}
 
   # parse
@@ -74,20 +74,20 @@ neuropil_insert_callback = (error, _id) ->
     tags: []
     comments: []
     images: []
-  , neuropil_insert_callback
+  , brain_region_insert_callback
   result
 
-Template.edit_neuropils.helpers
-  neuropils: ->
+Template.edit_brain_regions.helpers
+  brain_regions: ->
     result = []
     collection = window.get_collection_from_name(@collection_name)
     myself = collection.findOne(_id: @my_id)
-    BrainRegions.find({},{'sort':neuropils_sort}).forEach (doc) ->
+    BrainRegions.find({},{'sort':brain_regions_sort}).forEach (doc) ->
       doc.unspecific_is_checked = false
       doc.output_is_checked = false
       doc.input_is_checked = false
 
-      for tmp in myself.neuropils
+      for tmp in myself.brain_regions
         if tmp._id == doc._id
           if "unspecified" in tmp.type
             doc.unspecific_is_checked = true
@@ -101,82 +101,82 @@ Template.edit_neuropils.helpers
 
     result
 
-@neuropil_fill_from = (selector, template, neuropil_type, result) ->
+@brain_region_fill_from = (selector, template, brain_region_type, result) ->
   for node in template.findAll(selector)
     if node.checked
       if !result.hasOwnProperty(node.id)
         result[node.id] = []
-      result[node.id].push neuropil_type
+      result[node.id].push brain_region_type
   return
 
-@neuropil_fill_from_jquery = (selector, template, neuropil_type, result) ->
+@brain_region_fill_from_jquery = (selector, template, brain_region_type, result) ->
   for node in template.find(selector)
     if node.checked
       if !result.hasOwnProperty(node.id)
         result[node.id] = []
-      result[node.id].push neuropil_type
+      result[node.id].push brain_region_type
   return
 
-@neuropil_dict2arr = (neuropils) ->
+@brain_region_dict2arr = (brain_regions) ->
   result = []
-  for _id, tarr of neuropils
+  for _id, tarr of brain_regions
     result.push( {"_id":_id, "type":tarr} )
   result
 
-@edit_neuropils_save_func = (info, template) ->
+@edit_brain_regions_save_func = (info, template) ->
   my_id = Session.get("modal_info").body_template_data.my_id
 
-  neuropils = {}
-  neuropil_fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
-  neuropil_fill_from(".neuropils-output",template,"output",neuropils)
-  neuropil_fill_from(".neuropils-input",template,"input",neuropils)
-  neuropils = neuropil_dict2arr(neuropils)
+  brain_regions = {}
+  brain_region_fill_from(".brain_regions-unspecified",template,"unspecified",brain_regions)
+  brain_region_fill_from(".brain_regions-output",template,"output",brain_regions)
+  brain_region_fill_from(".brain_regions-input",template,"input",brain_regions)
+  brain_regions = brain_region_dict2arr(brain_regions)
 
   coll_name = Session.get("modal_info").body_template_data.collection_name
   collection = window.get_collection_from_name(coll_name)
   collection.update my_id,
     $set:
-      neuropils: neuropils
+      brain_regions: brain_regions
   {}
 
-Template.neuropil_show.helpers
+Template.brain_region_show.helpers
   driver_lines_referencing_me: ->
     DriverLines = window.get_collection_from_name("DriverLines") # FIXME: why do I need this?
-    DriverLines.find neuropils:
+    DriverLines.find brain_regions:
       $elemMatch:
         _id: @_id
 
   neuron_types_referencing_me: ->
-    NeuronTypes.find neuropils:
+    NeuronTypes.find brain_regions:
       $elemMatch:
         _id: @_id
 
-Template.neuropil_table.helpers
+Template.brain_region_table.helpers
   driver_lines_referencing_me: ->
     DriverLines = window.get_collection_from_name("DriverLines") # FIXME: why do I need this?
-    DriverLines.find neuropils:
+    DriverLines.find brain_regions:
       $elemMatch:
         _id: @_id
 
   neuron_types_referencing_me: ->
-    NeuronTypes.find neuropils:
+    NeuronTypes.find brain_regions:
       $elemMatch:
         _id: @_id
 
-Template.neuropils.events
+Template.brain_regions.events
   "click .insert": (e) ->
     e.preventDefault()
     coll = "BrainRegions"
     Session.set "modal_info",
-      title: "Add neuropil"
+      title: "Add brain_region"
       collection: coll
-      body_template_name: "neuropil_insert"
+      body_template_name: "brain_region_insert"
       is_save_modal: true
 
     window.modal_save_func = window.jump_table[coll].save
     $("#show_dialog_id").modal "show"
     return
 
-Template.neuropils.helpers
-  neuropil_cursor: ->
-    BrainRegions.find {},{'sort':neuropils_sort}
+Template.brain_regions.helpers
+  brain_region_cursor: ->
+    BrainRegions.find {},{'sort':brain_regions_sort}

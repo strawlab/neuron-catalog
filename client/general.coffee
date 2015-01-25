@@ -61,7 +61,7 @@ window.get_route_from_name = (name) ->
   else if name is "NeuronTypes"
     route = Router.routes['neuron_type_show']
   else if name is "BrainRegions"
-    route = Router.routes['neuropil_show']
+    route = Router.routes['brain_region_show']
   else route = Router.routes['binary_data_show']  if name is "BinaryData"
   route
 
@@ -232,14 +232,14 @@ window.jump_table =
 
   BrainRegions:
     remove: (x) ->
-      remove_neuropil x
+      remove_brain_region x
 
     save: (info, template) ->
-      save_neuropil info, template
+      save_brain_region info, template
 
-    delete_template_name: "neuropil_show_brief"
-    element_route: "neuropil_show"
-    base_route: "neuropils"
+    delete_template_name: "brain_region_show_brief"
+    element_route: "brain_region_show"
+    base_route: "brain_regions"
 
   BinaryData:
     remove: (x) ->
@@ -353,11 +353,11 @@ UI.body.helpers
 
 # --------
 
-Template.registerHelper "get_neuropils", (doc,type) ->
+Template.registerHelper "get_brain_regions", (doc,type) ->
   result = []
-  for neuropil in doc.neuropils
-    if type in neuropil.type
-      result.push neuropil
+  for brain_region in doc.brain_regions
+    if type in brain_region.type
+      result.push brain_region
   result
 
 Template.registerHelper "activeIfTemplateIn", () ->
