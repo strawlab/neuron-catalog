@@ -148,6 +148,8 @@ Template.driver_lines.events
             result = save_driver_line(dialog_template)
             if result.errors
               bootbox.alert('Errors: '+result.errors.join(", "))
+
+    window.dialog_template.off("shown.bs.modal") # do not focus on button
     return
 
 # ------------- general functions --------
