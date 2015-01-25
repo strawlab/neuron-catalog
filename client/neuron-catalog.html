@@ -31,8 +31,8 @@
 	<li class="{{activeIfTemplateIn 'neuron_types' 'neuron_type_show'}}">
 	  <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
 	</li>
-	<li class="{{activeIfTemplateIn 'neuropils' 'neuropil_show'}}">
-	  <a href="{{pathFor 'neuropils'}}">Neuropils</a>
+	<li class="{{activeIfTemplateIn 'brain_regions' 'brain_region_show'}}">
+	  <a href="{{pathFor 'brain_regions'}}">Brain Regions</a>
 	</li>
 	<li class="{{activeIfTemplateIn 'binary_data' 'binary_data_show'}}">
 	  <a href="{{pathFor 'binary_data'}}">Binary Data</a>
@@ -164,8 +164,8 @@
   {{/with}}
 </template>
 
-<template name="neuropil_from_id_block">
-  {{#with neuropil_from_id}}
+<template name="brain_region_from_id_block">
+  {{#with brain_region_from_id}}
     {{> UI.contentBlock this}}
   {{/with}}
 </template>
@@ -192,9 +192,9 @@
       <tr>
 	<th>Driver line</th>
 	<th>Neuron types</th>
-	<th>Neuropils (nonspecific expression)</th>
-	<th>Output neuropils</th>
-	<th>Input neuropils</th>
+	<th>Brain Regions (nonspecific expression)</th>
+	<th>Output brain regions</th>
+	<th>Input brain regions</th>
       </tr>
     </thead>
     <tbody>
@@ -212,24 +212,24 @@
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each get_neuropils this "unspecified"}}
-	  {{#neuropil_from_id_block}}
-	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
-	  {{/neuropil_from_id_block}}
+	  {{#each get_brain_regions this "unspecified"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each get_neuropils this "output"}}
-	  {{#neuropil_from_id_block}}
-	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
-	  {{/neuropil_from_id_block}}
+	  {{#each get_brain_regions this "output"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each get_neuropils this "input"}}
-	  {{#neuropil_from_id_block}}
-	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
-	  {{/neuropil_from_id_block}}
+	  {{#each get_brain_regions this "input"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
 	  {{/each}}
 	</td>
       </tr>
@@ -246,9 +246,9 @@
 	<th>Neuron type</th>
 	<th>Synonyms</th>
 	<th>Best driver lines</th>
-	<th>Neuropils (nonspecific expression)</th>
-	<th>Output neuropils</th>
-	<th>Input neuropils</th>
+	<th>Brain Regions (nonspecific expression)</th>
+	<th>Output brain regions</th>
+	<th>Input brain regions</th>
       </tr>
     </thead>
     <tbody>
@@ -271,24 +271,24 @@
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each get_neuropils this "unspecified"}}
-	  {{#neuropil_from_id_block}}
-	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
-	  {{/neuropil_from_id_block}}
+	  {{#each get_brain_regions this "unspecified"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each get_neuropils this "output"}}
-	  {{#neuropil_from_id_block}}
-	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
-	  {{/neuropil_from_id_block}}
+	  {{#each get_brain_regions this "output"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
 	  {{/each}}
 	</td>
 	<td>
-	  {{#each get_neuropils this "input"}}
-	  {{#neuropil_from_id_block}}
-	  <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
-	  {{/neuropil_from_id_block}}
+	  {{#each get_brain_regions this "input"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
 	  {{/each}}
 	</td>
       </tr>
@@ -298,22 +298,22 @@
   </table>
 </template>
 
-<template name="neuropil_table">
+<template name="brain_region_table">
   <table class="table table-striped">
     <thead>
       <tr>
-	<th>Neuropil</th>
+	<th>Brain Region</th>
 	<th>Driver lines</th>
 	<th>Neuron types</th>
 	<th>Expression type</th>
       </tr>
     </thead>
     <tbody>
-      {{#each neuropils}}
-      {{#neuropil_from_id_block}}
+      {{#each brain_regions}}
+      {{#brain_region_from_id_block}}
       <tr>
 	<td>
-          <a href="{{pathFor 'neuropil_show'}}"><span class="keep-together">{{name}}</span></a>
+          <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
 	</td>
 	<td>
 	  {{#each driver_lines_referencing_me}}
@@ -335,7 +335,7 @@
 	  {{/each}}
 	</td>
       </tr>
-      {{/neuropil_from_id_block}}
+      {{/brain_region_from_id_block}}
       {{/each}}
     </tbody>
   </table>
@@ -456,11 +456,11 @@
 
   {{#detail_block}}
     {{#detail_title}}
-      Neuropils
-      <a class="btn btn-default btn-small edit-neuropils" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      Brain Regions
+      <a class="btn btn-default btn-small edit-brain_regions" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     {{/detail_title}}
     {{#detail_main}}
-      {{> neuropil_table neuropils=neuropils}}
+      {{> brain_region_table brain_regions=brain_regions}}
     {{/detail_main}}
   {{/detail_block}}
 
@@ -577,8 +577,8 @@
   {{/detail_block}}
 
   {{#detail_block}}
-    {{#detail_title}}Neuropils{{/detail_title}}
-    {{> neuropil_table neuropils=neuropil_search_cursor}}
+    {{#detail_title}}Brain Regions{{/detail_title}}
+    {{> brain_region_table brain_regions=brain_region_search_cursor}}
   {{/detail_block}}
 
   {{#detail_block}}
@@ -603,7 +603,7 @@
   Changes in the last {{last_n_days}} days:
   {{>ChangeList collname="DriverLines" last_n_days=last_n_days}}
   {{>ChangeList collname="NeuronTypes" last_n_days=last_n_days}}
-  {{>ChangeList collname="Neuropils" last_n_days=last_n_days}}
+  {{>ChangeList collname="BrainRegions" last_n_days=last_n_days}}
   {{>ChangeList collname="BinaryData" last_n_days=last_n_days}}
   {{else}}
     {{login_message}}
@@ -771,11 +771,11 @@
 
   {{#detail_block}}
     {{#detail_title}}
-	Neuropils
-      <a class="btn btn-default btn-small edit-neuropils" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+	Brain Regions
+      <a class="btn btn-default btn-small edit-brain_regions" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     {{/detail_title}}
     {{#detail_main}}
-      {{> neuropil_table neuropils=neuropils}}
+      {{> brain_region_table brain_regions=brain_regions}}
     {{/detail_main}}
   {{/detail_block}}
 
@@ -825,9 +825,9 @@
   </div>
 </template>
 
-<template name="edit_neuropils">
+<template name="edit_brain_regions">
   <div>
-    <div><h4>neuropils</h4></div>
+    <div><h4>brain_regions</h4></div>
     <div>
       <table class="table table-striped">
 	<thead><tr>
@@ -837,16 +837,16 @@
 	    <td>name</td>
 	</tr></thead>
 	<tbody>
-      {{#each neuropils}}
+      {{#each brain_regions}}
 	<tr>
 	  <td>
-            <input type="checkbox" class="neuropils-unspecified" id={{_id}} checked={{unspecific_is_checked}}>
+            <input type="checkbox" class="brain_regions-unspecified" id={{_id}} checked={{unspecific_is_checked}}>
 	  </td>
 	  <td>
-            <input type="checkbox" class="neuropils-output" id={{_id}} checked={{output_is_checked}}>
+            <input type="checkbox" class="brain_regions-output" id={{_id}} checked={{output_is_checked}}>
 	  </td>
 	  <td>
-            <input type="checkbox" class="neuropils-input" id={{_id}} checked={{input_is_checked}}>
+            <input type="checkbox" class="brain_regions-input" id={{_id}} checked={{input_is_checked}}>
 	  </td>
 	  <td>
             {{name}}
@@ -861,18 +861,18 @@
 
 <!-- --------------------------- -->
 
-<template name="neuropils">
+<template name="brain_regions">
   {{#top_content_row}}
-      All Neuropils
+      All Brain Regions
   {{/top_content_row}}
 
   {{#detail_block}}
     {{#detail_main}}
-  {{> neuropil_table neuropils=neuropil_cursor}}
+  {{> brain_region_table brain_regions=brain_region_cursor}}
 
   {{#if currentUser}}
   <a class="btn btn-default insert" href="#">
-    <i class="fa fa-plus"></i> Add a new neuropil</a>
+    <i class="fa fa-plus"></i> Add a new brain_region</a>
   {{else}}
   {{login_message}}
   {{/if}}
@@ -881,27 +881,27 @@
 
 </template>
 
-<template name="neuropil_show_brief">
-  {{#neuropil_from_id_block}}
-  <h3>Neuropil: {{name}}</h3>
-  {{/neuropil_from_id_block}}
+<template name="brain_region_show_brief">
+  {{#brain_region_from_id_block}}
+  <h3>Brain Region: {{name}}</h3>
+  {{/brain_region_from_id_block}}
 </template>
 
-<template name="neuropil_show">
-  {{#neuropil_from_id_block}}
+<template name="brain_region_show">
+  {{#brain_region_from_id_block}}
 
-  {{>top_content_row2 type_name="Neuropil" collection="Neuropils" _id=_id name=name}}
+  {{>top_content_row2 type_name="Brain Region" collection="BrainRegions" _id=_id name=name}}
 
-  {{> tags_panel tags=tags collection="Neuropils" _id=_id}}
+  {{> tags_panel tags=tags collection="BrainRegions" _id=_id}}
 
   {{#detail_block}}
     {{#detail_title}}
-      {{> AddImageCode2 collection="Neuropils" my_id=_id}}
+      {{> AddImageCode2 collection="BrainRegions" my_id=_id}}
     {{/detail_title}}
     {{#detail_main}}
       <br/>
         {{> binary_data_table binary_data=images}}
-        {{> add_image_code collection="Neuropils" my_id=_id}}
+        {{> add_image_code collection="BrainRegions" my_id=_id}}
     {{/detail_main}}
   {{/detail_block}}
 
@@ -925,8 +925,8 @@
     {{/detail_main}}
   {{/detail_block}}
 
-  {{> comments_panel comments=comments show_name="Neuropils" _id=_id}}
-  {{/neuropil_from_id_block}}
+  {{> comments_panel comments=comments show_name="Brain Regions" _id=_id}}
+  {{/brain_region_from_id_block}}
 </template>
 
 <!-- --------------------------- -->
@@ -1016,7 +1016,7 @@
     </div>
 
     <div>
-      <div><h4>neuropils</h4></div>
+      <div><h4>brain_regions</h4></div>
       <div>
       <table class="table table-striped">
 	<thead><tr>
@@ -1026,16 +1026,16 @@
 	    <td>name</td>
 	</tr></thead>
 	<tbody>
-	{{#each neuropils}}
+	{{#each brain_regions}}
 	<tr>
 	  <td>
-            <input type="checkbox" class="neuropils-unspecified" id={{_id}}>
+            <input type="checkbox" class="brain_regions-unspecified" id={{_id}}>
 	  </td>
 	  <td>
-            <input type="checkbox" class="neuropils-output" id={{_id}}>
+            <input type="checkbox" class="brain_regions-output" id={{_id}}>
 	  </td>
 	  <td>
-            <input type="checkbox" class="neuropils-input" id={{_id}}>
+            <input type="checkbox" class="brain_regions-input" id={{_id}}>
 	  </td>
 	  <td>
             {{name}}
@@ -1056,7 +1056,7 @@
     <input type="text" class="name span5">
 
     <div>
-      <div><h4>neuropils</h4></div>
+      <div><h4>brain_regions</h4></div>
       <div>
       <table class="table table-striped">
 	<thead><tr>
@@ -1066,16 +1066,16 @@
 	    <td>name</td>
 	</tr></thead>
 	<tbody>
-	{{#each neuropils}}
+	{{#each brain_regions}}
 	<tr>
 	  <td>
-            <input type="checkbox" class="neuropils-unspecified" id={{_id}}>
+            <input type="checkbox" class="brain_regions-unspecified" id={{_id}}>
 	  </td>
 	  <td>
-            <input type="checkbox" class="neuropils-output" id={{_id}}>
+            <input type="checkbox" class="brain_regions-output" id={{_id}}>
 	  </td>
 	  <td>
-            <input type="checkbox" class="neuropils-input" id={{_id}}>
+            <input type="checkbox" class="brain_regions-input" id={{_id}}>
 	  </td>
 	  <td>
             {{name}}
@@ -1096,7 +1096,7 @@
   {{>derived_title}}
 </template>
 
-<template name="neuropil_insert">
+<template name="brain_region_insert">
   <form>
     <label>Name</label>
     <input type="text" class="name span5">

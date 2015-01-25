@@ -2,8 +2,8 @@ driver_lines_sort = {}
 driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 neuron_types_sort = {}
 neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
-neuropils_sort = {}
-neuropils_sort[window.get_sort_key("Neuropils")] = 1
+brain_regions_sort = {}
+brain_regions_sort[window.get_sort_key("BrainRegions")] = 1
 
 typed_name = Session.setDefault "typed_name", null
 
@@ -59,8 +59,8 @@ Template.AddDriverLineDialog.helpers
   neuron_types: ->
     NeuronTypes.find()
 
-  neuropils: ->
-    Neuropils.find()
+  brain_regions: ->
+    BrainRegions.find()
 
   count_cursor: (cursor) ->
     if cursor? and cursor.count? and cursor.count() > 0
@@ -113,17 +113,17 @@ Template.driver_line_show.events
     $("#show_dialog_id").modal "show"
     return
 
-  "click .edit-neuropils": (e) ->
+  "click .edit-brain_regions": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit neuropils for driver line "+@name
-      body_template_name: "edit_neuropils"
+      title: "Edit brain_regions for driver line "+@name
+      body_template_name: "edit_brain_regions"
       body_template_data:
         my_id: @_id
         collection_name: "DriverLines"
       is_save_modal: true
 
-    window.modal_save_func = edit_neuropils_save_func
+    window.modal_save_func = edit_brain_regions_save_func
     $("#show_dialog_id").modal "show"
     return
 
@@ -178,13 +178,13 @@ save_driver_line = (template) ->
   for node in r1
     doc.neuron_types.push node.id  if node.checked
 
-  neuropils = {}
-  neuropil_fill_from_jquery(".neuropils-unspecified",template,"unspecified",neuropils)
-  neuropil_fill_from_jquery(".neuropils-output",template,"output",neuropils)
-  neuropil_fill_from_jquery(".neuropils-input",template,"input",neuropils)
-  neuropils = neuropil_dict2arr(neuropils)
+  brain_regions = {}
+  brain_region_fill_from_jquery(".brain_regions-unspecified",template,"unspecified",brain_regions)
+  brain_region_fill_from_jquery(".brain_regions-output",template,"output",brain_regions)
+  brain_region_fill_from_jquery(".brain_regions-input",template,"input",brain_regions)
+  brain_regions = brain_region_dict2arr(brain_regions)
 
-  doc.neuropils = neuropils
+  doc.brain_regions = brain_regions
   doc.tags = []
   doc.images = []
   doc.comments = []

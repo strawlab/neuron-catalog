@@ -135,10 +135,10 @@ Template.Search.helpers
     query_doc = build_query_doc(this)
     if query_doc?
       NeuronTypes.find(query_doc)
-  neuropil_search_cursor: ->
+  brain_region_search_cursor: ->
     query_doc = build_query_doc(this)
     if query_doc?
-      Neuropils.find(query_doc)
+      BrainRegions.find(query_doc)
   binary_data_search_cursor: ->
     query_doc = build_query_doc(this)
     if query_doc?

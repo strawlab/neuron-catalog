@@ -13,7 +13,7 @@ head.appendChild style
 # -------------
 Meteor.subscribe "driver_lines"
 Meteor.subscribe "neuron_types"
-Meteor.subscribe "neuropils"
+Meteor.subscribe "brain_regions"
 Meteor.subscribe "binary_data"
 Meteor.subscribe "neuron_catalog_config"
 Meteor.subscribe "userData"
@@ -60,8 +60,8 @@ window.get_route_from_name = (name) ->
     route = Router.routes['driver_line_show']
   else if name is "NeuronTypes"
     route = Router.routes['neuron_type_show']
-  else if name is "Neuropils"
-    route = Router.routes['neuropil_show']
+  else if name is "BrainRegions"
+    route = Router.routes['brain_region_show']
   else route = Router.routes['binary_data_show']  if name is "BinaryData"
   route
 
@@ -71,8 +71,8 @@ window.get_collection_from_name = (name) ->
     coll = DriverLines
   else if name is "NeuronTypes"
     coll = NeuronTypes
-  else if name is "Neuropils"
-    coll = Neuropils
+  else if name is "BrainRegions"
+    coll = BrainRegions
   else if name is "BinaryData"
     coll = BinaryData
   else if name is "Meteor.users"
@@ -230,16 +230,16 @@ window.jump_table =
     element_route: "neuron_type_show"
     base_route: "neuron_types"
 
-  Neuropils:
+  BrainRegions:
     remove: (x) ->
-      remove_neuropil x
+      remove_brain_region x
 
     save: (info, template) ->
-      save_neuropil info, template
+      save_brain_region info, template
 
-    delete_template_name: "neuropil_show_brief"
-    element_route: "neuropil_show"
-    base_route: "neuropils"
+    delete_template_name: "brain_region_show_brief"
+    element_route: "brain_region_show"
+    base_route: "brain_regions"
 
   BinaryData:
     remove: (x) ->
@@ -353,11 +353,11 @@ UI.body.helpers
 
 # --------
 
-Template.registerHelper "get_neuropils", (doc,type) ->
+Template.registerHelper "get_brain_regions", (doc,type) ->
   result = []
-  for neuropil in doc.neuropils
-    if type in neuropil.type
-      result.push neuropil
+  for brain_region in doc.brain_regions
+    if type in brain_region.type
+      result.push brain_region
   result
 
 Template.registerHelper "activeIfTemplateIn", () ->

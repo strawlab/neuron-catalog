@@ -86,7 +86,7 @@ Template.config.events
 
 Template.config.helpers
   collection_names: ->
-    ["DriverLines","NeuronTypes","Neuropils","BinaryData"]
+    ["DriverLines","NeuronTypes","BrainRegions","BinaryData"]
 
   config_doc: ->
     NeuronCatalogConfig.findOne({})

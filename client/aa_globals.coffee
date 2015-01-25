@@ -3,7 +3,7 @@ window.get_sort_key = (collection_name) ->
     sort_key = 'name'
   else if collection_name is "NeuronTypes"
     sort_key = 'name'
-  else if collection_name is "Neuropils"
+  else if collection_name is "BrainRegions"
     sort_key = 'name'
   else
     sort_key = '_id'

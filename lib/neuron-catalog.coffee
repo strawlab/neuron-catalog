@@ -68,16 +68,16 @@ Router.route "/neuron_types/:_id/:name?",
     else
       document.title = DEFAULT_TITLE
 
-Router.route "/neuropils"
+Router.route "/brain_regions"
 
-Router.route "/neuropils/:_id/:name?",
-  name: "neuropil_show"
+Router.route "/brain_regions/:_id/:name?",
+  name: "brain_region_show"
   action: ->
-    always_include_name_in_path_action(this, Neuropils, "neuropil_show")
+    always_include_name_in_path_action(this, BrainRegions, "brain_region_show")
   data: ->
-    Neuropils.findOne _id: @params._id
+    BrainRegions.findOne _id: @params._id
   onAfterAction: ->
-    doc = Neuropils.findOne _id: @params._id
+    doc = BrainRegions.findOne _id: @params._id
     if doc?
       document.title = doc.name + ' - neuron catalog'
     else
@@ -171,15 +171,15 @@ Router.route "/Search", ->
   NeuronTypes.remove my_id
   return
 
-@remove_neuropil = (my_id) ->
+@remove_brain_region = (my_id) ->
   rn = (doc) ->
-    index = doc.neuropils.indexOf(@my_id)
+    index = doc.brain_regions.indexOf(@my_id)
 
     # No need to check for index==-1 because we know it does not (except race condition).
-    doc.neuropils.splice index, 1
+    doc.brain_regions.splice index, 1
     @coll.update doc._id,
       $set:
-        neuropils: doc.neuropils
+        brain_regions: doc.brain_regions
 
     return
   DriverLines.find(neuron_types: my_id).forEach rn,
@@ -190,5 +190,5 @@ Router.route "/Search", ->
     my_id: my_id
     coll: NeuronTypes
 
-  Neuropils.remove my_id
+  BrainRegions.remove my_id
   return

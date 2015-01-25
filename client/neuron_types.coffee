@@ -2,8 +2,8 @@ driver_lines_sort = {}
 driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 neuron_types_sort = {}
 neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
-neuropils_sort = {}
-neuropils_sort[window.get_sort_key("Neuropils")] = 1
+brain_regions_sort = {}
+brain_regions_sort[window.get_sort_key("BrainRegions")] = 1
 
 # ---- Template.neuron_type_from_id_block ---------------
 
@@ -24,8 +24,8 @@ Template.neuron_type_insert.helpers
   driver_lines: ->
     DriverLines.find({},{'sort':driver_lines_sort})
 
-  neuropils: ->
-    Neuropils.find({},{'sort':neuropils_sort})
+  brain_regions: ->
+    BrainRegions.find({},{'sort':brain_regions_sort})
 
 neuron_type_insert_callback = (error, _id) ->
   if error?
@@ -50,13 +50,13 @@ neuron_type_insert_callback = (error, _id) ->
   #   node = r1[i]
   #   doc.best_driver_lines.push node.id  if node.checked
 
-  neuropils = {}
-  neuropil_fill_from(".neuropils-unspecified",template,"unspecified",neuropils)
-  neuropil_fill_from(".neuropils-output",template,"output",neuropils)
-  neuropil_fill_from(".neuropils-input",template,"input",neuropils)
-  neuropils = neuropil_dict2arr(neuropils)
+  brain_regions = {}
+  brain_region_fill_from(".brain_regions-unspecified",template,"unspecified",brain_regions)
+  brain_region_fill_from(".brain_regions-output",template,"output",brain_regions)
+  brain_region_fill_from(".brain_regions-input",template,"input",brain_regions)
+  brain_regions = brain_region_dict2arr(brain_regions)
 
-  doc.neuropils = neuropils
+  doc.brain_regions = brain_regions
   doc.tags = []
   doc.comments = []
   doc.images = []
@@ -147,17 +147,17 @@ Template.neuron_type_show.events
     $("#show_dialog_id").modal "show"
     return
 
-  "click .edit-neuropils": (e) ->
+  "click .edit-brain_regions": (e) ->
     e.preventDefault()
     Session.set "modal_info",
-      title: "Edit neuropils for neuron type "+@name
-      body_template_name: "edit_neuropils"
+      title: "Edit brain_regions for neuron type "+@name
+      body_template_name: "edit_brain_regions"
       body_template_data:
         my_id: @_id
         collection_name: "NeuronTypes"
       is_save_modal: true
 
-    window.modal_save_func = edit_neuropils_save_func
+    window.modal_save_func = edit_brain_regions_save_func
     $("#show_dialog_id").modal "show"
     return
 
