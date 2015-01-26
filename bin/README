@@ -8,6 +8,8 @@
 
 3. Run the docker container initially with:
 
+    # This assumes the following file exists:
+    #    server/server-config.json
     bin/run.sh
 
 4. Stop and restart the docker container with:
