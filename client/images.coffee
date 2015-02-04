@@ -13,7 +13,7 @@ enhance_image_doc = (doc) ->
   if doc.cache_src?
     doc.secure_url_notif = doc.cache_src
   else
-    doc.secure_url_notif = doc.secure_url
+    doc.secure_url_notif = compute_secure_url(doc)
 
   if doc.thumb_src?
     doc.has_thumb = true
@@ -61,6 +61,8 @@ Template.binary_data_show.helpers
       coll.find(query).forEach (doc) ->
         result.push {"collection":collname,"doc":doc,"my_id":doc._id}
     result
+  secure_url: ->
+    compute_secure_url(this)
 
 # -------------------------------------------------------
 
@@ -116,8 +118,7 @@ insert_image_save_func = (info, template) ->
     _id = get_id_from_key( s3_key )
     updater_doc =
       $set:
-        secure_url: downloadUrl
-        s3_key: s3_key
+        s3_upload_done: true
     BinaryData.update _id, updater_doc
 
     # get information from referencing collection

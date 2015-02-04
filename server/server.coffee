@@ -9,13 +9,19 @@ options =
       throw new Meteor.Error("Login Required", message)
     true
   key: (upload_file, ctx) ->
+    if Meteor.settings.AWSRegion
+      region = Meteor.settings.AWSRegion
+    else
+      region = "us-east-1"
     doc =
       name: upload_file.name
       lastModifiedDate: ctx.lastModifiedDate
       type: "images"
       tags: []
       comments: []
-      secure_url: "(uploading)" # will be re-set later
+      s3_region: region
+      s3_bucket: Meteor.settings.S3Bucket
+      s3_upload_done: false
 
     # Need to get _id of newly inserted image document to put into
     # S3 key.
@@ -23,7 +29,13 @@ options =
     # Also skip inserting auto values.
     _id = BinaryData.insert(doc,{validate: false, getAutoValues: false})
 
-    "images/" + _id + "/" + doc.name
+    # Now that we know our _id, update our document
+    s3_key = "images/" + _id + "/" + upload_file.name
+    updater_doc =
+      $set:
+        s3_key: s3_key
+    BinaryData.update({_id:_id}, updater_doc,{validate: false, getAutoValues: false})
+    s3_key
 
 if Meteor.settings.AWSAccessKeyId
   Slingshot.createDirective "myFileUploads", Slingshot.S3Storage, options

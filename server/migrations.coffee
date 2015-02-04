@@ -44,4 +44,25 @@ Migrations.add
           validate: false
           getAutoValues: false
 
-Migrations.migrateTo(3)
+Migrations.add
+  version: 4
+  name: 'Store S3 bucket name, region, key separately',
+  up: ->
+    BinaryData.find().forEach (doc) ->
+      parsed = parse_s3_url( doc.secure_url )
+      BinaryData.update
+        _id: doc._id
+      ,
+        $set:
+          s3_region: parsed.s3_region
+          s3_bucket: parsed.s3_bucket
+          s3_key: parsed.s3_key
+          s3_upload_done: true
+
+        $unset:
+          secure_url: 1
+      ,
+        validate: false
+        getAutoValues: false
+
+Migrations.migrateTo(4)

@@ -149,7 +149,7 @@ Router.route "/Search", ->
 
   doc = BinaryData.findOne(my_id)
 
-  console.log "warning: should delete file on server.",doc.secure_url
+  console.log "warning: should delete file on S3:", doc.s3_region, doc.s3_bucket, doc.s3_key
   BinaryData.remove my_id
   return
 

@@ -188,8 +188,14 @@ BinaryDataSpec =
   thumb_src:
     type: String
     optional: true
-  secure_url:
+  s3_bucket:
     type: String
+  s3_region:
+    type: String
+  s3_key:
+    type: String
+  s3_upload_done:
+    type: Boolean
   lastModifiedDate:
     type: Date
   thumb_width:
