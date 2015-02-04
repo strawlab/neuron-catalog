@@ -331,14 +331,6 @@ Template.show_user_date.helpers
     timestamp = Date(this.time)
     moment(this.time).fromNow()
 
-# -------------
-
-Template.show_upload_progress.helpers
-  percent_uploaded: ->
-    if !window.uploader?
-      return
-    Math.round(window.uploader.progress() * 100);
-
 # ------- tab layout stuff ----
 Template.MyLayout.helpers
   top_margin_class_attrs: ->

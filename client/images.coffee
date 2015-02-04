@@ -1,4 +1,5 @@
 Session.setDefault "trigger_update", null
+Session.setDefault "uploader_changed", false
 
 # ---- Template.binary_data_from_id_block -------------
 
@@ -82,6 +83,15 @@ link_image_save_func = (info, template) ->
 
   return {}
 
+# -------------
+
+Template.show_upload_progress.helpers
+  percent_uploaded: ->
+    Session.get "uploader_changed"
+    if !window.uploader?
+      return
+    Math.round(window.uploader.progress() * 100);
+
 get_id_from_key = (key) ->
   arr = key.split("/")
   if arr.length == 3
@@ -102,18 +112,22 @@ insert_image_save_func = (info, template) ->
     lastModifiedDate: upload_file.lastModifiedDate
 
   window.uploader = new Slingshot.Upload("myFileUploads",ctx)
+  Session.set("uploader_changed", !Session.get("uploader_changed"))
+
   window.uploader.send upload_file, (error, downloadUrl) ->
     # This callback is called when the upload is complete (or on error).
     $("#show_upload_progress_id").modal("hide")
 
     if error?
       window.uploader = null
+      Session.set("uploader_changed", !Session.get("uploader_changed"))
       console.error(error)
       bootbox.alert("There was an error uploading the file")
       return
 
     s3_key = window.uploader.param('key')
     window.uploader = null
+    Session.set("uploader_changed", !Session.get("uploader_changed"))
 
     _id = get_id_from_key( s3_key )
     updater_doc =
