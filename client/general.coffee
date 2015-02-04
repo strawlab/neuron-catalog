@@ -30,6 +30,7 @@ Session.setDefault "comment_preview_html", null
 Session.setDefault "upload_processor_has_error", false
 Session.setDefault "recent_changes_n_days", 2
 Session.setDefault "all_tags", []
+Session.setDefault "NeuronCatalogSpecialization",[]
 
 window.modal_save_func = null
 window.modal_shown_callback = null
@@ -393,7 +394,15 @@ setTitle = () ->
     setTimeout(setTitle, 100)
   return
 
+on_get_specializations_callback = (error,specializations) ->
+  if error?
+    console.error("error in Meteor.call()",error)
+    return
+  Session.set("NeuronCatalogSpecialization",specializations)
+
 Meteor.startup ->
+  Meteor.call("get_specializations", on_get_specializations_callback)
+
   Deps.autorun ->
     setTitle()
     return

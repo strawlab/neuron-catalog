@@ -1,3 +1,4 @@
-{"AWSAccessKeyId": "key",
+{"NeuronCatalogSpecializations": ["Drosophila melanogaster"],
+ "AWSAccessKeyId": "key",
  "AWSSecretAccessKey": "secret",
  "S3Bucket": "bucket"}
