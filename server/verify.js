@@ -105,5 +105,8 @@ Meteor.methods({
     } else {
       return [];
     }
+  },
+  remove_from_s3: function(doc) {
+    console.log("FIXME: delete from S3:", doc.s3_region, doc.s3_bucket, doc.s3_key );
   }
 });
