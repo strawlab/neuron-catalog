@@ -28,35 +28,13 @@ function get_slingshot_AWS_failures() {
 
   // Get AWS credentials from Meteor.settings
   AWS.config.update({accessKeyId: Meteor.settings.AWSAccessKeyId,
-		     secretAccessKey: Meteor.settings.AWSSecretAccessKey});
-  var params = {Bucket: Meteor.settings.S3Bucket};
+		     secretAccessKey: Meteor.settings.AWSSecretAccessKey,
+		     region: Meteor.settings.AWSRegion || "us-east-1",
+		    });
+  var params = {Bucket: Meteor.settings.S3Bucket,
+	       };
 
   var s3 = new AWS.S3();
-
-  // Verify that bucket name has no dots ("."). This causes Amazon's
-  // wildcard HTTPS certificate for "*.s3.amazonaws.com" to fail.
-  if (Meteor.settings.S3Bucket.indexOf(".") != -1) {
-    failures.push('There are dots (".") in your bucket name "'+Meteor.settings.S3Bucket+'"')
-  }
-
-  // verify that bucket is in US Standard region
-  try {
-    var location = s3.getBucketLocationSync( params );
-  } catch (ex) {
-    if (ex.name == "SignatureDoesNotMatch") {
-      failures.push('Signature does not match. Are your AWSAccessKeyId and AWSSecretAccessKey settings correct?');
-      // Give up on finding more failures.
-      return failures;
-    }
-    throw ex;
-  }
-
-  if (location.LocationConstraint) {
-    if (location.LocationConstraint!="") {
-      failures.push('Your bucket is not located in the US Standard region, but rather in "'+
-		    location.LocationConstraint+'"');
-    }
-  }
 
   // verify bucket CORS config
   var have_cors = false;
