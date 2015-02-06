@@ -335,9 +335,9 @@ Template.show_user_date.helpers
 Template.MyLayout.helpers
   top_margin_class_attrs: ->
     if Session.get("upload_processor_has_error")
-      result = 'container-fluid top50'
+      result = 'top50'
     else
-      result = 'container-fluid'
+      result = ''
     result
 
 UI.body.helpers
