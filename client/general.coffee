@@ -369,6 +369,10 @@ Template.registerHelper "binary_data_cursor", ->
 Template.registerHelper "get_all_tags", ->
   return Session.get("all_tags")
 
+Template.registerHelper "dumpthis", ->
+  console.log "dumpthis:", this
+  "this: "+this
+
 setTitle = () ->
   cfg = NeuronCatalogConfig.findOne {}
   if cfg?
