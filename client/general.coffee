@@ -208,7 +208,6 @@ window.jump_table =
       remove_driver_line x
     delete_template_name: "driver_line_show_brief"
     base_route: "driver_lines"
-    edit_neuron_types_template_name: "edit_neuron_types"
 
   NeuronTypes:
     remove: (x) ->

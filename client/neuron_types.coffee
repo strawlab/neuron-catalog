@@ -71,9 +71,9 @@ neuron_type_insert_callback = (error, _id) ->
   NeuronTypes.insert doc, neuron_type_insert_callback
   result
 
-# ---- Template.edit_neuron_types -----------------
+# ---- Template.EditNeuronTypesDialog -----------------
 
-Template.edit_neuron_types.helpers
+Template.EditNeuronTypesDialog.helpers
   neuron_types: ->
     result = []
     collection = window.get_collection_from_name(@collection_name)
@@ -170,20 +170,14 @@ Template.neuron_type_show.events
             dialog_template = window.dialog_template
             edit_brain_regions_save_func(dialog_template, send_coll, send_id)
 
-@edit_neuron_types_save_func = (info, template) ->
+@edit_neuron_types_save_func = (template,coll_name,my_id) ->
   neuron_types = []
-  my_id = Session.get("modal_info").body_template_data.my_id
-  r1 = template.findAll(".neuron_types")
-  for i of r1
-    node = r1[i]
+  for node in template.find(".neuron_types")
     neuron_types.push node.id  if node.checked
-  coll_name = Session.get("modal_info").body_template_data.collection_name
   collection = window.get_collection_from_name(coll_name)
   collection.update my_id,
     $set:
       neuron_types: neuron_types
-
-  {}
 
 Template.neuron_type_show.helpers
   adding_synonym: ->

@@ -99,19 +99,26 @@ Template.EditDriverLinesDialog.helpers
 # ---- Template.driver_line_show -------------
 
 Template.driver_line_show.events
-  "click .edit-neuron-types": (e) ->
-    e.preventDefault()
-    Session.set "modal_info",
-      title: "Edit neuron types for driver line "+@name
-      body_template_name: window.jump_table["DriverLines"].edit_neuron_types_template_name
-      body_template_data:
-        my_id: @_id
-        collection_name: "DriverLines"
-      is_save_modal: true
+  "click .edit-neuron-types": (event, template) ->
+    event.preventDefault()
+    send_coll = "DriverLines"
+    send_id = @_id
+    data =
+      collection_name: send_coll
+      my_id: send_id
 
-    window.modal_save_func = edit_neuron_types_save_func
-    $("#show_dialog_id").modal "show"
-    return
+    window.dialog_template = bootbox.dialog
+      message: window.renderTmp(Template.EditNeuronTypesDialog,data)
+      title: "Edit neuron types for driver line "+@name
+      buttons:
+        close:
+          label: "Close"
+        save:
+          label: "Save"
+          className: "btn-primary"
+          callback: ->
+            dialog_template = window.dialog_template
+            edit_neuron_types_save_func(dialog_template, send_coll, send_id)
 
   "click .edit-brain-regions": (event,template) ->
     event.preventDefault()
