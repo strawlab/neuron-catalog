@@ -214,38 +214,29 @@ window.jump_table =
   DriverLines:
     remove: (x) ->
       remove_driver_line x
-
     delete_template_name: "driver_line_show_brief"
-    element_route: "driver_line_show"
     base_route: "driver_lines"
     edit_neuron_types_template_name: "edit_neuron_types"
 
   NeuronTypes:
     remove: (x) ->
       remove_neuron_type x
-
     save: (info, template) ->
       save_neuron_type info, template
-
     delete_template_name: "neuron_type_show_brief"
-    element_route: "neuron_type_show"
     base_route: "neuron_types"
 
   BrainRegions:
     remove: (x) ->
       remove_brain_region x
-
     save: (info, template) ->
       save_brain_region info, template
-
     delete_template_name: "brain_region_show_brief"
-    element_route: "brain_region_show"
     base_route: "brain_regions"
 
   BinaryData:
     remove: (x) ->
       remove_binary_data x
-
     delete_template_name: "binary_data_show_brief"
     base_route: "binary_data"
 
