@@ -150,7 +150,6 @@ Template.driver_lines.events
       buttons:
         close:
           label: "Close"
-          className: "btn-default"
         save:
           label: "Save"
           className: "btn-primary"
@@ -162,6 +161,10 @@ Template.driver_lines.events
 
     window.dialog_template.on("shown.bs.modal", ->
       $(".name").focus()
+    )
+    window.dialog_template.on("submit", ->
+      window.dialog_template.find(".btn-primary").click()
+      false
     )
     return
 
