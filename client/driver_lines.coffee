@@ -136,7 +136,7 @@ Template.driver_lines.helpers
 Template.driver_lines.events
   "click .insert": (event, template) ->
     event.preventDefault()
-    Session.set "typed_name",null
+    Session.set "typed_name",null # FIXME: use ReactiveVar not to spread to other browser windows?
     window.dialog_template = bootbox.dialog
       message: window.renderTmp(Template.AddDriverLineDialog)
       buttons:
