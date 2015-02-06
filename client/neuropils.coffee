@@ -51,11 +51,11 @@ brain_region_insert_callback = (error, _id) ->
 
 # @remove_brain_region is defined in ../neuron-catalog.coffee
 
-@save_brain_region = (info, template) ->
+@save_brain_region = (template) ->
   result = {}
 
   # parse
-  name = template.find(".name").value
+  name = template.find(".name")[0].value
 
   # find errors
   errors = []
@@ -63,9 +63,7 @@ brain_region_insert_callback = (error, _id) ->
 
   # report errors
   if errors.length > 0
-    if errors.length is 1
-      result.error = "Error: " + errors[0]
-    else result.error = "Errors: " + errors.join(", ")  if errors.length > 1
+    result.errors = errors
     return result
 
   # save result
@@ -164,18 +162,23 @@ Template.brain_region_table.helpers
         _id: @_id
 
 Template.brain_regions.events
-  "click .insert": (e) ->
-    e.preventDefault()
+  "click .insert": (event, template) ->
     coll = "BrainRegions"
-    Session.set "modal_info",
-      title: "Add brain_region"
-      collection: coll
-      body_template_name: "brain_region_insert"
-      is_save_modal: true
-
-    window.modal_save_func = window.jump_table[coll].save
-    $("#show_dialog_id").modal "show"
-    return
+    event.preventDefault()
+    window.dialog_template = bootbox.dialog
+      message: window.renderTmp(Template.AddBrainRegionDialog)
+      buttons:
+        close:
+          label: "Close"
+          className: "btn-default"
+        save:
+          label: "Save"
+          className: "btn-primary"
+          callback: ->
+            dialog_template = window.dialog_template
+            result = save_brain_region(dialog_template)
+            if result.errors
+              bootbox.alert('Errors: '+result.errors.join(", "))
 
 Template.brain_regions.helpers
   brain_region_cursor: ->

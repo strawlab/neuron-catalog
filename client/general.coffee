@@ -219,8 +219,6 @@ window.jump_table =
   BrainRegions:
     remove: (x) ->
       remove_brain_region x
-    save: (info, template) ->
-      save_brain_region info, template
     delete_template_name: "brain_region_show_brief"
     base_route: "brain_regions"
 
