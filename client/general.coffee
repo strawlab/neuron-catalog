@@ -267,7 +267,6 @@ Template.delete_button.events
 
     my_info = window.jump_table[@collection]
     data =
-      title: "Do you want to delete this?"
       body_template_name: my_info.delete_template_name
       body_template_data: @my_id
     my_collection_name = @collection
@@ -275,6 +274,7 @@ Template.delete_button.events
 
     window.dialog_template = bootbox.dialog
       message: window.renderTmp(Template.DeleteDialog,data)
+      title: "Do you want to delete this?"
       buttons:
         close:
           label: "Close"
