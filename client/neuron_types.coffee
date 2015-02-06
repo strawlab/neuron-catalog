@@ -197,6 +197,7 @@ Template.neuron_types.events
     coll = "NeuronTypes"
     event.preventDefault()
     window.dialog_template = bootbox.dialog
+      title: "Add a new neuron type"
       message: window.renderTmp(Template.AddNeuronTypeDialog)
       buttons:
         close:

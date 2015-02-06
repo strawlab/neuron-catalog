@@ -166,6 +166,7 @@ Template.brain_regions.events
     coll = "BrainRegions"
     event.preventDefault()
     window.dialog_template = bootbox.dialog
+      title: "Add a new brain region"
       message: window.renderTmp(Template.AddBrainRegionDialog)
       buttons:
         close:

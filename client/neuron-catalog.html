@@ -981,11 +981,6 @@
 
 <!-- ----------------------------- -->
 
-<template name="SaveTemplate">
-  <h4 class="modal-title">{{title}}</h4>
-  {{> UI.contentBlock this}}
-</template>
-
 <template name="DeleteDialog">
   <div class="modal-body">
     {{> UI.dynamic template=body_template_name data=body_template_data}}
@@ -993,7 +988,6 @@
 </template>
 
 <template name="AddDriverLineDialog">
-  {{#SaveTemplate collection_name="DriverLines" title="add driver line"}}
   <form role="form">
     <label>Name</label>
     <input type="text" class="name span5 driver-line-lookup">
@@ -1050,7 +1044,6 @@
       </div>
     </div>
   </form>
-  {{/SaveTemplate}}
 </template>
 
 <template name="AddNeuronTypeDialog">
