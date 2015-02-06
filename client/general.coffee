@@ -213,8 +213,6 @@ window.jump_table =
   NeuronTypes:
     remove: (x) ->
       remove_neuron_type x
-    save: (info, template) ->
-      save_neuron_type info, template
     delete_template_name: "neuron_type_show_brief"
     base_route: "neuron_types"
 

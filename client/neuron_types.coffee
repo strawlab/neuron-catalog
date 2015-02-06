@@ -18,9 +18,9 @@ Template.neuron_type_from_id_block.helpers
       my_id = @valueOf() # unbox it
     NeuronTypes.findOne my_id
 
-# ---- Template.neuron_type_insert ---------------
+# ---- Template.AddNeuronTypeDialog ---------------
 
-Template.neuron_type_insert.helpers
+Template.AddNeuronTypeDialog.helpers
   driver_lines: ->
     DriverLines.find({},{'sort':driver_lines_sort})
 
@@ -35,25 +35,24 @@ neuron_type_insert_callback = (error, _id) ->
 
 # @remove_neuron_type is defined in ../neuron-catalog.coffee
 
-@save_neuron_type = (info, template) ->
+@save_neuron_type = (template) ->
   result = {}
   doc = {}
   errors = []
 
   # parse
-  doc.name = template.find(".name").value
+  if !template.find?
+    console.error "no template.find"
+    return
+  doc.name = template.find(".name")[0].value
   errors.push "Name is required."  if doc.name.length < 1
 
   doc.best_driver_lines = []
-  # r1 = template.findAll(".best_driver_lines")
-  # for i of r1
-  #   node = r1[i]
-  #   doc.best_driver_lines.push node.id  if node.checked
 
   brain_regions = {}
-  brain_region_fill_from(".brain_regions-unspecified",template,"unspecified",brain_regions)
-  brain_region_fill_from(".brain_regions-output",template,"output",brain_regions)
-  brain_region_fill_from(".brain_regions-input",template,"input",brain_regions)
+  brain_region_fill_from_jquery(".brain_regions-unspecified",template,"unspecified",brain_regions)
+  brain_region_fill_from_jquery(".brain_regions-output",template,"output",brain_regions)
+  brain_region_fill_from_jquery(".brain_regions-input",template,"input",brain_regions)
   brain_regions = brain_region_dict2arr(brain_regions)
 
   doc.brain_regions = brain_regions
@@ -65,9 +64,7 @@ neuron_type_insert_callback = (error, _id) ->
 
   # report errors
   if errors.length > 0
-    if errors.length is 1
-      result.error = "Error: " + errors[0]
-    else result.error = "Errors: " + errors.join(", ")  if errors.length > 1
+    result.errors = errors
     return result
 
   # save result
@@ -195,18 +192,24 @@ Template.neuron_type_show.helpers
 
 # ---- Template.neuron_types ---------------
 
-Template.neuron_types.events "click .insert": (e) ->
-  e.preventDefault()
-  coll = "NeuronTypes"
-  Session.set "modal_info",
-    title: "Add neuron type"
-    collection: coll
-    body_template_name: "neuron_type_insert"
-    is_save_modal: true
-
-  window.modal_save_func = window.jump_table[coll].save
-  $("#show_dialog_id").modal "show"
-  return
+Template.neuron_types.events
+  "click .insert": (event, template) ->
+    coll = "NeuronTypes"
+    event.preventDefault()
+    window.dialog_template = bootbox.dialog
+      message: window.renderTmp(Template.AddNeuronTypeDialog)
+      buttons:
+        close:
+          label: "Close"
+          className: "btn-default"
+        save:
+          label: "Save"
+          className: "btn-primary"
+          callback: ->
+            dialog_template = window.dialog_template
+            result = save_neuron_type(dialog_template)
+            if result.errors
+              bootbox.alert('Errors: '+result.errors.join(", "))
 
 Template.neuron_types.helpers
   neuron_type_cursor: ->
