@@ -126,13 +126,16 @@ Template.driver_line_show.events
       buttons:
         close:
           label: "Close"
-          className: "btn-default"
         save:
           label: "Save"
           className: "btn-primary"
           callback: ->
             dialog_template = window.dialog_template
             edit_brain_regions_save_func(dialog_template, send_coll, send_id)
+    window.dialog_template.on("submit", ->
+      window.dialog_template.find(".btn-primary").click()
+      false
+    )
 
 # ---- Template.driver_lines -------------
 
@@ -166,7 +169,6 @@ Template.driver_lines.events
       window.dialog_template.find(".btn-primary").click()
       false
     )
-    return
 
 # ------------- general functions --------
 

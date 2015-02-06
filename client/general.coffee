@@ -278,7 +278,6 @@ Template.delete_button.events
       buttons:
         close:
           label: "Close"
-          className: "btn-default"
         delete:
           label: "Delete"
           className: "btn-danger"

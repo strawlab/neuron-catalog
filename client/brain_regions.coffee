@@ -159,7 +159,6 @@ Template.brain_regions.events
       buttons:
         close:
           label: "Close"
-          className: "btn-default"
         save:
           label: "Save"
           className: "btn-primary"
@@ -170,6 +169,10 @@ Template.brain_regions.events
               bootbox.alert('Errors: '+result.errors.join(", "))
     window.dialog_template.on("shown.bs.modal", ->
       $(".name").focus()
+    )
+    window.dialog_template.on("submit", ->
+      window.dialog_template.find(".btn-primary").click()
+      false
     )
 
 Template.brain_regions.helpers
