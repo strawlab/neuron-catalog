@@ -113,19 +113,26 @@ Template.driver_line_show.events
     $("#show_dialog_id").modal "show"
     return
 
-  "click .edit-brain_regions": (e) ->
-    e.preventDefault()
-    Session.set "modal_info",
-      title: "Edit brain_regions for driver line "+@name
-      body_template_name: "edit_brain_regions"
-      body_template_data:
-        my_id: @_id
-        collection_name: "DriverLines"
-      is_save_modal: true
-
-    window.modal_save_func = edit_brain_regions_save_func
-    $("#show_dialog_id").modal "show"
-    return
+  "click .edit-brain-regions": (event,template) ->
+    event.preventDefault()
+    send_coll = "DriverLines"
+    send_id = @_id
+    data =
+      collection_name: send_coll
+      my_id: send_id
+    window.dialog_template = bootbox.dialog
+      title: "Edit brain regions for driver line "+@name
+      message: window.renderTmp(Template.EditBrainRegionsDialog,data)
+      buttons:
+        close:
+          label: "Close"
+          className: "btn-default"
+        save:
+          label: "Save"
+          className: "btn-primary"
+          callback: ->
+            dialog_template = window.dialog_template
+            edit_brain_regions_save_func(dialog_template, send_coll, send_id)
 
 # ---- Template.driver_lines -------------
 

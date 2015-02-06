@@ -75,7 +75,7 @@ brain_region_insert_callback = (error, _id) ->
   , brain_region_insert_callback
   result
 
-Template.edit_brain_regions.helpers
+Template.EditBrainRegionsDialog.helpers
   brain_regions: ->
     result = []
     collection = window.get_collection_from_name(@collection_name)
@@ -99,14 +99,6 @@ Template.edit_brain_regions.helpers
 
     result
 
-@brain_region_fill_from = (selector, template, brain_region_type, result) ->
-  for node in template.findAll(selector)
-    if node.checked
-      if !result.hasOwnProperty(node.id)
-        result[node.id] = []
-      result[node.id].push brain_region_type
-  return
-
 @brain_region_fill_from_jquery = (selector, template, brain_region_type, result) ->
   for node in template.find(selector)
     if node.checked
@@ -121,21 +113,17 @@ Template.edit_brain_regions.helpers
     result.push( {"_id":_id, "type":tarr} )
   result
 
-@edit_brain_regions_save_func = (info, template) ->
-  my_id = Session.get("modal_info").body_template_data.my_id
-
+@edit_brain_regions_save_func = (template, coll_name, my_id) ->
   brain_regions = {}
-  brain_region_fill_from(".brain_regions-unspecified",template,"unspecified",brain_regions)
-  brain_region_fill_from(".brain_regions-output",template,"output",brain_regions)
-  brain_region_fill_from(".brain_regions-input",template,"input",brain_regions)
+  brain_region_fill_from_jquery(".brain_regions-unspecified",template,"unspecified",brain_regions)
+  brain_region_fill_from_jquery(".brain_regions-output",template,"output",brain_regions)
+  brain_region_fill_from_jquery(".brain_regions-input",template,"input",brain_regions)
   brain_regions = brain_region_dict2arr(brain_regions)
 
-  coll_name = Session.get("modal_info").body_template_data.collection_name
   collection = window.get_collection_from_name(coll_name)
   collection.update my_id,
     $set:
       brain_regions: brain_regions
-  {}
 
 Template.brain_region_show.helpers
   driver_lines_referencing_me: ->
