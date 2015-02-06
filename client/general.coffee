@@ -184,14 +184,6 @@ Template.show_dialog.helpers modal_info: ->
   Session.get("modal_info")
 
 Template.show_dialog.events
-  "click .delete": (e) ->
-    e.preventDefault()
-    info = Session.get("modal_info")
-    window.jump_table[info.collection].remove info.my_id
-    $("#show_dialog_id").modal "hide"
-    route_name = window.jump_table[info.collection].base_route
-    Router.go route_name
-    return
 
   "click .save": (event, template) ->
     event.preventDefault()
@@ -276,19 +268,28 @@ Template.top_content_row2.events window.okCancelEvents("#name-input",
 Template.delete_button.events
   "click .delete": (e) ->
     e.preventDefault()
-    Session.set "modal_info",
+
+    my_info = window.jump_table[@collection]
+    data =
       title: "Do you want to delete this?"
-      collection: @collection
-      my_id: @my_id
-      body_template_name: window.jump_table[@collection].delete_template_name
+      body_template_name: my_info.delete_template_name
       body_template_data: @my_id
-      is_delete_modal: true
+    my_collection_name = @collection
+    my_id = @my_id
 
-    window.modal_save_func = null
-    window.modal_shown_callback = null
-
-    $("#show_dialog_id").modal "show"
-    return
+    window.dialog_template = bootbox.dialog
+      message: window.renderTmp(Template.DeleteDialog,data)
+      buttons:
+        close:
+          label: "Close"
+          className: "btn-default"
+        delete:
+          label: "Delete"
+          className: "btn-danger"
+          callback: ->
+            my_info.remove my_id
+            route_name = my_info.base_route
+            Router.go route_name
 
 # -------------
 

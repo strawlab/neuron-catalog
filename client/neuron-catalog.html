@@ -969,9 +969,6 @@
 	</div>
 	<div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	  {{#if is_delete_modal}}
-            <button type="button" class="btn btn-danger delete">Delete</button>
-	  {{/if}}
 	  {{#if is_save_modal}}
             <button type="button" class="btn btn-primary save">Save</button>
 	  {{/if}}
@@ -987,6 +984,15 @@
 <template name="SaveTemplate">
   <h4 class="modal-title">{{title}}</h4>
   {{> UI.contentBlock this}}
+</template>
+
+<template name="DeleteDialog">
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+  </div>
+  <div class="modal-body">
+    {{> UI.dynamic template=body_template_name data=body_template_data}}
+  </div>
 </template>
 
 <template name="AddDriverLineDialog">
