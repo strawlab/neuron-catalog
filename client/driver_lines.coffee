@@ -140,6 +140,9 @@ Template.driver_lines.events
     window.dialog_template = bootbox.dialog
       message: window.renderTmp(Template.AddDriverLineDialog)
       buttons:
+        close:
+          label: "Close"
+          className: "btn-default"
         save:
           label: "Save"
           className: "btn-primary"
