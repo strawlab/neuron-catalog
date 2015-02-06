@@ -210,6 +210,9 @@ Template.neuron_types.events
             result = save_neuron_type(dialog_template)
             if result.errors
               bootbox.alert('Errors: '+result.errors.join(", "))
+    window.dialog_template.on("shown.bs.modal", ->
+      $(".name").focus()
+    )
 
 Template.neuron_types.helpers
   neuron_type_cursor: ->

@@ -179,6 +179,9 @@ Template.brain_regions.events
             result = save_brain_region(dialog_template)
             if result.errors
               bootbox.alert('Errors: '+result.errors.join(", "))
+    window.dialog_template.on("shown.bs.modal", ->
+      $(".name").focus()
+    )
 
 Template.brain_regions.helpers
   brain_region_cursor: ->

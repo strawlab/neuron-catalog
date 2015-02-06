@@ -152,7 +152,9 @@ Template.driver_lines.events
             if result.errors
               bootbox.alert('Errors: '+result.errors.join(", "))
 
-    window.dialog_template.off("shown.bs.modal") # do not focus on button
+    window.dialog_template.on("shown.bs.modal", ->
+      $(".name").focus()
+    )
     return
 
 # ------------- general functions --------
