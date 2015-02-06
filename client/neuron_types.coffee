@@ -130,19 +130,25 @@ Template.neuron_type_show.events
     ), 300
     return
 
-  "click .edit-driver-lines": (e) ->
-    e.preventDefault()
-    Session.set "modal_info",
+  "click .edit-best-driver-lines": (event, template) ->
+    event.preventDefault()
+    send_coll = "NeuronTypes"
+    send_id = @_id
+    data =
+      collection_name: send_coll
+      my_id: send_id
+    window.dialog_template = bootbox.dialog
       title: "Edit best driver lines for neuron type "+@name
-      body_template_name: "edit_driver_lines"
-      body_template_data:
-        my_id: @_id
-        collection_name: "NeuronTypes"
-      is_save_modal: true
-
-    window.modal_save_func = edit_driver_lines_save_func
-    $("#show_dialog_id").modal "show"
-    return
+      message: window.renderTmp(Template.EditDriverLinesDialog,data)
+      buttons:
+        close:
+          label: "Close"
+        save:
+          label: "Save"
+          className: "btn-primary"
+          callback: ->
+            dialog_template = window.dialog_template
+            edit_driver_lines_save_func(dialog_template, send_coll, send_id)
 
   "click .edit-brain-regions": (event,template) ->
     event.preventDefault()

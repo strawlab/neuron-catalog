@@ -82,9 +82,9 @@ Template.AddDriverLineDialog.events
   "keyup .driver-line-lookup": (event, template) ->
     Session.set "typed_name", template.find(".name").value
 
-# ---- Template.edit_driver_lines -------------
+# ---- Template.EditDriverLinesDialog -------------
 
-Template.edit_driver_lines.helpers
+Template.EditDriverLinesDialog.helpers
   driver_lines: ->
     result = []
     collection = window.get_collection_from_name(@collection_name)
@@ -219,17 +219,11 @@ save_driver_line = (template) ->
   DriverLines.insert doc, driver_line_insert_callback
   result
 
-@edit_driver_lines_save_func = (info, template) ->
+@edit_driver_lines_save_func = (template,coll_name,my_id) ->
   driver_lines = []
-  my_id = Session.get("modal_info").body_template_data.my_id
-  r1 = template.findAll(".driver_lines")
-  for i of r1
-    node = r1[i]
+  for node in template.find(".driver_lines")
     driver_lines.push node.id  if node.checked
-  coll_name = Session.get("modal_info").body_template_data.collection_name
   collection = window.get_collection_from_name(coll_name)
   collection.update my_id,
     $set:
       best_driver_lines: driver_lines
-
-  {}
