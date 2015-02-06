@@ -69,19 +69,16 @@ Template.binary_data_show.helpers
 
 # @remove_binary_data is defined in ../neuron-catalog.coffee
 
-link_image_save_func = (info, template) ->
-  d = info.body_template_data
-  coll = window.get_collection_from_name(d.collection_name)
-  elements = template.findAll(".selected")
+link_image_save_func = (template,collection_name,my_id) ->
+  coll = window.get_collection_from_name(collection_name)
+  elements = template.find(".selected")
   myarr = []
   for item in elements
     myarr.push(item.id)
 
   t2 = {images:myarr}
-  coll.update d.my_id,
+  coll.update my_id,
     $set: t2
-
-  return {}
 
 # -------------
 
@@ -163,19 +160,28 @@ Template.AddImageCode2.events
     else
       current_images = []
 
-    Session.set "modal_info",
+    send_coll = @collection
+    send_id = @my_id
+    data =
+      my_id: send_id
+      collection_name: send_coll
+      current_images: current_images
+    window.dialog_template = bootbox.dialog
+      message: window.renderTmp(Template.LinkExistingImageDialog,data)
       title: "Link existing image or volume"
-      body_template_name: "LinkExistingImageDialog"
-      body_template_data:
-        my_id: @my_id
-        collection_name: @collection
-        current_images: current_images
-      is_save_modal: true
+      buttons:
+        close:
+          label: "Close"
+        save:
+          label: "Save"
+          className: "btn-primary"
+          callback: ->
+            dialog_template = window.dialog_template
+            link_image_save_func(dialog_template, send_coll, send_id)
 
-    window.modal_save_func = link_image_save_func
-    window.modal_shown_callback = on_link_image_dialog_shown
-    $("#show_dialog_id").modal "show"
-    return
+    window.dialog_template.on("shown.bs.modal", ->
+      on_link_image_dialog_shown(data)
+    )
 
 Template.add_image_code.events
   "click .insert": (e, template) ->
@@ -236,11 +242,11 @@ Template.binary_data_table.created = ->
   this.n_selected = new ReactiveVar()
   this.n_selected.set(0)
 
-on_link_image_dialog_shown = (info, template, event) ->
+on_link_image_dialog_shown = (data) ->
   $('.flex-images').flexImages({rowHeight: 200})
 
   $('.selectable').removeClass('selected')
-  for image_id in info.body_template_data.current_images
+  for image_id in data.current_images
     $('.selectable#'+image_id).addClass('selected')
 
   Session.set "trigger_update",Date.now() # force update (how else to do this?)
