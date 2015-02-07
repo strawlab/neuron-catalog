@@ -21,7 +21,6 @@ Meteor.subscribe "userData"
 # --------------------------------------------
 # session variables
 editing_name = new ReactiveVar(null)
-Session.setDefault "editing_add_synonym", null
 Session.setDefault "editing_add_tag", null
 Session.setDefault "comment_preview_mode", false
 Session.setDefault "comment_preview_html", null

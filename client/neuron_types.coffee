@@ -1,3 +1,5 @@
+editing_add_synonym = new ReactiveVar(null)
+
 driver_lines_sort = {}
 driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 neuron_types_sort = {}
@@ -96,11 +98,11 @@ Template.neuron_type_show.events window.okCancelEvents("#edit_synonym_input",
       $addToSet:
         synonyms: value
 
-    Session.set "editing_add_synonym", null
+    editing_add_synonym.set(null)
     return
 
   cancel: ->
-    Session.set "editing_add_synonym", null
+    editing_add_synonym.set(null)
     return
 )
 
@@ -108,7 +110,7 @@ Template.neuron_type_show.events
   "click .add_synonym": (e, tmpl) ->
 
     # inspiration: meteor TODO app
-    Session.set "editing_add_synonym", @_id
+    editing_add_synonym.set(@_id)
     Deps.flush() # update DOM before focus
     window.activateInput tmpl.find("#edit_synonym_input")
     return
@@ -181,7 +183,7 @@ Template.neuron_type_show.events
 
 Template.neuron_type_show.helpers
   adding_synonym: ->
-    Session.equals "editing_add_synonym", @_id
+    editing_add_synonym.get() == @_id
 
   synonym_dicts: ->
     result = []
