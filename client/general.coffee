@@ -21,7 +21,6 @@ Meteor.subscribe "userData"
 # --------------------------------------------
 # session variables
 editing_name = new ReactiveVar(null)
-Session.setDefault "all_tags", []
 Session.setDefault "NeuronCatalogSpecialization",[]
 
 window.modal_save_func = null
@@ -296,13 +295,6 @@ Template.registerHelper "config", ->
 
 Template.registerHelper "binary_data_cursor", ->
   BinaryData.find {}
-
-Template.registerHelper "get_all_tags", ->
-  return Session.get("all_tags")
-
-Template.registerHelper "dumpthis", ->
-  console.log "dumpthis:", this
-  "this: "+this
 
 setTitle = () ->
   cfg = NeuronCatalogConfig.findOne {}
