@@ -1,14 +1,14 @@
-Session.setDefault "recent_changes_n_days", 2
+recent_changes_n_days = new ReactiveVar(2)
 
 Template.RecentChanges.helpers
   last_n_days: ->
-    Session.get("recent_changes_n_days")
+    recent_changes_n_days.get()
 
 Template.RecentChanges.events
   "input, change": (e) ->
     e.preventDefault()
     n_days = $('#last_n_days_widget').val()
-    Session.set("recent_changes_n_days",n_days)
+    recent_changes_n_days.set(n_days)
 
 Template.ChangeList.helpers
   wrapped_changes: ->
