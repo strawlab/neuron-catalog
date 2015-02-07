@@ -9,6 +9,7 @@
 
 # A collection to describe the upload processor status.
 @UploadProcessorStatus = new Meteor.Collection("upload_processor_status")
+@SimpleUploadProcessorStatus = new Meteor.Collection("simple_upload_processor_status")
 
 # define our schemas
 
