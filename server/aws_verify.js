@@ -18,7 +18,7 @@ function _append_CORS_failures( cors, failures ) {
   }
 }
 
-function get_slingshot_AWS_failures() {
+get_slingshot_AWS_failures = function() {
   failures = [];
   if (Meteor.settings.AWSAccessKeyId) {
   } else {
