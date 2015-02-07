@@ -1,19 +1,19 @@
-Session.setDefault "comments_search_text", null
-Session.setDefault "flycircuit_search_text", null
-Session.setDefault "active_tags", {}
+comments_search_text = new ReactiveVar(null)
+flycircuit_search_text = new ReactiveVar(null)
+active_tags = new ReactiveVar({})
 
 update_url_bar = ->
   q = {}
 
-  cst = Session.get("comments_search_text")
+  cst = comments_search_text.get()
   if cst?
     q['text'] = cst
 
-  fst = Session.get("flycircuit_search_text")
+  fst = flycircuit_search_text.get()
   if fst?
     q['idid'] = fst
 
-  taglist = Object.keys(Session.get("active_tags"))
+  taglist = Object.keys(active_tags.get())
   if taglist.length
     q['tags'] = JSON.stringify(taglist)
 
@@ -21,24 +21,24 @@ update_url_bar = ->
 
 Template.Search.events window.okCancelEvents("#comments-search-input",
   ok: (value,evt) ->
-    Session.set "comments_search_text", value
+    comments_search_text.set(value)
     update_url_bar()
     return
 
   cancel: (evt) ->
-    Session.set "comments_search_text", null
+    comments_search_text.set(null)
     update_url_bar()
     return
 )
 
 Template.Search.events window.okCancelEvents("#flycircuit-search-input",
   ok: (value,evt) ->
-    Session.set "flycircuit_search_text", value
+    flycircuit_search_text.set(value)
     update_url_bar()
     return
 
   cancel: (evt) ->
-    Session.set "flycircuit_search_text", null
+    flycircuit_search_text.set(null)
     update_url_bar()
     return
 )
@@ -46,14 +46,14 @@ Template.Search.events window.okCancelEvents("#flycircuit-search-input",
 Template.Search.events
   "click .tag-name": (event, template) ->
     event.preventDefault()
-    obj = Session.get("active_tags")
+    obj = active_tags.get()
     myname = this.name
     if myname of obj
       delete obj[myname]
     else
       # add item
       obj[myname] = true
-    Session.set("active_tags",obj)
+    active_tags.set(obj)
     update_url_bar()
 
 del = (obj, key) ->
@@ -110,17 +110,17 @@ Template.Search.rendered = ->
   if !@find("#comments-search-input")?
     return
   if @data.text?
-    Session.set("comments_search_text",@data.text)
+    comments_search_text.set(@data.text)
   if @data.idid?
-    Session.set("flycircuit_search_text",@data.idid)
+    flycircuit_search_text.set(@data.idid)
   if @data.tags?
     atl = JSON.parse(@data.tags)
     taglist = {}
     for tag in atl
       taglist[tag] = true
-    Session.set("active_tags",taglist)
-  this.find("#comments-search-input").value = Session.get("comments_search_text")
-  this.find("#flycircuit-search-input").value = Session.get("flycircuit_search_text")
+    active_tags.set(taglist)
+  this.find("#comments-search-input").value = comments_search_text.get()
+  this.find("#flycircuit-search-input").value = flycircuit_search_text.get()
 
 Template.Search.helpers
   current_search: ->
@@ -151,10 +151,10 @@ Template.Search.helpers
       result[tag]=true for tag in doc.tags
     Object.keys(result)
     lods = [] # list of dicts
-    active_tags = Session.get("active_tags")
+    my_active_tags = active_tags.get()
     for tag_name in Object.keys(result)
       tmp = {name:tag_name}
-      if tag_name of active_tags
+      if tag_name of my_active_tags
         tmp.is_active_css_class='active'
       else
         tmp.is_active_css_class=''
