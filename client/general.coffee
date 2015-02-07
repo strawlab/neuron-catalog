@@ -24,7 +24,6 @@ Meteor.subscribe "upload_processor_status"
 Session.setDefault "editing_name", null
 Session.setDefault "editing_add_synonym", null
 Session.setDefault "editing_add_tag", null
-Session.setDefault "modal_info", null
 Session.setDefault "comment_preview_mode", false
 Session.setDefault "comment_preview_html", null
 Session.setDefault "upload_processor_has_error", false
@@ -178,22 +177,6 @@ Template.UploadProcessorStatus.helpers get_upload_processor_has_error: ->
   Session.get("upload_processor_has_error")
 
 # --------------------------------------------
-
-Template.show_dialog.helpers modal_info: ->
-  Session.get("modal_info")
-
-Template.show_dialog.events
-
-  "click .save": (event, template) ->
-    event.preventDefault()
-    info = Session.get("modal_info")
-    result = window.modal_save_func(info, template)
-    if result.error
-      info.error = result.error
-      Session.set "modal_info", info
-    else
-      $("#show_dialog_id").modal "hide"
-    return
 
 window.jump_table =
   DriverLines:

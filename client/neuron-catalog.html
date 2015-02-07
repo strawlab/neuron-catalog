@@ -7,7 +7,6 @@
 
 <template name="MyLayout">
   {{>UploadProcessorStatus}}
-  {{> show_dialog}}
   {{> show_upload_progress}}
   <div class="container-fluid {{top_margin_class_attrs}}">
 
@@ -950,33 +949,6 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-</template>
-
-<template name="show_dialog">
-  {{#with modal_info}}
-  <div class="modal fade" id="show_dialog_id">
-    <div class="modal-dialog">
-      <div class="modal-content">
-	<div class="modal-header">
-	  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <h4 class="modal-title">{{title}}</h4>
-	</div>
-	<div class="modal-body">
-	  {{#if error}}
-	  <div class="alert alert-danger">{{error}}</div>
-	  {{/if}}
-	  {{> UI.dynamic template=body_template_name data=body_template_data}}
-	</div>
-	<div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	  {{#if is_save_modal}}
-            <button type="button" class="btn btn-primary save">Save</button>
-	  {{/if}}
-	</div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  {{/with}}
 </template>
 
 <!-- ----------------------------- -->
