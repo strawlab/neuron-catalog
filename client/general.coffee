@@ -275,6 +275,7 @@ Template.raw_button.events
       buttons:
         close:
           label: "Close"
+    window.dialog_template.off("shown.bs.modal") # do not focus on button
 
 # -------------
 
