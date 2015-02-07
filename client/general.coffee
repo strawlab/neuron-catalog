@@ -124,7 +124,7 @@ window.renderTmp = (template, data) ->
 
 # --------------------------------------------
 
-Template.raw_document_view.helpers
+Template.RawDocumentView.helpers
   raw_document: ->
     coll = window.get_collection_from_name(@collection)
     doc = coll.findOne({_id: @my_id})
@@ -281,20 +281,17 @@ Template.delete_button.events
 # -------------
 
 Template.raw_button.events
-  "click .raw": (e) ->
-    e.preventDefault()
-    Session.set "modal_info",
-      title: "Raw document view"
+  "click .raw": (event, template) ->
+    event.preventDefault()
+    data =
       collection: @collection
       my_id: @my_id
-      body_template_name: "raw_document_view"
-      body_template_data:
-        collection: @collection
-        my_id: @my_id
-
-    window.modal_save_func = null
-    $("#show_dialog_id").modal "show"
-    return
+    window.dialog_template = bootbox.dialog
+      message: window.renderTmp(Template.RawDocumentView,data)
+      title: "Raw document view"
+      buttons:
+        close:
+          label: "Close"
 
 # -------------
 
