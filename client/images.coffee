@@ -1,4 +1,4 @@
-Session.setDefault "trigger_update", null
+trigger_update = new Deps.Dependency
 
 my_uploader = null # variable local to this script
 uploader_state_changed = new Deps.Dependency
@@ -224,8 +224,7 @@ Template.binary_data_table.helpers
       return
 
   get_n_selected: ->
-    dt = Session.get "trigger_update"
-
+    trigger_update.depend()
     template = Template.instance()
     if !template.firstNode?
       # The DOM hasn't been rendered yet, can't count selected.
@@ -259,7 +258,7 @@ on_link_image_dialog_shown = (data) ->
   for image_id in data.current_images
     $('.selectable#'+image_id).addClass('selected')
 
-  Session.set "trigger_update",Date.now() # force update (how else to do this?)
+  trigger_update.changed() # force update
 
 Template.LinkExistingImageDialog.helpers
   friendly_item_name: ->
