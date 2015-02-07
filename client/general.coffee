@@ -20,7 +20,7 @@ Meteor.subscribe "userData"
 
 # --------------------------------------------
 # session variables
-Session.setDefault "editing_name", null
+editing_name = new ReactiveVar(null)
 Session.setDefault "editing_add_synonym", null
 Session.setDefault "editing_add_tag", null
 Session.setDefault "comment_preview_mode", false
@@ -186,13 +186,13 @@ window.jump_table =
 
 Template.top_content_row2.helpers
   editing_name: ->
-    d = Session.get("editing_name")
+    d = editing_name.get()
     return false unless d?
     return true if @_id is d._id & @collection is d.collection
     false
 
 Template.top_content_row2.events "click .edit-name": (e, tmpl) ->
-  Session.set "editing_name", tmpl.data
+  editing_name.set(tmpl.data)
   Deps.flush() # update DOM before focus
   ni = tmpl.find("#name-input")
   ni.value = @name
@@ -201,7 +201,7 @@ Template.top_content_row2.events "click .edit-name": (e, tmpl) ->
 
 Template.top_content_row2.events window.okCancelEvents("#name-input",
   ok: (value,evt) ->
-    if Session.get("editing_name") == null
+    if editing_name.get() == null
       # Hmm, why do we get here? Cancel was clicked.
       return
     coll = window.get_collection_from_name(@collection)
@@ -209,11 +209,11 @@ Template.top_content_row2.events window.okCancelEvents("#name-input",
       $set:
         name: value
 
-    Session.set "editing_name", null
+    editing_name.set(null)
     return
 
   cancel: (evt) ->
-    Session.set "editing_name", null
+    editing_name.set(null)
     return
 )
 
