@@ -1,3 +1,6 @@
+Session.setDefault "comment_preview_mode", false
+Session.setDefault "comment_preview_html", null
+
 converter = new Showdown.converter();
 
 Template.comments_panel.helpers

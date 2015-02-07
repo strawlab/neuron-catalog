@@ -1,3 +1,5 @@
+Session.setDefault "recent_changes_n_days", 2
+
 Template.RecentChanges.helpers
   last_n_days: ->
     Session.get("recent_changes_n_days")
