@@ -2,6 +2,7 @@ Session.setDefault "trigger_update", null
 
 my_uploader = null # variable local to this script
 uploader_state_changed = new Deps.Dependency
+upload_progress_dialog = null
 
 # ---- Template.binary_data_from_id_block -------------
 
@@ -84,11 +85,11 @@ link_image_save_func = (template,collection_name,my_id) ->
 
 # -------------
 
-Template.show_upload_progress.helpers
+Template.UploadProgress.helpers
   percent_uploaded: ->
     uploader_state_changed.depend()
     if !my_uploader?
-      return
+      return 0
     Math.round(my_uploader.progress() * 100);
 
 get_id_from_key = (key) ->
@@ -105,7 +106,10 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
   # FIXME: assert size(upload_files)==1
   upload_file = upload_files[0]
   s3_dirname = "/images"
-  $("#show_upload_progress_id").modal("show")
+
+  upload_progress_dialog = bootbox.dialog
+      title: "upload progress"
+      message: window.renderTmp(Template.UploadProgress)
 
   ctx =
     lastModifiedDate: upload_file.lastModifiedDate
@@ -115,7 +119,8 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
 
   my_uploader.send upload_file, (error, downloadUrl) ->
     # This callback is called when the upload is complete (or on error).
-    $("#show_upload_progress_id").modal("hide")
+    upload_progress_dialog.close()
+    upload_progress_dialog = null
 
     if error?
       my_uploader = null

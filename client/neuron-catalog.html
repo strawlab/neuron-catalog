@@ -7,7 +7,6 @@
 
 <template name="MyLayout">
   {{>UploadProcessorStatus}}
-  {{> show_upload_progress}}
   <div class="container-fluid {{top_margin_class_attrs}}">
 
    <div class="row">
@@ -930,25 +929,12 @@
 
 <!-- --------------------------- -->
 
-<template name="show_upload_progress">
-  <div class="modal fade" id="show_upload_progress_id">
-    <div class="modal-dialog">
-      <div class="modal-content">
-	<div class="modal-header">
-          <h4 class="modal-title">Upload progress</h4>
-	</div>
-	<div class="modal-body">
-	  <div class="upload_progress">
-            <div class="progress">
-              <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent_uploaded}}%">
-		<span class="sr-only">{{percent_uploaded}}% Complete</span>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+<template name="UploadProgress">
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="{{percent_uploaded}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent_uploaded}}%">
+      <span class="sr-only">{{percent_uploaded}}% Complete</span>
+    </div>
+  </div>
 </template>
 
 <!-- ----------------------------- -->
