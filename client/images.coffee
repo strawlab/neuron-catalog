@@ -96,9 +96,9 @@ get_id_from_key = (key) ->
       _id = arr[1]
   return _id
 
-insert_image_save_func = (info, template) ->
+insert_image_save_func = (template, coll_name, my_id, field_name) ->
   # FIXME: disable save/cancel button
-  fb = template.find("#insert_image")
+  fb = template.find("#insert_image")[0]
   upload_files = fb.files
   # FIXME: assert size(upload_files)==1
   upload_file = upload_files[0]
@@ -133,19 +133,17 @@ insert_image_save_func = (info, template) ->
     BinaryData.update _id, updater_doc
 
     # get information from referencing collection
-    data = info.body_template_data
-    if data.collection? and data.my_id?
-      coll = window.get_collection_from_name(data.collection) # e.g. DriverLines
-      orig = coll.findOne(_id: data.my_id) # get the document to which this image is being added
+    if 1
+      coll = window.get_collection_from_name(coll_name) # e.g. DriverLines
+      orig = coll.findOne(_id: my_id) # get the document to which this image is being added
       myarr = []
-      myarr = orig[data.field_name]  if orig.hasOwnProperty(data.field_name)
+      myarr = orig[field_name]  if orig.hasOwnProperty(field_name)
       myarr.push _id # append our new _id
       t2 = {}
-      t2[data.field_name] = myarr
-      coll.update data["my_id"],
+      t2[field_name] = myarr
+      coll.update my_id,
         $set: t2
-    template.find("#insert_image_form").reset() # remove filename
-    return
+    template.find("#insert_image_form")[0].reset() # remove filename
 
   $("#file_form_div").hide()
   return {}
@@ -184,21 +182,26 @@ Template.AddImageCode2.events
     )
 
 Template.add_image_code.events
-  "click .insert": (e, template) ->
-    e.preventDefault()
-    Session.set "modal_info",
+  "click .insert": (event, template) ->
+    event.preventDefault()
+    send_coll = @collection
+    my_id = @my_id
+    data =
+      field_name: "images"
+      collection: send_coll
+      my_id: my_id
+    window.dialog_template = bootbox.dialog
+      message: window.renderTmp(Template.InsertImageDialog, data)
       title: "Insert image or volume"
-      body_template_name: "insert_image_dialog"
-      body_template_data:
-        my_id: @my_id
-        collection: @collection
-        field_name: "images"
-      is_save_modal: true
-
-    window.modal_save_func = insert_image_save_func
-    $("#file_form_div").show()
-    $("#show_dialog_id").modal "show"
-    return
+      buttons:
+        close:
+          label: "Close"
+        save:
+          label: "Save"
+          className: "btn-primary"
+          callback: ->
+            dialog_template = window.dialog_template
+            insert_image_save_func(dialog_template, send_coll, my_id, "images")
 
 Template.binary_data_table.rendered = ->
   $('.flex-images').flexImages({rowHeight: 200});
