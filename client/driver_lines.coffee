@@ -5,7 +5,7 @@ neuron_types_sort[window.get_sort_key("NeuronTypes")]=1
 brain_regions_sort = {}
 brain_regions_sort[window.get_sort_key("BrainRegions")] = 1
 
-typed_name = Session.setDefault "typed_name", null
+typed_name = new ReactiveVar(null)
 
 # ---- Template.driver_line_from_id_block -------------
 
@@ -68,19 +68,19 @@ Template.AddDriverLineDialog.helpers
     return false
 
   matching_driver_lines: ->
-    typed_name = Session.get "typed_name"
-    if !typed_name?
+    my_typed_name = typed_name.get()
+    if !my_typed_name?
       return []
-    if typed_name.length == 0
+    if my_typed_name.length == 0
       return []
-    cursor = DriverLines.find({name: {$regex: '^'+typed_name, $options: "i"}})
+    cursor = DriverLines.find({name: {$regex: '^'+my_typed_name, $options: "i"}})
 
   get_linkout: ->
     {collection:"DriverLines", doc: this, my_id: @_id}
 
 Template.AddDriverLineDialog.events
   "keyup .driver-line-lookup": (event, template) ->
-    Session.set "typed_name", template.find(".name").value
+    typed_name.set( template.find(".name").value )
 
 # ---- Template.EditDriverLinesDialog -------------
 
@@ -153,7 +153,7 @@ Template.driver_lines.helpers
 Template.driver_lines.events
   "click .insert": (event, template) ->
     event.preventDefault()
-    Session.set "typed_name",null
+    typed_name.set(null)
     window.dialog_template = bootbox.dialog
       title: "Add a new driver line"
       message: window.renderTmp(Template.AddDriverLineDialog)
