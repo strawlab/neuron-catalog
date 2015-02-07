@@ -1,4 +1,4 @@
-Session.setDefault "editing_flycircuit_idid", null
+editing_flycircuit_idid = new ReactiveVar(null)
 
 Template.FlyCircuitPanel.events window.okCancelEvents("#edit-flycircuit-input",
   ok: (value) ->
@@ -7,17 +7,17 @@ Template.FlyCircuitPanel.events window.okCancelEvents("#edit-flycircuit-input",
       $addToSet:
         flycircuit_idids: +value # plus sign converts to integer
 
-    Session.set "editing_flycircuit_idid", null
+    editing_flycircuit_idid.set(null)
     return
 
   cancel: ->
-    Session.set "editing_flycircuit_idid", null
+    editing_flycircuit_idid.set(null)
     return
 )
 
 Template.FlyCircuitPanel.events
   "click .add-flycircuit-idid": (e, tmpl) ->
-    Session.set "editing_flycircuit_idid", @_id
+    editing_flycircuit_idid.set(@_id)
     Deps.flush() # update DOM before focus
     window.activateInput tmpl.find("#edit-flycircuit-input")
     return
@@ -41,7 +41,7 @@ Template.FlyCircuitPanel.events
 
 Template.FlyCircuitPanel.helpers
   adding_flycircuit_idid: ->
-    Session.equals "editing_flycircuit_idid", @_id
+    editing_flycircuit_idid.get() == @_id
 
   idid_dicts: ->
     result = []
