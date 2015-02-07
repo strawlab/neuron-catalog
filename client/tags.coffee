@@ -1,3 +1,5 @@
+editing_add_tag = new ReactiveVar(null)
+
 Template.tags_panel.events window.okCancelEvents("#edit-tag-input",
   ok: (value) ->
     coll = window.get_collection_from_name(@collection)
@@ -5,17 +7,17 @@ Template.tags_panel.events window.okCancelEvents("#edit-tag-input",
       $addToSet:
         tags: value
 
-    Session.set "editing_add_tag", null
+    editing_add_tag.set(null)
     return
 
   cancel: ->
-    Session.set "editing_add_tag", null
+    editing_add_tag.set(null)
     return
 )
 
 Template.tags_panel.events
   "click .add-tag": (e, tmpl) ->
-    Session.set "editing_add_tag", @_id
+    editing_add_tag.set(@_id)
     Deps.flush() # update DOM before focus
     window.activateInput tmpl.find("#edit-tag-input")
     return
@@ -40,7 +42,7 @@ Template.tags_panel.events
 
 Template.tags_panel.helpers
   adding_tag: ->
-    Session.equals "editing_add_tag", @_id
+    editing_add_tag.get() == @_id
 
   tag_dicts: ->
     result = []
