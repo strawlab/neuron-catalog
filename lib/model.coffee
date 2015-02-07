@@ -7,7 +7,7 @@
 @NeuronTypes = new Meteor.Collection("neuron_types")
 @BrainRegions = new Meteor.Collection("brain_regions")
 
-# Create a capped collection to describe the upload processor status.
+# A collection to describe the upload processor status.
 @UploadProcessorStatus = new Meteor.Collection("upload_processor_status")
 
 # define our schemas
