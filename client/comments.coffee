@@ -1,26 +1,26 @@
-Session.setDefault "comment_preview_mode", false
-Session.setDefault "comment_preview_html", null
+comment_preview_mode = new ReactiveVar(false)
+comment_preview_html = new ReactiveVar(null)
 
 converter = new Showdown.converter();
 
 Template.comments_panel.helpers
   comment_preview: ->
-    Session.get "comment_preview_html"
+    comment_preview_html.get()
 
   is_previewing_comment: ->
-    Session.equals "comment_preview_mode", true
+    comment_preview_mode.get() == true
 
   is_writing_attrs: ->
-    "vis-hidden"  if Session.equals("comment_preview_mode", true)
+    "vis-hidden"  if comment_preview_mode.get()
 
   is_previewing_attrs: ->
-    "vis-hidden"  if Session.equals("comment_preview_mode", false)
+    "vis-hidden"  if (comment_preview_mode.get()==false)
 
 Template.comments_panel.events
   "click .write-comment": (event, template) ->
     event.preventDefault()
-    Session.set "comment_preview_mode", false
-    Session.set "comment_preview_html", null
+    comment_preview_mode.set(false)
+    comment_preview_html.set(null)
     return
 
   "click .preview-comment": (event, template) ->
@@ -28,8 +28,8 @@ Template.comments_panel.events
     ta = template.find("textarea.comments")
     comments_raw = ta.value
     result = converter.makeHtml(comments_raw)
-    Session.set "comment_preview_mode", true
-    Session.set "comment_preview_html", result
+    comment_preview_mode.set(true)
+    comment_preview_html.set(result)
     return
 
   "click .save": (event, template) ->
@@ -37,7 +37,7 @@ Template.comments_panel.events
     ta = template.find("textarea.comments")
     comments_raw = ta.value
     ta.value = ""
-    Session.set "comment_preview_html", null
+    comment_preview_html.set(null)
     if comments_raw == ""
       # nothing to do. don't bother saving.
       return
