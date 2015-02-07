@@ -17,7 +17,6 @@ Meteor.subscribe "brain_regions"
 Meteor.subscribe "binary_data"
 Meteor.subscribe "neuron_catalog_config"
 Meteor.subscribe "userData"
-Meteor.subscribe "upload_processor_status"
 
 # --------------------------------------------
 # session variables
@@ -26,26 +25,11 @@ Session.setDefault "editing_add_synonym", null
 Session.setDefault "editing_add_tag", null
 Session.setDefault "comment_preview_mode", false
 Session.setDefault "comment_preview_html", null
-Session.setDefault "upload_processor_has_error", false
 Session.setDefault "recent_changes_n_days", 2
 Session.setDefault "all_tags", []
 Session.setDefault "NeuronCatalogSpecialization",[]
 
 window.modal_save_func = null
-
-# --------------------------------------------
-# timer functions
-
-update_upload_processor_status = ->
-  doc = UploadProcessorStatus.findOne({'_id':'status'})
-  if !doc?
-    Session.set("upload_processor_has_error",true)
-    return
-
-  Session.set("upload_processor_has_error",false)
-  return
-
-Meteor.setInterval(update_upload_processor_status, 5000) # check status every 5 seconds
 
 # --------------------------------------------
 # helper functions
@@ -173,9 +157,6 @@ Template.next_previous_button.helpers
     result["doc"]=doc
     result
 
-Template.UploadProcessorStatus.helpers get_upload_processor_has_error: ->
-  Session.get("upload_processor_has_error")
-
 # --------------------------------------------
 
 window.jump_table =
@@ -289,19 +270,6 @@ Template.show_user_date.helpers
   pretty_time: ->
     timestamp = Date(this.time)
     moment(this.time).fromNow()
-
-# ------- tab layout stuff ----
-Template.MyLayout.helpers
-  top_margin_class_attrs: ->
-    if Session.get("upload_processor_has_error")
-      result = 'top50'
-    else
-      result = ''
-    result
-
-UI.body.helpers
-  getData: ->
-    "data"
 
 # --------
 
