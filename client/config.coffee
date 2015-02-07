@@ -1,15 +1,15 @@
-Session.setDefault "AWSConfigTestResult", null
-Session.setDefault "AWSConfigTestDone", 0
+AWSConfigTestResult = new ReactiveVar(null)
+AWSConfigTestDone = new ReactiveVar(null)
 
 on_verify_callback = (error, failures) ->
-  Session.set("AWSConfigTestDone", 100)
+  AWSConfigTestDone.set(100)
   if error?
     console.error "Failure during remote call:",error
 
   if failures.length==0
-    Session.set "AWSConfigTestResult", {has_error: false, msg: "AWS is correctly configured."}
+    AWSConfigTestResult.set({has_error: false, msg: "AWS is correctly configured."})
   else
-    Session.set "AWSConfigTestResult", {has_error: true, msg: "AWS not correctly configured.", failures:failures}
+    AWSConfigTestResult.set({has_error: true, msg: "AWS not correctly configured.", failures:failures})
 
 update_callback = (error, result) ->
   console.log "update complete"
@@ -56,20 +56,20 @@ check_doc = (doc) ->
 
 Template.ConfigAWSTestDialog.helpers
   result: ->
-    Session.get "AWSConfigTestResult"
+    AWSConfigTestResult.get()
   percent_done: ->
-    Session.get("AWSConfigTestDone")
+    AWSConfigTestDone.get()
   is_active: ->
-    if Session.get("AWSConfigTestDone") < 100 then "active" else ""
+    if AWSConfigTestDone.get() < 100 then "active" else ""
 
 Template.config.events
   "click .verify-aws": (e) ->
-    Session.set "AWSConfigTestResult", null
-    Session.set("AWSConfigTestDone",0)
+    AWSConfigTestResult.set(null)
+    AWSConfigTestDone.set(0)
     bootbox.dialog message: window.renderTmp(Template.ConfigAWSTestDialog)
     Meteor.call("verify_AWS_configuration", on_verify_callback)
     window.setTimeout(->
-      Session.set("AWSConfigTestDone",30)
+      AWSConfigTestDone.set(30)
     ,
       300)
 
