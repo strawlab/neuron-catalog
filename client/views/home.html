@@ -1,8 +1,6 @@
 <template name="home">
   {{#top_content_row}}
-    {{#with config}}
-      {{project_name}}
-    {{/with}}
+    {{project_name}}
   {{/top_content_row}}
 
   <p>
@@ -20,11 +18,9 @@
     {{#detail_main}}
 
   <p>
-    {{#with config}}
-      The data here are from the
-      project <span class="bold">{{project_name}}</span> by
-      <span class="bold">{{{data_authors}}}</span>. {{{blurb}}}
-    {{/with}}
+    The data here are from the
+    project <span class="bold">{{project_name}}</span> by
+    <span class="bold">{{{data_authors}}}</span>. {{{blurb}}}
   </p>
     {{/detail_main}}
   {{/detail_block}}

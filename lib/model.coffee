@@ -22,7 +22,7 @@ Schemas.NeuronCatalogConfig = new SimpleSchema(
 
   data_authors:
     type: String
-    label: "A short string giving the name of the contributors to the data"
+    label: "A short string giving the name of the contributors to the data. Can contain raw HTML."
 
   blurb:
     type: String
