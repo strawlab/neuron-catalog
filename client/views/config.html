@@ -1,0 +1,75 @@
+<template name="config">
+  <h2>Configuration</h2>
+
+  {{#if currentUser}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+	Website text configuration
+    {{/detail_title}}
+    {{#detail_main}}
+
+    {{#with config_doc}}
+      {{> quickForm collection="NeuronCatalogConfig" doc=this id="{{_id}}" type="update" buttonContent="Save" }}
+    {{/with}}
+
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{/if}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+	Website setup validation
+    {{/detail_title}}
+    {{#detail_main}}
+      <p>
+      <button type="button" class="btn btn-default verify-aws">Verify AWS configuration</button>
+      </p>
+    {{/detail_main}}
+  {{/detail_block}}
+
+    {{#if currentUser}}
+  {{#detail_block}}
+    {{#detail_title}}
+	Database validation
+    {{/detail_title}}
+    {{#detail_main}}
+  <ul>
+    {{#each collection_names}}
+    <li>
+      {{this}} <button type="button" class="btn btn-default validate-docs" data-repair="0" data-collection={{this}}>Validate</button> <button type="button" class="btn btn-default validate-docs" data-repair="1" data-collection={{this}}>Attempt repair</button> (see javascript console)
+    </li>
+
+    {{/each}}
+  </ul>
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{> raw_button collection="Meteor.users" my_id=current_user_id button_text="View user document for current user" }}
+
+    {{else}}
+      <li>Other configuration options available if you log in.</li>
+    {{/if}}
+
+</template>
+
+<template name="ConfigAWSTestDialog">
+  <h2>AWS configuration test</h2>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped {{is_active}}"  role="progressbar" aria-valuenow="{{percent_done}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent_done}}%">
+	<span class="sr-only">{{percent_done}}% Complete</span>
+      </div>
+    </div>
+  {{#if result}}
+    {{result.msg}}
+    {{#if result.has_error}}
+      <ul>
+      {{#each result.failures}}
+        <li>{{this}}</li>
+      {{/each}}
+      </ul>
+    {{/if}}
+  {{else}}
+  {{/if}}
+</template>
