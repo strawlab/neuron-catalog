@@ -140,7 +140,7 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
     BinaryData.update _id, updater_doc
 
     # get information from referencing collection
-    if 1
+    if coll_name?
       coll = window.get_collection_from_name(coll_name) # e.g. DriverLines
       orig = coll.findOne(_id: my_id) # get the document to which this image is being added
       myarr = []
