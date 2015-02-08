@@ -290,9 +290,6 @@ Template.registerHelper "login_message", ->
   # Mimic the normal meteor accounts system from IronRouter template.
   "You must be logged in to see or add data."
 
-Template.registerHelper "config", ->
-  NeuronCatalogConfig.findOne({})
-
 Template.registerHelper "binary_data_cursor", ->
   BinaryData.find {}
 

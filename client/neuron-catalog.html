@@ -62,59 +62,6 @@
 
 </template>
 
-<template name="home">
-  {{#top_content_row}}
-    {{#with config}}
-      {{project_name}}
-    {{/with}}
-  {{/top_content_row}}
-
-  <p>
-    {{#if currentUser}}
-      Welcome back.
-    {{else}}
-      Welcome. {{login_message}}
-    {{/if}}
-  </p>
-
-  {{#detail_block}}
-    {{#detail_title}}
-	About the data
-    {{/detail_title}}
-    {{#detail_main}}
-
-  <p>
-    {{#with config}}
-      The data here are from the
-      project <span class="bold">{{project_name}}</span> by
-      <span class="bold">{{{data_authors}}}</span>. {{{blurb}}}
-    {{/with}}
-  </p>
-    {{/detail_main}}
-  {{/detail_block}}
-
-  {{#detail_block}}
-    {{#detail_title}}
-	About this website software
-    {{/detail_title}}
-    {{#detail_main}}
-
-  <p>This software was developed by
-  the <a href="http://strawlab.org/">Straw Lab</a> and is based
-  on <a href="http://meteor.com/">Meteor</a>. The software development
-  was supported by <a href="http://erc.europa.eu/">ERC</a> Starting
-  Grant 281884 FlyVisualCircuits and
-  by <a href="http://www.imp.ac.at/">IMP</a> core funding. Software
-  development happens on GitHub <i class="fa fa-github"></i> in
-  the <a href="https://github.com/strawlab/neuron-catalog">strawlab/neuron-catalog</a>
-  project.
-  </p>
-
-    {{/detail_main}}
-  {{/detail_block}}
-
-</template>
-
 <template name="UploadProcessorStatus">
   {{#if get_upload_processor_has_error}}
      <div class="alert alert-danger fixed-top" role="alert">
