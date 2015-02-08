@@ -65,4 +65,21 @@ Migrations.add
         validate: false
         getAutoValues: false
 
-Migrations.migrateTo(4)
+Migrations.add
+  version: 5
+  name: 'NeuronCatalogConfig has fixed _id'
+  up: ->
+    n_docs = NeuronCatalogConfig.find().count()
+    if n_docs==0
+      return
+    if n_docs>1
+      throw Error("more than one config document")
+    doc = NeuronCatalogConfig.findOne()
+    if doc._id=="config"
+      return
+    orig_id = doc._id
+    doc._id = "config"
+    NeuronCatalogConfig.insert(doc)
+    NeuronCatalogConfig.remove({_id:orig_id})
+
+Migrations.migrateTo(5)

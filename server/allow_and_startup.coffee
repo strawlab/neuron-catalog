@@ -1,6 +1,7 @@
 Meteor.startup ->
   if NeuronCatalogConfig.find().count() is 0
     doc =
+      _id: "config"
       project_name: "neuron catalog"
       data_authors: "authors"
       blurb: ""
