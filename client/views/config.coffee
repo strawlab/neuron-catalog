@@ -93,3 +93,10 @@ Template.config.helpers
 
   current_user_id: ->
     Meteor.userId()
+
+AutoForm.hooks configQuickForm:
+  onSuccess: (operation, result, template) ->
+    bootbox.alert("Saved configuration successfully.")
+  onError: (operation, error, template) ->
+    console.error("error saving new configuration")
+    bootbox.alert("Error saving configuration.")
