@@ -17,7 +17,7 @@ THUMBNAIL_DIR_NAME = 'thumbs'
 THUMBNAIL_FORMAT_EXTENSION = 'jpeg'
 THUMBNAIL_SQUARE_SIZE = 200
 
-SKIP_EXTENSIONS = ['.am']
+SKIP_EXTENSIONS = ['.am','.obj','.x3d','.utf','.ply']
 
 def show_doc(doc):
     print('---- %s -----'%doc['_id'])
