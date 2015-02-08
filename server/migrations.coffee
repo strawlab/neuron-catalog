@@ -18,7 +18,7 @@ Migrations.add
 
 Migrations.add
   version: 2
-  name: 'Rename collection from neuropils to brain_regions',
+  name: 'Rename collection from neuropils to brain_regions'
   up: ->
     OLDNPILS = new Meteor.Collection("neuropils")
 
@@ -28,7 +28,7 @@ Migrations.add
 
 Migrations.add
   version: 3
-  name: 'Rename field from neuropils to brain_regions',
+  name: 'Rename field from neuropils to brain_regions'
   up: ->
     for coll in [DriverLines, NeuronTypes]
       coll.find().forEach (doc) ->
@@ -46,7 +46,7 @@ Migrations.add
 
 Migrations.add
   version: 4
-  name: 'Store S3 bucket name, region, key separately',
+  name: 'Store S3 bucket name, region, key separately'
   up: ->
     BinaryData.find().forEach (doc) ->
       parsed = parse_s3_url( doc.secure_url )
