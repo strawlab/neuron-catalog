@@ -119,7 +119,7 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
 
   my_uploader.send upload_file, (error, downloadUrl) ->
     # This callback is called when the upload is complete (or on error).
-    upload_progress_dialog.close()
+    upload_progress_dialog.modal('hide')
     upload_progress_dialog = null
 
     if error?
