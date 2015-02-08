@@ -70,7 +70,7 @@ def make_cache_inner(doc, upload_key, options, _type='cache'):
     skip_doc = False
     if doc['_id'] in skip_image_file_for_now:
         bad_urls = skip_image_file_for_now[ doc['_id'] ]
-        if doc['secure_url'] in bad_urls:
+        if get_secure_url(doc) in bad_urls:
             skip_doc = True
 
     if not skip_doc:
@@ -79,8 +79,8 @@ def make_cache_inner(doc, upload_key, options, _type='cache'):
             print("made temp dir",cwd)
 
         try:
-            orig_url = doc['secure_url']
-            orig_rel_url = get_rel_url(orig_url)
+            orig_url = get_secure_url(doc)
+            orig_rel_url = doc['s3_key']
             orig_fname = os.path.split( orig_rel_url )[-1]
 
             filename = os.path.join( cwd, orig_fname)
@@ -105,14 +105,14 @@ def make_cache_inner(doc, upload_key, options, _type='cache'):
                 print('problems with this document, ignoring for now')
                 print("ERROR while processing doc: %s"%(err,))
                 show_doc(doc)
-            skip_image_file_for_now[ doc['_id'] ].append( doc['secure_url'] )
+            skip_image_file_for_now[ doc['_id'] ].append( get_secure_url(doc) )
         else:
             props = get_image_properties(out_full)
             neuron_catalog_tools.upload(out_full, upload_key)
 
             # compute download URL
-            base_url = 'https://%s.s3.amazonaws.com/'%bucket_name
-            download_url = base_url + urllib.quote( upload_key )
+            #base_url = 'https://%s.s3.amazonaws.com/'%bucket_name
+            download_url = make_secure_url( region=doc['s3_region'], bucket=doc['s3_bucket'], key=urllib.quote( upload_key ) )
 
             # verify download available
             num_tries = 0
@@ -155,24 +155,22 @@ def convert(input_fname, output_fname, options, square_size=None):
     subprocess.check_call(cmd, shell=use_shell)
     assert os.path.exists(output_fname)
 
-def get_rel_url(url):
-    parts = urlparse.urlparse(url)
-    path = parts.path
-    pp = path.split('/')
-    if pp[0]!='':
-        raise ValueError('unexpected parts.path: %r, pp: %r'%(path,pp))
-    pp.pop(0)
+def make_secure_url( region, bucket, key):
+    if region=='us-east-1':
+        base_name = 'https://s3.amazonaws.com/'
+    else:
+        base_name = 'https://s3-' + region + '.amazonaws.com/'
+    url = base_name + bucket + '/' + key
+    return url
 
-    if pp[0]!='images':
-        assert pp[1]=='images'
-        #bucket_name = pp.pop(0)
-
-    key_in_bucket = '/'.join(pp)
-    return key_in_bucket
+def get_secure_url(doc):
+    return make_secure_url( region = doc['s3_region'],
+                            bucket = doc['s3_bucket'],
+                            key    = doc['s3_key'] )
 
 def parse_urls_from_doc(doc):
-    full_url = doc['secure_url']
-    orig_rel_url = get_rel_url(full_url)
+    full_url = get_secure_url(doc)
+    orig_rel_url = doc['s3_key']
     assert full_url.endswith(orig_rel_url)
     if not orig_rel_url.startswith('/'):
         orig_rel_url = '/' + orig_rel_url
@@ -229,7 +227,7 @@ def make_cache_if_needed(coll, doc, options):
             skip_doc = False
             if doc['_id'] in skip_image_file_for_now:
                 bad_urls = skip_image_file_for_now[ doc['_id'] ]
-                if doc['secure_url'] in bad_urls:
+                if get_secure_url(doc) in bad_urls:
                     skip_doc = True
             if z['extension'] in SKIP_EXTENSIONS:
                 skip_doc=True
@@ -238,7 +236,7 @@ def make_cache_if_needed(coll, doc, options):
                 print("NOT SKIPPED: z['extension']: ",z['extension'])
 
             if not skip_doc:
-                r = requests.get(doc['secure_url'])
+                r = requests.get(get_secure_url(doc))
                 tmpdir = tempfile.mkdtemp()
                 if options.verbose:
                     print("getting image size: made temp dir",tmpdir)
@@ -254,7 +252,7 @@ def make_cache_if_needed(coll, doc, options):
                         raise
                     if options.verbose:
                         print('problems with this document, ignoring for now')
-                    skip_image_file_for_now[ doc['_id'] ].append( doc['secure_url'] )
+                    skip_image_file_for_now[ doc['_id'] ].append( get_secure_url(doc) )
                 else:
                     for key in ['width','height']:
                         doc[key] = props[key]
@@ -265,8 +263,8 @@ def make_cache_if_needed(coll, doc, options):
                     if not options.keep:
                         shutil.rmtree(tmpdir)
 
-    full_url = doc['secure_url']
-    orig_rel_url = get_rel_url(full_url)
+    full_url = get_secure_url(doc)
+    orig_rel_url = doc['s3_key']
     if is_tiff(orig_rel_url):
         if doc['_id'] not in cache_ids:
             if 1:
@@ -287,8 +285,8 @@ def pump_new(coll,options):
     to_append = []
     while len(new_docs):
         doc = new_docs.pop(0)
-        if doc['secure_url'] == '(uploading)':
-            to_append.append(doc)
+        if doc['s3_upload_done'] == False:
+            to_append.append(doc) # put back into new_docs
         else:
             result = make_cache_if_needed(coll,doc,options)
     for doc in to_append:
@@ -336,7 +334,7 @@ def infinite_poll_loop(options):
     while 1:
         for doc in coll.find():
             d_id = doc['_id']
-            if doc['secure_url'] == '(uploading)':
+            if doc['s3_upload_done'] == False:
                 # file not done uploading yet... wait...
                 continue
             if d_id not in seen_docs:
