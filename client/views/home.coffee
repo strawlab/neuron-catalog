@@ -3,8 +3,17 @@ url_converter = (url) ->
 
 Template.home.helpers
   project_name: ->
-    NeuronCatalogConfig.findOne({}).project_name
+    doc = NeuronCatalogConfig.findOne({})
+    if !doc?
+      return
+    doc.project_name
   data_authors: ->
-    html_sanitize(NeuronCatalogConfig.findOne({}).data_authors, url_converter )
+    doc = NeuronCatalogConfig.findOne({})
+    if !doc? or !doc.data_authors?
+      return
+    html_sanitize(doc.data_authors, url_converter )
   blurb: ->
-    html_sanitize(NeuronCatalogConfig.findOne({}).blurb, url_converter )
+    doc = NeuronCatalogConfig.findOne({})
+    if !doc? or !doc.blurb?
+      return
+    return html_sanitize(doc.blurb, url_converter )
