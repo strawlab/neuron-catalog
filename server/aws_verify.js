@@ -19,6 +19,11 @@ function _append_CORS_failures( cors, failures ) {
 }
 
 get_slingshot_AWS_failures = function() {
+
+  // We seem to be affected by a similar bug to this. This function
+  // will succeed the first time but will then fail.
+  // https://github.com/peerlibrary/meteor-aws-sdk/issues/12
+
   failures = [];
   if (Meteor.settings.AWSAccessKeyId) {
   } else {
