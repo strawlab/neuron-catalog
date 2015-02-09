@@ -68,8 +68,9 @@ Template.config.events
     AWSConfigTestDone.set(0)
     bootbox.dialog message: window.renderTmp(Template.ConfigAWSTestDialog)
     Meteor.call("verify_AWS_configuration", on_verify_callback)
-    window.setTimeout(->
-      AWSConfigTestDone.set(30)
+    Meteor.setTimeout(->
+      if AWSConfigTestDone.get() < 100
+        AWSConfigTestDone.set(30)
     ,
       300)
 
