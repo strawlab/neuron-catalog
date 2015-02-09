@@ -21,7 +21,7 @@ Meteor.publish "brain_regions", ->
 Meteor.publish "binary_data", ->
   BinaryData.find {}  if @userId
 Meteor.publish "simple_upload_processor_status", ->
-  SimpleUploadProcessorStatus.find {} if @userId
+  SimpleUploadProcessorStatus.find {}
 
 # ----------------------------------------
 #   Upload processor status
