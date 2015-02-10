@@ -20,7 +20,7 @@ The neuron catalog can be most easily installed for testing using
 2. Open a terminal window into the `neuron-catalog` directory (containing the `Vagrantfile`).
 3. Type `vagrant up`.
 4. Wait a few minutes until for the Vagrant machine to come up.
-5. Open http://localhost:3450/ with your browser to visit your newly installed neuron catalog server.
+5. Open [http://localhost:3450/](http://localhost:3450/) with your browser to visit your newly installed neuron catalog server.
 
 ### AWS Setup and Configuration
 
@@ -36,6 +36,7 @@ neuron-catalog.
 
 3. In the bucket permissions, add the following CORS configuration:
 
+    <code>
        <?xml version="1.0" encoding="UTF-8"?>
        <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
            <CORSRule>
@@ -48,6 +49,7 @@ neuron-catalog.
                <AllowedHeader>*</AllowedHeader>
            </CORSRule>
        </CORSConfiguration>
+    </code>
 
 4. Enable static website hosting for this S3 bucket by selecting
 `Enable website hosting` in the AWS Console. Also set "Index Document"
@@ -56,6 +58,7 @@ to `index.html`.
 5. Set the bucket policy to (substitute the name of your bucket for
 `your-bucket-name`):
 
+   <code>
    {
    	"Version": "2008-10-17",
    	"Statement": [
@@ -70,6 +73,7 @@ to `index.html`.
    		}
    	]
    }
+   </code>
 
 6. In the Identity & Access Management (IAM) configuration, create a
 user and group for performing the uploads. Note the Access Key and the
@@ -78,6 +82,7 @@ Secret Key - you will need to enter these.
 7. Still in IAM, set the group policy to the following (again,
 substitute the name of your bucket for `your-bucket-name`):
 
+    <code>
        {
          "Version": "2012-10-17",
          "Statement": [
@@ -103,6 +108,7 @@ substitute the name of your bucket for `your-bucket-name`):
            }
          ]
        }
+    </code>
 
 8. Now, you need to tell neuron-catalog what your IAM Access Key and
 Secret Key created above. These go in a JSON file like the prototype
