@@ -54,6 +54,8 @@ window.get_collection_from_name = (name) ->
     coll = BinaryData
   else if name is "Meteor.users"
     coll = Meteor.users
+  else if name is "NeuronCatalogConfig"
+    coll = NeuronCatalogConfig
   else
     console.error "unknown collection name "+name
   coll
