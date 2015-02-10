@@ -12,23 +12,15 @@ project.
 
 ## Installation
 
-There are two ways to install neuron_catalog. There is a development
-install meant for local development and there is a deployment install
-meant for deployment. For initial testing, use the development install
-instructions.
+The neuron catalog can be most easily installed for testing using
+[Vagrant](https://www.vagrantup.com/).
 
-### Development installation
-
-Run the following commands in your bash console
-
-    # copy the example server configuration
-    cp server/server-config.json.example server/server-config.json
-
-    # edit the server configuration
-    <your favorite editor> server/server-config.json
-
-    # In one console, run the Meteor webserver and Mongo database
-    meteor run --settings server/server-config.json
+0. Install [Vagrant](https://www.vagrantup.com/).
+1. Download the neuron catalog source code from our [GitHub repository](https://github.com/strawlab/neuron-catalog).
+2. Open a terminal window into the `neuron-catalog` directory (containing the `Vagrantfile`).
+3. Type `vagrant up`.
+4. Wait a few minutes until for the Vagrant machine to come up.
+5. Open http://localhost:3450/ with your browser to visit your newly installed neuron catalog server.
 
 ### AWS Setup and Configuration
 
@@ -40,14 +32,7 @@ neuron-catalog.
 
 1. Create an AWS user and login to the [AWS Console](https://console.aws.amazon.com/).
 
-2. Create an S3 Bucket. Keep in mind the following points:
-
-   a) Use the `US Standard` region for the bucket. Otherwise, Meteor
-      Slingshot has trouble uploading.
-
-   b) The bucket name must not have dots (no `.`). Otherwise, secure
-      uploads will fail due to the HTTPS certificate wildcards only
-      supporting a single level subdomain.
+2. Create an S3 Bucket.
 
 3. In the bucket permissions, add the following CORS configuration:
 
@@ -118,3 +103,10 @@ substitute the name of your bucket for `your-bucket-name`):
            }
          ]
        }
+
+8. Now, you need to tell neuron-catalog what your IAM Access Key and
+Secret Key created above. These go in a JSON file like the prototype
+in `server/server-config.json.example`. Change the relevant variables
+and save it as something like `server/server-config.json`. You can
+also enter these values into the top of the `Vagrantfile` and
+re-create your vagrant machine.
