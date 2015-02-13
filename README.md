@@ -15,12 +15,13 @@ project.
 The neuron catalog can be most easily installed for testing using
 [Vagrant](https://www.vagrantup.com/).
 
-0. Install [Vagrant](https://www.vagrantup.com/).
-1. Download the neuron catalog source code from our [GitHub repository](https://github.com/strawlab/neuron-catalog).
-2. Open a terminal window into the `neuron-catalog` directory (containing the `Vagrantfile`).
-3. Type `vagrant up`.
-4. Wait a few minutes until for the Vagrant machine to come up.
-5. Open [http://localhost:3450/](http://localhost:3450/) with your browser to visit your newly installed neuron catalog server.
+1. Install [VirtualBox](https://www.virtualbox.org/)
+2. Install [Vagrant](https://www.vagrantup.com/).
+3. Download the neuron catalog source code from our [GitHub repository](https://github.com/strawlab/neuron-catalog).
+4. Open a terminal window into the `neuron-catalog` directory (containing the `Vagrantfile`).
+5. Type `vagrant up`.
+6. Wait a few minutes until for the Vagrant machine to come up.
+7. Open [http://localhost:3450/](http://localhost:3450/) with your browser to visit your newly installed neuron catalog server.
 
 ### AWS Setup and Configuration
 
