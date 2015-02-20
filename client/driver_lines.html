@@ -1,0 +1,215 @@
+<template name="driver_line_from_id_block">
+  {{#with driver_line_from_id}}
+    {{> UI.contentBlock this}}
+  {{/with}}
+</template>
+
+<template name="AddDriverLineDialog">
+  <form role="form">
+    <label>Name</label>
+    <input type="text" class="name span5 driver-line-lookup">
+    {{#if count_cursor matching_driver_lines}}
+      <div>
+        <h4>potential duplicate driver lines</h4>
+        {{#each matching_driver_lines}}
+          {{>linkout get_linkout}}
+        {{/each}}
+      </div>
+    {{/if}}
+    <div>
+      <div><h4>neuron types</h4></div>
+      <div>
+	{{#each neuron_types}}
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" class="neuron_types" id={{_id}}> {{name}}
+	  </label>
+	</div>
+      {{/each}}
+      </div>
+    </div>
+
+    <div>
+      <div><h4>brain_regions</h4></div>
+      <div>
+      <table class="table table-striped">
+	<thead><tr>
+	    <td>unspecific</td>
+	    <td>output regions (presynaptic)</td>
+	    <td>input regions (postsynaptic)</td>
+	    <td>name</td>
+	</tr></thead>
+	<tbody>
+	{{#each brain_regions}}
+	<tr>
+	  <td>
+            <input type="checkbox" class="brain_regions-unspecified" id={{_id}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="brain_regions-output" id={{_id}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="brain_regions-input" id={{_id}}>
+	  </td>
+	  <td>
+            {{name}}
+	  </td>
+	</tr>
+	{{/each}}
+	</tbody>
+      </table>
+      </div>
+    </div>
+  </form>
+</template>
+
+<template name="EditDriverLinesDialog">
+  <div>
+    <div><h4>driver lines</h4></div>
+    <div>
+      {{#each driver_lines}}
+      <div class="checkbox">
+	<label>
+	  <input type="checkbox" class="driver_lines" id={{_id}} checked={{is_checked}}> {{name}}
+	</label>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name="driver_line_show_brief">
+  {{#driver_line_from_id_block}}
+  <h3>Driver Line: {{name}}</h3>
+  {{/driver_line_from_id_block}}
+</template>
+
+<template name="driver_line_show">
+  {{#driver_line_from_id_block}}
+  {{>top_content_row2 type_name="Driver Line" collection="DriverLines" _id=_id name=name}}
+
+  {{> tags_panel tags=tags collection="DriverLines" _id=_id}}
+
+  {{#if is_vt_gal4_line}}
+  {{#detail_block}}
+    {{#detail_title}}
+      Links to remote resources
+    {{/detail_title}}
+    {{#detail_main}}
+      <a class="btn btn-default btn-small" href="{{vdrc_url}}"><i class="fa fa-long-arrow-right"></i> VDRC</a>
+      <a class="btn btn-default btn-small" href="{{brainbase_url}}"><i class="fa fa-long-arrow-right"></i> BrainBase</a>
+    {{/detail_main}}
+  {{/detail_block}}
+  {{/if}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+        {{> AddImageCode2 collection="DriverLines" my_id=_id}}
+    {{/detail_title}}
+    {{#detail_main}}
+      <br/>
+        {{> binary_data_table binary_data=images}}
+        {{> add_image_code collection="DriverLines" my_id=_id}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+      Neuron types
+      <a class="btn btn-default btn-small edit-neuron-types" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+
+    {{/detail_title}}
+    {{#detail_main}}
+      {{> neuron_type_table neuron_types=neuron_types}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+      Brain Regions
+      <a class="btn btn-default btn-small edit-brain-regions" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+    {{/detail_title}}
+    {{#detail_main}}
+      {{> brain_region_table brain_regions=brain_regions}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{> FlyCircuitPanel flycircuit_idids=flycircuit_idids collection="DriverLines" _id=_id}}
+
+  {{> comments_panel comments=comments show_name="DriverLines" _id=_id}}
+  {{/driver_line_from_id_block}}
+</template>
+
+<template name="driver_line_table">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>Driver line</th>
+	<th>Neuron types</th>
+	<th>Brain Regions (nonspecific expression)</th>
+	<th>Output brain regions</th>
+	<th>Input brain regions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each driver_lines}}
+      {{#driver_line_from_id_block}}
+      <tr>
+	<td>
+	  <a href="{{pathFor 'driver_line_show'}}"><span class="keep-together">{{name}}</span></a>
+	</td>
+	<td>
+	  {{#each neuron_types}}
+	  {{#neuron_type_from_id_block}}
+	  <a href="{{pathFor 'neuron_type_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/neuron_type_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_brain_regions this "unspecified"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_brain_regions this "output"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_brain_regions this "input"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
+	  {{/each}}
+	</td>
+      </tr>
+      {{/driver_line_from_id_block}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="driver_lines">
+  {{#top_content_row}}
+      All Driver Lines
+  {{/top_content_row}}
+
+  {{#detail_block}}
+    {{#detail_main}}
+
+      {{> driver_line_table driver_lines=driver_line_cursor}}
+
+      {{#if currentUser}}
+      <a class="btn btn-default insert" href="#">
+	<i class="fa fa-plus"></i> Add a new driver line</a>
+      {{else}}
+        {{login_message}}
+      {{/if}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+</template>

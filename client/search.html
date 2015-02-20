@@ -1,0 +1,57 @@
+<template name="Search">
+  {{#if currentUser}}
+
+  <p>
+    Text (name, synonyms and comments) search:
+    <input type="text" id="comments-search-input" placeholder="search text">
+  </p>
+
+  <p>
+    FlyCircuit IdId search:
+    <input type="text" id="flycircuit-search-input" placeholder="idid number or * for all">
+  </p>
+
+  <p>
+    Limit by tags:
+    {{#each get_tags}}
+      <div class="tag-name btn btn-default btn-small {{is_active_css_class}}" data-tag={{name}}>
+        {{name}}
+      </div>
+    {{/each}}
+  </p>
+
+  {{#if current_search}}
+  <h4>Search results</h4>
+
+  Current search:
+  <a class="neuron-catalog-chevron collapsed" data-toggle="collapse" data-target="#current_search_code" aria-expanded="true" aria-controls="demo" href="#"></a>
+  <div id="current_search_code" class="collapse">
+    <p>This is the MongoDB query currently being executed:</p>
+    <code>{{current_search}}</code>
+  </div>
+
+  {{#detail_block}}
+    {{#detail_title}}Driver Lines{{/detail_title}}
+    {{> driver_line_table driver_lines=driver_line_search_cursor}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}Neuron Types{{/detail_title}}
+    {{> neuron_type_table neuron_types=neuron_type_search_cursor}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}Brain Regions{{/detail_title}}
+    {{> brain_region_table brain_regions=brain_region_search_cursor}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}Images and Binary Data{{/detail_title}}
+    {{> binary_data_table binary_data=binary_data_search_cursor}}
+  {{/detail_block}}
+  {{/if}}
+  {{else}}
+    {{login_message}}
+  {{/if}}
+
+</template>

@@ -1,0 +1,150 @@
+<template name="brain_region_from_id_block">
+  {{#with brain_region_from_id}}
+    {{> UI.contentBlock this}}
+  {{/with}}
+</template>
+
+<template name="brain_region_table">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>Brain Region</th>
+	<th>Driver lines</th>
+	<th>Neuron types</th>
+	<th>Expression type</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each brain_regions}}
+      {{#brain_region_from_id_block}}
+      <tr>
+	<td>
+          <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	</td>
+	<td>
+	  {{#each driver_lines_referencing_me}}
+          {{#driver_line_from_id_block}}
+          <a href="{{pathFor 'driver_line_show'}}"><span class="keep-together">{{name}}</span></a>
+          {{/driver_line_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each neuron_types_referencing_me}}
+          {{#neuron_type_from_id_block}}
+          <a href="{{pathFor 'neuron_type_show'}}"><span class="keep-together">{{name}}</span></a>
+          {{/neuron_type_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each my_types}}
+	    {{this}}
+	  {{/each}}
+	</td>
+      </tr>
+      {{/brain_region_from_id_block}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="brain_regions">
+  {{#top_content_row}}
+      All Brain Regions
+  {{/top_content_row}}
+
+  {{#detail_block}}
+    {{#detail_main}}
+  {{> brain_region_table brain_regions=brain_region_cursor}}
+
+  {{#if currentUser}}
+  <a class="btn btn-default insert" href="#">
+    <i class="fa fa-plus"></i> Add a new brain_region</a>
+  {{else}}
+  {{login_message}}
+  {{/if}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+</template>
+
+<template name="brain_region_show_brief">
+  {{#brain_region_from_id_block}}
+  <h3>Brain Region: {{name}}</h3>
+  {{/brain_region_from_id_block}}
+</template>
+
+<template name="brain_region_show">
+  {{#brain_region_from_id_block}}
+
+  {{>top_content_row2 type_name="Brain Region" collection="BrainRegions" _id=_id name=name}}
+
+  {{> tags_panel tags=tags collection="BrainRegions" _id=_id}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+      {{> AddImageCode2 collection="BrainRegions" my_id=_id}}
+    {{/detail_title}}
+    {{#detail_main}}
+      <br/>
+        {{> binary_data_table binary_data=images}}
+        {{> add_image_code collection="BrainRegions" my_id=_id}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+      Driver lines
+      {{>derived_title}}
+    {{/detail_title}}
+    {{#detail_main}}
+      {{> driver_line_table driver_lines=driver_lines_referencing_me}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+      Neuron types
+      {{>derived_title}}
+    {{/detail_title}}
+    {{#detail_main}}
+      {{> neuron_type_table neuron_types=neuron_types_referencing_me}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{> comments_panel comments=comments show_name="Brain Regions" _id=_id}}
+  {{/brain_region_from_id_block}}
+</template>
+
+<template name="EditBrainRegionsDialog">
+  <div>
+    <div><h4>brain_regions</h4></div>
+    <div>
+      <table class="table table-striped">
+	<thead><tr>
+	    <td>unspecific</td>
+	    <td>output regions (presynaptic)</td>
+	    <td>input regions (postsynaptic)</td>
+	    <td>name</td>
+	</tr></thead>
+	<tbody>
+      {{#each brain_regions}}
+	<tr>
+	  <td>
+            <input type="checkbox" class="brain_regions-unspecified" id={{_id}} checked={{unspecific_is_checked}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="brain_regions-output" id={{_id}} checked={{output_is_checked}}>
+	  </td>
+	  <td>
+            <input type="checkbox" class="brain_regions-input" id={{_id}} checked={{input_is_checked}}>
+	  </td>
+	  <td>
+            {{name}}
+	  </td>
+	</tr>
+      {{/each}}
+	</tbody>
+      </table>
+    </div>
+  </div>
+</template>

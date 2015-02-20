@@ -1,0 +1,128 @@
+<template name="binary_data">
+  {{#top_content_row}}
+      Images and volumes
+  {{/top_content_row}}
+
+  {{#detail_block}}
+    {{#detail_main}}
+        {{> add_image_code}}
+        <br/>
+        {{> binary_data_table binary_data=binary_data_cursor}}
+
+        {{#if currentUser}}
+        {{else}}
+          {{login_message}}
+        {{/if}}
+
+    {{/detail_main}}
+  {{/detail_block}}
+
+</template>
+
+<template name="binary_data_show">
+  {{#binary_data_from_id_block}}
+  {{>top_content_row2 type_name=binary_data_type collection="BinaryData" _id=_id name=name}}
+
+  Documents referencing this:{{#each find_references}} {{>linkout collection=collection my_id=my_id doc=doc}} {{/each}}
+
+  {{#detail_block}}
+  <div class="image_big">
+    <div class="{{#if is_image_hidden}}{{else}}vis-hidden{{/if}}">Loading <code>{{name}}</code>...</div>
+    <img class="aspect_image loadable {{#if is_image_hidden}}vis-hidden{{/if}}" src="{{secure_url_notif}}" alt={{name}}>
+    <p>{{name}} [ <a href="{{secure_url_notif}}">cache</a> | <a download="{{name}}" href="{{secure_url}}">original</a> ]</p>
+  </div>
+  {{hack}}
+  {{/detail_block}}
+
+  {{> comments_panel comments=comments show_name="BinaryData" _id=_id}}
+  {{/binary_data_from_id_block}}
+</template>
+
+<template name="binary_data_show_brief">
+  {{#binary_data_from_id_block}}
+  {{#top_content_row}}
+    Binary data: {{name}}
+  {{/top_content_row}}
+
+  {{#detail_block}}
+  <div class="image-square">
+    <a href="{{pathFor 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url_notif}}" alt={{name}}></a>
+    {{name}}
+  </div>
+
+  {{/detail_block}}
+  {{/binary_data_from_id_block}}
+</template>
+
+<template name="binary_data_table">
+  <div class="flex-images">
+    {{#each binary_data}}
+      {{#binary_data_from_id_block}}
+        {{#if has_thumb}}
+          <div class="item {{selectable_class}}" id={{_id}} data-w={{thumb_width}} data-h={{thumb_height}}>
+	    {{#if ../../selectable_not_clickable}}
+              <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
+	    {{else}}
+              <a href="{{pathFor 'binary_data_show'}}">
+                <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
+              </a>
+	    {{/if}}
+          </div>
+        {{else}}
+          <div class="item no-thumb-item {{selectable_class}}" id={{_id}} data-w="150" data-h="200">
+	    {{#if ../../selectable_not_clickable}}
+	      {{name}}
+	    {{else}}
+              <a href="{{pathFor 'binary_data_show'}}">{{name}}</a>
+	    {{/if}}
+	    <p>No thumbnail available.</p>
+          </div>
+        {{/if}}
+      {{/binary_data_from_id_block}}
+    {{/each}}
+  </div>
+  {{#if selectable_not_clickable}}
+    <div class="right-text">
+      {{get_n_selected}} selected.
+    </div>
+  {{/if}}
+</template>
+
+<template name="AddImageCode2">
+  <div>
+      Images and volumes
+      <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+  </div>
+</template>
+
+<template name="add_image_code">
+  <div>
+    <a class="btn btn-default btn-small insert" href="#">
+      <i class="fa fa-plus"></i> Add new image or volume</a>
+  </div>
+</template>
+
+<template name="LinkExistingImageDialog">
+  <p>Select images and volumes to link from {{friendly_item_name}}</p>
+  <div class="alert alert-warning" role="alert">
+    <i class="fa fa-exclamation-triangle"></i>This will adjust all
+    images linked from {{friendly_item_name}}. Removing the originally selected
+    images will remove their links permanently.
+  </div>
+  {{> binary_data_table binary_data=binary_data_cursor selectable_not_clickable=true}}
+</template>
+
+<template name="InsertImageDialog">
+  <div id="file_form_div">
+    <form role="form" id="insert_image_form">
+      <input type="file" id="insert_image">
+    </form>
+  </div>
+</template>
+
+<template name="binary_data_from_id_block">
+  {{#with binary_data_from_id}}
+    {{> UI.contentBlock this}}
+  {{/with}}
+</template>
+

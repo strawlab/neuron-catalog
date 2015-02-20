@@ -1,0 +1,188 @@
+<template name="neuron_type_from_id_block">
+  {{#with neuron_type_from_id}}
+    {{> UI.contentBlock this}}
+  {{/with}}
+</template>
+
+<template name="neuron_type_table">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>Neuron type</th>
+	<th>Synonyms</th>
+	<th>Best driver lines</th>
+	<th>Brain Regions (nonspecific expression)</th>
+	<th>Output brain regions</th>
+	<th>Input brain regions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each neuron_types}}
+      {{#neuron_type_from_id_block}}
+      <tr>
+	<td>
+	  <a href="{{pathFor 'neuron_type_show'}}"><span class="keep-together">{{name}}</span></a>
+	</td>
+	<td>
+	  {{#each synonyms}}
+	  <span class="keep-together">{{this}}</span>
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each best_driver_lines}}
+          {{#driver_line_from_id_block}}
+            <a href="{{pathFor 'driver_line_show'}}"><span class="keep-together">{{name}}</span></a>
+          {{/driver_line_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_brain_regions this "unspecified"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_brain_regions this "output"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
+	  {{/each}}
+	</td>
+	<td>
+	  {{#each get_brain_regions this "input"}}
+	  {{#brain_region_from_id_block}}
+	  <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+	  {{/brain_region_from_id_block}}
+	  {{/each}}
+	</td>
+      </tr>
+      {{/neuron_type_from_id_block}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="neuron_types">
+  {{#top_content_row}}
+    All Neuron Types
+  {{/top_content_row}}
+
+  {{#detail_block}}
+    {{#detail_main}}
+
+  {{> neuron_type_table neuron_types=neuron_type_cursor}}
+
+  {{#if currentUser}}
+  <a class="btn btn-default insert" href="#">
+    <i class="fa fa-plus"></i> Add a new neuron type</a>
+  {{else}}
+  {{login_message}}
+  {{/if}}
+    {{/detail_main}}
+  {{/detail_block}}
+</template>
+
+<template name="neuron_type_show_brief">
+  {{#neuron_type_from_id_block}}
+  <h3>Neuron type: {{name}}</h3>
+  {{/neuron_type_from_id_block}}
+</template>
+
+<template name="neuron_type_show">
+  {{#neuron_type_from_id_block}}
+  {{>top_content_row2 type_name="Neuron type" collection="NeuronTypes" _id=_id name=name}}
+
+  {{> tags_panel tags=tags collection="NeuronTypes" _id=_id}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+	Synonyms
+    {{/detail_title}}
+    {{#detail_main}}
+      <p></p>
+      <div class="synonyms_div">
+	<div class="item-synonyms">
+	  {{#each synonym_dicts}}
+
+          <div class="btn btn-default btn-small">
+	    <div class="pzp1 name">{{name}}</div>
+	    <div class="pzp2 remove"><i class="fa fa-trash-o"></i></div>
+	  </div>
+	  {{/each}}
+	  {{#if adding_synonym}}
+	  <div class="synonym edit_synonym">
+	    <input type="text" id="edit_synonym_input" value="" >
+	  </div>
+	  {{else}}
+	  <div class="synonym add_synonym">
+	    <a class="btn btn-default btn-small insert" href="#">
+	      <i class="fa fa-plus"></i> Add synonym</a>
+	  </div>
+	  {{/if}}
+	</div>
+      </div>
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+      {{> AddImageCode2 collection="NeuronTypes" my_id=_id}}
+    {{/detail_title}}
+    {{#detail_main}}
+      <br/>
+        {{> binary_data_table binary_data=images}}
+        {{> add_image_code collection="NeuronTypes" my_id=_id}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+      Best driver lines
+      <a class="btn btn-default btn-small edit-best-driver-lines" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+    {{/detail_title}}
+    {{#detail_main}}
+      {{> driver_line_table driver_lines=best_driver_lines}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+	Brain Regions
+      <a class="btn btn-default btn-small edit-brain-regions" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+    {{/detail_title}}
+    {{#detail_main}}
+      {{> brain_region_table brain_regions=brain_regions}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{#detail_block}}
+    {{#detail_title}}
+	Driver lines
+        {{>derived_title}}
+    {{/detail_title}}
+    {{#detail_main}}
+      {{> driver_line_table driver_lines=driver_lines_referencing_me}}
+    {{/detail_main}}
+  {{/detail_block}}
+
+  {{> FlyCircuitPanel flycircuit_idids=flycircuit_idids collection="NeuronTypes" _id=_id}}
+
+  {{> comments_panel comments=comments show_name="NeuronTypes" _id=_id}}
+  {{/neuron_type_from_id_block}}
+</template>
+
+<template name="EditNeuronTypesDialog">
+  <div>
+    <div><h4>neuron types</h4></div>
+    <div>
+      {{#each neuron_types}}
+      <div class="checkbox">
+	<label>
+	  <input type="checkbox" class="neuron_types" id={{_id}} checked={{is_checked}}> {{name}}
+	</label>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</template>
