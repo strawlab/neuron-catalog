@@ -90,6 +90,7 @@
 
   {{> tags_panel tags=tags collection="DriverLines" _id=_id}}
 
+  {{#if specialization_Dmel}}
   {{#if is_vt_gal4_line}}
   {{#detail_block}}
     {{#detail_title}}
@@ -100,6 +101,7 @@
       <a class="btn btn-default btn-small" href="{{brainbase_url}}"><i class="fa fa-long-arrow-right"></i> BrainBase</a>
     {{/detail_main}}
   {{/detail_block}}
+  {{/if}}
   {{/if}}
 
   {{#detail_block}}
@@ -134,7 +136,9 @@
     {{/detail_main}}
   {{/detail_block}}
 
-  {{> FlyCircuitPanel flycircuit_idids=flycircuit_idids collection="DriverLines" _id=_id}}
+  {{#if specialization_Dmel}}
+    {{> FlyCircuitPanel flycircuit_idids=flycircuit_idids collection="DriverLines" _id=_id}}
+  {{/if}}
 
   {{> comments_panel comments=comments show_name="DriverLines" _id=_id}}
   {{/driver_line_from_id_block}}

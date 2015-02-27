@@ -16,6 +16,7 @@ Meteor.subscribe "neuron_types"
 Meteor.subscribe "brain_regions"
 Meteor.subscribe "binary_data"
 Meteor.subscribe "neuron_catalog_config"
+Meteor.subscribe "settings_to_client"
 Meteor.subscribe "userData"
 
 # --------------------------------------------
@@ -294,6 +295,13 @@ Template.registerHelper "login_message", ->
 
 Template.registerHelper "binary_data_cursor", ->
   BinaryData.find {}
+
+window.specialization_Dmel = ->
+  settings = SettingsToClient.findOne({_id: 'settings'})
+  return "Drosophila melanogaster" in settings.specializations
+
+Template.registerHelper "specialization_Dmel", ->
+  return window.specialization_Dmel()
 
 setTitle = () ->
   cfg = NeuronCatalogConfig.findOne {}

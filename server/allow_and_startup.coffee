@@ -1,4 +1,5 @@
 Meteor.startup ->
+  # create initial config document if it does not exist
   if NeuronCatalogConfig.find().count() is 0
     doc =
       _id: "config"
@@ -6,9 +7,16 @@ Meteor.startup ->
       data_authors: "authors"
       blurb: ""
     NeuronCatalogConfig.insert doc
+
+  # send relevant Meteor.settings
+  SettingsToClient.update( {_id: 'settings'},
+    {$set: {specializations: Meteor.settings.NeuronCatalogSpecializations}},
+    {upsert: true})
   return
 
 # ----------------------------------------
+Meteor.publish "settings_to_client", ->
+  SettingsToClient.find {}
 Meteor.publish "neuron_catalog_config", ->
   NeuronCatalogConfig.find {}
 

@@ -23,23 +23,25 @@ enhance_driver_line_doc = (doc) ->
   doc.brainbase_url = null
 
   name = doc.name.toLowerCase()
-  if name.lastIndexOf("vt", 0) is 0 and endsWith(name,"gal4")
-    doc.is_vt_gal4_line = true
-    vt_number_str = name.substring(2, name.length-4)
-    if endsWith(vt_number_str,"-")
-      vt_number_str = vt_number_str.substring(0,vt_number_str.length-1)
-    query =
-      SEARCH_ANYPRESUF: "N"
-      SEARCH_CATALOG_ID: "VDRC_Catalog"
-      SEARCH_CATEGORY_ID: "VDRC_All"
-      SEARCH_OPERATOR: "AND"
-      SEARCH_STRING: "vt"+vt_number_str
-      VIEW_SIZE: "100"
-      sortAscending: "Y"
-      sortOrder: "SortProductField:transformId"
-    qs = $.param(query)
-    doc.vdrc_url = "http://stockcenter.vdrc.at/control/keywordsearch?"+qs
-    doc.brainbase_url = "http://brainbase.imp.ac.at/bbweb/#6?st=byline&q="+vt_number_str
+
+  if window.specialization_Dmel()
+    if name.lastIndexOf("vt", 0) is 0 and endsWith(name,"gal4")
+      doc.is_vt_gal4_line = true
+      vt_number_str = name.substring(2, name.length-4)
+      if endsWith(vt_number_str,"-")
+        vt_number_str = vt_number_str.substring(0,vt_number_str.length-1)
+      query =
+        SEARCH_ANYPRESUF: "N"
+        SEARCH_CATALOG_ID: "VDRC_Catalog"
+        SEARCH_CATEGORY_ID: "VDRC_All"
+        SEARCH_OPERATOR: "AND"
+        SEARCH_STRING: "vt"+vt_number_str
+        VIEW_SIZE: "100"
+        sortAscending: "Y"
+        sortOrder: "SortProductField:transformId"
+      qs = $.param(query)
+      doc.vdrc_url = "http://stockcenter.vdrc.at/control/keywordsearch?"+qs
+      doc.brainbase_url = "http://brainbase.imp.ac.at/bbweb/#6?st=byline&q="+vt_number_str
   doc
 
 Template.driver_line_from_id_block.helpers

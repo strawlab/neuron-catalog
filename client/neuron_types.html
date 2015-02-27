@@ -166,7 +166,9 @@
     {{/detail_main}}
   {{/detail_block}}
 
-  {{> FlyCircuitPanel flycircuit_idids=flycircuit_idids collection="NeuronTypes" _id=_id}}
+  {{#if specialization_Dmel}}
+    {{> FlyCircuitPanel flycircuit_idids=flycircuit_idids collection="NeuronTypes" _id=_id}}
+  {{/if}}
 
   {{> comments_panel comments=comments show_name="NeuronTypes" _id=_id}}
   {{/neuron_type_from_id_block}}
