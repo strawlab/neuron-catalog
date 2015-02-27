@@ -57,9 +57,9 @@ nemo64:bootstrap-data@3.3.1_1
 npm-bcrypt@0.7.7
 observe-sequence@1.0.4
 ordered-dict@1.0.2
-peerlibrary:aws-sdk@2.1.6_2
-peerlibrary:blocking@0.5.1
-percolate:migrations@0.7.2
+peerlibrary:aws-sdk@2.1.14_2
+peerlibrary:blocking@0.5.2
+percolate:migrations@0.7.3
 random@1.0.2
 reactive-dict@1.0.5
 reactive-var@1.0.4
