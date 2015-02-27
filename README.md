@@ -1,16 +1,16 @@
 # neuron-catalog
 
-A web-based user interface for a neuron catalog database.
+A simple web database for keeping track of neurons
 
 This software was developed by the [Straw Lab](http://strawlab.org/)
-and is based on [Meteor](http://meteor.com/). The software development
+and is based on [Meteor.js](http://meteor.com/). The software development
 was supported by [ERC](http://erc.europa.eu/) Starting Grant 281884
 FlyVisualCircuits and by [IMP](http://www.imp.ac.at/) core
 funding. Software development happens on GitHub in the
 [strawlab/neuron-catalog](https://github.com/strawlab/neuron-catalog).
 project.
 
-## Installation
+## Quick install for testing
 
 The neuron catalog can be most easily installed for testing using
 [Vagrant](https://www.vagrantup.com/).
@@ -23,7 +23,15 @@ The neuron catalog can be most easily installed for testing using
 6. Wait a few minutes until for the Vagrant machine to come up.
 7. Open [http://localhost:3450/](http://localhost:3450/) with your browser to visit your newly installed neuron catalog server.
 
-### AWS Setup and Configuration
+## A longer-term installation
+
+The neuron catalog software consists of a standard
+[Meteor.js](http://meteor.com/) server and a Python process to process
+uploads. Instructions for getting started with Meteor are
+[here](http://docs.meteor.com/#/basic/quickstart). The Python program
+must be run with settings that allow it to connect the database.
+
+## AWS Setup and Configuration
 
 For image and volume data uploads, neuron-catalog depends on [Amazon
 Simple Storage Service](http://aws.amazon.com/s3/) by using [Meteor
