@@ -233,7 +233,11 @@ getThumbnail = (original, scale) ->
   canvas
 
 handle_file_step_two = ( chosen_file, template, opts ) ->
+  payload = {original_file: chosen_file}
   if opts.full_image
+
+    if opts.preserve_full_image
+      payload.cached_image = opts.full_image
 
     max_width = 150 # from .no-thumb-item width
     max_height = 200 # from .no-thumb-item height
@@ -250,9 +254,13 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
       actual_width = opts.full_image.width*scale
 
     thumb = getThumbnail(opts.full_image, scale)
+    payload.thumb_canvas = thumb
+
     div = template.find("#preview")
     $(div).empty()
     div.appendChild(thumb)
+  template.payload.set( payload )
+  template.upload_ready.set( true )
 
 handle_files = (fileList, template) ->
   # template is template instance of InsertImageDialog
@@ -301,6 +309,11 @@ Template.InsertImageDialog.created = ->
   @selected_files = new ReactiveVar()
   @selected_files.set([])
 
+  @payload = new ReactiveVar()
+
+  @upload_ready = new ReactiveVar()
+  @upload_ready.set( false )
+
   # prevent dropping files onto page creating navigation
   # http://stackoverflow.com/a/6756680/1633026
   window.addEventListener 'dragover', ((e) ->
@@ -323,6 +336,8 @@ Template.InsertImageDialog.helpers
 
 Template.InsertImageDialog.events
   "change #insert_image": (event, template) ->
+    template.upload_ready.set( false )
+
     div = template.find("#preview")
     $(div).empty()
     append_spinner(div)
