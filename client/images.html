@@ -115,7 +115,11 @@
 <template name="InsertImageDialog">
   <div id="file_form_div">
     <form role="form" id="insert_image_form">
-      <input type="file" id="insert_image">
+      <input type="file" style="display:none" id="insert_image">
+      <a class="btn btn-default" href="#" id="fileSelect">Choose file</a>
+      {{#each selected_files}}
+        {{name}}
+      {{/each}}
     </form>
   </div>
 </template>

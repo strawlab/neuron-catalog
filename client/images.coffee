@@ -204,11 +204,35 @@ Template.add_image_code.events
         close:
           label: "Close"
         save:
-          label: "Save"
+          label: "Upload"
           className: "btn-primary"
           callback: ->
             dialog_template = window.dialog_template
             insert_image_save_func(dialog_template, send_coll, my_id, "images")
+
+Template.InsertImageDialog.created = ->
+  @selected_files = new ReactiveVar()
+  @selected_files.set([])
+
+Template.InsertImageDialog.helpers
+  selected_files: ->
+    template = Template.instance()
+    result = template.selected_files.get()
+    result2 = (file for file in result) # convert from FileList to array
+    return result2
+
+Template.InsertImageDialog.events
+  "change #insert_image": (event, template) ->
+    file_dom_element = template.find("#insert_image")
+    if !file_dom_element
+      return
+    template.selected_files.set(file_dom_element.files)
+
+  "click #fileSelect": (event, template) ->
+    file_dom_element = template.find("#insert_image")
+    if file_dom_element
+      file_dom_element.click()
+    event.preventDefault()
 
 Template.binary_data_table.rendered = ->
   $('.flex-images').flexImages({rowHeight: 200});
