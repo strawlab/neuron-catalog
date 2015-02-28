@@ -210,6 +210,45 @@ Template.add_image_code.events
             dialog_template = window.dialog_template
             insert_image_save_func(dialog_template, send_coll, my_id, "images")
 
+getThumbnail = (original, scale) ->
+  # See http://stackoverflow.com/a/7557690/1633026
+  canvas = document.createElement('canvas')
+  canvas.width = original.width * scale
+  canvas.height = original.height * scale
+  canvas.getContext('2d').drawImage original, 0, 0, canvas.width, canvas.height
+  canvas
+
+handle_file_step_two = ( chosen_file, template, opts ) ->
+  console.log "step two file", chosen_file
+  console.log "step two template", template
+  console.log "step two opts", opts
+  if opts.full_image
+
+    max_width = 150 # from .no-thumb-item width
+    max_height = 200 # from .no-thumb-item height
+
+    orig_aspect = opts.full_image.width/opts.full_image.height
+    target_aspect = max_width/max_height
+    if orig_aspect >= target_aspect
+      actual_width = max_width
+      scale = max_width/opts.full_image.width
+      actual_height = opts.full_image.height*scale
+    else
+      actual_height = max_height
+      scale = max_height/opts.full_image.height
+      actual_width = opts.full_image.width*scale
+
+    thumb = getThumbnail(opts.full_image, scale)
+
+    # canvas = document.createElement('canvas')
+    # context = canvas.getContext('2d')
+    # context.drawImage(opts.full_image,0,0)
+    div = template.find("#preview")
+    console.log "preview_element",div
+    #div = template.find("#preview")
+    #$(div).empty()
+    div.appendChild(thumb)
+
 handle_files = (fileList, template) ->
   # template is template instance of InsertImageDialog
   if fileList.length == 0
@@ -218,6 +257,72 @@ handle_files = (fileList, template) ->
     console.error "More than one file selected"
     return
   chosen_file = fileList[0]
+  if chosen_file.type == "image/tiff"
+    console.log "is TIFF"
+    tiff_reader = new FileReader()
+    tiff_reader.onload = ((theFile) ->
+      (e) ->
+        Tiff.initialize({TOTAL_MEMORY: theFile.size*4})
+        tiff = new Tiff(buffer: e.target.result)
+        dataUrl = tiff.toDataURL()
+        img = document.createElement('img')
+        img.onload = ->
+          handle_file_step_two( chosen_file, template, {full_image: img, preserve_full_image: true} )
+        img.src = dataUrl
+        return
+    )(chosen_file)
+
+    tiff_reader.readAsArrayBuffer(chosen_file)
+    # use libtiff to convert to a Tiff instance
+    #tiff = new Tiff(buffer: buffer)
+  else
+    console.log "is not TIFF", chosen_file.type
+
+    imageType = /^image\//
+    if imageType.test(chosen_file.type)
+      console.log 'is image'
+
+      img = document.createElement("img")
+      img.onload = ->
+        handle_file_step_two( chosen_file, template, {full_image: img} )
+      img.file = chosen_file
+      #img.src = chosen_file
+
+      img_reader = new FileReader
+      img_reader.onload = ((aImg) ->
+        (e) ->
+          aImg.src = e.target.result
+          return
+      )(img)
+      img_reader.readAsDataURL chosen_file
+
+      # #canvas = load_image_to_canvas()
+      # canvas = document.createElement('canvas')
+      # context = canvas.getContext('2d')
+      # context.drawImage(img,0,0)
+      # #imageObj = new Image()
+      #handle_file_step_two( chosen_file, template, {full_image: img} )
+    else
+      console.log 'is not image'
+      handle_file_step_two( chosen_file, template )
+
+# temp_func = (template) ->
+#   console.log "created",template
+#   #console.log "created this",this
+#   canvas = document.createElement('canvas')
+#   context = canvas.getContext('2d')
+#   context.fillRect(50, 25, 150, 100)
+
+#   if template.firstNode
+#     console.log "DOM"
+#     div = template.find("#preview")
+#     $(div).empty()
+#     div.appendChild(canvas)
+#   else
+#     console.log "no DOM"
+
+# Template.InsertImageDialog.rendered = ->
+#   temp_func(this)
 
 Template.InsertImageDialog.created = ->
   @selected_files = new ReactiveVar()
@@ -245,6 +350,9 @@ Template.InsertImageDialog.helpers
 
 Template.InsertImageDialog.events
   "change #insert_image": (event, template) ->
+    div = template.find("#preview")
+    $(div).empty()
+
     file_dom_element = template.find("#insert_image")
     if !file_dom_element
       return
