@@ -210,9 +210,31 @@ Template.add_image_code.events
             dialog_template = window.dialog_template
             insert_image_save_func(dialog_template, send_coll, my_id, "images")
 
+handle_files = (fileList, template) ->
+  # template is template instance of InsertImageDialog
+  if fileList.length == 0
+    return
+  if fileList.length > 1
+    console.error "More than one file selected"
+    return
+  chosen_file = fileList[0]
+
 Template.InsertImageDialog.created = ->
   @selected_files = new ReactiveVar()
   @selected_files.set([])
+
+  # prevent dropping files onto page creating navigation
+  # http://stackoverflow.com/a/6756680/1633026
+  window.addEventListener 'dragover', ((e) ->
+    e = e or event
+    e.preventDefault()
+    return
+  ), false
+  window.addEventListener 'drop', ((e) ->
+    e = e or event
+    e.preventDefault()
+    return
+  ), false
 
 Template.InsertImageDialog.helpers
   selected_files: ->
@@ -227,12 +249,26 @@ Template.InsertImageDialog.events
     if !file_dom_element
       return
     template.selected_files.set(file_dom_element.files)
+    handle_files(file_dom_element.files,template)
 
   "click #fileSelect": (event, template) ->
     file_dom_element = template.find("#insert_image")
     if file_dom_element
       file_dom_element.click()
     event.preventDefault()
+
+  "dragenter #file_form_div": (event, template) ->
+     event.stopPropagation()
+     event.preventDefault()
+  "dragover #file_form_div": (event, template) ->
+     event.stopPropagation()
+     event.preventDefault()
+  "drop #file_form_div": (event, template) ->
+     event.stopPropagation()
+     event.preventDefault()
+     dt = event.originalEvent.dataTransfer
+     template.selected_files.set(dt.files)
+     handle_files(dt.files, template)
 
 Template.binary_data_table.rendered = ->
   $('.flex-images').flexImages({rowHeight: 200});
