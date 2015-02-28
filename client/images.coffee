@@ -219,9 +219,6 @@ getThumbnail = (original, scale) ->
   canvas
 
 handle_file_step_two = ( chosen_file, template, opts ) ->
-  console.log "step two file", chosen_file
-  console.log "step two template", template
-  console.log "step two opts", opts
   if opts.full_image
 
     max_width = 150 # from .no-thumb-item width
@@ -239,14 +236,8 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
       actual_width = opts.full_image.width*scale
 
     thumb = getThumbnail(opts.full_image, scale)
-
-    # canvas = document.createElement('canvas')
-    # context = canvas.getContext('2d')
-    # context.drawImage(opts.full_image,0,0)
     div = template.find("#preview")
-    console.log "preview_element",div
-    #div = template.find("#preview")
-    #$(div).empty()
+    $(div).empty()
     div.appendChild(thumb)
 
 handle_files = (fileList, template) ->
@@ -258,7 +249,6 @@ handle_files = (fileList, template) ->
     return
   chosen_file = fileList[0]
   if chosen_file.type == "image/tiff"
-    console.log "is TIFF"
     tiff_reader = new FileReader()
     tiff_reader.onload = ((theFile) ->
       (e) ->
@@ -276,18 +266,12 @@ handle_files = (fileList, template) ->
     # use libtiff to convert to a Tiff instance
     #tiff = new Tiff(buffer: buffer)
   else
-    console.log "is not TIFF", chosen_file.type
-
     imageType = /^image\//
     if imageType.test(chosen_file.type)
-      console.log 'is image'
-
       img = document.createElement("img")
       img.onload = ->
         handle_file_step_two( chosen_file, template, {full_image: img} )
       img.file = chosen_file
-      #img.src = chosen_file
-
       img_reader = new FileReader
       img_reader.onload = ((aImg) ->
         (e) ->
@@ -296,33 +280,8 @@ handle_files = (fileList, template) ->
       )(img)
       img_reader.readAsDataURL chosen_file
 
-      # #canvas = load_image_to_canvas()
-      # canvas = document.createElement('canvas')
-      # context = canvas.getContext('2d')
-      # context.drawImage(img,0,0)
-      # #imageObj = new Image()
-      #handle_file_step_two( chosen_file, template, {full_image: img} )
     else
-      console.log 'is not image'
       handle_file_step_two( chosen_file, template )
-
-# temp_func = (template) ->
-#   console.log "created",template
-#   #console.log "created this",this
-#   canvas = document.createElement('canvas')
-#   context = canvas.getContext('2d')
-#   context.fillRect(50, 25, 150, 100)
-
-#   if template.firstNode
-#     console.log "DOM"
-#     div = template.find("#preview")
-#     $(div).empty()
-#     div.appendChild(canvas)
-#   else
-#     console.log "no DOM"
-
-# Template.InsertImageDialog.rendered = ->
-#   temp_func(this)
 
 Template.InsertImageDialog.created = ->
   @selected_files = new ReactiveVar()
@@ -352,6 +311,7 @@ Template.InsertImageDialog.events
   "change #insert_image": (event, template) ->
     div = template.find("#preview")
     $(div).empty()
+    append_spinner(div)
 
     file_dom_element = template.find("#insert_image")
     if !file_dom_element

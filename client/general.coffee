@@ -257,6 +257,11 @@ Template.raw_button.events
 
 # -------------
 
+@append_spinner = (div) ->
+  $(div).html("Loading...")
+
+# -------------
+
 Template.show_user_date.helpers
   pretty_username: ->
     doc = Meteor.users.findOne {_id:this.userId}
