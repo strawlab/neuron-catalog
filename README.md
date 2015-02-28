@@ -23,13 +23,23 @@ The neuron catalog can be most easily installed for testing using
 6. Wait a few minutes until for the Vagrant machine to come up.
 7. Open [http://localhost:3450/](http://localhost:3450/) with your browser to visit your newly installed neuron catalog server.
 
-## A longer-term installation
+If you want to enable image uploads, follow the `AWS Setup and
+Configuration` section below and edit the Vagrantfile before running
+the above steps.
+
+## Install for longer term runs
 
 The neuron catalog software consists of a standard
 [Meteor.js](http://meteor.com/) server and a Python process to process
-uploads. Instructions for getting started with Meteor are
+uploads (e.g. make image thumbnails and convert TIFF images to
+PNG). Instructions for getting started with Meteor are
 [here](http://docs.meteor.com/#/basic/quickstart). The Python program
-must be run with settings that allow it to connect the database.
+must be run with settings that allow it to connect the database. Rougly:
+
+```
+# in first console window
+meteor run --settings server/server-config.json
+```
 
 ## AWS Setup and Configuration
 
