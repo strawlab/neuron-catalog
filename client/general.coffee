@@ -298,6 +298,10 @@ Template.registerHelper "binary_data_cursor", ->
 
 window.specialization_Dmel = ->
   settings = SettingsToClient.findOne({_id: 'settings'})
+  if !settings
+    return false
+  if !settings.specializations
+    return false
   return "Drosophila melanogaster" in settings.specializations
 
 Template.registerHelper "specialization_Dmel", ->
