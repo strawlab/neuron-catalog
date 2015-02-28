@@ -99,6 +99,17 @@ get_id_from_key = (key) ->
       _id = arr[1]
   return _id
 
+replace_modal_buttons = (template) ->
+  console.log "removing modal",template
+  element = template.find(".modal-footer")[0]
+  $(element).empty()
+  console.log "element",element
+
+  node = document.createElement("div")
+  data = {}
+  UI.renderWithData Template.InsertImageDialogFooter, data, node
+  element.appendChild node
+
 insert_image_save_func = (template, coll_name, my_id, field_name) ->
   # FIXME: disable save/cancel button
   fb = template.find("#insert_image")[0]
@@ -209,6 +220,9 @@ Template.add_image_code.events
           callback: ->
             dialog_template = window.dialog_template
             insert_image_save_func(dialog_template, send_coll, my_id, "images")
+    window.dialog_template.on("shown.bs.modal", ->
+      replace_modal_buttons(window.dialog_template)
+    )
 
 getThumbnail = (original, scale) ->
   # See http://stackoverflow.com/a/7557690/1633026
