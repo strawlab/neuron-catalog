@@ -99,23 +99,13 @@ get_id_from_key = (key) ->
       _id = arr[1]
   return _id
 
-replace_modal_buttons = (template) ->
-  console.log "removing modal",template
-  element = template.find(".modal-footer")[0]
-  $(element).empty()
-  console.log "element",element
-
-  node = document.createElement("div")
-  data = {}
-  UI.renderWithData Template.InsertImageDialogFooter, data, node
-  element.appendChild node
-
 insert_image_save_func = (template, coll_name, my_id, field_name) ->
-  # FIXME: disable save/cancel button
-  fb = template.find("#insert_image")[0]
+  fb = template.$("#insert_image")[0]
   upload_files = fb.files
-  # FIXME: assert size(upload_files)==1
+  # FIXME: assert size(upload_files)<=1
   upload_file = upload_files[0]
+  if !upload_file?
+    return
   s3_dirname = "/images"
 
   upload_progress_dialog = bootbox.dialog
@@ -161,7 +151,6 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
       t2[field_name] = myarr
       coll.update my_id,
         $set: t2
-    template.find("#insert_image_form")[0].reset() # remove filename
 
   $("#file_form_div").hide()
   return {}
@@ -204,25 +193,19 @@ Template.add_image_code.events
     event.preventDefault()
     send_coll = @collection
     my_id = @my_id
-    data =
-      field_name: "images"
-      collection: send_coll
-      my_id: my_id
-    window.dialog_template = bootbox.dialog
-      message: window.renderTmp(Template.InsertImageDialog, data)
+    full_data =
       title: "Insert image or volume"
-      buttons:
-        close:
-          label: "Close"
-        save:
-          label: "Upload"
-          className: "btn-primary"
-          callback: ->
-            dialog_template = window.dialog_template
-            insert_image_save_func(dialog_template, send_coll, my_id, "images")
-    window.dialog_template.on("shown.bs.modal", ->
-      replace_modal_buttons(window.dialog_template)
-    )
+      body_template: Template.InsertImageDialog
+      body_data: null
+      save_label: "Upload"
+      render_complete: (parent_template) ->
+        parent_template.$("#modal-dialog-save").on("click", (event) ->
+          insert_image_save_func(parent_template,
+               send_coll, my_id, "images")
+        )
+
+    Blaze.renderWithData(Template.ModalDialog,
+        full_data, document.body)
 
 getThumbnail = (original, scale) ->
   # See http://stackoverflow.com/a/7557690/1633026
