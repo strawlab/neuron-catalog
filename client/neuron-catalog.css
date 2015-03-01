@@ -1,22 +1,8 @@
 /* CSS declarations go here */
 
-.fixed-top {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100pc;
-    height: 50px;
-    z-index:10;
-}
-
 .no-thumb-item {
     width: 150px;
     height: 200px;
-}
-
-.top50 {
-   margin-top: 50px;
-   z-index:5;
 }
 
 .align-center {
