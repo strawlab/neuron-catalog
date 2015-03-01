@@ -187,9 +187,6 @@ BrainRegions.attachSchema( Schemas.BrainRegions )
 # Schemas.BinaryData ------------------
 #  This schema has grown organically and should be cleaned up!
 BinaryDataSpec =
-  thumb_src:
-    type: String
-    optional: true
   s3_bucket:
     type: String
   s3_region:
@@ -200,6 +197,9 @@ BinaryDataSpec =
     type: Boolean
   lastModifiedDate:
     type: Date
+  thumb_s3_key:
+    type: String
+    optional: true
   thumb_width:
     type: Number
     optional: true
@@ -212,14 +212,14 @@ BinaryDataSpec =
   height:
     type: Number
     optional: true
+  cache_s3_key:
+    type: String
+    optional: true
   cache_width:
     type: Number
     optional: true
   cache_height:
     type: Number
-    optional: true
-  cache_src:
-    type: String
     optional: true
   type:
     type: String

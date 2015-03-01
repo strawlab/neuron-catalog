@@ -48,10 +48,10 @@ root.parse_s3_url = (orig_url) ->
     s3_key: key
   result
 
-root.compute_secure_url = (doc) ->
+root.compute_secure_url = (doc, keyname) ->
   # URL in form https://s3[-region].amazonaws.com/bucket-name/key
   if doc.s3_region == "us-east-1"
     hostname = "s3.amazonaws.com"
   else
     hostname = "s3-" + doc.s3_region + ".amazonaws.com"
-  uri = "https://" + hostname + "/" + doc.s3_bucket + "/" + doc.s3_key
+  uri = "https://" + hostname + "/" + doc.s3_bucket + "/" + doc[keyname]

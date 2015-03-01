@@ -82,4 +82,37 @@ Migrations.add
     NeuronCatalogConfig.insert(doc)
     NeuronCatalogConfig.remove({_id:orig_id})
 
-Migrations.migrateTo(5)
+Migrations.add
+  version: 6
+  name: 'Store S3 key for binary_data cache and thumbs'
+  up: ->
+    BinaryData.find().forEach (doc) ->
+      if doc.cache_src?
+        parsed = parse_s3_url( doc.cache_src )
+        BinaryData.update
+          _id: doc._id
+        ,
+          $set:
+            cache_s3_key: parsed.s3_key
+
+          $unset:
+            cache_src: 1
+        ,
+          validate: false
+          getAutoValues: false
+
+      if doc.thumb_src?
+        parsed = parse_s3_url( doc.thumb_src )
+        BinaryData.update
+          _id: doc._id
+        ,
+          $set:
+            thumb_s3_key: parsed.s3_key
+
+          $unset:
+            thumb_src: 1
+        ,
+          validate: false
+          getAutoValues: false
+
+Migrations.migrateTo(6)

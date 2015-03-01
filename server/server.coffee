@@ -37,7 +37,21 @@ options =
     BinaryData.update({_id:_id}, updater_doc,{validate: false, getAutoValues: false})
     s3_key
 
+options_cache =
+  allowedFileTypes: new RegExp(".*")
+  maxSize: 0 # any size
+  acl: "public-read"
+  authorize: ->
+    #Deny uploads if user is not logged in.
+    unless @userId
+      message = "Please login before posting files"
+      throw new Meteor.Error("Login Required", message)
+    true
+  key: (upload_file, ctx) ->
+    ctx.s3_key
+
 if Meteor.settings.AWSAccessKeyId
-  Slingshot.createDirective "myFileUploads", Slingshot.S3Storage, options
+  Slingshot.createDirective "myFileUploads",  Slingshot.S3Storage, options
+  Slingshot.createDirective "myCacheUploads", Slingshot.S3Storage, options_cache
 else
   console.warn "No AWSAccessKeyId in Meteor settings. No uploads will be possible."

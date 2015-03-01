@@ -17,13 +17,14 @@ enhance_image_doc = (doc) ->
     # already performed this check
     return doc
 
-  if doc.cache_src?
-    doc.secure_url_notif = doc.cache_src
+  if doc.cache_s3_key?
+    doc.secure_url_notif = compute_secure_url(doc, "cache_s3_key")
   else
-    doc.secure_url_notif = compute_secure_url(doc)
+    doc.secure_url_notif = compute_secure_url(doc, "s3_key")
 
-  if doc.thumb_src?
+  if doc.thumb_s3_key?
     doc.has_thumb = true
+    doc.thumb_src = compute_secure_url(doc, "thumb_s3_key")
   else
     doc.has_thumb = false
   doc
@@ -69,7 +70,7 @@ Template.binary_data_show.helpers
         result.push {"collection":collname,"doc":doc,"my_id":doc._id}
     result
   secure_url: ->
-    compute_secure_url(this)
+    compute_secure_url(this, "s3_key")
 
 # -------------------------------------------------------
 
@@ -109,13 +110,9 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
 
   console.log "uploading payload",payload
 
-  fb = template.$("#insert_image")[0]
-  upload_files = fb.files
-  # FIXME: assert size(upload_files)<=1
-  upload_file = upload_files[0]
+  upload_file = payload.original_file
   if !upload_file?
     return
-  s3_dirname = "/images"
 
   upload_progress_dialog = bootbox.dialog
       title: "upload progress"
@@ -129,6 +126,8 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
 
   my_uploader.send upload_file, (error, downloadUrl) ->
     # This callback is called when the upload is complete (or on error).
+    console.log "upload complete",error,downloadUrl
+        
     upload_progress_dialog.modal('hide')
     upload_progress_dialog = null
 
@@ -160,6 +159,40 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
       t2[field_name] = myarr
       coll.update my_id,
         $set: t2
+
+    if payload.full_image?
+      console.log "uploading full image blob"
+      ctx_full =
+        s3_key: "cache/" + _id + "/" + upload_file.name + ".jpg"
+      my_uploader2 = new Slingshot.Upload("myCacheUploads",ctx_full)
+      my_uploader2.send payload.full_image.blob, (error, downloadUrl) ->
+        if error
+          console.error "full image upload error",error
+        else
+          console.log "full image upload downloadUrl",downloadUrl
+          updater_doc =
+            $set:
+              cache_s3_key: ctx_full.s3_key
+              cache_width: payload.full_image.width
+              cache_height: payload.full_image.height
+          BinaryData.update _id, updater_doc
+
+    if payload.thumb?
+      console.log "uploading thumb blob"
+      ctx_thumb =
+        s3_key: "thumbs/" + _id + "/" + upload_file.name + ".jpg"
+      my_uploader2 = new Slingshot.Upload("myCacheUploads",ctx_thumb)
+      my_uploader2.send payload.thumb.blob, (error, downloadUrl) ->
+        if error
+          console.error "thumb upload error",error
+        else
+          console.log "thumb upload downloadUrl",downloadUrl
+          updater_doc =
+            $set:
+              thumb_s3_key: ctx_thumb.s3_key
+              thumb_width: payload.thumb.width
+              thumb_height: payload.thumb.height
+          BinaryData.update _id, updater_doc
 
   $("#file_form_div").hide()
   return {}
@@ -219,11 +252,11 @@ Template.add_image_code.events
     Blaze.renderWithData(Template.ModalDialog,
         full_data, document.body)
 
-getThumbnail = (original, scale) ->
-  # See http://stackoverflow.com/a/7557690/1633026
+getThumbnail = (original, width, height) ->
+  # Modified from http://stackoverflow.com/a/7557690/1633026
   canvas = document.createElement('canvas')
-  canvas.width = original.width * scale
-  canvas.height = original.height * scale
+  canvas.width = width
+  canvas.height = height
   canvas.getContext('2d').drawImage original, 0, 0, canvas.width, canvas.height
   canvas
 
@@ -253,8 +286,10 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
 
       ctx = canvas.getContext('2d')
       ctx.drawImage(opts.full_image, 0, 0, canvas.width, canvas.height)
-      console.log "canvas.toBlob",canvas.toBlob
-      payload.full_image_blob = get_blob( canvas, "image/jpeg", 0.8)
+      payload.full_image =
+        blob: get_blob( canvas, "image/jpeg", 0.8)
+        width: canvas.width
+        height: canvas.height
 
     max_width = 150 # from .no-thumb-item width
     max_height = 200 # from .no-thumb-item height
@@ -262,19 +297,21 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
     orig_aspect = opts.full_image.width/opts.full_image.height
     target_aspect = max_width/max_height
     if orig_aspect >= target_aspect
+      # image aspect is wider (or equal) than bounding box
       actual_width = max_width
       scale = max_width/opts.full_image.width
-      actual_height = opts.full_image.height*scale
+      actual_height = Math.floor(opts.full_image.height*scale)
     else
+      # image aspect is taller than bounding box
       actual_height = max_height
       scale = max_height/opts.full_image.height
-      actual_width = opts.full_image.width*scale
+      actual_width = Math.floor(opts.full_image.width*scale)
 
-    thumb_canvas = getThumbnail(opts.full_image, scale)
-
-    console.log "thumb_canvas",thumb_canvas
-    console.log "thumb_canvas.toBlob",thumb_canvas.toBlob
-    payload.thumb_blob = get_blob( thumb_canvas, "image/jpeg", 0.8)
+    thumb_canvas = getThumbnail(opts.full_image, actual_width, actual_height)
+    payload.thumb =
+      blob: get_blob( thumb_canvas, "image/jpeg", 0.8)
+      width: actual_width
+      height: actual_height
 
     div = template.find("#preview")
     $(div).empty()
