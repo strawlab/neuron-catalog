@@ -233,6 +233,16 @@ Template.add_image_code.events
       body_data: null
       save_label: "Upload"
       render_complete: (parent_template) ->
+        body_template = window.image_upload_template
+
+        Tracker.autorun ->
+          upload_ready = body_template.upload_ready.get()
+          jq_button = parent_template.$('#modal-dialog-save')
+          if upload_ready
+            jq_button.removeClass('disabled')
+          else
+            jq_button.addClass('disabled')
+
         parent_template.$("#modal-dialog-save").on("click", (event) ->
           template = window.image_upload_template
           if !template?
