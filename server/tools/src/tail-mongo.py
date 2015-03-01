@@ -322,12 +322,6 @@ def infinite_poll_loop(options):
     if options.verbose:
         print('processed backlog, waiting for new images')
 
-    status_collection_name = "upload_processor_status"
-    status_doc_query = {'_id':'status'}
-    status_coll = db[status_collection_name]
-    status_coll.remove(status_doc_query)
-    assert status_coll.find().count()==0
-
     if options.verbose:
         print("Finished processing backlog, now waiting for new images.")
 
@@ -340,13 +334,6 @@ def infinite_poll_loop(options):
             if d_id not in seen_docs:
                 new_docs.append( doc )
                 seen_docs.add( d_id )
-        status_doc = status_coll.find_one(status_doc_query)
-
-        for_js = formatdate()
-        status_coll.update(status_doc_query,{'$set':{'time':for_js,
-                                                     'status':'ok',
-                                                 }},
-                           upsert=True)
 
         pump_new(coll,options)
         time.sleep(2.0)
