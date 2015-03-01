@@ -108,8 +108,6 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
   if !payload?
     return
 
-  console.log "uploading payload",payload
-
   upload_file = payload.original_file
   if !upload_file?
     return
@@ -126,8 +124,6 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
 
   my_uploader.send upload_file, (error, downloadUrl) ->
     # This callback is called when the upload is complete (or on error).
-    console.log "upload complete",error,downloadUrl
-        
     upload_progress_dialog.modal('hide')
     upload_progress_dialog = null
 
@@ -161,7 +157,6 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
         $set: t2
 
     if payload.full_image?
-      console.log "uploading full image blob"
       ctx_full =
         s3_key: "cache/" + _id + "/" + upload_file.name + ".jpg"
       my_uploader2 = new Slingshot.Upload("myCacheUploads",ctx_full)
@@ -169,7 +164,6 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
         if error
           console.error "full image upload error",error
         else
-          console.log "full image upload downloadUrl",downloadUrl
           updater_doc =
             $set:
               cache_s3_key: ctx_full.s3_key
@@ -178,7 +172,6 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
           BinaryData.update _id, updater_doc
 
     if payload.thumb?
-      console.log "uploading thumb blob"
       ctx_thumb =
         s3_key: "thumbs/" + _id + "/" + upload_file.name + ".jpg"
       my_uploader2 = new Slingshot.Upload("myCacheUploads",ctx_thumb)
@@ -186,7 +179,6 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
         if error
           console.error "thumb upload error",error
         else
-          console.log "thumb upload downloadUrl",downloadUrl
           updater_doc =
             $set:
               thumb_s3_key: ctx_thumb.s3_key
