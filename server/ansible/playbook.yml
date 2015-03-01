@@ -3,10 +3,6 @@
   hosts: 127.0.0.1
   tasks:
 
-   - apt: name=python-imaging state=installed
-   - apt: name=python-pymongo state=installed
-   - apt: name=python-boto state=installed
-
    - name: Check meteor existence
      stat: path=/usr/local/bin/meteor
      register: usr_local_bin_meteor
@@ -20,7 +16,3 @@
    - name: install meteor supervisor script
      copy: src=neuron-catalog-meteor.conf dest=/etc/supervisor/conf.d/neuron-catalog-meteor.conf mode=0644 owner=root group=root
    - supervisorctl: name=neuron-catalog-meteor state=present
-
-   - name: install meteor image converter script
-     copy: src=neuron-catalog-image-converter.conf dest=/etc/supervisor/conf.d/neuron-catalog-image-converter.conf mode=0644 owner=root group=root
-   - supervisorctl: name=neuron-catalog-image-converter state=present
