@@ -283,8 +283,8 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
         width: canvas.width
         height: canvas.height
 
-    max_width = 150 # from .no-thumb-item width
-    max_height = 200 # from .no-thumb-item height
+    max_width = 200
+    max_height = 200
 
     orig_aspect = opts.full_image.width/opts.full_image.height
     target_aspect = max_width/max_height
