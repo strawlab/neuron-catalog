@@ -4,6 +4,9 @@ my_uploader = null # variable local to this script
 uploader_state_changed = new Deps.Dependency
 upload_progress_dialog = null
 
+# global
+window.image_upload_template = null
+
 # ---- Template.binary_data_from_id_block -------------
 
 enhance_image_doc = (doc) ->
@@ -200,7 +203,10 @@ Template.add_image_code.events
       save_label: "Upload"
       render_complete: (parent_template) ->
         parent_template.$("#modal-dialog-save").on("click", (event) ->
-          insert_image_save_func(parent_template,
+          template = window.image_upload_template
+          if !template?
+            return
+          insert_image_save_func(template,
                send_coll, my_id, "images")
         )
 
@@ -288,7 +294,12 @@ handle_files = (fileList, template) ->
     else
       handle_file_step_two( chosen_file, template )
 
+Template.InsertImageDialog.destroyed = ->
+  window.image_upload_template = null
+
 Template.InsertImageDialog.created = ->
+  window.image_upload_template = this
+
   @selected_files = new ReactiveVar()
   @selected_files.set([])
 
