@@ -103,6 +103,12 @@ get_id_from_key = (key) ->
   return _id
 
 insert_image_save_func = (template, coll_name, my_id, field_name) ->
+  payload = template.payload_var.get()
+  if !payload?
+    return
+
+  console.log "uploading payload",payload
+
   fb = template.$("#insert_image")[0]
   upload_files = fb.files
   # FIXME: assert size(upload_files)<=1
@@ -221,12 +227,34 @@ getThumbnail = (original, scale) ->
   canvas.getContext('2d').drawImage original, 0, 0, canvas.width, canvas.height
   canvas
 
+get_blob = ( canvas, type, quality ) ->
+  binStr = atob( canvas.toDataURL(type, quality).split(',')[1] )
+  len = binStr.length
+  arr = new Uint8Array(len)
+
+  i = 0
+  while i < len
+    arr[i] = binStr.charCodeAt(i)
+    i++
+
+  result = new Blob( [arr], {type: type || 'image/png'} )
+  return result
+
 handle_file_step_two = ( chosen_file, template, opts ) ->
-  payload = {original_file: chosen_file}
-  if opts.full_image
+  # FIXME: disable upload button until this processing is complete?
+  payload = {}
+  payload.original_file = chosen_file
+  if opts.full_image?
 
     if opts.preserve_full_image
-      payload.cached_image = opts.full_image
+      canvas = document.createElement('canvas')
+      canvas.width = opts.full_image.width
+      canvas.height = opts.full_image.height
+
+      ctx = canvas.getContext('2d')
+      ctx.drawImage(opts.full_image, 0, 0, canvas.width, canvas.height)
+      console.log "canvas.toBlob",canvas.toBlob
+      payload.full_image_blob = get_blob( canvas, "image/jpeg", 0.8)
 
     max_width = 150 # from .no-thumb-item width
     max_height = 200 # from .no-thumb-item height
@@ -242,13 +270,16 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
       scale = max_height/opts.full_image.height
       actual_width = opts.full_image.width*scale
 
-    thumb = getThumbnail(opts.full_image, scale)
-    payload.thumb_canvas = thumb
+    thumb_canvas = getThumbnail(opts.full_image, scale)
+
+    console.log "thumb_canvas",thumb_canvas
+    console.log "thumb_canvas.toBlob",thumb_canvas.toBlob
+    payload.thumb_blob = get_blob( thumb_canvas, "image/jpeg", 0.8)
 
     div = template.find("#preview")
     $(div).empty()
-    div.appendChild(thumb)
-  template.payload.set( payload )
+    div.appendChild(thumb_canvas)
+  template.payload_var.set( payload )
   template.upload_ready.set( true )
 
 handle_files = (fileList, template) ->
@@ -303,7 +334,7 @@ Template.InsertImageDialog.created = ->
   @selected_files = new ReactiveVar()
   @selected_files.set([])
 
-  @payload = new ReactiveVar()
+  @payload_var = new ReactiveVar()
 
   @upload_ready = new ReactiveVar()
   @upload_ready.set( false )
