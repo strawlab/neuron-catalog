@@ -25,20 +25,17 @@ Template.tags_panel.events
   "click .remove": (evt) ->
     tag = @name
     parent_id = @parent_id
-    evt.target.parentNode.style.opacity = 0
     coll = window.get_collection_from_name(@collection)
 
-    # wait for CSS animation to finish
-    Meteor.setTimeout (->
-      coll.update
-        _id: parent_id
-      ,
-        $pull:
-          tags: tag
+    bootbox.confirm('Remove tag "'+tag+'"?', (result) ->
+      if result
+        evt.target.parentNode.style.opacity = 0
 
-      return
-    ), 300
-    return
+        # wait for CSS animation to finish
+        Meteor.setTimeout((->
+          coll.update({_id: parent_id},
+            {$pull: {tags: tag}})
+        ), 300))
 
 Template.tags_panel.helpers
   adding_tag: ->

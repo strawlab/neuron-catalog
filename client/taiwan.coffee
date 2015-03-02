@@ -22,22 +22,20 @@ Template.FlyCircuitPanel.events
     window.activateInput tmpl.find("#edit-flycircuit-input")
     return
 
-  "click .remove": (evt) ->
+  "click .remove-flycircuit": (evt) ->
     flycircuit_idid = @name
     parent_id = @parent_id
     coll = window.get_collection_from_name(@collection)
 
-    # wait for CSS animation to finish
-    Meteor.setTimeout (->
-      coll.update
-        _id: parent_id
-      ,
-        $pull:
-          flycircuit_idids: flycircuit_idid
+    bootbox.confirm('Remove flycircuit idid "'+flycircuit_idid+'"?', (result) ->
+      if result
+        evt.target.parentNode.style.opacity = 0
 
-      return
-    ), 300
-    return
+        # wait for CSS animation to finish
+        Meteor.setTimeout((->
+          coll.update({_id: parent_id},
+            {$pull: {flycircuit_idids: flycircuit_idid}})
+        ), 300))
 
 Template.FlyCircuitPanel.helpers
   adding_flycircuit_idid: ->

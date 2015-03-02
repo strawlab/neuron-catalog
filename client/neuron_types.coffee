@@ -115,22 +115,19 @@ Template.neuron_type_show.events
     window.activateInput tmpl.find("#edit_synonym_input")
     return
 
-  "click .remove": (evt) ->
+  "click .remove-synonym": (evt) ->
     synonym = @name
     id = @_id
-    evt.target.parentNode.style.opacity = 0
 
-    # wait for CSS animation to finish
-    Meteor.setTimeout (->
-      NeuronTypes.update
-        _id: id
-      ,
-        $pull:
-          synonyms: synonym
+    bootbox.confirm('Remove synonym "'+synonym+'"?', (result) ->
+      if result
+        evt.target.parentNode.style.opacity = 0
 
-      return
-    ), 300
-    return
+        # wait for CSS animation to finish
+        Meteor.setTimeout((->
+          NeuronTypes.update({_id: id},
+            {$pull: {synonyms: synonym}})
+        ), 300))
 
   "click .edit-best-driver-lines": (event, template) ->
     event.preventDefault()
