@@ -22,11 +22,11 @@ Meteor.startup ->
 
 # ----------------------------------------
 Meteor.publish "settings_to_client", ->
-  SettingsToClient.find {}
+  SettingsToClient.find {} if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "aws_config_status", ->
-  AWSConfigStatus.find {}
+  AWSConfigStatus.find {} if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "neuron_catalog_config", ->
-  NeuronCatalogConfig.find {}
+  NeuronCatalogConfig.find {} if Roles.userIsInRole(@userId, ReaderRoles)
 
 Meteor.publish "driver_lines", ->
   DriverLines.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
