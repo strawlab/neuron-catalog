@@ -37,16 +37,13 @@ Router.route "/",
   action: ->
     @render "Home"
 
+# Only in admin role (see OnBeforeActions below)
 Router.route "/config"
 
-Router.route "/user-admin",
+# Only in admin role (see OnBeforeActions below)
+Router.route "/accounts-admin",
+  name: 'accountsAdmin'
   template: 'accountsAdmin'
-  onBeforeAction: ->
-    if !Roles.userIsInRole(Meteor.user(), [ 'admin' ])
-      console.log 'redirecting'
-      @redirect '/'
-    else
-      @next()
 
 Router.route "/driver_lines"
 
@@ -115,6 +112,22 @@ Router.route "/Search", ->
     data: ->
       @params
   return
+
+OnBeforeActions = adminRequired: () ->
+  if Meteor.loggingIn()
+    # wait for login to complete
+    @render @loadingTemplate
+  else if !Roles.userIsInRole(Meteor.user(), [ 'admin' ])
+    # no permission
+    @redirect '/'
+  else
+    # show the route
+    @next()
+
+Router.onBeforeAction OnBeforeActions.adminRequired, only: [
+  'accountsAdmin'
+  'config'
+]
 
 @remove_driver_line = (my_id) ->
   rdl = (doc) ->
