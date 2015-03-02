@@ -45,4 +45,10 @@
     {{/detail_main}}
   {{/detail_block}}
 
+  {{> DownloadData}}
+
+  {{#if currentUser}}
+    {{> raw_button collection="Meteor.users" my_id=currentUser._id button_text="View user document for current user" }}
+  {{/if}}
+
 </template>

@@ -46,16 +46,6 @@
     {{/detail_main}}
 
   {{/detail_block}}
-  {{#detail_block}}
-    {{#detail_title}}
-       Download data
-    {{/detail_title}}
-    {{#detail_main}}
-       <button class="btn btn-default download-all-data" href="#">all data as .json file</button>
-    {{/detail_main}}
-  {{/detail_block}}
-
-  {{> raw_button collection="Meteor.users" my_id=current_user_id button_text="View user document for current user" }}
 
     {{else}}
       <li>Other configuration options available if you log in.</li>
