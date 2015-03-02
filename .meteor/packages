@@ -25,3 +25,4 @@ nemo64:bootstrap
 percolate:migrations
 strawlab:meteor-tiff
 gfk:notifications
+alanning:roles
