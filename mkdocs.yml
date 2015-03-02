@@ -1,4 +1,5 @@
 site_name: neuron-catalog
+repo_url: https://github.com/strawlab/neuron-catalog/
 pages:
 - [index.md, Home]
 - [installation.md, Installation]
