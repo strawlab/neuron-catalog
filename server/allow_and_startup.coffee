@@ -23,24 +23,28 @@ Meteor.startup ->
       Meteor.roles.insert({name: role_name})
 
 # ----------------------------------------
+ReaderRoles = ['admin','read-write','read-only']
+WriterRoles = ['admin','read-write']
+
+# ----------------------------------------
 Meteor.publish "settings_to_client", ->
   SettingsToClient.find {}
 Meteor.publish "neuron_catalog_config", ->
   NeuronCatalogConfig.find {}
 
 Meteor.publish "driver_lines", ->
-  DriverLines.find {}  if @userId
+  DriverLines.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "neuron_types", ->
-  NeuronTypes.find {}  if @userId
+  NeuronTypes.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "brain_regions", ->
-  BrainRegions.find {}  if @userId
+  BrainRegions.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "binary_data", ->
-  BinaryData.find {}  if @userId
+  BinaryData.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
 
 # ----------------------------------------
 
 Meteor.publish "userData", ->
-  if @userId
+  if Roles.userIsInRole(@userId, ReaderRoles)
     Meteor.users.find {},
       fields:
         username: 1
@@ -49,17 +53,26 @@ Meteor.publish "userData", ->
 
 logged_in_allow =
   insert: (userId, doc) ->
-    !!userId
+    Roles.userIsInRole(userId, WriterRoles)
 
   update: (userId, doc, fields, modifier) ->
-    !!userId
+    Roles.userIsInRole(userId, WriterRoles)
 
   remove: (userId, doc) ->
-    !!userId
+    Roles.userIsInRole(userId, WriterRoles)
 
 DriverLines.allow logged_in_allow
 BinaryData.allow logged_in_allow
 NeuronTypes.allow logged_in_allow
 BrainRegions.allow logged_in_allow
 
-NeuronCatalogConfig.allow logged_in_allow
+NeuronCatalogConfig.allow(
+  insert: (userId, doc) ->
+    Roles.userIsInRole(userId, ['admin'])
+
+  update: (userId, doc, fields, modifier) ->
+    Roles.userIsInRole(userId, ['admin'])
+
+  remove: (userId, doc) ->
+    Roles.userIsInRole(userId, ['admin'])
+)
