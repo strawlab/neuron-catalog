@@ -12,12 +12,21 @@ get_data_uri = () ->
   result = "data:application/octet-stream;base64,"+encodedData
   return result
 
-Template.DownloadData.events
-  "click .download-all-data": (event, template) ->
-     now = new Date()
-     nowstr = now.toISOString()
-     fname_base = nowstr.replace('T', '_').replace(/\:/g, '-').replace(/\..+/, '')
-     link = document.createElement("a")
-     link.download = "neuron-catalog-data_"+fname_base+".json"
-     link.href = get_data_uri()
-     link.click()
+Template.DownloadDataLauncher.events
+  "click .launch-download-dialog": (event, template) ->
+    # Need to launch dialog because Firefox doesn't allow link.click() in Javascript
+    now = new Date()
+    nowstr = now.toISOString()
+    fname_base = nowstr.replace('T', '_').replace(/\:/g, '-').replace(/\..+/, '')
+    filename = "neuron-catalog-data_"+fname_base+".json"
+    data_url = get_data_uri()
+    full_data =
+      title: "Download all data"
+      body_template: Template.AllDataButton
+      body_data:
+        data_url: data_url
+        filename: filename
+      hide_buttons: true
+
+    Blaze.renderWithData(Template.ModalDialog,
+        full_data, document.body)

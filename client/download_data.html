@@ -1,12 +1,16 @@
-<template name="DownloadData">
+<template name="DownloadDataLauncher">
   {{#if currentUser}}
   {{#detail_block}}
     {{#detail_title}}
        Download data
     {{/detail_title}}
     {{#detail_main}}
-       <button class="btn btn-default download-all-data" href="#">all data as .json file</button>
+       <button class="btn btn-default launch-download-dialog">prepare data for download</button>
     {{/detail_main}}
   {{/detail_block}}
   {{/if}}
+</template>
+
+<template name="AllDataButton">
+  <a class="btn btn-default download-all-data" href="{{data_url}}" download="{{filename}}">all data as .json file</a>
 </template>
