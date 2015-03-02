@@ -23,6 +23,8 @@ Meteor.startup ->
 # ----------------------------------------
 Meteor.publish "settings_to_client", ->
   SettingsToClient.find {}
+Meteor.publish "aws_config_status", ->
+  AWSConfigStatus.find {}
 Meteor.publish "neuron_catalog_config", ->
   NeuronCatalogConfig.find {}
 

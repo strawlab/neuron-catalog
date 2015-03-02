@@ -85,11 +85,19 @@
   {{/if}}
 </template>
 
+<template name="AWSFail">
+  <p class="text-danger">
+    AWS configuration failed, cannot upload new data.
+  </p>
+</template>
+
 <template name="AddImageCode2">
   <div>
     Images and volumes
     {{#if isInWriterRole}}
-    <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      {{#if isAWSConfigurationOK}}
+        <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      {{/if}}
     {{/if}}
   </div>
 </template>
@@ -97,8 +105,12 @@
 <template name="add_image_code">
   <div>
     {{#if isInWriterRole}}
-    <a class="btn btn-default btn-small insert" href="#">
-      <i class="fa fa-plus"></i> Add new image or volume</a>
+      {{#if isAWSConfigurationOK}}
+        <a class="btn btn-default btn-small insert" href="#">
+          <i class="fa fa-plus"></i> Add new image or volume</a>
+      {{else}}
+        {{>AWSFail}}
+      {{/if}}
     {{/if}}
   </div>
 </template>

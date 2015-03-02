@@ -17,6 +17,7 @@ Meteor.subscribe "brain_regions"
 Meteor.subscribe "binary_data"
 Meteor.subscribe "neuron_catalog_config"
 Meteor.subscribe "settings_to_client"
+Meteor.subscribe "aws_config_status"
 Meteor.subscribe "userData"
 
 # --------------------------------------------
@@ -313,6 +314,13 @@ Template.registerHelper "isInReaderRole", ->
 
 Template.registerHelper "isInWriterRole", ->
   Roles.userIsInRole( Meteor.user(), WriterRoles )
+
+Template.registerHelper "isAWSConfigurationOK", ->
+  doc = AWSConfigStatus.findOne({_id: 'status'})
+  if !doc?
+    # hmm, should we show an error here?
+    return true
+  return doc.is_ok
 
 setTitle = () ->
   cfg = NeuronCatalogConfig.findOne {}
