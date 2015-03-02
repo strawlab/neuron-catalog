@@ -23,10 +23,6 @@ Meteor.startup ->
       Meteor.roles.insert({name: role_name})
 
 # ----------------------------------------
-ReaderRoles = ['admin','read-write','read-only']
-WriterRoles = ['admin','read-write']
-
-# ----------------------------------------
 Meteor.publish "settings_to_client", ->
   SettingsToClient.find {}
 Meteor.publish "neuron_catalog_config", ->

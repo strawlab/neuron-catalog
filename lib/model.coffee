@@ -8,6 +8,10 @@
 @NeuronTypes = new Meteor.Collection("neuron_types")
 @BrainRegions = new Meteor.Collection("brain_regions")
 
+# ----------------------------------------
+@ReaderRoles = ['admin','read-write','read-only']
+@WriterRoles = ['admin','read-write']
+
 # define our schemas
 
 Schemas = {}

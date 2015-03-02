@@ -312,6 +312,9 @@ window.specialization_Dmel = ->
 Template.registerHelper "specialization_Dmel", ->
   return window.specialization_Dmel()
 
+Template.registerHelper "isInReaderRole", ->
+  Roles.userIsInRole( Meteor.user(), ReaderRoles )
+
 setTitle = () ->
   cfg = NeuronCatalogConfig.findOne {}
   if cfg?

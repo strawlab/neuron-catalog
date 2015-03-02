@@ -27,7 +27,7 @@
     <div class="col-md-10 col-md-offset-1">
       <ul class="nav navbar-nav" role="tablist">
 	<li class="{{activeIfTemplateIn 'home'}}"><a href="{{pathFor 'home'}}">Home</a></li>
-        {{#if isInRole 'admin,read-write,read-only'}}
+        {{#if isInReaderRole}}
         <li class="{{activeIfTemplateIn 'driver_lines' 'driver_line_show'}}">
           <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
         </li>
@@ -42,7 +42,7 @@
         </li>
         {{/if}}
       </ul>
-      {{#if isInRole 'admin,read-write,read-only'}}
+      {{#if isInReaderRole}}
       <ul class="nav navbar-nav navbar-right">
         <li class="{{activeIfTemplateIn 'RecentChanges'}}">
           <a href="{{pathFor 'RecentChanges'}}"><i class="fa fa-line-chart"></i> Recent Changes</a>

@@ -113,21 +113,36 @@ Router.route "/Search", ->
       @params
   return
 
-OnBeforeActions = adminRequired: () ->
-  if Meteor.loggingIn()
-    # wait for login to complete
-    @render @loadingTemplate
-  else if !Roles.userIsInRole(Meteor.user(), [ 'admin' ])
-    # no permission
-    @redirect '/'
-  else
-    # show the route
-    @next()
+OnBeforeActions =
+  adminRequired: () ->
+    if Meteor.loggingIn()
+      # wait for login to complete
+      @render @loadingTemplate
+    else if !Roles.userIsInRole(Meteor.user(), [ 'admin' ])
+      # no permission
+      @redirect '/'
+    else
+      # show the route
+      @next()
 
-Router.onBeforeAction OnBeforeActions.adminRequired, only: [
-  'accountsAdmin'
-  'config'
-]
+  readerRequired: () ->
+    if Meteor.loggingIn()
+      # wait for login to complete
+      @render @loadingTemplate
+    else if !Roles.userIsInRole(Meteor.user(), ReaderRoles)
+      # no permission
+      @redirect '/'
+    else
+      # show the route
+      @next()
+
+Router.onBeforeAction(OnBeforeActions.adminRequired,
+                      only: ['accountsAdmin','config'])
+
+Router.onBeforeAction(OnBeforeActions.readerRequired,
+        only: [ 'driver_lines', 'driver_line_show', 'neuron_types', 'neuron_type_show',
+        'brain_regions', 'brain_region_show', 'binary_data', 'binary_data_show',
+        'RecentChanges', 'Search' ])
 
 @remove_driver_line = (my_id) ->
   rdl = (doc) ->
