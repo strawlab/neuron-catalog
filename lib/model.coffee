@@ -224,3 +224,29 @@ BinaryDataSpec =
 Schemas.BinaryData = new SimpleSchema(
   compose(NamedWithTagsHistoryComments,BinaryDataSpec))
 BinaryData.attachSchema( Schemas.BinaryData )
+
+
+Schemas.User = new SimpleSchema(
+  username:
+    type: String
+    regEx: /^[a-z0-9A-Z_\.]{3,15}$/
+  emails:
+    type: [ Object ]
+    optional: true
+  'emails.$.address':
+    type: String
+    regEx: SimpleSchema.RegEx.Email
+  'emails.$.verified': type: Boolean
+  createdAt:
+    type: Date
+    denyUpdate: true
+  services:
+    type: Object
+    optional: true
+    blackbox: true
+  roles:
+    type: Object
+    optional: true
+    blackbox: true
+  )
+Meteor.users.attachSchema Schemas.User
