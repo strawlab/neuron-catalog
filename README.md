@@ -30,14 +30,15 @@ the above steps.
 ## Install for longer term runs
 
 The neuron catalog software consists of a standard
-[Meteor.js](http://meteor.com/) server and a Python process to process
-uploads (e.g. make image thumbnails and convert TIFF images to
-PNG). Instructions for getting started with Meteor are
-[here](http://docs.meteor.com/#/basic/quickstart). The Python program
-must be run with settings that allow it to connect the database. Rougly:
+[Meteor.js](http://meteor.com/) server. Instructions for getting
+started with Meteor are
+[here](http://docs.meteor.com/#/basic/quickstart). Rougly speaking,
+configure Amazon AWS for image storage, create a Meteor settings file
+and then run Meteor.
 
 ```
-# in first console window
+cp server/server-config.json.example server/server-config.json
+# Edit server/server-config.json in a text editor as appropriate.
 meteor run --settings server/server-config.json
 ```
 
