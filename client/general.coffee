@@ -276,6 +276,9 @@ Template.show_user_date.helpers
 
 # --------
 
+Template.registerHelper "neuron_catalog_version", ->
+    return neuron_catalog_version
+
 Template.registerHelper "get_brain_regions", (doc,type) ->
   result = []
   for brain_region in doc.brain_regions
