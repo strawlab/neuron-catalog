@@ -1,6 +1,7 @@
 DEFAULT_TITLE = 'neuron catalog'
 Router.configure
   layoutTemplate: "MyLayout"
+  loadingTemplate: 'Loading'
   notFoundTemplate: "PageNotFound"
   onAfterAction: ->
     document.title = DEFAULT_TITLE
