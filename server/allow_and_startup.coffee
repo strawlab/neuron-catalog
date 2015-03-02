@@ -13,10 +13,6 @@ Meteor.startup ->
     {$set: {specializations: Meteor.settings.NeuronCatalogSpecializations}},
     {upsert: true})
 
-  # ensure first user is in the admin group
-  first_user_doc = Meteor.users.findOne({}, {sort: {createdAt: 1}})
-  Roles.addUsersToRoles(first_user_doc._id, ['admin'])
-
   # Ensure existance of roles we use.
   for role_name in ['admin','read-write','read-only']
     if Meteor.roles.find({name: role_name}).count()==0
@@ -72,3 +68,11 @@ NeuronCatalogConfig.allow(
   remove: (userId, doc) ->
     Roles.userIsInRole(userId, ['admin'])
 )
+
+Accounts.onCreateUser (options, user) ->
+  if Meteor.users.find().count()==0
+    # first user, add to admin group
+    user.roles = user.roles || []
+    if !("admin" in user.roles)
+      user.roles.push "admin"
+  user
