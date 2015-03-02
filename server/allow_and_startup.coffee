@@ -10,7 +10,9 @@ Meteor.startup ->
 
   # send relevant Meteor.settings
   SettingsToClient.update( {_id: 'settings'},
-    {$set: {specializations: Meteor.settings.NeuronCatalogSpecializations}},
+    {$set:
+       specializations: Meteor.settings.NeuronCatalogSpecializations
+       DefaultUserRoles: Meteor.settings.DefaultUserRoles || []},
     {upsert: true})
 
   # Ensure existance of roles we use.
@@ -71,8 +73,15 @@ NeuronCatalogConfig.allow(
 
 Accounts.onCreateUser (options, user) ->
   if Meteor.users.find().count()==0
-    # first user, add to admin group
-    user.roles = user.roles || []
-    if !("admin" in user.roles)
-      user.roles.push "admin"
+    # first user is always admin
+    role_names = ['admin']
+  else
+    # get the roles from the settings
+    role_names = Meteor.settings.DefaultUserRoles || []
+
+  # add default roles
+  user.roles = user.roles || []
+  for role_name in role_names
+    if !(role_name in user.roles)
+      user.roles.push role_name
   user
