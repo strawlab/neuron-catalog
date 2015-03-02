@@ -6,9 +6,12 @@ This software was developed by the [Straw Lab](http://strawlab.org/)
 and is based on [Meteor.js](http://meteor.com/). The software development
 was supported by [ERC](http://erc.europa.eu/) Starting Grant 281884
 FlyVisualCircuits and by [IMP](http://www.imp.ac.at/) core
-funding. Software development happens on GitHub in the
-[strawlab/neuron-catalog](https://github.com/strawlab/neuron-catalog).
-project.
+funding.
+
+Links:
+
+- documentation: [ReadTheDocs.org](https://readthedocs.org/projects/neuron-catalog/)
+- project page: [github](https://github.com/strawlab/neuron-catalog)
 
 ## Quick install for testing
 
