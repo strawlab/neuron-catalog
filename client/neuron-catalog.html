@@ -27,42 +27,46 @@
     <div class="col-md-10 col-md-offset-1">
       <ul class="nav navbar-nav" role="tablist">
 	<li class="{{activeIfTemplateIn 'home'}}"><a href="{{pathFor 'home'}}">Home</a></li>
-	<li class="{{activeIfTemplateIn 'driver_lines' 'driver_line_show'}}">
-	  <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
-	</li>
-	<li class="{{activeIfTemplateIn 'neuron_types' 'neuron_type_show'}}">
-	  <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
-	</li>
-	<li class="{{activeIfTemplateIn 'brain_regions' 'brain_region_show'}}">
-	  <a href="{{pathFor 'brain_regions'}}">Brain Regions</a>
-	</li>
-	<li class="{{activeIfTemplateIn 'binary_data' 'binary_data_show'}}">
-	  <a href="{{pathFor 'binary_data'}}">Binary Data</a>
-	</li>
+        {{#if isInRole 'admin,read-write,read-only'}}
+        <li class="{{activeIfTemplateIn 'driver_lines' 'driver_line_show'}}">
+          <a href="{{pathFor 'driver_lines'}}">Driver Lines</a>
+        </li>
+        <li class="{{activeIfTemplateIn 'neuron_types' 'neuron_type_show'}}">
+          <a href="{{pathFor 'neuron_types'}}">Neuron Types</a>
+        </li>
+        <li class="{{activeIfTemplateIn 'brain_regions' 'brain_region_show'}}">
+          <a href="{{pathFor 'brain_regions'}}">Brain Regions</a>
+        </li>
+        <li class="{{activeIfTemplateIn 'binary_data' 'binary_data_show'}}">
+          <a href="{{pathFor 'binary_data'}}">Binary Data</a>
+        </li>
+        {{/if}}
       </ul>
+      {{#if isInRole 'admin,read-write,read-only'}}
       <ul class="nav navbar-nav navbar-right">
-	<li class="{{activeIfTemplateIn 'RecentChanges'}}">
-	  <a href="{{pathFor 'RecentChanges'}}"><i class="fa fa-line-chart"></i> Recent Changes</a>
-	</li>
-	<li class="{{activeIfTemplateIn 'Search'}}">
-	  <a href="{{pathFor 'Search'}}"><i class="fa fa-search"></i> Search</a>
-	</li>
+        <li class="{{activeIfTemplateIn 'RecentChanges'}}">
+          <a href="{{pathFor 'RecentChanges'}}"><i class="fa fa-line-chart"></i> Recent Changes</a>
+        </li>
+        <li class="{{activeIfTemplateIn 'Search'}}">
+          <a href="{{pathFor 'Search'}}"><i class="fa fa-search"></i> Search</a>
+        </li>
 
-	{{#if isInRole 'admin'}}
-	<li class="dropdown">
+        {{#if isInRole 'admin'}}
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cog"></i> Admin <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-	    <li class="{{activeIfTemplateIn 'config'}}">
-	      <a href="{{pathFor 'config'}}">Site configuration</a>
-	    </li>
-	    <li class="{{activeIfTemplateIn 'accountsAdmin'}}">
-	      <a href="{{pathFor 'accountsAdmin'}}">Accounts admin</a>
-	    </li>
-	  </ul>
+            <li class="{{activeIfTemplateIn 'config'}}">
+              <a href="{{pathFor 'config'}}">Site configuration</a>
+            </li>
+            <li class="{{activeIfTemplateIn 'accountsAdmin'}}">
+              <a href="{{pathFor 'accountsAdmin'}}">Accounts admin</a>
+            </li>
+          </ul>
         </li>
-	{{/if}}
+        {{/if}}
 
       </ul>
+      {{/if}}
     </div>
    </div>
 
