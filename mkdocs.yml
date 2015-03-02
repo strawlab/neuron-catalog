@@ -1,0 +1,5 @@
+site_name: neuron-catalog
+pages:
+- [index.md, Home]
+- [installation.md, Installation]
+- [aws-config.md, AWS Configuration]
