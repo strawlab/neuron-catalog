@@ -245,7 +245,7 @@ Schemas.User = new SimpleSchema(
     optional: true
     blackbox: true
   roles:
-    type: Object
+    type: [String]
     optional: true
     blackbox: true
   )

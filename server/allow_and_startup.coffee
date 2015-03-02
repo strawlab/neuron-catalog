@@ -12,7 +12,15 @@ Meteor.startup ->
   SettingsToClient.update( {_id: 'settings'},
     {$set: {specializations: Meteor.settings.NeuronCatalogSpecializations}},
     {upsert: true})
-  return
+
+  # ensure first user is in the admin group
+  first_user_doc = Meteor.users.findOne({}, {sort: {createdAt: 1}})
+  Roles.addUsersToRoles(first_user_doc._id, ['admin'])
+
+  # Ensure existance of roles we use.
+  for role_name in ['admin','read-write','read-only']
+    if Meteor.roles.find({name: role_name}).count()==0
+      Meteor.roles.insert({name: role_name})
 
 # ----------------------------------------
 Meteor.publish "settings_to_client", ->
