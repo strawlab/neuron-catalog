@@ -80,7 +80,7 @@ Template.EditNeuronTypesDialog.helpers
     result = []
     collection = window.get_collection_from_name(@collection_name)
     myself = collection.findOne(_id: @my_id)
-    NeuronTypes.find({},{'sort':neuron_types_sort}).forEach (doc) ->
+    NeuronTypes.find({},{sort:neuron_types_sort}).forEach (doc) ->
       if myself.neuron_types.indexOf(doc._id) is -1
         doc.is_checked = false
       else
@@ -228,4 +228,4 @@ Template.neuron_types.events
 
 Template.neuron_types.helpers
   neuron_type_cursor: ->
-    NeuronTypes.find {},{'sort':neuron_types_sort}
+    NeuronTypes.find {},{sort:neuron_types_sort}

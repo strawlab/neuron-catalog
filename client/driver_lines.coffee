@@ -59,10 +59,10 @@ Template.driver_line_from_id_block.helpers
 
 Template.AddDriverLineDialog.helpers
   neuron_types: ->
-    NeuronTypes.find()
+    NeuronTypes.find({},{sort:neuron_types_sort})
 
   brain_regions: ->
-    BrainRegions.find()
+    BrainRegions.find({},{sort:brain_regions_sort})
 
   count_cursor: (cursor) ->
     if cursor? and cursor.count? and cursor.count() > 0
@@ -91,7 +91,7 @@ Template.EditDriverLinesDialog.helpers
     result = []
     collection = window.get_collection_from_name(@collection_name)
     myself = collection.findOne(_id: @my_id)
-    DriverLines.find().forEach (doc) ->
+    DriverLines.find({},{sort:driver_lines_sort}).forEach (doc) ->
       doc.is_checked = false
       doc.is_checked = true  unless myself.best_driver_lines.indexOf(doc._id) is -1  if myself.hasOwnProperty("best_driver_lines")
       result.push doc
@@ -150,7 +150,7 @@ Template.driver_line_show.events
 
 Template.driver_lines.helpers
   driver_line_cursor: ->
-    DriverLines.find {}, {'sort':driver_lines_sort}
+    DriverLines.find {}, {sort:driver_lines_sort}
 
 Template.driver_lines.events
   "click .insert": (event, template) ->

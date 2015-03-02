@@ -80,7 +80,7 @@ Template.EditBrainRegionsDialog.helpers
     result = []
     collection = window.get_collection_from_name(@collection_name)
     myself = collection.findOne(_id: @my_id)
-    BrainRegions.find({},{'sort':brain_regions_sort}).forEach (doc) ->
+    BrainRegions.find({},{sort:brain_regions_sort}).forEach (doc) ->
       doc.unspecific_is_checked = false
       doc.output_is_checked = false
       doc.input_is_checked = false
@@ -177,4 +177,4 @@ Template.brain_regions.events
 
 Template.brain_regions.helpers
   brain_region_cursor: ->
-    BrainRegions.find {},{'sort':brain_regions_sort}
+    BrainRegions.find {},{sort:brain_regions_sort}
