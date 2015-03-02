@@ -138,6 +138,13 @@ Template.brain_region_show.helpers
         _id: @_id
 
 Template.brain_region_table.helpers
+  showExpressionType: (kw) ->
+    data = Template.parentData(kw.hash.parent)
+    if data.show_expression_type?
+      return data.show_expression_type
+    else
+      return true
+
   driver_lines_referencing_me: ->
     DriverLines = window.get_collection_from_name("DriverLines") # FIXME: why do I need this?
     DriverLines.find brain_regions:

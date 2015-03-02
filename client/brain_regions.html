@@ -11,7 +11,9 @@
 	<th>Brain Region</th>
 	<th>Driver lines</th>
 	<th>Neuron types</th>
-	<th>Expression type</th>
+        {{#if showExpressionType parent=0}}
+          <th>Expression type</th>
+        {{/if}}
       </tr>
     </thead>
     <tbody>
@@ -35,11 +37,13 @@
           {{/neuron_type_from_id_block}}
 	  {{/each}}
 	</td>
-	<td>
-	  {{#each my_types}}
-	    {{this}}
-	  {{/each}}
-	</td>
+        {{#if showExpressionType parent=2}}
+        <td>
+          {{#each my_types}}
+            {{this}}
+          {{/each}}
+        </td>
+        {{/if}}
       </tr>
       {{/brain_region_from_id_block}}
       {{/each}}
@@ -60,7 +64,7 @@
     <i class="fa fa-plus"></i> Add a new brain_region</a>
   {{/if}}
 
-  {{> brain_region_table brain_regions=brain_region_cursor}}
+  {{> brain_region_table brain_regions=brain_region_cursor show_expression_type=false}}
 
   {{#if isInWriterRole}}
   <a class="btn btn-default insert" href="#">
