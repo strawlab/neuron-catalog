@@ -18,7 +18,7 @@ the above steps.
 ## Install for longer term runs
 
 The neuron catalog software consists of a standard
-[Meteor.js](http://meteor.com/) server. Instructions for getting
+[Meteor.js](https://www.meteor.com/) server. Instructions for getting
 started with Meteor are
 [here](http://docs.meteor.com/#/basic/quickstart). Rougly speaking,
 configure Amazon AWS for image storage, create a Meteor settings file
