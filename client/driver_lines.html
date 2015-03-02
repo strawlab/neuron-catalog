@@ -204,14 +204,16 @@
 
   {{#detail_block}}
     {{#detail_main}}
+      {{#if isInWriterRole}}
+      <a class="btn btn-default insert" href="#">
+	<i class="fa fa-plus"></i> Add a new driver line</a>
+      {{/if}}
 
       {{> driver_line_table driver_lines=driver_line_cursor}}
 
-      {{#if currentUser}}
+      {{#if isInWriterRole}}
       <a class="btn btn-default insert" href="#">
 	<i class="fa fa-plus"></i> Add a new driver line</a>
-      {{else}}
-        {{login_message}}
       {{/if}}
     {{/detail_main}}
   {{/detail_block}}

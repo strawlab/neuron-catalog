@@ -8,11 +8,8 @@
         {{> add_image_code}}
         <br/>
         {{> binary_data_table binary_data=binary_data_cursor}}
-
-        {{#if currentUser}}
-        {{else}}
-          {{login_message}}
-        {{/if}}
+        <br/>
+        {{> add_image_code}}
 
     {{/detail_main}}
   {{/detail_block}}
@@ -90,15 +87,19 @@
 
 <template name="AddImageCode2">
   <div>
-      Images and volumes
-      <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+    Images and volumes
+    {{#if isInWriterRole}}
+    <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+    {{/if}}
   </div>
 </template>
 
 <template name="add_image_code">
   <div>
+    {{#if isInWriterRole}}
     <a class="btn btn-default btn-small insert" href="#">
       <i class="fa fa-plus"></i> Add new image or volume</a>
+    {{/if}}
   </div>
 </template>
 

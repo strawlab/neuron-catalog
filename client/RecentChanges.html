@@ -1,5 +1,4 @@
 <template name="RecentChanges">
-  {{#if currentUser}}
   <input type="range"
 	 min="1"
 	 max="30"
@@ -11,10 +10,6 @@
   {{>ChangeList collname="NeuronTypes" last_n_days=last_n_days}}
   {{>ChangeList collname="BrainRegions" last_n_days=last_n_days}}
   {{>ChangeList collname="BinaryData" last_n_days=last_n_days}}
-  {{else}}
-    {{login_message}}
-  {{/if}}
-
 </template>
 
 <template name="ChangeList">

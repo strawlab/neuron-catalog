@@ -54,14 +54,19 @@
 
   {{#detail_block}}
     {{#detail_main}}
-  {{> brain_region_table brain_regions=brain_region_cursor}}
 
-  {{#if currentUser}}
+  {{#if isInWriterRole}}
   <a class="btn btn-default insert" href="#">
     <i class="fa fa-plus"></i> Add a new brain_region</a>
-  {{else}}
-  {{login_message}}
   {{/if}}
+
+  {{> brain_region_table brain_regions=brain_region_cursor}}
+
+  {{#if isInWriterRole}}
+  <a class="btn btn-default insert" href="#">
+    <i class="fa fa-plus"></i> Add a new brain_region</a>
+  {{/if}}
+
     {{/detail_main}}
   {{/detail_block}}
 

@@ -1,6 +1,4 @@
 <template name="Search">
-  {{#if currentUser}}
-
   <p>
     Text (name, synonyms and comments) search:
     <input type="text" id="comments-search-input" placeholder="search text">
@@ -50,8 +48,4 @@
     {{> binary_data_table binary_data=binary_data_search_cursor}}
   {{/detail_block}}
   {{/if}}
-  {{else}}
-    {{login_message}}
-  {{/if}}
-
 </template>

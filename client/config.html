@@ -1,8 +1,6 @@
 <template name="config">
   <h2>Configuration</h2>
 
-  {{#if currentUser}}
-
   {{#detail_block}}
     {{#detail_title}}
 	Website text configuration
@@ -16,8 +14,6 @@
     {{/detail_main}}
   {{/detail_block}}
 
-  {{/if}}
-
   {{#detail_block}}
     {{#detail_title}}
 	Website setup validation
@@ -29,7 +25,6 @@
     {{/detail_main}}
   {{/detail_block}}
 
-    {{#if currentUser}}
   {{#detail_block}}
     {{#detail_title}}
 	Database validation
@@ -46,10 +41,6 @@
     {{/detail_main}}
 
   {{/detail_block}}
-
-    {{else}}
-      <li>Other configuration options available if you log in.</li>
-    {{/if}}
 
 </template>
 

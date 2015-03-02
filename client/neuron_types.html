@@ -71,13 +71,16 @@
   {{#detail_block}}
     {{#detail_main}}
 
-  {{> neuron_type_table neuron_types=neuron_type_cursor}}
-
-  {{#if currentUser}}
+  {{#if isInWriterRole}}
   <a class="btn btn-default insert" href="#">
     <i class="fa fa-plus"></i> Add a new neuron type</a>
-  {{else}}
-  {{login_message}}
+  {{/if}}
+
+  {{> neuron_type_table neuron_types=neuron_type_cursor}}
+
+  {{#if isInWriterRole}}
+  <a class="btn btn-default insert" href="#">
+    <i class="fa fa-plus"></i> Add a new neuron type</a>
   {{/if}}
     {{/detail_main}}
   {{/detail_block}}
@@ -115,10 +118,12 @@
 	    <input type="text" id="edit_synonym_input" value="" >
 	  </div>
 	  {{else}}
+          {{#if isInWriterRole}}
 	  <div class="synonym add_synonym">
 	    <a class="btn btn-default btn-small insert" href="#">
 	      <i class="fa fa-plus"></i> Add synonym</a>
 	  </div>
+	  {{/if}}
 	  {{/if}}
 	</div>
       </div>

@@ -213,10 +213,12 @@
 	    <input type="text" id="edit-tag-input" value="" >
 	  </div>
 	  {{else}}
+          {{#if isInWriterRole}}
 	  <div class="tag add-tag">
 	    <a class="btn btn-default btn-small insert" href="#">
 	      <i class="fa fa-plus"></i> Add tag</a>
 	  </div>
+	  {{/if}}
 	  {{/if}}
 	</div>
       </div>
@@ -338,10 +340,12 @@
               <input type="text" id="edit-flycircuit-input" value="" >
             </div>
           {{else}}
+          {{#if isInWriterRole}}
             <div class="tag add-flycircuit-idid">
               <a class="btn btn-default btn-small insert" href="#">
                <i class="fa fa-plus"></i> Add idid</a>
             </div>
+          {{/if}}
           {{/if}}
         </div>
       </div>
@@ -385,7 +389,5 @@
         <h2>404 - page not found</h2>
 	<p>The page you requested may not exist or you may not have
 	permission to see it.</p>
-
-	{{#if currentUser}}{{else}}<p>{{login_message}}</p>{{/if}}
     </div>
 </template>
