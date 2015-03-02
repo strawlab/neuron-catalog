@@ -38,6 +38,15 @@ Router.route "/",
 
 Router.route "/config"
 
+Router.route "/user-admin",
+  template: 'accountsAdmin'
+  onBeforeAction: ->
+    if !Roles.userIsInRole(Meteor.user(), [ 'admin' ])
+      console.log 'redirecting'
+      @redirect '/'
+    else
+      @next()
+
 Router.route "/driver_lines"
 
 Router.route "/driver_lines/:_id/:name?",
