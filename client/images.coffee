@@ -276,7 +276,8 @@ get_blob = ( canvas, type, quality ) ->
   return result
 
 handle_file_step_two = ( chosen_file, template, opts ) ->
-  # FIXME: disable upload button until this processing is complete?
+  opts = opts || {}
+
   payload = {}
   payload.original_file = chosen_file
   if opts.full_image?
