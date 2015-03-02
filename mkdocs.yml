@@ -1,5 +1,9 @@
 site_name: neuron-catalog
+site_url: http://strawlab.org/neuron-catalog/
+site_description: A simple web database for keeping track of neurons.
+
 repo_url: https://github.com/strawlab/neuron-catalog/
+
 pages:
 - [index.md, Home]
 - [installation.md, Installation]
