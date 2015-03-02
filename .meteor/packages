@@ -26,3 +26,4 @@ percolate:migrations
 strawlab:meteor-tiff
 gfk:notifications
 alanning:roles
+mrt:accounts-admin-ui-bootstrap-3
