@@ -73,7 +73,12 @@ get_slingshot_AWS_failures = function() {
 
   // optional?: verify bucket has website hosting enabled
 
-  // ---- Now, send result to client.
+  return failures;
+}
+
+function publish_aws_failures() {
+  var failures = get_slingshot_AWS_failures();
+
   if (failures.length==0) {
     is_ok = true;
   } else {
@@ -82,12 +87,11 @@ get_slingshot_AWS_failures = function() {
   AWSConfigStatus.update( {_id: 'status'},
 			  {$set: {is_ok: is_ok}},
 			  {upsert: true});
-  return failures;
 }
 
 Meteor.startup(function() {
-  get_slingshot_AWS_failures(); // call once at startup
+  publish_aws_failures(); // call once at startup
 
   // every 2 hours check AWS settings
-  Meteor.setInterval( function() {get_slingshot_AWS_failures();}, 1000*60*60*2 );
+  Meteor.setInterval( function() {publish_aws_failures();}, 1000*60*60*2 );
 })
