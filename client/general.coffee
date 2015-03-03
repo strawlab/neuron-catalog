@@ -285,6 +285,12 @@ Template.registerHelper "rtfd", ->
 Template.registerHelper "neuron_catalog_version", ->
   return neuron_catalog_version
 
+Template.registerHelper "isInDemoMode", ->
+  doc = SettingsToClient.findOne({_id:"settings"})
+  if !doc?
+    return false
+  return doc.DemoMode
+
 Template.registerHelper "get_brain_regions", (doc,type) ->
   result = []
   for brain_region in doc.brain_regions

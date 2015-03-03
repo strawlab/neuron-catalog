@@ -12,7 +12,8 @@ Meteor.startup ->
   SettingsToClient.update( {_id: 'settings'},
     {$set:
        specializations: Meteor.settings.NeuronCatalogSpecializations
-       DefaultUserRoles: Meteor.settings.DefaultUserRoles || []},
+       DefaultUserRoles: Meteor.settings.DefaultUserRoles || []
+       DemoMode: Meteor.settings.DemoMode || false},
     {upsert: true})
 
   # Ensure existance of roles we use.

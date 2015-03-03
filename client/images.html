@@ -133,6 +133,9 @@
     <form role="form" id="insert_image_form">
       <input type="file" style="display:none" id="insert_image">
       <a class="btn btn-default" href="#" id="fileSelect">Choose file</a>
+      {{#if isInDemoMode}}
+        Demo mode: maximum file size limited.
+      {{/if}}
       {{#each selected_files}}
         {{name}}
       {{/each}}
