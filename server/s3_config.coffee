@@ -1,6 +1,6 @@
 if Meteor.settings.DemoMode
   maxSize = 10485760 # 10 MB
-  console.log "demo mode: max updoad size:",maxSize
+  console.log "demo mode: max upload size:",maxSize
 else
   maxSize = 0 # any size
 allowedFileTypes = new RegExp(".*")
