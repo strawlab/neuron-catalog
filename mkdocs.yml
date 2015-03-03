@@ -5,6 +5,9 @@ site_description: A simple web database for keeping track of neurons.
 repo_url: https://github.com/strawlab/neuron-catalog/
 
 pages:
-- [index.md, Home]
-- [installation.md, Installation]
-- [s3-config.md, Storage Configuration]
+- ['index.md', 'Introduction']
+- ['installation.md', 'User Guide', 'Installation']
+- ['settings.md', 'User Guide', 'Settings']
+- ['s3-config.md', 'User Guide', 'Storage Configuration']
+- ['credits.md', 'About', 'Credits']
+- ['license.md', 'About', 'License']
