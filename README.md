@@ -12,8 +12,9 @@ core funding.
 
 Links:
 
-- documentation: [ReadTheDocs.org](https://neuron-catalog.readthedocs.org/en/latest/)
-- project page: [github](https://github.com/strawlab/neuron-catalog)
-- demo site: [neuron-catalog demoonstration](https://neuron-catalog.meteor.com)
+- Documentation: [ReadTheDocs.org](https://neuron-catalog.readthedocs.org/en/latest/)
+- Project page: [github](https://github.com/strawlab/neuron-catalog)
+- Demo site: [neuron-catalog demoonstration](https://neuron-catalog.meteor.com)
+- Download: [Release page](https://github.com/strawlab/neuron-catalog/releases)
 
 All additional documentation is in the [docs](docs) directory.

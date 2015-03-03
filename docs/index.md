@@ -20,6 +20,7 @@ collaboration platform before the data are ready for integration into
 a finished dataset.
 
 - Home page: [strawlab.org/neuron-catalog](http://strawlab.org/neuron-catalog)
+- Download: [Release page](https://github.com/strawlab/neuron-catalog/releases)
 - Project page on github:
 [github.com/strawlab/neuron-catalog](https://github.com/strawlab/neuron-catalog)
 - Demonstration: [neuron-catalog demonstration](https://neuron-catalog.meteor.com)
