@@ -1,15 +1,16 @@
-AWSConfigTestResult = new ReactiveVar(null)
-AWSConfigTestDone = new ReactiveVar(null)
+S3ConfigTestResult = new ReactiveVar(null)
+S3ConfigTestDone = new ReactiveVar(null)
 
 on_verify_callback = (error, failures) ->
-  AWSConfigTestDone.set(100)
+  S3ConfigTestDone.set(100)
   if error?
-    console.error "Failure during remote call:",error
+    bootbox.alert("Failure during remote call: "+error)
+    throw error
 
   if failures.length==0
-    AWSConfigTestResult.set({has_error: false, msg: "AWS is correctly configured."})
+    S3ConfigTestResult.set({has_error: false, msg: "S3 is correctly configured."})
   else
-    AWSConfigTestResult.set({has_error: true, msg: "AWS not correctly configured.", failures:failures})
+    S3ConfigTestResult.set({has_error: true, msg: "S3 not correctly configured.", failures:failures})
 
 update_callback = (error, result) ->
   console.log "update complete"
@@ -54,23 +55,23 @@ check_doc = (doc) ->
         coll.update({_id: doc._id},modifier,update_callback)
   return
 
-Template.ConfigAWSTestDialog.helpers
+Template.ConfigS3TestDialog.helpers
   result: ->
-    AWSConfigTestResult.get()
+    S3ConfigTestResult.get()
   percent_done: ->
-    AWSConfigTestDone.get()
+    S3ConfigTestDone.get()
   is_active: ->
-    if AWSConfigTestDone.get() < 100 then "active" else ""
+    if S3ConfigTestDone.get() < 100 then "active" else ""
 
 Template.config.events
-  "click .verify-aws": (event, template) ->
-    AWSConfigTestResult.set(null)
-    AWSConfigTestDone.set(0)
-    bootbox.dialog message: window.renderTmp(Template.ConfigAWSTestDialog)
-    Meteor.call("verify_AWS_configuration", on_verify_callback)
+  "click .verify-s3": (event, template) ->
+    S3ConfigTestResult.set(null)
+    S3ConfigTestDone.set(0)
+    bootbox.dialog message: window.renderTmp(Template.ConfigS3TestDialog)
+    Meteor.call("verify_S3_configuration", on_verify_callback)
     Meteor.setTimeout(->
-      if AWSConfigTestDone.get() < 100
-        AWSConfigTestDone.set(30)
+      if S3ConfigTestDone.get() < 100
+        S3ConfigTestDone.set(30)
     ,
       300)
 

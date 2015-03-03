@@ -85,9 +85,9 @@
   {{/if}}
 </template>
 
-<template name="AWSFail">
+<template name="S3Fail">
   <p class="text-danger">
-    AWS configuration failed, cannot upload new data.
+    S3 configuration failed, cannot upload new data.
   </p>
 </template>
 
@@ -95,7 +95,7 @@
   <div>
     Images and volumes
     {{#if isInWriterRole}}
-      {{#if isAWSConfigurationOK}}
+      {{#if isS3ConfigurationOK}}
         <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
       {{/if}}
     {{/if}}
@@ -105,11 +105,11 @@
 <template name="add_image_code">
   <div>
     {{#if isInWriterRole}}
-      {{#if isAWSConfigurationOK}}
+      {{#if isS3ConfigurationOK}}
         <a class="btn btn-default btn-small insert" href="#">
           <i class="fa fa-plus"></i> Add new image or volume</a>
       {{else}}
-        {{>AWSFail}}
+        {{>S3Fail}}
       {{/if}}
     {{/if}}
   </div>

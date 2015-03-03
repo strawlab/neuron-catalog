@@ -76,7 +76,7 @@ get_slingshot_AWS_failures = function() {
   return failures;
 }
 
-function publish_aws_failures() {
+function publish_s3_failures() {
   var failures = get_slingshot_AWS_failures();
 
   if (failures.length==0) {
@@ -84,14 +84,14 @@ function publish_aws_failures() {
   } else {
     is_ok = false;
   }
-  AWSConfigStatus.update( {_id: 'status'},
+  S3ConfigStatus.update( {_id: 'status'},
 			  {$set: {is_ok: is_ok}},
 			  {upsert: true});
 }
 
 Meteor.startup(function() {
-  publish_aws_failures(); // call once at startup
+  publish_s3_failures(); // call once at startup
 
-  // every 2 hours check AWS settings
-  Meteor.setInterval( function() {publish_aws_failures();}, 1000*60*60*2 );
+  // every 2 hours check S3 settings
+  Meteor.setInterval( function() {publish_s3_failures();}, 1000*60*60*2 );
 })

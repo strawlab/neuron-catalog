@@ -1,5 +1,5 @@
 Meteor.methods({
-  verify_AWS_configuration: function () {
+  verify_S3_configuration: function () {
     var failures = get_slingshot_AWS_failures();
     return failures;
   },

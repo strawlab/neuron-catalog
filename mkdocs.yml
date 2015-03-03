@@ -7,4 +7,4 @@ repo_url: https://github.com/strawlab/neuron-catalog/
 pages:
 - [index.md, Home]
 - [installation.md, Installation]
-- [aws-config.md, AWS Configuration]
+- [s3-config.md, Storage Configuration]

@@ -1,9 +1,14 @@
-## AWS Setup and Configuration
+## Storage Configuration
 
-For image and volume data uploads, neuron-catalog depends on [Amazon
-Simple Storage Service](http://aws.amazon.com/s3/) by using [Meteor
-Slingshot](https://github.com/CulturalMe/meteor-slingshot). You need
-to setup and configure this to run your own instance of
+For image and volume data uploads, neuron-catalog depends on an the
+[Amazon Simple Storage Service](http://aws.amazon.com/s3/) or a
+compatible provider. Under the hood, this support is provided by
+[Meteor
+Slingshot](https://github.com/CulturalMe/meteor-slingshot).
+
+### Configuration of Amazon Web Services
+
+You need to setup and configure this to run your own instance of
 neuron-catalog.
 
 1. Create an AWS user and login to the [AWS Console](https://console.aws.amazon.com/).

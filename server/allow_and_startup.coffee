@@ -23,8 +23,8 @@ Meteor.startup ->
 # ----------------------------------------
 Meteor.publish "settings_to_client", ->
   SettingsToClient.find {} if Roles.userIsInRole(@userId, ReaderRoles)
-Meteor.publish "aws_config_status", ->
-  AWSConfigStatus.find {} if Roles.userIsInRole(@userId, ReaderRoles)
+Meteor.publish "s3_config_status", ->
+  S3ConfigStatus.find {} if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "neuron_catalog_config", ->
   NeuronCatalogConfig.find {} if Roles.userIsInRole(@userId, ReaderRoles)
 
