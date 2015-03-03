@@ -22,6 +22,7 @@ a finished dataset.
 - Home page: [strawlab.org/neuron-catalog](http://strawlab.org/neuron-catalog)
 - Project page on github:
 [github.com/strawlab/neuron-catalog](https://github.com/strawlab/neuron-catalog)
+- demo site: [neuron-catalog demoonstration](https://neuron-catalog.meteor.com)
 
 ---
 
@@ -29,3 +30,25 @@ a finished dataset.
 
 neuron-catalog is simple to install and run on your own
 infrastructure.
+
+#### Simple
+
+The user interface is a standard webpage with an emphasis on simple,
+intuitive editing. No training should be needed to get up and running.
+
+#### All data available to download
+
+Don't feel locked in. Download all your data any time.
+
+#### Easy to extend
+
+The neuron-catalog is written in Javascript using the powerful [Meteor
+framework](https://www.meteor.com). It is implemented as a standard
+Meteor application, and hence all the documentation and help from this
+large community is directly relevant.
+
+#### Species specific specializations available
+
+Currently for Drosophila melanogaster are several enhancements such as
+linking to other online databases. The design is implemented in a way
+that would be possible to add similar features for other species.

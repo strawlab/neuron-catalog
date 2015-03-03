@@ -12,5 +12,6 @@ Links:
 
 - documentation: [ReadTheDocs.org](https://neuron-catalog.readthedocs.org/en/latest/)
 - project page: [github](https://github.com/strawlab/neuron-catalog)
+- demo site: [neuron-catalog demoonstration](https://neuron-catalog.meteor.com)
 
 All additional documentation is in the [docs](docs) directory.
