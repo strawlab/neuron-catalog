@@ -276,8 +276,14 @@ Template.show_user_date.helpers
 
 # --------
 
+Template.registerHelper "rtfd", ->
+  result =
+    base_url: 'https://neuron-catalog.readthedocs.org'
+    language: 'en'
+    version: 'latest'
+
 Template.registerHelper "neuron_catalog_version", ->
-    return neuron_catalog_version
+  return neuron_catalog_version
 
 Template.registerHelper "get_brain_regions", (doc,type) ->
   result = []
