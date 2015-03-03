@@ -49,6 +49,7 @@ large community is directly relevant.
 
 #### Species specific specializations available
 
-Currently for Drosophila melanogaster are several enhancements such as
-linking to other online databases. The design is implemented in a way
-that would be possible to add similar features for other species.
+Currently for Drosophila melanogaster are [several
+enhancements](specializations.md) such as linking to other online
+databases. The design is implemented in a way that would be possible
+to add similar features for other species.
