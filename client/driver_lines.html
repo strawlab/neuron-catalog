@@ -91,14 +91,21 @@
   {{> tags_panel tags=tags collection="DriverLines" _id=_id}}
 
   {{#if specialization_Dmel}}
-  {{#if is_vt_gal4_line}}
+  {{#if has_remote_links}}
   {{#detail_block}}
     {{#detail_title}}
       Links to remote resources
     {{/detail_title}}
     {{#detail_main}}
-      <a class="btn btn-default btn-small" href="{{vdrc_url}}"><i class="fa fa-long-arrow-right"></i> VDRC</a>
-      <a class="btn btn-default btn-small" href="{{brainbase_url}}"><i class="fa fa-long-arrow-right"></i> BrainBase</a>
+      <div>
+      {{#if is_flylight_gal4_line}}
+       {{> FlyLightQueryLauncher driver_line_name=name}}
+      {{/if}}
+      {{#if is_vt_gal4_line}}
+        <a class="btn btn-default btn-small" href="{{vdrc_url}}"><i class="fa fa-long-arrow-right"></i> VDRC</a>
+        <a class="btn btn-default btn-small" href="{{brainbase_url}}"><i class="fa fa-long-arrow-right"></i> BrainBase</a>
+      {{/if}}
+      </div>
     {{/detail_main}}
   {{/detail_block}}
   {{/if}}

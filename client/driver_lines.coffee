@@ -22,9 +22,18 @@ enhance_driver_line_doc = (doc) ->
   doc.vdrc_url = null
   doc.brainbase_url = null
 
+  doc.is_flylight_gal4_line = false
+  doc.flylight_url = null
+
+  doc.has_remote_links = false
+
   name = doc.name.toLowerCase()
 
   if window.specialization_Dmel()
+    if name.lastIndexOf("gmr", 0) is 0 and endsWith(name,"gal4")
+      doc.is_flylight_gal4_line = true
+      doc.has_remote_links = true
+
     if name.lastIndexOf("vt", 0) is 0 and endsWith(name,"gal4")
       doc.is_vt_gal4_line = true
       vt_number_str = name.substring(2, name.length-4)
@@ -42,6 +51,8 @@ enhance_driver_line_doc = (doc) ->
       qs = $.param(query)
       doc.vdrc_url = "http://stockcenter.vdrc.at/control/keywordsearch?"+qs
       doc.brainbase_url = "http://brainbase.imp.ac.at/bbweb/#6?st=byline&q="+vt_number_str
+      doc.has_remote_links = true
+
   doc
 
 Template.driver_line_from_id_block.helpers
