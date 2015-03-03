@@ -1,13 +1,27 @@
+maxSize = 0 # any size
+allowedFileTypes = new RegExp(".*")
+
+acl = "public-read"
+
+authorize_func = (data) ->
+  #Deny uploads if user is not logged in.
+  unless data.userId
+    message = "Please login before posting files"
+    throw new Meteor.Error("Login Required", message)
+
+  unless Roles.userIsInRole(data.userId, WriterRoles)
+    message = "You are logged in, but do not have write permission"
+    throw new Meteor.Error("Login Required", message)
+
+  true
+
+# options for primary files
 options =
-  allowedFileTypes: new RegExp(".*")
-  maxSize: 0 # any size
-  acl: "public-read"
+  allowedFileTypes: allowedFileTypes
+  maxSize: maxSize
+  acl: acl
   authorize: ->
-    #Deny uploads if user is not logged in.
-    unless @userId
-      message = "Please login before posting files"
-      throw new Meteor.Error("Login Required", message)
-    true
+     authorize_func(this)
   key: (upload_file, ctx) ->
     if Meteor.settings.AWSRegion
       region = Meteor.settings.AWSRegion
@@ -37,16 +51,13 @@ options =
     BinaryData.update({_id:_id}, updater_doc,{validate: false, getAutoValues: false})
     s3_key
 
+# options for cache and other subsidary files
 options_cache =
-  allowedFileTypes: new RegExp(".*")
-  maxSize: 0 # any size
-  acl: "public-read"
+  allowedFileTypes: allowedFileTypes
+  maxSize: maxSize
+  acl: acl
   authorize: ->
-    #Deny uploads if user is not logged in.
-    unless @userId
-      message = "Please login before posting files"
-      throw new Meteor.Error("Login Required", message)
-    true
+     authorize_func(this)
   key: (upload_file, ctx) ->
     ctx.s3_key
 
