@@ -1,5 +1,7 @@
 {"NeuronCatalogSpecializations": ["Drosophila melanogaster"],
  "DefaultUserRoles": ["read-write"], "PossibleRoles": ["admin","read-write","read-only"],
+ "DemoMode": true,
  "AWSAccessKeyId": "key",
  "AWSSecretAccessKey": "secret",
+ "AWSRegion": "us-east-1",
  "S3Bucket": "bucket"}
