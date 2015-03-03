@@ -13,7 +13,4 @@ Links:
 - documentation: [ReadTheDocs.org](https://neuron-catalog.readthedocs.org/en/latest/)
 - project page: [github](https://github.com/strawlab/neuron-catalog)
 
-Further documentation:
-
-- [installation instructions](docs/installation.md)
-- [storage configuration](docs/s3-config.md)
+All additional documentation is in the [docs](docs) directory.
