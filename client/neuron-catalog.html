@@ -10,6 +10,13 @@
 </template>
 
 <template name="MyLayout">
+  {{#if isInDemoMode}}
+    <div class="github-fork-ribbon-wrapper left">
+        <div class="github-fork-ribbon">
+	  <a href="{{rtfd.base_url}}/{{rtfd.language}}/{{rtfd.version}}/demo-mode/">demo mode</a>
+        </div>
+    </div>
+  {{/if}}
   {{> notifications}}
   <div class="container-fluid {{top_margin_class_attrs}}">
 
