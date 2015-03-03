@@ -22,7 +22,11 @@ a finished dataset.
 - Home page: [strawlab.org/neuron-catalog](http://strawlab.org/neuron-catalog)
 - Project page on github:
 [github.com/strawlab/neuron-catalog](https://github.com/strawlab/neuron-catalog)
-- demo site: [neuron-catalog demoonstration](https://neuron-catalog.meteor.com)
+- Demonstration: [neuron-catalog demonstration](https://neuron-catalog.meteor.com)
+- Documentation: [Read The Docs](https://neuron-catalog.readthedocs.org/en/latest)
+- Online forum: [gitter.im/strawlab/neuron-catalog](https://gitter.im/strawlab/neuron-catalog)
+
+</a></li>
 
 ---
 
