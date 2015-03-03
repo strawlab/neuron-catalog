@@ -8,7 +8,9 @@ Meteor.startup ->
       blurb: ""
     NeuronCatalogConfig.insert doc
 
-  # send relevant Meteor.settings
+  # Send relevant Meteor.settings.
+  # SECURITY NOTE: These are visible to all site visitors, even those
+  # not in a ReaderRole. So don't add any sensitive information here.
   SettingsToClient.update( {_id: 'settings'},
     {$set:
        specializations: Meteor.settings.NeuronCatalogSpecializations
@@ -23,7 +25,7 @@ Meteor.startup ->
 
 # ----------------------------------------
 Meteor.publish "settings_to_client", ->
-  SettingsToClient.find {} if Roles.userIsInRole(@userId, ReaderRoles)
+  SettingsToClient.find {}
 Meteor.publish "s3_config_status", ->
   S3ConfigStatus.find {} if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "neuron_catalog_config", ->
