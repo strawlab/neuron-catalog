@@ -18,22 +18,18 @@ neuron-catalog.
 - In the bucket permissions, add the following CORS configuration:
 
 ```xml
-<pre>
-    <code>
-       <?xml version="1.0" encoding="UTF-8"?>
-       <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-           <CORSRule>
-               <AllowedOrigin>*</AllowedOrigin>
-               <AllowedMethod>PUT</AllowedMethod>
-               <AllowedMethod>POST</AllowedMethod>
-               <AllowedMethod>GET</AllowedMethod>
-               <AllowedMethod>HEAD</AllowedMethod>
-               <MaxAgeSeconds>3000</MaxAgeSeconds>
-               <AllowedHeader>*</AllowedHeader>
-           </CORSRule>
-       </CORSConfiguration>
-    </code>
-</pre>
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <CORSRule>
+        <AllowedOrigin>*</AllowedOrigin>
+        <AllowedMethod>PUT</AllowedMethod>
+        <AllowedMethod>POST</AllowedMethod>
+        <AllowedMethod>GET</AllowedMethod>
+        <AllowedMethod>HEAD</AllowedMethod>
+        <MaxAgeSeconds>3000</MaxAgeSeconds>
+        <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
+</CORSConfiguration>
 ```
 
 - Enable static website hosting for this S3 bucket by selecting
@@ -45,20 +41,20 @@ to `index.html`.
 
 <pre>
    <code>
-   {
-   	"Version": "2008-10-17",
-   	"Statement": [
-   		{
-   			"Sid": "AllowPublicRead",
-   			"Effect": "Allow",
-   			"Principal": {
-   				"AWS": "*"
-   			},
-   			"Action": "s3:GetObject",
-   			"Resource": "arn:aws:s3:::your-bucket-name/*"
-   		}
-   	]
-   }
+{
+	"Version": "2008-10-17",
+	"Statement": [
+		{
+			"Sid": "AllowPublicRead",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "*"
+			},
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::your-bucket-name/*"
+		}
+	]
+}
    </code>
 </pre>
 
@@ -71,37 +67,34 @@ substitute the name of your bucket for `your-bucket-name`):
 
 <pre>
     <code>
-       {
-         "Version": "2012-10-17",
-         "Statement": [
-           {
-             "Sid": "Stmt1410709913000",
-             "Effect": "Allow",
-             "Action": [
-               "s3:*"
-             ],
-             "Resource": [
-               "arn:aws:s3:::your-bucket-name"
-             ]
-           },
-           {
-             "Sid": "Stmt1410710014000",
-             "Effect": "Allow",
-             "Action": [
-               "s3:*"
-             ],
-             "Resource": [
-               "arn:aws:s3:::your-bucket-name/*"
-             ]
-           }
-         ]
-       }
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1410709913000",
+      "Effect": "Allow",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::your-bucket-name"
+      ]
+    },
+    {
+      "Sid": "Stmt1410710014000",
+      "Effect": "Allow",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::your-bucket-name/*"
+      ]
+    }
+  ]
+}
     </code>
 </pre>
 
 - Now, you need to tell neuron-catalog what your IAM Access Key and
-Secret Key created above. These go in a JSON file like the prototype
-in `server/server-config.json.example`. Change the relevant variables
-and save it as something like `server/server-config.json`. You can
-also enter these values into the top of the `Vagrantfile` and
-re-create your vagrant machine.
+Secret Key created above. Please see the [settings](settings.md)
+documentation.
