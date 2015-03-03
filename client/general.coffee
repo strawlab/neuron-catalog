@@ -59,7 +59,8 @@ window.get_collection_from_name = (name) ->
   else if name is "NeuronCatalogConfig"
     coll = NeuronCatalogConfig
   else
-    console.error "unknown collection name "+name
+    bootbox.alert('Error: unknown collection name '+name)
+    throw "unknown collection name "+name
   coll
 
 # --------------------------------------------
