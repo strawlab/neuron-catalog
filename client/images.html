@@ -155,3 +155,11 @@
   {{/with}}
 </template>
 
+<template name="TiffError">
+  <p class="text-danger">There was an error processing the TIFF file. Try saving the file
+  as a PNG or JPEG and try again.</p>
+
+  <p class="text-muted">While neuron-catalog supports some tiff files via
+  <a href="https://github.com/seikichi/tiff.js">github.com/seikichi/tiff.js</a>,
+  this solution does not support all TIFF files.</p>
+</template>

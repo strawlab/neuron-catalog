@@ -251,7 +251,7 @@ Template.add_image_code.events
                send_coll, my_id, "images")
         )
 
-    Blaze.renderWithData(Template.ModalDialog,
+    window.add_image_view = Blaze.renderWithData(Template.ModalDialog,
         full_data, document.body)
 
 getThumbnail = (original, width, height) ->
@@ -334,7 +334,21 @@ handle_files = (fileList, template) ->
     tiff_reader = new FileReader()
     tiff_reader.onload = ((theFile) ->
       (e) ->
-        Tiff.initialize({TOTAL_MEMORY: theFile.size*4})
+        try
+          Tiff.initialize({TOTAL_MEMORY: theFile.size*4})
+        catch exception
+
+          full_data =
+            title: "Error processing TIFF file"
+            body_template: Template.TiffError
+            body_data: null
+            hide_buttons: true
+
+          Blaze.remove(window.add_image_view)
+          Blaze.renderWithData(Template.ModalDialog,
+            full_data, document.body)
+
+          throw exception
         tiff = new Tiff(buffer: e.target.result)
         dataUrl = tiff.toDataURL()
         img = document.createElement('img')
