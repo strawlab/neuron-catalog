@@ -9,7 +9,7 @@ A simple web database for keeping track of neurons
 neuron-catalog is a web-based database for small groups (e.g. a lab)
 collaborating on neuronal circuit mapping. It provides a simple
 platform to organize your notes about driver lines, neuron types,
-brain neurons and putative connectivity. Each group that wants to run
+brain regions and putative connectivity. Each group that wants to run
 the neuron-catalog can run their own server, as the software is free
 and open source (GNU Affero General Public License v3). Because it is
 run as an isolated, standalone database, the neuron-catalog can be
