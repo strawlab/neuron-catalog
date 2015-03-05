@@ -1,11 +1,16 @@
-<template name="DownloadDataLauncher">
+<template name="DataImportExportLauncher">
   {{#if isInReaderRole}}
   {{#detail_block}}
     {{#detail_title}}
-       Download data
+       Data Import/Export
     {{/detail_title}}
     {{#detail_main}}
-       <button class="btn btn-default launch-download-dialog">prepare data for download</button>
+       <button class="btn btn-default launch-download-dialog">download data</button>
+
+       {{#if isInWriterRole}}
+         <button class="btn btn-default launch-data-import-dialog">upload data</button>
+       {{/if}}
+
     {{/detail_main}}
   {{/detail_block}}
   {{/if}}

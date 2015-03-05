@@ -415,6 +415,7 @@ Template.InsertImageDialog.helpers
 
 Template.InsertImageDialog.events
   "change #insert_image": (event, template) ->
+    # The file selection changed
     template.upload_ready.set( false )
 
     div = template.find("#preview")

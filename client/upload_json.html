@@ -1,0 +1,21 @@
+<template name="UploadDataDialog">
+  <div id="upload-data-div">
+    <form role="form" id="upload-data-form">
+      <input type="file" style="display:none" id="upload-data">
+      <a class="btn btn-default" href="#" id="fileSelect">Choose JSON file</a>
+      {{#each selected_files}}
+        {{name}}
+      {{/each}}
+    </form>
+
+    <p class="text-muted">Note: currently existing documents will not
+      be overwriten. (If documents with the same _id exist, they will
+      not be updated.)</p>
+  </div>
+</template>
+
+<template name="JSONError">
+  <p class="text-danger">There was an error processing the JSON file.</p>
+
+  <p class="text-muted">{{error}}</p>
+</template>
