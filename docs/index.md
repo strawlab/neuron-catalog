@@ -43,7 +43,9 @@ intuitive editing. No training should be needed to get up and running.
 
 #### All data available to download
 
-Don't feel locked in. Download all your data any time.
+You are not locked in. All your data can be downloaded as a .json file
+anytime. This can be uploaded to another instance of the
+neuron-catalog or it can be parsed with other tools.
 
 #### Easy to extend
 
