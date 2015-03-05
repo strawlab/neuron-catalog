@@ -15,7 +15,9 @@ Meteor.startup ->
     {$set:
        specializations: Meteor.settings.NeuronCatalogSpecializations
        DefaultUserRoles: Meteor.settings.DefaultUserRoles || []
-       DemoMode: Meteor.settings.DemoMode || false},
+       DemoMode: Meteor.settings.DemoMode || false
+       SchemaVersion: Migrations.getVersion()
+    },
     {upsert: true})
 
   # Ensure existance of roles we use.

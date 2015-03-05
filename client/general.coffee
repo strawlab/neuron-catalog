@@ -58,6 +58,8 @@ window.get_collection_from_name = (name) ->
     coll = Meteor.users
   else if name is "NeuronCatalogConfig"
     coll = NeuronCatalogConfig
+  else if name is "SettingsToClient"
+    coll = SettingsToClient
   else
     bootbox.alert('Error: unknown collection name '+name)
     throw "unknown collection name "+name

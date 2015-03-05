@@ -1,6 +1,6 @@
 get_data_uri = () ->
   collections = []
-  for collection_name in ["NeuronCatalogConfig","DriverLines","NeuronTypes","BrainRegions","BinaryData","Meteor.users"]
+  for collection_name in ["NeuronCatalogConfig","DriverLines","NeuronTypes","BrainRegions","BinaryData","Meteor.users","SettingsToClient"]
     this_coll = {name: collection_name, documents: []}
     coll = window.get_collection_from_name( collection_name )
     coll.find().forEach (doc) ->
