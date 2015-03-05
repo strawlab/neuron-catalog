@@ -1,11 +1,11 @@
 get_data_uri = () ->
-  collections = []
+  collections = {}
   for collection_name in ["NeuronCatalogConfig","DriverLines","NeuronTypes","BrainRegions","BinaryData","Meteor.users","SettingsToClient"]
-    this_coll = {name: collection_name, documents: []}
     coll = window.get_collection_from_name( collection_name )
+    this_coll = {}
     coll.find().forEach (doc) ->
-      this_coll.documents.push doc
-    collections.push this_coll
+      this_coll[doc._id]= doc
+    collections[collection_name]=this_coll
   all_data = {collections: collections, 'export_date': new Date().toISOString()}
   raw_json = JSON.stringify(all_data)
   encodedData = window.btoa(raw_json)
