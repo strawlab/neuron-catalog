@@ -33,6 +33,12 @@ window.modal_save_func = null
 @endsWith = (str, suffix) ->
   str.indexOf(suffix, str.length - suffix.length) isnt -1
 
+@utf8_to_b64 = (str) ->
+  window.btoa(unescape(encodeURIComponent(str)))
+
+@b64_to_utf8 = (str) ->
+  decodeURIComponent(escape(window.atob(str)))
+
 window.get_route_from_name = (name) ->
   route = undefined
   if name is "DriverLines"

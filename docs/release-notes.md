@@ -10,6 +10,7 @@ A list of changes with each release. Downloads are
 ##### Bugfixes
 
 - Show tags from all collections when searching.
+- Unicode characters do not break JSON download.
 
 ---
 

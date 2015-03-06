@@ -8,7 +8,7 @@ get_data_uri = () ->
     collections[collection_name]=this_coll
   all_data = {collections: collections, 'export_date': new Date().toISOString()}
   raw_json = JSON.stringify(all_data)
-  encodedData = window.btoa(raw_json)
+  encodedData = utf8_to_b64(raw_json)
   result = "data:application/octet-stream;base64,"+encodedData
   return result
 
