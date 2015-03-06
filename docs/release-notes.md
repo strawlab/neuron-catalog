@@ -11,6 +11,7 @@ A list of changes with each release. Downloads are
 
 - Show tags from all collections when searching.
 - Unicode characters do not break JSON download.
+- Fix showing meaningless expression type in brain region table
 
 ---
 
