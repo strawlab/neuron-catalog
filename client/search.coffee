@@ -144,15 +144,20 @@ Template.Search.helpers
     if query_doc?
       BinaryData.find(query_doc)
   get_tags: ->
+    coll_names_with_tags = []
+    for coll_name of Schemas
+      if "tags" in Schemas[coll_name].objectKeys()
+        coll_names_with_tags.push coll_name
     result = {}
     query_doc = {tags: {$exists: true}}
     where_doc = {tags:1,_id:0}
-    DriverLines.find(query_doc,where_doc).forEach (doc) ->
-      result[tag]=true for tag in doc.tags
-    Object.keys(result)
+    for coll_name in coll_names_with_tags
+      collection = window.get_collection_from_name(coll_name)
+      collection.find(query_doc,where_doc).forEach (doc) ->
+        result[tag]=true for tag in doc.tags
     lods = [] # list of dicts
     my_active_tags = active_tags.get()
-    for tag_name in Object.keys(result)
+    for tag_name of result
       tmp = {name:tag_name}
       if tag_name of my_active_tags
         tmp.is_active_css_class='active'

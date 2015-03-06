@@ -5,6 +5,14 @@ A list of changes with each release. Downloads are
 
 ---
 
+## next (not yet released)
+
+##### Bugfixes
+
+- Show tags from all collections when searching.
+
+---
+
 ## v0.5.2 (2015-03-06)
 
 ##### Features and Improvements

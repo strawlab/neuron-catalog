@@ -15,7 +15,7 @@
 
 # define our schemas
 
-Schemas = {}
+@Schemas = {}
 
 Schemas.NeuronCatalogConfig = new SimpleSchema(
   project_name:
