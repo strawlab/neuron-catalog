@@ -1,3 +1,8 @@
+## Downloads
+
+Releases can be downloaded
+[here](https://github.com/strawlab/neuron-catalog/releases).
+
 ## Quick install for testing
 
 The neuron catalog can be most easily installed for testing using
