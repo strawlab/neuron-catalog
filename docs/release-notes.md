@@ -9,6 +9,7 @@ A list of changes with each release. Downloads are
 
 ##### Bugfixes
 
+- Remove redundant text when editing brain regions.
  
 ---
 
