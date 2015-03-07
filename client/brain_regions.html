@@ -100,6 +100,39 @@
     {{/detail_main}}
   {{/detail_block}}
 
+  {{#if specialization_Dmel}}
+    {{#detail_block}}
+      {{#detail_title}}
+        Drosophila Anatomy Ontology
+      {{/detail_title}}
+      {{#detail_main}}
+        {{#if editing_dao_id}}
+          <div>
+            <input type="text" id="edit-dao-input" value="" >
+          </div>
+        {{else}}
+          {{#if DAO_id}}
+          <div class="btn btn-default btn-small">
+            <div class="pzp1 insert-dao-id">{{DAO_id}}</div>
+            <div class="pzp2 remove-dao-id"><i class="fa fa-trash-o"></i></div>
+          </div>
+
+            <a href="http://www.virtualflybrain.org/site/tools/anatomy_finder/index.htm?id={{DAO_id}}">VirtualFlyBrain.org</a>
+
+          {{/if}}
+
+          {{#if DAO_id}}
+          {{else}}
+            {{#if isInWriterRole}}
+              <a class="btn btn-default btn-small insert-dao-id" href="#">
+              <i class="fa fa-plus"></i> Add DAO id</a>
+            {{/if}}
+          {{/if}}
+        {{/if}}
+      {{/detail_main}}
+    {{/detail_block}}
+  {{/if}}
+
   {{#detail_block}}
     {{#detail_title}}
       Driver lines

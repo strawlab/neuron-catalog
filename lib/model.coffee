@@ -181,8 +181,15 @@ Schemas.NeuronTypes = new SimpleSchema(
 NeuronTypes.attachSchema( Schemas.NeuronTypes )
 
 # Schemas.BrainRegions ------------------
+
+DrosophilaBrainRegions =
+  DAO_id:
+    type: String
+    label: "Drosophila Anatomy Ontology short form identifier"
+    optional: true
+
 Schemas.BrainRegions = new SimpleSchema(
-  compose(NamedWithTagsImagesHistoryComments))
+  compose(NamedWithTagsImagesHistoryComments,DrosophilaBrainRegions))
 BrainRegions.attachSchema( Schemas.BrainRegions )
 
 # Schemas.BinaryData ------------------

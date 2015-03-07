@@ -1,3 +1,8 @@
+specialization_Dmel = true # keep specialization code separate
+
+if specialization_Dmel
+  editing_dao_id_var = new ReactiveVar(null)
+
 driver_lines_sort = {}
 driver_lines_sort[window.get_sort_key("DriverLines")] = 1
 neuron_types_sort = {}
@@ -123,6 +128,43 @@ Template.EditBrainRegionsDialog.helpers
   collection.update my_id,
     $set:
       brain_regions: brain_regions
+
+if specialization_Dmel
+  Template.brain_region_show.events window.okCancelEvents("#edit-dao-input",
+    ok: (value) ->
+      BrainRegions.update({@_id},{$set:{DAO_id: value}})
+      editing_dao_id_var.set(null)
+
+    cancel: ->
+      editing_dao_id_var.set(null)
+  )
+
+  Template.brain_region_show.events
+    "click .insert-dao-id": (event, template) ->
+      editing_dao_id_var.set(@_id)
+      Deps.flush() # update DOM before focus
+      element = template.find("#edit-dao-input")
+      window.activateInput(element)
+      if @DAO_id?
+        element.value = @DAO_id
+
+    "click .remove-dao-id": (event) ->
+      DAO_id = @DAO_id
+      id = @_id
+
+      bootbox.confirm('Remove DAO ID "'+DAO_id+'"?', (result) ->
+        if result
+          event.target.parentNode.style.opacity = 0
+
+          # wait for CSS animation to finish
+          Meteor.setTimeout((->
+            BrainRegions.update({_id: id},
+              {$unset: {DAO_id: true}})
+          ), 300))
+
+  Template.brain_region_show.helpers
+    editing_dao_id: ->
+      editing_dao_id_var.get()
 
 Template.brain_region_show.helpers
   driver_lines_referencing_me: ->
