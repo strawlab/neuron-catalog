@@ -1,1 +1,1 @@
-@neuron_catalog_version = '0.5.3'
+@neuron_catalog_version = '0.5.4'
