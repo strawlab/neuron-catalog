@@ -5,7 +5,7 @@ A list of changes with each release. Downloads are
 
 ---
 
-## next (not yet released)
+## v0.5.3 (2015-03-07)
 
 ##### Bugfixes
 
