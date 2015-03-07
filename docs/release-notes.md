@@ -7,6 +7,10 @@ A list of changes with each release. Downloads are
 
 ## next (not yet released)
 
+##### Security
+
+- No emails or hashed passwords in JSON download.
+
 ##### Features and Improvements
 
 - Support for Drosophila Anatomy Ontology

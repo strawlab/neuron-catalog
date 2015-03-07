@@ -4,6 +4,9 @@ get_data_uri = () ->
     coll = window.get_collection_from_name( collection_name )
     this_coll = {}
     coll.find().forEach (doc) ->
+      if collection_name=="Meteor.users"
+        # only save usernames
+        doc = {_id: doc._id, username: doc.username}
       this_coll[doc._id]= doc
     collections[collection_name]=this_coll
   all_data = {collections: collections, 'export_date': new Date().toISOString()}
