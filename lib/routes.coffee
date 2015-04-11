@@ -9,7 +9,7 @@ Router.configure
 Router.setTemplateNameConverter (str) ->
   str
 
-make_safe = (name) ->
+@make_safe = (name) ->
   encodeURIComponent(name)
 
 always_include_name_in_path_action = (controller, coll, template_name) ->

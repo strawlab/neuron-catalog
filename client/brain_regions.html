@@ -21,19 +21,19 @@
       {{#brain_region_from_id_block}}
       <tr>
 	<td>
-          <a href="{{pathFor 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
+          <a href="{{pathForName 'brain_region_show'}}"><span class="keep-together">{{name}}</span></a>
 	</td>
 	<td>
 	  {{#each driver_lines_referencing_me}}
           {{#driver_line_from_id_block}}
-          <a href="{{pathFor 'driver_line_show'}}"><span class="keep-together">{{name}}</span></a>
+          <a href="{{pathForName 'driver_line_show'}}"><span class="keep-together">{{name}}</span></a>
           {{/driver_line_from_id_block}}
 	  {{/each}}
 	</td>
 	<td>
 	  {{#each neuron_types_referencing_me}}
           {{#neuron_type_from_id_block}}
-          <a href="{{pathFor 'neuron_type_show'}}"><span class="keep-together">{{name}}</span></a>
+          <a href="{{pathForName 'neuron_type_show'}}"><span class="keep-together">{{name}}</span></a>
           {{/neuron_type_from_id_block}}
 	  {{/each}}
 	</td>

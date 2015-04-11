@@ -43,7 +43,7 @@
 
   {{#detail_block}}
   <div class="image-square">
-    <a href="{{pathFor 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url_notif}}" alt={{name}}></a>
+    <a href="{{pathForName 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url_notif}}" alt={{name}}></a>
     {{name}}
   </div>
 
@@ -60,7 +60,7 @@
 	    {{#if ../../selectable_not_clickable}}
               <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
 	    {{else}}
-              <a href="{{pathFor 'binary_data_show'}}">
+              <a href="{{pathForName 'binary_data_show'}}">
                 <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
               </a>
 	    {{/if}}
@@ -70,7 +70,7 @@
 	    {{#if ../../selectable_not_clickable}}
 	      {{name}}
 	    {{else}}
-              <a href="{{pathFor 'binary_data_show'}}">{{name}}</a>
+              <a href="{{pathForName 'binary_data_show'}}">{{name}}</a>
 	    {{/if}}
 	    <p>No thumbnail available.</p>
           </div>

@@ -294,6 +294,10 @@ Template.registerHelper "isS3ConfigurationOK", ->
     return true
   return doc.is_ok
 
+Template.registerHelper "pathForName", (routeName) ->
+  route = Router.routes[routeName]
+  route.path({_id: @_id, name: make_safe(@name)})
+
 setTitle = () ->
   cfg = NeuronCatalogConfig.findOne {}
   if cfg?
