@@ -5,6 +5,19 @@ A list of changes with each release. Downloads are
 
 ---
 
+## next (not yet released)
+
+##### Features and Improvements
+
+- Support files to use WebStorm IDE for development
+- Amira file parser moved to https://github.com/strawlab/py_amira_file_reader
+
+##### Bugfixes
+
+- Fix broken links when a slash is in the item name.
+
+---
+
 ## v0.5.4 (2015-03-07)
 
 ##### Security
