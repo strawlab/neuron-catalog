@@ -213,10 +213,10 @@
       <div class="tags-div">
 	<div class="item-tags">
           {{#each tag_dicts}}
-<div class="btn btn-default btn-small">
+          <a class="btn btn-default btn-small" href={{pathFor 'Search' query=TagSearchQuery}}>
 	    <div class="pzp1 name">{{name}}</div>
 	    <div class="pzp2 remove"><i class="fa fa-trash-o"></i></div>
-	  </div>
+	  </a>
 	  {{/each}}
 	  {{#if adding_tag}}
 	  <div class="tag edit-tag">

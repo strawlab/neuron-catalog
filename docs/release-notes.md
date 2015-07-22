@@ -5,6 +5,14 @@ A list of changes with each release. Downloads are
 
 ---
 
+## next (not yet released)
+
+##### Features and Improvements
+
+- Each tag button now links to a search for that tag
+
+---
+
 ## v0.5.6 (2015-07-22)
 
 ##### Features and Improvements
