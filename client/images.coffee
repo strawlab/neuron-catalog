@@ -414,6 +414,8 @@ Template.InsertImageDialog.helpers
     return result2
 
 Template.InsertImageDialog.events
+  # consider also implementing a paste event
+  # e.g. http://jsfiddle.net/KJW4E/222/
   "change #insert_image": (event, template) ->
     # The file selection changed
     template.upload_ready.set( false )

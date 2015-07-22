@@ -5,6 +5,14 @@ A list of changes with each release. Downloads are
 
 ---
 
+## next (not yet released)
+
+##### Features and Improvements
+
+- Update to Meteor 1.1.0.2 and Bootstrap 3.3.5
+
+---
+
 ## v0.5.5 (2015-04-14)
 
 ##### Features and Improvements
