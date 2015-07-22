@@ -10,6 +10,7 @@ A list of changes with each release. Downloads are
 ##### Features and Improvements
 
 - Update to Meteor 1.1.0.2 and Bootstrap 3.3.5
+- Improve UI once a user logs in
 
 ---
 

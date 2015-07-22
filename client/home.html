@@ -44,6 +44,26 @@
   {{#if isInReaderRole}}
   {{#detail_block}}
     {{#detail_title}}
+	You are now logged in and able to see the data
+    {{/detail_title}}
+    {{#detail_main}}
+
+     <p>You may be interested in the following views:</p>
+     <ul>
+       <li><a href="{{pathFor 'driver_lines'}}">Driver Lines</a></li>
+       <li><a href="{{pathFor 'neuron_types'}}">Neuron Types</a></li>
+       <li><a href="{{pathFor 'brain_regions'}}">Brain Regions</a></li>
+       <li><a href="{{pathFor 'binary_data'}}">Binary Data</a></li>
+       <li><a href="{{pathFor 'RecentChanges'}}"><i class="fa fa-line-chart"></i> Recent Changes</a></li>
+       <li><a href="{{pathFor 'Search'}}"><i class="fa fa-search"></i> Search</a></li>
+     </ul>
+    {{/detail_main}}
+  {{/detail_block}}
+  {{/if}}
+
+  {{#if isInReaderRole}}
+  {{#detail_block}}
+    {{#detail_title}}
 	About the data
     {{/detail_title}}
     {{#detail_main}}
