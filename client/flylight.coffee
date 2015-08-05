@@ -40,5 +40,6 @@ Template.FlyLightQueryLauncher.events
       hiddenField.setAttribute 'value', value
       form.appendChild hiddenField
 
+    form.setAttribute "target", "_blank" # new window http://stackoverflow.com/a/179015
     document.body.appendChild(form)
     form.submit()
