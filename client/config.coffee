@@ -1,17 +1,3 @@
-S3ConfigTestResult = new ReactiveVar(null)
-S3ConfigTestDone = new ReactiveVar(null)
-
-on_verify_callback = (error, failures) ->
-  S3ConfigTestDone.set(100)
-  if error?
-    bootbox.alert("Failure during remote call: "+error)
-    throw error
-
-  if failures.length==0
-    S3ConfigTestResult.set({has_error: false, msg: "S3 is correctly configured."})
-  else
-    S3ConfigTestResult.set({has_error: true, msg: "S3 not correctly configured.", failures:failures})
-
 update_callback = (error, result) ->
   console.log "update complete"
   if error?
@@ -55,26 +41,7 @@ check_doc = (doc) ->
         coll.update({_id: doc._id},modifier,update_callback)
   return
 
-Template.ConfigS3TestDialog.helpers
-  result: ->
-    S3ConfigTestResult.get()
-  percent_done: ->
-    S3ConfigTestDone.get()
-  is_active: ->
-    if S3ConfigTestDone.get() < 100 then "active" else ""
-
 Template.config.events
-  "click .verify-s3": (event, template) ->
-    S3ConfigTestResult.set(null)
-    S3ConfigTestDone.set(0)
-    bootbox.dialog message: window.renderTmp(Template.ConfigS3TestDialog)
-    Meteor.call("verify_S3_configuration", on_verify_callback)
-    Meteor.setTimeout(->
-      if S3ConfigTestDone.get() < 100
-        S3ConfigTestDone.set(30)
-    ,
-      300)
-
   "click .validate-docs": (event,template) ->
     button = event.currentTarget
     name = button.dataset.collection.valueOf()

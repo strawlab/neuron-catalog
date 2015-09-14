@@ -16,17 +16,6 @@
 
   {{#detail_block}}
     {{#detail_title}}
-	Website setup validation
-    {{/detail_title}}
-    {{#detail_main}}
-      <p>
-      <button type="button" class="btn btn-default verify-s3">Verify S3 configuration</button>
-      </p>
-    {{/detail_main}}
-  {{/detail_block}}
-
-  {{#detail_block}}
-    {{#detail_title}}
 	Database validation
     {{/detail_title}}
     {{#detail_main}}
@@ -42,24 +31,4 @@
 
   {{/detail_block}}
 
-</template>
-
-<template name="ConfigS3TestDialog">
-  <h2>S3 configuration test</h2>
-    <div class="progress">
-      <div class="progress-bar progress-bar-striped {{is_active}}"  role="progressbar" aria-valuenow="{{percent_done}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent_done}}%">
-	<span class="sr-only">{{percent_done}}% Complete</span>
-      </div>
-    </div>
-  {{#if result}}
-    {{result.msg}}
-    {{#if result.has_error}}
-      <ul>
-      {{#each result.failures}}
-        <li>{{this}}</li>
-      {{/each}}
-      </ul>
-    {{/if}}
-  {{else}}
-  {{/if}}
 </template>

@@ -16,11 +16,7 @@ configuration file. It looks like this:
 ```
 {"NeuronCatalogSpecializations": ["Drosophila melanogaster"],
  "DefaultUserRoles": ["read-write"],
- "DemoMode": true,
- "AWSAccessKeyId": "key",
- "AWSSecretAccessKey": "secret",
- "AWSRegion": "us-east-1",
- "S3Bucket": "bucket"}
+ "DemoMode": true}
 ```
 
 The options are:
@@ -37,8 +33,3 @@ The options are:
   `"read-only"`). For more convenience, set to `["read-write"]` so
   that each new user can read and write the database.
 - `DemoMode` When true, this limits the maximum upload size to 10 MB.  (Optional.)
-- `AWSAccessKeyId` This string is the S3 access key.
-- `AWSSecretAccessKey` This string is the S3 secret key.
-- `AWSRegion` This string is the S3 region. (Optional.)
-- `S3Bucket`  This string is the S3 bucket.
-

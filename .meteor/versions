@@ -76,8 +76,6 @@ nemo64:bootstrap-data@3.3.5
 npm-bcrypt@0.7.8_2
 observe-sequence@1.0.6
 ordered-dict@1.0.3
-peerlibrary:aws-sdk@2.1.47_1
-peerlibrary:blocking@0.5.2
 percolate:migrations@0.8.6
 raix:eventemitter@0.1.3
 random@1.0.3
@@ -95,7 +93,6 @@ spacebars-compiler@1.0.6
 srp@1.0.3
 standard-app-packages@1.0.5
 strawlab:meteor-tiff@0.0.1
-strawlab:slingshot@0.4.2
 templating@1.1.1
 tracker@1.0.7
 ui@1.0.6

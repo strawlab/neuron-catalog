@@ -85,22 +85,11 @@
   {{/if}}
 </template>
 
-<template name="S3Fail">
-  <p class="text-danger">
-    S3 configuration failure. Cannot upload new data.
-    {{#if isInRole 'admin'}}
-      See <a href="{{rtfd.base_url}}/{{rtfd.language}}/{{rtfd.version}}/s3-config/">the docs</a>.
-    {{/if}}
-  </p>
-</template>
-
 <template name="AddImageCode2">
   <div>
     Images and volumes
     {{#if isInWriterRole}}
-      {{#if isS3ConfigurationOK}}
-        <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
-      {{/if}}
+      <a class="btn btn-default btn-small edit-images" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
     {{/if}}
   </div>
 </template>
@@ -108,12 +97,8 @@
 <template name="add_image_code">
   <div>
     {{#if isInWriterRole}}
-      {{#if isS3ConfigurationOK}}
-        <a class="btn btn-default btn-small insert" href="#">
-          <i class="fa fa-plus"></i> Add new image or volume</a>
-      {{else}}
-        {{>S3Fail}}
-      {{/if}}
+      <a class="btn btn-default btn-small insert" href="#">
+        <i class="fa fa-plus"></i> Add new image or volume</a>
     {{/if}}
   </div>
 </template>

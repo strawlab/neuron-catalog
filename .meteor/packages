@@ -15,8 +15,6 @@ mrt:moment
 astraw:jquery-fleximages
 reactive-var
 
-strawlab:slingshot
-peerlibrary:aws-sdk
 aldeed:collection2
 aldeed:autoform
 mizzao:bootboxjs

@@ -2,7 +2,6 @@
 # Loaded on both the client and the server
 
 @SettingsToClient = new Meteor.Collection("settings_to_client")
-@S3ConfigStatus = new Meteor.Collection("s3_config_status")
 @NeuronCatalogConfig = new Meteor.Collection("neuron_catalog_config")
 @DriverLines = new Meteor.Collection("driver_lines")
 @BinaryData = new Meteor.Collection("binary_data")

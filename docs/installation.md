@@ -17,18 +17,13 @@ The neuron catalog can be most easily installed for testing using
 7. Open [http://localhost:3450/](http://localhost:3450/) with your browser to visit your newly installed neuron catalog server.
 8. You can stop the server and remove it with `vagrant destroy`.
 
-If you want to enable image uploads, [configure Amazon AWS for image
-storage](s3-config.md) and edit the `Vagrantfile` to add the relevant
-S3 information before running the above steps.
-
 ## Install for longer term runs
 
 The neuron catalog software consists of a standard
 [Meteor.js](https://www.meteor.com/) server. Instructions for getting
 started with Meteor are
 [here](http://docs.meteor.com/#/basic/quickstart). Rougly speaking,
-[configure Amazon AWS for image storage](s3-config.md), [create a
-Meteor settings file](settings.md) and then run Meteor:
+[create a Meteor settings file](settings.md) and then run Meteor:
 
 ```
 cp server/server-config.json.example server/server-config.json
