@@ -115,4 +115,6 @@ Migrations.add
           validate: false
           getAutoValues: false
 
+# XXX fixme need to write a migration tool here!
+
 Migrations.migrateTo(6)

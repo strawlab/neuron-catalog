@@ -18,6 +18,8 @@ Meteor.subscribe "binary_data"
 Meteor.subscribe "neuron_catalog_config"
 Meteor.subscribe "settings_to_client"
 Meteor.subscribe "userData"
+Meteor.subscribe "archive_filestore"
+Meteor.subscribe "cache_filestore"
 
 # --------------------------------------------
 # session variables

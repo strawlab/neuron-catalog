@@ -25,8 +25,8 @@
   {{#detail_block}}
   <div class="image_big">
     <div class="{{#if is_image_hidden}}{{else}}vis-hidden{{/if}}">Loading <code>{{name}}</code>...</div>
-    <img class="aspect_image loadable {{#if is_image_hidden}}vis-hidden{{/if}}" src="{{secure_url_notif}}" alt={{name}}>
-    <p>{{name}} [ <a href="{{secure_url_notif}}">cache</a> | <a download="{{name}}" href="{{secure_url}}">original</a> ]</p>
+    <img class="aspect_image loadable {{#if is_image_hidden}}vis-hidden{{/if}}" src="{{fileObjNoTif.url store=''}}" alt={{name}}>
+    <p>{{name}} [ <a href="{{fileObjNoTif.url}}">cache</a> | <a download="{{name}}" href="{{fileObjArchive.url}}">original</a> ]</p>
   </div>
   {{hack}}
   {{/detail_block}}
@@ -43,7 +43,7 @@
 
   {{#detail_block}}
   <div class="image-square">
-    <a href="{{pathForName 'binary_data_show'}}"><img class="aspect_image" src="{{secure_url_notif}}" alt={{name}}></a>
+    <a href="{{pathForName 'binary_data_show'}}"><img class="aspect_image" src="{{fileObjNoTif}}" alt={{name}}></a>
     {{name}}
   </div>
 
@@ -58,10 +58,10 @@
         {{#if has_thumb}}
           <div class="item {{selectable_class}}" id={{_id}} data-w={{thumb_width}} data-h={{thumb_height}}>
 	    {{#if ../../selectable_not_clickable}}
-              <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
+              <img src={{fileObjThumb.url}} data-src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}}>
 	    {{else}}
               <a href="{{pathForName 'binary_data_show'}}">
-                <img src={{thumb_src}} data-src={{thumb_src}} width={{thumb_width}} height={{thumb_height}}>
+                <img src={{fileObjThumb.url}} data-src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}}>
               </a>
 	    {{/if}}
           </div>
