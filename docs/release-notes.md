@@ -10,6 +10,7 @@ A list of changes with each release. Downloads are
 ##### Features and Improvements
 
 - Each tag button now links to a search for that tag
+- Do not download font into browser
 
 ---
 
@@ -48,7 +49,7 @@ A list of changes with each release. Downloads are
 ##### Bugfixes
 
 - Remove redundant text when editing brain regions.
- 
+
 ---
 
 ## v0.5.3 (2015-03-07)
