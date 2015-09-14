@@ -27,3 +27,5 @@ strawlab:meteor-tiff
 gfk:notifications
 alanning:roles
 mrt:accounts-admin-ui-bootstrap-3
+cfs:standard-packages
+cfs:gridfs
