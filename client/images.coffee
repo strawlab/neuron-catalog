@@ -336,6 +336,7 @@ handle_files = (fileList, template) ->
       (e) ->
         try
           Tiff.initialize({TOTAL_MEMORY: theFile.size*4})
+          tiff = new Tiff(buffer: e.target.result)
         catch exception
 
           full_data =
@@ -349,7 +350,6 @@ handle_files = (fileList, template) ->
             full_data, document.body)
 
           throw exception
-        tiff = new Tiff(buffer: e.target.result)
         dataUrl = tiff.toDataURL()
         img = document.createElement('img')
         img.onload = ->
