@@ -81,8 +81,6 @@ Template.binary_data_show.helpers
 
 # -------------------------------------------------------
 
-# @remove_binary_data is defined in ../neuron-catalog.coffee
-
 link_image_save_func = (template,collection_name,my_id) ->
   coll = window.get_collection_from_name(collection_name)
   elements = template.find(".selected")

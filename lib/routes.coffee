@@ -187,10 +187,15 @@ Router.onBeforeAction(OnBeforeActions.readerRequired,
 
   doc = BinaryData.findOne(my_id)
 
-  # FIXME: actually delete file
   BinaryData.remove my_id, (error, num_removed) ->
     if error?
       console.error("Error removing document:",error)
+      return
+    ArchiveFileStore.remove doc.archiveId
+    if doc.cacheId?
+      CacheFileStore.remove doc.cacheId
+    if doc.thumbId?
+      CacheFileStore.remove doc.thumbId
 
 @remove_neuron_type = (my_id) ->
   rnt = (doc) ->
