@@ -1,9 +1,5 @@
 trigger_update = new Deps.Dependency
 
-#my_uploader = null # variable local to this script
-#uploader_state_changed = new Deps.Dependency
-upload_progress_dialog = null
-
 # global
 window.image_upload_template = null
 
@@ -100,14 +96,6 @@ link_image_save_func = (template,collection_name,my_id) ->
 
 # -------------
 
-# XXX FIXME: need to implement progress bar with cfs-ui
-# Template.UploadProgress.helpers
-#   percent_uploaded: ->
-#     uploader_state_changed.depend()
-#     if !my_uploader?
-#       return 0
-#     Math.round(my_uploader.progress() * 100);
-
 insert_image_save_func = (template, coll_name, my_id, field_name) ->
   payload = template.payload_var.get()
   if !payload?
@@ -117,14 +105,8 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
   if !upload_file?
     return
 
-  upload_progress_dialog = bootbox.dialog
-      title: "upload progress"
-      message: window.renderTmp(Template.UploadProgress)
-
-  ArchiveFileStore.insert upload_file, (error, fileObj) ->
-    # This callback is called when the upload is complete (or on error).
-    upload_progress_dialog.modal('hide')
-    upload_progress_dialog = null
+  fileObjArchive = ArchiveFileStore.insert upload_file, (error, fileObj) ->
+    # This is called when original insert is done (not when upload is complete).
 
     if error?
       console.error(error)
@@ -157,9 +139,8 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
           $set: t2
 
       if payload.full_image?
-        # ctx_full =
-        #   s3_key: "cache/" + newBinaryDataDocId + "/" + upload_file.name + ".jpg"
-        CacheFileStore.insert payload.full_image.blob, (error, fullCacheFileObj) ->
+        CacheFileStore.insert payload.full_image.file, (error, fullCacheFileObj) ->
+          # This is called when original insert is done (not when upload is complete).
           if error
             console.error "full cache image upload error", error
             return
@@ -172,9 +153,8 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
           BinaryData.update newBinaryDataDocId, updater_doc
 
       if payload.thumb?
-        # ctx_thumb =
-        #   s3_key: "thumbs/" + newBinaryDataDocId + "/" + upload_file.name + ".jpg"
-        CacheFileStore.insert payload.thumb.blob, (error, thumbFileObj) ->
+        CacheFileStore.insert payload.thumb.file, (error, thumbFileObj) ->
+          # This is called when original insert is done (not when upload is complete).
           if error
             console.error "thumb upload error",error
             return
@@ -270,6 +250,13 @@ get_blob = ( canvas, type, quality ) ->
   result = new Blob( [arr], {type: type || 'image/png'} )
   return result
 
+removeExtension = (filename) ->
+  lastDotPosition = filename.lastIndexOf('.')
+  if lastDotPosition == -1
+    filename
+  else
+    filename.substr 0, lastDotPosition
+
 handle_file_step_two = ( chosen_file, template, opts ) ->
   opts = opts || {}
 
@@ -277,6 +264,7 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
   payload.original_file = chosen_file
   if opts.full_image?
 
+    shortname = removeExtension(chosen_file.name)
     if opts.preserve_full_image
       canvas = document.createElement('canvas')
       canvas.width = opts.full_image.width
@@ -284,8 +272,11 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
 
       ctx = canvas.getContext('2d')
       ctx.drawImage(opts.full_image, 0, 0, canvas.width, canvas.height)
+      blob = get_blob( canvas, "image/jpeg", 0.8)
+      fname = shortname + '.jpg'
+      file = new File([blob],fname)
       payload.full_image =
-        blob: get_blob( canvas, "image/jpeg", 0.8)
+        file: file
         width: canvas.width
         height: canvas.height
 
@@ -306,8 +297,12 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
       actual_width = Math.floor(opts.full_image.width*scale)
 
     thumb_canvas = getThumbnail(opts.full_image, actual_width, actual_height)
+    blob = get_blob( thumb_canvas, "image/jpeg", 0.8)
+    fname = 'thumb-' + shortname + '.jpg'
+    file = new File([blob],fname)
+
     payload.thumb =
-      blob: get_blob( thumb_canvas, "image/jpeg", 0.8)
+      file: file
       width: actual_width
       height: actual_height
 
