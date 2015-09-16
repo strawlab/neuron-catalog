@@ -3,6 +3,9 @@ trigger_update = new Deps.Dependency
 # global
 window.image_upload_template = null
 
+DEFAULT_THUMB_WIDTH = 200
+DEFAULT_THUMB_HEIGHT = 200
+
 # ----
 
 get_fileObj = (doc, keyname) ->
@@ -278,8 +281,8 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
         width: canvas.width
         height: canvas.height
 
-    max_width = 200
-    max_height = 200
+    max_width = DEFAULT_THUMB_WIDTH
+    max_height = DEFAULT_THUMB_HEIGHT
 
     orig_aspect = opts.full_image.width/opts.full_image.height
     target_aspect = max_width/max_height
@@ -462,6 +465,10 @@ Template.binary_data_table.helpers
       return "1 image"
     else
       return N+" images"
+  default_thumb_width: ->
+    return DEFAULT_THUMB_WIDTH
+  default_thumb_height: ->
+    return DEFAULT_THUMB_HEIGHT
 
 update_selected = (template) ->
   elements = template.findAll(".selected")
