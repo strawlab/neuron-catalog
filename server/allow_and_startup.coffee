@@ -28,8 +28,6 @@ Meteor.startup ->
 # ----------------------------------------
 Meteor.publish "settings_to_client", ->
   SettingsToClient.find {}
-Meteor.publish "s3_config_status", ->
-  S3ConfigStatus.find {} if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "neuron_catalog_config", ->
   NeuronCatalogConfig.find {} if Roles.userIsInRole(@userId, ReaderRoles)
 
@@ -41,6 +39,11 @@ Meteor.publish "brain_regions", ->
   BrainRegions.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "binary_data", ->
   BinaryData.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+
+Meteor.publish "archive_filestore", ->
+  ArchiveFileStore.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+Meteor.publish "cache_filestore", ->
+  CacheFileStore.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
 
 # ----------------------------------------
 
@@ -55,10 +58,8 @@ Meteor.publish "userData", ->
 logged_in_allow =
   insert: (userId, doc) ->
     Roles.userIsInRole(userId, WriterRoles)
-
   update: (userId, doc, fields, modifier) ->
     Roles.userIsInRole(userId, WriterRoles)
-
   remove: (userId, doc) ->
     Roles.userIsInRole(userId, WriterRoles)
 
@@ -66,6 +67,24 @@ DriverLines.allow logged_in_allow
 BinaryData.allow logged_in_allow
 NeuronTypes.allow logged_in_allow
 BrainRegions.allow logged_in_allow
+ArchiveFileStore.allow
+  insert: (userId, doc) ->
+    Roles.userIsInRole userId, WriterRoles
+  update: (userId, doc, fields, modifier) ->
+    Roles.userIsInRole userId, WriterRoles
+  remove: (userId, doc) ->
+    Roles.userIsInRole userId, WriterRoles
+  download: (userId, fileObj) ->
+    Roles.userIsInRole userId, ReaderRoles
+CacheFileStore.allow
+  insert: (userId, doc) ->
+    Roles.userIsInRole userId, WriterRoles
+  update: (userId, doc, fields, modifier) ->
+    Roles.userIsInRole userId, WriterRoles
+  remove: (userId, doc) ->
+    Roles.userIsInRole userId, WriterRoles
+  download: (userId, fileObj) ->
+    Roles.userIsInRole userId, ReaderRoles
 
 NeuronCatalogConfig.allow(
   insert: (userId, doc) ->

@@ -115,4 +115,46 @@ Migrations.add
           validate: false
           getAutoValues: false
 
-Migrations.migrateTo(6)
+v7_get_s3_url = (region, bucket, key) ->
+  if region == 'us-east-1'
+    return 'https://s3.amazonaws.com/' + bucket + '/' + key
+  'https://' + 's3-' + region + '.amazonaws.com/' + bucket + '/' + key
+
+v7_get_fileObj = (doc,key) ->
+  url = v7_get_s3_url(doc.s3_region, doc.s3_bucket, key)
+  fileObj = new FS.File(url)
+  fileObj
+
+Migrations.add
+  version: 7
+  name: 'Use CollectionFS rather than S3'
+  up: ->
+    BinaryData.find().forEach (doc) ->
+
+      setters = {}
+      removers =
+        s3_bucket: 1
+        s3_region: 1
+
+      fileObjArchive = ArchiveFileStore.insert v7_get_fileObj(doc, doc.s3_key)
+      setters.archiveId = fileObjArchive._id
+      removers.s3_key = 1
+
+      if doc.thumb_s3_key
+        fileObjThumb = CacheFileStore.insert v7_get_fileObj(doc, doc.thumb_s3_key)
+        setters.thumbId = fileObjThumb._id
+        removers.thumb_s3_key = 1
+
+      if doc.cache_s3_key
+        fileObjCache = CacheFileStore.insert v7_get_fileObj(doc, doc.cache_s3_key)
+        setters.cacheId = fileObjCache._id
+        removers.cache_s3_key = 1
+
+      BinaryData.update { _id: doc._id }, {
+        $set: setters
+        $unset: removers
+      },
+        validate: false
+        getAutoValues: false
+
+Migrations.migrateTo(7)

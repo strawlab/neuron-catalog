@@ -1,11 +1,18 @@
 trigger_update = new Deps.Dependency
 
-my_uploader = null # variable local to this script
-uploader_state_changed = new Deps.Dependency
-upload_progress_dialog = null
-
 # global
 window.image_upload_template = null
+
+# ----
+
+get_fileObj = (doc, keyname) ->
+  if keyname == "archive"
+    fileObj = ArchiveFileStore.findOne _id: doc.archiveId
+  else if keyname == "cache"
+    fileObj = CacheFileStore.findOne _id: doc.cacheId
+  else if keyname == "thumb"
+    fileObj = CacheFileStore.findOne _id: doc.thumbId
+  fileObj
 
 # ---- Template.binary_data_from_id_block -------------
 
@@ -13,18 +20,18 @@ enhance_image_doc = (doc) ->
   if not doc?
     return
 
-  if doc.secure_url_notif?
+  if doc.fileObjNoTif?
     # already performed this check
     return doc
 
-  if doc.cache_s3_key?
-    doc.secure_url_notif = compute_secure_url(doc, "cache_s3_key")
+  if doc.cacheId?
+    doc.fileObjNoTif = get_fileObj(doc, "cache")
   else
-    doc.secure_url_notif = compute_secure_url(doc, "s3_key")
+    doc.fileObjNoTif = get_fileObj(doc, "archive")
 
-  if doc.thumb_s3_key?
+  if doc.thumbId?
     doc.has_thumb = true
-    doc.thumb_src = compute_secure_url(doc, "thumb_s3_key")
+    doc.fileObjThumb = get_fileObj(doc, "thumb")
   else
     doc.has_thumb = false
   doc
@@ -69,12 +76,10 @@ Template.binary_data_show.helpers
       coll.find(query).forEach (doc) ->
         result.push {"collection":collname,"doc":doc,"my_id":doc._id}
     result
-  secure_url: ->
-    compute_secure_url(this, "s3_key")
+  fileObjArchive: ->
+    get_fileObj(this, "archive")
 
 # -------------------------------------------------------
-
-# @remove_binary_data is defined in ../neuron-catalog.coffee
 
 link_image_save_func = (template,collection_name,my_id) ->
   coll = window.get_collection_from_name(collection_name)
@@ -89,20 +94,6 @@ link_image_save_func = (template,collection_name,my_id) ->
 
 # -------------
 
-Template.UploadProgress.helpers
-  percent_uploaded: ->
-    uploader_state_changed.depend()
-    if !my_uploader?
-      return 0
-    Math.round(my_uploader.progress() * 100);
-
-get_id_from_key = (key) ->
-  arr = key.split("/")
-  if arr.length == 3
-    if arr[0]=="images"
-      _id = arr[1]
-  return _id
-
 insert_image_save_func = (template, coll_name, my_id, field_name) ->
   payload = template.payload_var.get()
   if !payload?
@@ -112,82 +103,65 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
   if !upload_file?
     return
 
-  upload_progress_dialog = bootbox.dialog
-      title: "upload progress"
-      message: window.renderTmp(Template.UploadProgress)
-
-  ctx =
-    lastModifiedDate: upload_file.lastModifiedDate
-
-  my_uploader = new Slingshot.Upload("myFileUploads",ctx)
-  uploader_state_changed.changed()
-
-  my_uploader.send upload_file, (error, downloadUrl) ->
-    # This callback is called when the upload is complete (or on error).
-    upload_progress_dialog.modal('hide')
-    upload_progress_dialog = null
+  fileObjArchive = ArchiveFileStore.insert upload_file, (error, fileObj) ->
+    # This is called when original insert is done (not when upload is complete).
 
     if error?
-      my_uploader = null
-      uploader_state_changed.changed()
       console.error(error)
       bootbox.alert("There was an error uploading the file")
       return
 
-    s3_key = my_uploader.param('key')
-    my_uploader = null
-    uploader_state_changed.changed()
+    newBinaryDataDoc =
+      archiveId: fileObj._id
+      name: upload_file.name
+      lastModifiedDate: upload_file.lastModifiedDate
+      type: "images"
+      tags: []
+      comments: []
+    BinaryData.insert newBinaryDataDoc, (error, newBinaryDataDocId) ->
+      if error?
+        console.error(error)
+        bootbox.alert("There was an error saving upload results")
+        return
 
-    _id = get_id_from_key( s3_key )
-    updater_doc =
-      $set:
-        s3_upload_done: true
-    BinaryData.update _id, updater_doc
+      # get information from referencing collection
+      if coll_name?
+        coll = window.get_collection_from_name(coll_name) # e.g. DriverLines
+        orig = coll.findOne(_id: my_id) # get the document to which this image is being added
+        myarr = []
+        myarr = orig[field_name]  if orig.hasOwnProperty(field_name)
+        myarr.push newBinaryDataDocId # append our new _id
+        t2 = {}
+        t2[field_name] = myarr
+        coll.update my_id,
+          $set: t2
 
-    # get information from referencing collection
-    if coll_name?
-      coll = window.get_collection_from_name(coll_name) # e.g. DriverLines
-      orig = coll.findOne(_id: my_id) # get the document to which this image is being added
-      myarr = []
-      myarr = orig[field_name]  if orig.hasOwnProperty(field_name)
-      myarr.push _id # append our new _id
-      t2 = {}
-      t2[field_name] = myarr
-      coll.update my_id,
-        $set: t2
+      if payload.full_image?
+        CacheFileStore.insert payload.full_image.file, (error, fullCacheFileObj) ->
+          # This is called when original insert is done (not when upload is complete).
+          if error
+            console.error "full cache image upload error", error
+            return
 
-    if payload.full_image?
-      ctx_full =
-        s3_key: "cache/" + _id + "/" + upload_file.name + ".jpg"
-      my_uploader2 = new Slingshot.Upload("myCacheUploads",ctx_full)
-      my_uploader2.send payload.full_image.blob, (error, downloadUrl) ->
-        if error
-          console.error "full image upload error",error
-        else
           updater_doc =
             $set:
-              cache_s3_key: ctx_full.s3_key
+              cacheId: fullCacheFileObj._id
               cache_width: payload.full_image.width
               cache_height: payload.full_image.height
-          BinaryData.update _id, updater_doc
+          BinaryData.update newBinaryDataDocId, updater_doc
 
-    if payload.thumb?
-      ctx_thumb =
-        s3_key: "thumbs/" + _id + "/" + upload_file.name + ".jpg"
-      my_uploader2 = new Slingshot.Upload("myCacheUploads",ctx_thumb)
-      my_uploader2.send payload.thumb.blob, (error, downloadUrl) ->
-        if error
-          console.error "thumb upload error",error
-        else
+      if payload.thumb?
+        CacheFileStore.insert payload.thumb.file, (error, thumbFileObj) ->
+          # This is called when original insert is done (not when upload is complete).
+          if error
+            console.error "thumb upload error",error
+            return
           updater_doc =
             $set:
-              thumb_s3_key: ctx_thumb.s3_key
+              thumbId: thumbFileObj._id
               thumb_width: payload.thumb.width
               thumb_height: payload.thumb.height
-          BinaryData.update _id, updater_doc
-
-  $("#file_form_div").hide()
-  return {}
+          BinaryData.update newBinaryDataDocId, updater_doc
 
 Template.AddImageCode2.events
   "click .edit-images": (event,template) ->
@@ -274,6 +248,13 @@ get_blob = ( canvas, type, quality ) ->
   result = new Blob( [arr], {type: type || 'image/png'} )
   return result
 
+removeExtension = (filename) ->
+  lastDotPosition = filename.lastIndexOf('.')
+  if lastDotPosition == -1
+    filename
+  else
+    filename.substr 0, lastDotPosition
+
 handle_file_step_two = ( chosen_file, template, opts ) ->
   opts = opts || {}
 
@@ -281,6 +262,7 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
   payload.original_file = chosen_file
   if opts.full_image?
 
+    shortname = removeExtension(chosen_file.name)
     if opts.preserve_full_image
       canvas = document.createElement('canvas')
       canvas.width = opts.full_image.width
@@ -288,8 +270,11 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
 
       ctx = canvas.getContext('2d')
       ctx.drawImage(opts.full_image, 0, 0, canvas.width, canvas.height)
+      blob = get_blob( canvas, "image/jpeg", 0.8)
+      fname = shortname + '.jpg'
+      file = new File([blob],fname)
       payload.full_image =
-        blob: get_blob( canvas, "image/jpeg", 0.8)
+        file: file
         width: canvas.width
         height: canvas.height
 
@@ -310,8 +295,12 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
       actual_width = Math.floor(opts.full_image.width*scale)
 
     thumb_canvas = getThumbnail(opts.full_image, actual_width, actual_height)
+    blob = get_blob( thumb_canvas, "image/jpeg", 0.8)
+    fname = 'thumb-' + shortname + '.jpg'
+    file = new File([blob],fname)
+
     payload.thumb =
-      blob: get_blob( thumb_canvas, "image/jpeg", 0.8)
+      file: file
       width: actual_width
       height: actual_height
 

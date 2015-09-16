@@ -187,11 +187,15 @@ Router.onBeforeAction(OnBeforeActions.readerRequired,
 
   doc = BinaryData.findOne(my_id)
 
-  # FIXME: delete file on S3: doc.s3_region, doc.s3_bucket, doc.s3_key
   BinaryData.remove my_id, (error, num_removed) ->
     if error?
       console.error("Error removing document:",error)
-    Meteor.call("remove_from_s3",doc)
+      return
+    ArchiveFileStore.remove doc.archiveId
+    if doc.cacheId?
+      CacheFileStore.remove doc.cacheId
+    if doc.thumbId?
+      CacheFileStore.remove doc.thumbId
 
 @remove_neuron_type = (my_id) ->
   rnt = (doc) ->

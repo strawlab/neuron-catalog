@@ -1,7 +1,5 @@
 from __future__ import print_function
 from pymongo import MongoClient
-import boto.s3.connection
-from boto.s3.key import Key
 import os, sys, time, json
 
 _db = None
@@ -40,18 +38,9 @@ def get_admin_config():
         raise RuntimeError('Meteor settings not set from CLI or environment')
     return settings
 
-def get_s3_bucket():
-    cfg = get_admin_config()
-    conn = boto.s3.connect_to_region(cfg.get('AWSRegion','us-east-1'),
-                                     aws_access_key_id=cfg['AWSAccessKeyId'],
-                                     aws_secret_access_key=cfg['AWSSecretAccessKey'],
-                                     is_secure=True,
-                                     calling_format = boto.s3.connection.OrdinaryCallingFormat(),
-    )
-    bucket = conn.get_bucket(cfg['S3Bucket'])
-    return bucket
-
 def upload(local_filename, key):
+    if 1:
+        raise NotImplementedError
     bucket = get_s3_bucket()
     k = Key(bucket)
     k.key = key
@@ -62,6 +51,8 @@ def normalize_json(buf):
     return buf
 
 def ensure_public_read():
+    if 1:
+        raise NotImplementedError
     bucket = get_s3_bucket()
     cfg = get_admin_config()
     desired_policy = """{

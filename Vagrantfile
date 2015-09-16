@@ -3,14 +3,10 @@
 # This file was tested with Vagrant 1.6.5 using Virtual Box 4.3.14 on
 # Mac OS X.
 
-# CHANGE THESE SETTINGS TO CONFIGURE E.G. YOUR AMAZON AWS DETAILS. -------------------
+# CHANGE THESE SETTINGS TO CONFIGURE. ------------------------------------------------
 settings = <<-EOF
     echo '{"NeuronCatalogSpecializations": ["Drosophila melanogaster"],' > /neuron-catalog/server/config.json
     echo ' "DefaultUserRoles": ["read-write"],' >>  /neuron-catalog/server/config.json
-    echo ' "AWSAccessKeyId": "YOUR-AWS-KEY-ID",' >> /neuron-catalog/server/config.json
-    echo ' "AWSSecretAccessKey": "YOUR-AWS-SECRET-ACCESS-KEY",' >> /neuron-catalog/server/config.json
-    echo ' "AWSRegion": "us-east-1",' >> /neuron-catalog/server/config.json
-    echo ' "S3Bucket": "YOUR-BUCKET-NAME"}' >> /neuron-catalog/server/config.json
 EOF
 # ------------------------------------------------------------------------------------
 
