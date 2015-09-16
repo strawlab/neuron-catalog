@@ -135,6 +135,7 @@ Migrations.add
       removers =
         s3_bucket: 1
         s3_region: 1
+        s3_upload_done: 1
 
       fileObjArchive = ArchiveFileStore.insert v7_get_fileObj(doc, doc.s3_key)
       setters.archiveId = fileObjArchive._id
