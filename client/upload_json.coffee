@@ -99,7 +99,7 @@ handle_json_files = (fileList, template) ->
           body_data:
             error: exception.toString()
           hide_buttons: true
-        Blaze.remove(window.add_json_view)
+        $("#ModalDialog").modal('hide')
         Blaze.renderWithData(Template.ModalDialog,
           full_data, document.body)
         throw exception

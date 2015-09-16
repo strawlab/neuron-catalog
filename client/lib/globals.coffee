@@ -46,8 +46,8 @@ window.activateInput = (input) ->
 window.renderTmp = (template, data) ->
   # see http://stackoverflow.com/a/26309004/1633026
   node = document.createElement("div")
-  document.body.appendChild node
-  window.dialog_template = UI.renderWithData template, data, node
+  document.body.appendChild(node)
+  Blaze.renderWithData(template, data, node)
   node
 
 window.specialization_Dmel = ->
@@ -60,4 +60,3 @@ window.specialization_Dmel = ->
 
 Template.registerHelper "specialization_Dmel", ->
   return window.specialization_Dmel()
-

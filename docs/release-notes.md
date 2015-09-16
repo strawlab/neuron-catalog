@@ -12,6 +12,11 @@ A list of changes with each release. Downloads are
 - Each tag button now links to a search for that tag
 - Do not download font into browser
 
+##### Bugfixes
+
+- Fix broken dialogs (JSON data download/upload and binary data upload)
+  introduced in a regression with v0.5.6.
+
 ---
 
 ## v0.5.6 (2015-07-22)

@@ -41,8 +41,7 @@ Template.DataImportExportLauncher.events
           do_upload(payload)
         )
 
-    window.add_json_view = Blaze.renderWithData(Template.ModalDialog,
-      full_data, document.body)
+    Blaze.renderWithData( Template.ModalDialog, full_data, document.body)
 
   "click .launch-download-dialog": (event, template) ->
     # Need to launch dialog because Firefox doesn't allow link.click() in Javascript
@@ -59,11 +58,11 @@ Template.DataImportExportLauncher.events
         filename: filename
       hide_buttons: true
 
-    window.download_dialog_view = Blaze.renderWithData(Template.ModalDialog,
-        full_data, document.body)
+    Blaze.renderWithData( Template.ModalDialog, full_data, document.body)
+
 
 Template.AllDataButton.events
   "click .download-all-data": (event, template) ->
     # We want to let the default event fire (to initiate the
     # download). Here, we just close the download window.
-    Blaze.remove(window.download_dialog_view)
+    $("#ModalDialog").modal('hide')

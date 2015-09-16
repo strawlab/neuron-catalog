@@ -251,8 +251,7 @@ Template.add_image_code.events
                send_coll, my_id, "images")
         )
 
-    window.add_image_view = Blaze.renderWithData(Template.ModalDialog,
-        full_data, document.body)
+    Blaze.renderWithData( Template.ModalDialog, full_data, document.body)
 
 getThumbnail = (original, width, height) ->
   # Modified from http://stackoverflow.com/a/7557690/1633026
@@ -345,7 +344,7 @@ handle_files = (fileList, template) ->
             body_data: null
             hide_buttons: true
 
-          Blaze.remove(window.add_image_view)
+          $("#ModalDialog").modal('hide')
           Blaze.renderWithData(Template.ModalDialog,
             full_data, document.body)
 
