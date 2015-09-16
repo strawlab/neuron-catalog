@@ -5,6 +5,15 @@ A list of changes with each release. Downloads are
 
 ---
 
+## v0.6.0 (not yet released)
+
+##### Features and Improvements
+
+- Do not require use of Amazon S3 to store files. Instead, save them into
+  the local mongodb database instance.
+
+---
+
 ## v0.5.7 (2015-09-16)
 
 ##### Features and Improvements
