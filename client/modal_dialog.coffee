@@ -1,4 +1,4 @@
-Template.ModalDialog.rendered = ->
+Template.ModalDialog.onRendered ->
   body_div = this.$("#modal-dialog-body")[0]
   Blaze.renderWithData( @data.body_template, @data.body_data, body_div )
 

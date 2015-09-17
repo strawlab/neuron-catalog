@@ -106,7 +106,7 @@ build_query_doc = (orig) ->
     console.error("ERROR: unknown search parameters:",data)
   result
 
-Template.Search.rendered = ->
+Template.Search.onRendered ->
   if !@find("#comments-search-input")?
     return
   if @data.text?

@@ -440,7 +440,7 @@ Template.InsertImageDialog.events
      template.selected_files.set(dt.files)
      handle_files(dt.files, template)
 
-Template.binary_data_table.rendered = ->
+Template.binary_data_table.onRendered ->
   $('.flex-images').flexImages({rowHeight: 200});
   template = Template.instance()
   update_selected(template)
