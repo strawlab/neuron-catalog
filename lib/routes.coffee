@@ -4,7 +4,8 @@ Router.configure
   loadingTemplate: 'Loading'
   notFoundTemplate: "PageNotFound"
   onAfterAction: ->
-    document.title = DEFAULT_TITLE
+    if document?
+      document.title = DEFAULT_TITLE
 
 Router.setTemplateNameConverter (str) ->
   str
@@ -104,6 +105,33 @@ Router.route "/binary_data/:_id/:name?",
       document.title = doc.name + ' - neuron catalog'
     else
       document.title = DEFAULT_TITLE
+
+Router.route "/binary_data_zip",
+  # This was inspired by
+  # https://github.com/CollectionFS/Meteor-CollectionFS/issues/739#issuecomment-120036374
+  # and
+  # https://github.com/CollectionFS/Meteor-CollectionFS/issues/475#issuecomment-62682323
+  where: 'server'
+  action: ->
+    fname = @params.query.filename
+
+    @response.writeHead 200,
+      'Content-disposition': 'attachment; filename='+fname
+      'Content-Type': 'application/zip'
+
+    # Create zip
+    zip = archiver('zip')
+    # response pipe
+    zip.pipe(@response)
+    for [store,prefix] in [[ArchiveFileStore,'archive'],[CacheFileStore,'cache']]
+      store.find({}).forEach (file) ->
+        readStream = file.createReadStream()
+        zip.append readStream,
+          name: prefix + '/' + file._id + '/' + file.name()
+          date: file.updatedAt()
+        return
+    zip.finalize()
+    return
 
 Router.route "/RecentChanges"
 

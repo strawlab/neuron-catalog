@@ -17,5 +17,6 @@
 </template>
 
 <template name="AllDataButton">
-  <a class="btn btn-default download-all-data" href="{{data_url}}" download="{{filename}}">all data as .json file</a>
+  <a class="btn btn-default" id="download-all-data" href="{{data_url}}" download="{{filename}}">all data as .json file</a>
+  <a class="btn btn-default" id="download-zip" href="{{pathFor 'binary_data_zip' query=zip_filename_str}}" download={{zip_filename}}>all original binary files in .zip archive</a>
 </template>

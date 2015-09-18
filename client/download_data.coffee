@@ -15,6 +15,11 @@ get_data_uri = () ->
   result = "data:application/octet-stream;base64,"+encodedData
   return result
 
+get_fname_base = () ->
+  now = new Date()
+  nowstr = now.toISOString()
+  fname_base = nowstr.replace('T', '_').replace(/\:/g, '-').replace(/\..+/, '')
+
 Template.DataImportExportLauncher.events
   "click .launch-data-import-dialog": (event, template) ->
     event.preventDefault()
@@ -45,9 +50,7 @@ Template.DataImportExportLauncher.events
 
   "click .launch-download-dialog": (event, template) ->
     # Need to launch dialog because Firefox doesn't allow link.click() in Javascript
-    now = new Date()
-    nowstr = now.toISOString()
-    fname_base = nowstr.replace('T', '_').replace(/\:/g, '-').replace(/\..+/, '')
+    fname_base = get_fname_base()
     filename = "neuron-catalog-data_"+fname_base+".json"
     data_url = get_data_uri()
     full_data =
@@ -60,9 +63,23 @@ Template.DataImportExportLauncher.events
 
     Blaze.renderWithData( Template.ModalDialog, full_data, document.body)
 
-
 Template.AllDataButton.events
-  "click .download-all-data": (event, template) ->
+  "click #download-all-data": (event, template) ->
     # We want to let the default event fire (to initiate the
     # download). Here, we just close the download window.
     $("#ModalDialog").modal('hide')
+  "click #download-zip": (event, template) ->
+    # We want to let the default event fire (to initiate the
+    # download). Here, we just close the download window.
+    $("#ModalDialog").modal('hide')
+
+
+get_zip_fname = () ->
+  fname_base = get_fname_base()
+  filename = "neuron-catalog-images_"+fname_base+".zip"
+Template.AllDataButton.helpers
+  zip_filename: ->
+    get_zip_fname()
+  zip_filename_str: ->
+    fname = get_zip_fname()
+    'filename='+fname

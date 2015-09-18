@@ -269,11 +269,13 @@ Template.registerHelper "get_brain_regions", (doc,type) ->
 
 Template.registerHelper "activeIfTemplateIn", () ->
   currentRoute = Router.current()
-  if currentRoute
-    for arg in arguments
-      if arg is currentRoute.lookupTemplate()
-        return "active"
-  return ""
+  if !currentRoute?
+    return ""
+  if !currentRoute.route?
+    return ""
+  for arg in arguments
+    if arg is currentRoute.lookupTemplate()
+      return "active"
 
 Template.registerHelper "currentUser", ->
   # Mimic the normal meteor accounts system from IronRouter template.
