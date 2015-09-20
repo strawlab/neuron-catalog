@@ -1,30 +1,5 @@
 window.upload_template = null
 
-ensure_latest_json_schema = ( payload_raw ) ->
-  payload = {}
-  file_version = payload_raw.collections.SettingsToClient.settings.SchemaVersion
-  this_version = SettingsToClient.findOne({_id:'settings'}).SchemaVersion
-  if this_version != file_version
-    throw ('This neuron-catalog .json file was saved with a different '+
-           'schema. Converting between schemas is not implemented')
-  payload = payload_raw.collections
-
-@do_json_inserts = (payload) ->
-  for collection_name of payload
-    if collection_name in ["SettingsToClient","Meteor.users","NeuronCatalogConfig"]
-      continue
-    raw_data = payload[collection_name]
-
-    coll = window.get_collection_from_name( collection_name )
-    for _id of raw_data
-      raw_doc = raw_data[_id]
-      current_doc = coll.findOne({_id:_id})
-      if !current_doc? # if we already have this key, do not update it
-        coll.insert( raw_doc, (error,result) ->
-          if error?
-            console.error 'for collection "'+collection_name+'", _id "'+_id+'": ',error
-          )
-
 @do_upload_zip_file = (chosen_file) ->
   if chosen_file.type!="application/zip"
     console.error 'chosen_file.type is not "application/zip", proceeding anyway'

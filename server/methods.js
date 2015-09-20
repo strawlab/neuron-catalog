@@ -27,6 +27,12 @@ Meteor.methods({
       zip.load(buf);
       for (var filename in zip.files) {
         var contents = zip.files[filename];
+        if (filename == "data.json") {
+          var payload_raw = JSON.parse( contents.asBinary() );
+          var payload = ensure_latest_json_schema( payload_raw );
+          do_json_inserts(payload);
+          continue // continue to next file
+        }
         var parts = filename.split('/');
         if (parts.length != 3) {
           throw "unexpected filename:"+filename

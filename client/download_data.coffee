@@ -1,16 +1,5 @@
 get_data_uri = () ->
-  collections = {}
-  for collection_name in ["NeuronCatalogConfig","DriverLines","NeuronTypes","BrainRegions","BinaryData","Meteor.users","SettingsToClient"]
-    coll = window.get_collection_from_name( collection_name )
-    this_coll = {}
-    coll.find().forEach (doc) ->
-      if collection_name=="Meteor.users"
-        # only save usernames
-        doc = {_id: doc._id, username: doc.username}
-      this_coll[doc._id]= doc
-    collections[collection_name]=this_coll
-  all_data = {collections: collections, 'export_date': new Date().toISOString()}
-  raw_json = JSON.stringify(all_data)
+  raw_json = export_data()
   encodedData = utf8_to_b64(raw_json)
   result = "data:application/octet-stream;base64,"+encodedData
   return result
@@ -90,7 +79,7 @@ Template.AllDataButton.events
 
 get_zip_fname = () ->
   fname_base = get_fname_base()
-  filename = "neuron-catalog-images_"+fname_base+".zip"
+  filename = "neuron-catalog-data_"+fname_base+".zip"
 Template.AllDataButton.helpers
   zip_filename: ->
     get_zip_fname()

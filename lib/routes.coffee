@@ -123,6 +123,9 @@ Router.route "/binary_data_zip",
     zip = archiver('zip')
     # response pipe
     zip.pipe(@response)
+    raw_json = export_data()
+    zip.append raw_json,
+      name: 'data.json'
     for [store,prefix] in [[ArchiveFileStore,'archive'],[CacheFileStore,'cache']]
       store.find({}).forEach (file) ->
         readStream = file.createReadStream()

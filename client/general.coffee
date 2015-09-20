@@ -52,26 +52,7 @@ window.get_route_from_name = (name) ->
   else route = Router.routes['binary_data_show']  if name is "BinaryData"
   route
 
-window.get_collection_from_name = (name) ->
-  coll = undefined
-  if name is "DriverLines"
-    coll = DriverLines
-  else if name is "NeuronTypes"
-    coll = NeuronTypes
-  else if name is "BrainRegions"
-    coll = BrainRegions
-  else if name is "BinaryData"
-    coll = BinaryData
-  else if name is "Meteor.users"
-    coll = Meteor.users
-  else if name is "NeuronCatalogConfig"
-    coll = NeuronCatalogConfig
-  else if name is "SettingsToClient"
-    coll = SettingsToClient
-  else
-    bootbox.alert('Error: unknown collection name '+name)
-    throw "unknown collection name "+name
-  coll
+window.get_collection_from_name = get_collection_from_name
 
 # --------------------------------------------
 
