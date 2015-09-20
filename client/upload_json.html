@@ -1,9 +1,9 @@
 <template name="UploadDataDialog">
-  <div id="upload-data-div">
-    <form role="form" id="upload-data-form">
-      <input type="file" style="display:none" id="upload-data">
-      <a class="btn btn-default" href="#" id="fileSelect">Choose JSON file</a>
-      {{#each selected_files}}
+  <div class="mydrag" id="upload-json-data-div">
+    <form role="form">
+      <input type="file" style="display:none" id="upload-json-data">
+      <a class="btn btn-default" href="#" id="jsonSelect">Choose .json file</a>
+      {{#each selected_json_files}}
         {{name}}
       {{/each}}
     </form>

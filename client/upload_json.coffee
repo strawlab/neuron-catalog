@@ -30,8 +30,8 @@ Template.UploadDataDialog.destroyed = ->
 
 Template.UploadDataDialog.created = ->
   window.json_upload_template = this
-  @selected_files_var = new ReactiveVar()
-  @selected_files_var.set([])
+  @selected_json_files_var = new ReactiveVar()
+  @selected_json_files_var.set([])
 
   @json_payload_var = new ReactiveVar()
 
@@ -39,40 +39,40 @@ Template.UploadDataDialog.created = ->
   @json_upload_ready.set( false )
 
 Template.UploadDataDialog.helpers
-  selected_files: ->
+  selected_json_files: ->
     template = Template.instance()
-    result = template.selected_files_var.get()
+    result = template.selected_json_files_var.get()
     result2 = (file for file in result) # convert from FileList to array
     return result2
 
 Template.UploadDataDialog.events
-  "click #fileSelect": (event, template) ->
-    file_dom_element = template.find("#upload-data")
+  "click #jsonSelect": (event, template) ->
+    file_dom_element = template.find("#upload-json-data")
     if file_dom_element
       file_dom_element.click()
     event.preventDefault()
 
-  "change #upload-data": (event, template) ->
+  "change #upload-json-data": (event, template) ->
     # The file selection changed
     template.json_upload_ready.set( false )
 
-    file_dom_element = template.find("#upload-data")
+    file_dom_element = template.find("#upload-json-data")
     if !file_dom_element
       return
-    template.selected_files_var.set(file_dom_element.files)
+    template.selected_json_files_var.set(file_dom_element.files)
     handle_json_files(file_dom_element.files,template)
 
-  "dragenter #upload-data-div": (event, template) ->
+  "dragenter .mydrag": (event, template) ->
      event.stopPropagation()
      event.preventDefault()
-  "dragover #upload-data-div": (event, template) ->
+  "dragover .mydrag": (event, template) ->
      event.stopPropagation()
      event.preventDefault()
-  "drop #upload-data-div": (event, template) ->
+  "drop #upload-json-data-div": (event, template) ->
      event.stopPropagation()
      event.preventDefault()
      dt = event.originalEvent.dataTransfer
-     template.selected_files_var.set(dt.files)
+     template.selected_json_files_var.set(dt.files)
      handle_json_files(dt.files, template)
 
 handle_json_files = (fileList, template) ->
