@@ -20,6 +20,7 @@ Meteor.subscribe "settings_to_client"
 Meteor.subscribe "userData"
 Meteor.subscribe "archive_filestore"
 Meteor.subscribe "cache_filestore"
+Meteor.subscribe "zip_filestore"
 
 # --------------------------------------------
 # session variables

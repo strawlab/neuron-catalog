@@ -13,6 +13,9 @@
 @CacheFileStore = new FS.Collection("cache_filestore", {
   stores: [new FS.Store.GridFS("cache_gridfs")]
 });
+@ZipFileStore = new FS.Collection("zip_filestore", {
+  stores: [new FS.Store.FileSystem("zip_files")]
+});
 
 # ----------------------------------------
 @ReaderRoles = ['admin','read-write','read-only']

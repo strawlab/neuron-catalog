@@ -44,6 +44,8 @@ Meteor.publish "archive_filestore", ->
   ArchiveFileStore.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
 Meteor.publish "cache_filestore", ->
   CacheFileStore.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+Meteor.publish "zip_filestore", ->
+  ZipFileStore.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
 
 # ----------------------------------------
 
@@ -77,6 +79,15 @@ ArchiveFileStore.allow
   download: (userId, fileObj) ->
     Roles.userIsInRole userId, ReaderRoles
 CacheFileStore.allow
+  insert: (userId, doc) ->
+    Roles.userIsInRole userId, WriterRoles
+  update: (userId, doc, fields, modifier) ->
+    Roles.userIsInRole userId, WriterRoles
+  remove: (userId, doc) ->
+    Roles.userIsInRole userId, WriterRoles
+  download: (userId, fileObj) ->
+    Roles.userIsInRole userId, ReaderRoles
+ZipFileStore.allow
   insert: (userId, doc) ->
     Roles.userIsInRole userId, WriterRoles
   update: (userId, doc, fields, modifier) ->

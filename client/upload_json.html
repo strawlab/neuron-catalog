@@ -1,14 +1,27 @@
 <template name="UploadDataDialog">
   <div class="mydrag" id="upload-json-data-div">
-    <form role="form">
-      <input type="file" style="display:none" id="upload-json-data">
-      <a class="btn btn-default" href="#" id="jsonSelect">Choose .json file</a>
+    <form role="form" class="myjson">
+      <input type="file" class="myjson" style="display:none" id="upload-json-data">
+      <a class="btn btn-default myjson" href="#" id="jsonSelect">Choose .json file</a>
       {{#each selected_json_files}}
         {{name}}
       {{/each}}
     </form>
 
     <p class="text-muted">Note: currently existing documents will not
+      be overwriten. (If documents with the same _id exist, they will
+      not be updated.)</p>
+  </div>
+  <div class="mydrag" id="upload-zip-data-div">
+    <form role="form" class="myzip">
+      <input type="file" class="myzip" style="display:none" id="upload-zip-data">
+      <a class="btn btn-default myzip" href="#" id="zipSelect">Choose .zip file</a>
+      {{#each selected_zip_files}}
+        {{name}}
+      {{/each}}
+    </form>
+
+    <p class="text-muted">Note: currently existing binary files will not
       be overwriten. (If documents with the same _id exist, they will
       not be updated.)</p>
   </div>

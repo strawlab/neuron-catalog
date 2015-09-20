@@ -28,3 +28,7 @@ mrt:accounts-admin-ui-bootstrap-3
 cfs:standard-packages
 cfs:gridfs
 classcraft:archiver
+udondan:jszip
+cfs:filesystem
+patte:mime-npm
+peerlibrary:fs

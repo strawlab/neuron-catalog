@@ -29,21 +29,35 @@ Template.DataImportExportLauncher.events
       body_data: null
       save_label: "Upload"
       render_complete: (parent_template) ->
-        body_template = window.json_upload_template
+        body_template = window.upload_template
 
         Tracker.autorun ->
-          upload_ready = body_template.json_upload_ready.get()
-          jq_button = parent_template.$('#modal-dialog-save')
-          template = window.json_upload_template
+          upload_ready = body_template.json_upload_ready.get() || body_template.zip_upload_ready.get()
+          do_upload_button = parent_template.$('#modal-dialog-save')
           if upload_ready
-            jq_button.removeClass('disabled')
+            do_upload_button.removeClass('disabled')
           else
-            jq_button.addClass('disabled')
+            do_upload_button.addClass('disabled')
+
+          if body_template.zip_upload_ready.get()
+            parent_template.$('.myjson').addClass('disabled')
+          else
+            parent_template.$('.myjson').removeClass('disabled')
+
+          if body_template.json_upload_ready.get()
+            parent_template.$('.myzip').addClass('disabled')
+          else
+            parent_template.$('.myzip').removeClass('disabled')
 
         parent_template.$("#modal-dialog-save").on("click", (event) ->
-          template = window.json_upload_template
-          payload = template.json_payload_var.get()
-          do_upload(payload)
+          template = window.upload_template
+          if template.zip_upload_ready.get()
+            fileList = template.selected_zip_files_var.get()
+            chosen_file = fileList[0]
+            do_upload_zip_file(chosen_file)
+          if template.json_upload_ready.get()
+            json_payload = template.json_payload_var.get()
+            do_json_inserts(json_payload)
         )
 
     Blaze.renderWithData( Template.ModalDialog, full_data, document.body)
