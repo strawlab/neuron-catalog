@@ -15,17 +15,25 @@ Meteor.methods({
 
       console.log("Processing .zip upload "+fileObj.name());
 
+      // Ideally, we would just directly get the data from the FS.File object
+      // var buf = fileObj.data;
+      //  but the above line does not work. So we do the below hack instead.
+
       // This is a hack. We should ask CollectionFS where the file is.
       var hack_fullpath = process.env.PWD+"/.meteor/local/cfs/files/zip_files/zip_filestore-"+fileObj._id+"-"+fileObj.name();
       var buf = fs.readFileSync(hack_fullpath);
+
       var zip = new JSZip();
 
-      // Ideally, we would just directly get the data from the FS.File object
-      //var buf = fileObj.data;
-      //  but the above line does not work.
-
+      console.log("loading zip with length of", buf.length)
+      console.log("fileObj.size()", fileObj.size());
+      if (fileObj.size() != buf.length) {
+        throw "unexpected size mismatch"
+      }
       zip.load(buf);
+
       for (var filename in zip.files) {
+        console.log("  processing zip filename: "+filename)
         var contents = zip.files[filename];
         if (filename == "data.json") {
           var payload_raw = JSON.parse( contents.asBinary() );
@@ -65,7 +73,10 @@ Meteor.methods({
       }
 
       // now remove file
+      console.log("  removing zip file");
       ZipFileStore.remove({_id:fileObj._id});
+
+
     });
   }
 });

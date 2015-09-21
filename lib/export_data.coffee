@@ -55,4 +55,5 @@
         coll.insert( raw_doc, (error,result) ->
           if error?
             console.error 'for collection "'+collection_name+'", _id "'+_id+'": ',error
+            console.error '  raw doc:',raw_doc
           )
