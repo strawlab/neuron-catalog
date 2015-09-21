@@ -42,9 +42,13 @@
   {{/top_content_row}}
 
   {{#detail_block}}
-  <div class="image-square">
-    <a href="{{pathForName 'binary_data_show'}}"><img class="aspect_image" src="{{fileObjNoTif.url}}" alt={{name}}></a>
-    {{name}}
+  <div>
+    <a href="{{pathForName 'binary_data_show'}}">
+      <img src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}} alt={{name}}>
+    </a>
+    <p>
+      {{name}}
+    </p>
   </div>
 
   {{/detail_block}}
