@@ -6,17 +6,6 @@ window.image_upload_template = null
 DEFAULT_THUMB_WIDTH = 200
 DEFAULT_THUMB_HEIGHT = 200
 
-# ----
-
-get_fileObj = (doc, keyname) ->
-  if keyname == "archive"
-    fileObj = ArchiveFileStore.findOne _id: doc.archiveId
-  else if keyname == "cache"
-    fileObj = CacheFileStore.findOne _id: doc.cacheId
-  else if keyname == "thumb"
-    fileObj = CacheFileStore.findOne _id: doc.thumbId
-  fileObj
-
 # ---- Template.binary_data_from_id_block -------------
 
 enhance_image_doc = (doc) ->

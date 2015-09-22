@@ -57,3 +57,14 @@
             console.error 'for collection "'+collection_name+'", _id "'+_id+'": ',error
             console.error '  raw doc:',raw_doc
           )
+
+# ----
+
+@get_fileObj = (doc, keyname) ->
+  if keyname == "archive"
+    fileObj = ArchiveFileStore.findOne _id: doc.archiveId
+  else if keyname == "cache"
+    fileObj = CacheFileStore.findOne _id: doc.cacheId
+  else if keyname == "thumb"
+    fileObj = CacheFileStore.findOne _id: doc.thumbId
+  fileObj
