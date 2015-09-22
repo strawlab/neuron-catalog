@@ -303,14 +303,22 @@ handle_file_step_two = ( chosen_file, template, opts ) ->
     div = template.find("#preview")
     $(div).empty()
     div.appendChild(thumb_canvas)
+  else
+    div = template.find("#preview")
+    $(div).empty()
+    $(div).html("No preview possible.")
   template.payload_var.set( payload )
   template.upload_ready.set( true )
 
 handle_files = (fileList, template) ->
   # template is template instance of InsertImageDialog
   if fileList.length == 0
+    div = template.find("#preview")
+    $(div).empty()
     return
   if fileList.length > 1
+    div = template.find("#preview")
+    $(div).empty()
     console.error "More than one file selected"
     return
   chosen_file = fileList[0]
@@ -420,6 +428,7 @@ Template.InsertImageDialog.events
 
     file_dom_element = template.find("#insert_image")
     if !file_dom_element
+      $(div).empty()
       return
     template.selected_files.set(file_dom_element.files)
     handle_files(file_dom_element.files,template)
