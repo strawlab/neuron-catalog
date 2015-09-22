@@ -83,7 +83,7 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
   if !upload_file?
     return
 
-  fileObjArchive = ArchiveFileStore.insert upload_file, (error, fileObj) ->
+  ArchiveFileStore.insert upload_file, (error, fileObj) ->
     # This is called when original insert is done (not when upload is complete).
 
     if error?
