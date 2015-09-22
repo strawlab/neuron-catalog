@@ -25,10 +25,7 @@ enhance_image_doc = (doc) ->
     doc.fileObjNoTif = get_fileObj(doc, "archive")
 
   if doc.thumbId?
-    doc.has_thumb = true
     doc.fileObjThumb = get_fileObj(doc, "thumb")
-  else
-    doc.has_thumb = false
   doc
 
 Template.binary_data_from_id_block.helpers
@@ -481,6 +478,9 @@ Template.binary_data_table.helpers
       return "selectable"
     else
       return
+
+  getThumbUrl: ->
+    CacheFileStore.findOne({_id:this.thumbId}).url()
 
   get_n_selected: ->
     trigger_update.depend()
