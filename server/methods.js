@@ -13,18 +13,23 @@ Meteor.methods({
     cursor.forEach(function (fileObj) {
       // unzip and process...
 
+      storeName = "zip_files";
       console.log("Processing .zip upload "+fileObj.name());
-      if (!fileObj.hasStored()) {
+      for (var i = 0; i < 5; i++) {
+        if (fileObj.hasStored(storeName)) {
+          break
+        }
         console.log("storage not done, sleeping");
         Meteor._sleepForMs(1000);
       }
 
       // Ideally, we would just directly get the data from the FS.File object
-      // var buf = fileObj.data;
-      //  but the above line does not work. So we do the below hack instead.
+      // but I could not figure out how to do that. So we do the below hack
+      // instead.
 
-      // This is a hack. We should ask CollectionFS where the file is.
-      var hack_fullpath = process.env.PWD+"/.meteor/local/cfs/files/zip_files/zip_filestore-"+fileObj._id+"-"+fileObj.name();
+      var readStream = fileObj.createReadStream();
+      // This is a hack. We should get the buffer directly from CollectionFS.
+      var hack_fullpath = readStream.path;
       var buf = fs.readFileSync(hack_fullpath);
 
       var zip = new JSZip();
