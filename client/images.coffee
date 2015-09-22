@@ -52,19 +52,7 @@ Template.binary_data_from_id_block.helpers
     enhance_image_doc(BinaryData.findOne(my_id))
 
 # -------------------------------------------------------
-Template.binary_data_show.events
-  "load .loadable": (event,template) ->
-    Session.set "image_visible", true
-
-# -------------------------------------------------------
 Template.binary_data_show.helpers
-  hack: ->
-    # This is a hack to hide image before its load event is fired.
-    Session.set "image_visible", false
-
-  is_image_hidden: ->
-    not Session.get "image_visible"
-
   binary_data_type: ->
     @type.slice(0,-1)
 

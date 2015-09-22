@@ -24,8 +24,7 @@
 
   {{#detail_block}}
   <div class="image_big">
-    <div class="{{#if is_image_hidden}}{{else}}vis-hidden{{/if}}">Loading <code>{{name}}</code>...</div>
-    <img class="aspect_image loadable {{#if is_image_hidden}}vis-hidden{{/if}}" src="{{fileObjNoTif.url}}" alt={{name}}>
+    <img class="aspect_image loadable" src="{{fileObjNoTif.url}}" alt={{name}}>
     <p>{{name}} [ <a href="{{fileObjNoTif.url}}">cache</a> | <a download="{{name}}" href="{{fileObjArchive.url}}">original</a> ]</p>
   </div>
   {{hack}}
