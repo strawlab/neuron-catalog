@@ -1,0 +1,14 @@
+<template name="UploadDataDialog">
+  <div class="mydrag" id="upload-zip-data-div">
+    <form role="form" class="myzip">
+      <input type="file" class="myzip" style="display:none" id="upload-zip-data">
+      <a class="btn btn-default myzip" href="#" id="zipSelect">Choose .zip file</a>
+      {{#each selected_zip_files}}
+        {{name}}
+      {{/each}}
+    </form>
+
+    <p class="text-muted">Note: currently existing documents and files will not
+    be overwriten. (If the same _id exists, it will not be updated.)</p>
+  </div>
+</template>
