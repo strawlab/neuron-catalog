@@ -51,8 +51,10 @@ link_image_save_func = (template,collection_name,my_id) ->
 
 # -------------
 
-close_upload_dialog_if_no_more_uploads = () ->
-  count = Object.keys(Session.get("OngoingUploadFilesArchive")).length + Object.keys(Session.get("OngoingUploadFilesCache")).length
+@close_upload_dialog_if_no_more_uploads = () ->
+  count = Object.keys(Session.get("OngoingUploadFilesArchive")).length +
+          Object.keys(Session.get("OngoingUploadFilesCache")).length +
+          Object.keys(Session.get("OngoingUploadFilesZip")).length
   if count == 0
     bootbox.hideAll()
 
@@ -401,7 +403,10 @@ Template.InsertImageDialog.created = ->
 Template.UploadProgress.helpers
   OngoingUploadFiles: ->
     result = []
-    for [sessionVarName,store] in [["OngoingUploadFilesCache",CacheFileStore],["OngoingUploadFilesArchive",ArchiveFileStore]]
+    for [sessionVarName,store] in [["OngoingUploadFilesCache",CacheFileStore],
+                                   ["OngoingUploadFilesArchive",ArchiveFileStore],
+                                   ["OngoingUploadFilesZip",ZipFileStore],
+                                  ]
       tmp = Session.get(sessionVarName)
       for _id,val of tmp
         fileObj = store.findOne({_id:_id})

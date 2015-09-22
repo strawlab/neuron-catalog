@@ -1,4 +1,5 @@
 window.upload_template = null
+Session.setDefault 'OngoingUploadFilesZip',{}
 
 @do_upload_zip_file = (chosen_file) ->
   if chosen_file.type!="application/zip"
@@ -9,7 +10,15 @@ window.upload_template = null
 
   newFile = new FS.File(chosen_file)
   newFile.once 'uploaded', ->
+    tmp = Session.get "OngoingUploadFilesZip"
+    delete tmp[newFile._id]
+    Session.set "OngoingUploadFilesZip",tmp
+    close_upload_dialog_if_no_more_uploads()
     Meteor.call("process_zip")
+
+  bootbox.dialog
+    message: window.renderTmp(Template.UploadProgress)
+    title: "Upload Progress"
 
   # send zip file to server using CollectionFS
   ZipFileStore.insert newFile, (error, fileObj) ->
@@ -17,6 +26,10 @@ window.upload_template = null
     if error?
       console.error(error)
       bootbox.alert("There was an error uploading the file")
+
+    tmp = Session.get("OngoingUploadFilesZip")
+    tmp[fileObj._id] = true
+    Session.set("OngoingUploadFilesZip", tmp)
 
 Template.UploadDataDialog.destroyed = ->
   window.upload_template = null
