@@ -57,34 +57,34 @@
 <template name="binary_data_table">
   <div class="flex-images">
     {{#each binary_data}}
-      {{#binary_data_from_id_block}}
-        {{#if has_thumb}}
-          <div class="item {{selectable_class}}" id={{_id}} data-w={{thumb_width}} data-h={{thumb_height}}>
-	    {{#if ../../selectable_not_clickable}}
-              <img src={{fileObjThumb.url}} data-src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}}>
-	    {{else}}
-              <a href="{{pathForName 'binary_data_show'}}">
-                <img src={{fileObjThumb.url}} data-src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}}>
-              </a>
-	    {{/if}}
-          </div>
-        {{else}}
-          <div class="item no-thumb-item {{selectable_class}}" id={{_id}} data-w={{default_thumb_width}} data-h={{default_thumb_height}}>
-	    {{#if ../../selectable_not_clickable}}
-	      {{name}}
-	    {{else}}
-              <a href="{{pathForName 'binary_data_show'}}">{{name}}</a>
-	    {{/if}}
-	    <p>No thumbnail available.</p>
-          </div>
-        {{/if}}
-      {{/binary_data_from_id_block}}
+    {{#binary_data_from_id_block}}
+    {{#if has_thumb}}
+    <div class="item {{selectable_class}}" id={{_id}} data-w={{thumb_width}} data-h={{thumb_height}}>
+      {{#if ../../selectable_not_clickable}}
+      <img src={{fileObjThumb.url}} data-src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}}>
+      {{else}}
+      <a href="{{pathForName 'binary_data_show'}}">
+        <img src={{fileObjThumb.url}} data-src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}}>
+      </a>
+      {{/if}}
+    </div>
+    {{else}}
+    <div class="item no-thumb-item {{selectable_class}}" id={{_id}} data-w={{default_thumb_width}} data-h={{default_thumb_height}}>
+      {{#if ../../selectable_not_clickable}}
+      {{name}}
+      {{else}}
+      <a href="{{pathForName 'binary_data_show'}}">{{name}}</a>
+      {{/if}}
+      <p>No thumbnail available.</p>
+    </div>
+    {{/if}}
+    {{/binary_data_from_id_block}}
     {{/each}}
   </div>
   {{#if selectable_not_clickable}}
-    <div class="right-text">
-      {{get_n_selected}} selected.
-    </div>
+  <div class="right-text">
+    {{get_n_selected}} selected.
+  </div>
   {{/if}}
 </template>
 
