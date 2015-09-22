@@ -9,6 +9,23 @@ check_doc = (doc) ->
   my_context = coll.simpleSchema().namedContext()
   my_context.validate(doc)
   invalid_keys = my_context.invalidKeys()
+  if @name=="BinaryData"
+    console.log "checking archives for",doc._id
+    # check existance of files where they should exist.
+    fileObj = get_fileObj(doc, "archive")
+    if !fileObj?
+      console.error "for BinaryData doc",doc._id,"archive",doc.archiveId,"should exist, but it does not."
+
+    if doc.cacheId?
+      fileObjCache = get_fileObj(doc, "thumb")
+      if !fileObjCache?
+        console.error "for BinaryData doc",doc._id,"cache",doc.cacheId,"should exist, but it does not."
+
+    if doc.thumbId?
+      fileObjThumb = get_fileObj(doc, "thumb")
+      if !fileObjThumb?
+        console.error "for BinaryData doc",doc._id,"thumb",doc.thumbId,"should exist, but it does not."
+
   if invalid_keys.length > 0
     console.log "for doc",doc
     console.warn "invalid keys",invalid_keys
