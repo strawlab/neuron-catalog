@@ -147,3 +147,11 @@
   <a href="https://github.com/seikichi/tiff.js">github.com/seikichi/tiff.js</a>,
   this solution does not support all TIFF files.</p>
 </template>
+
+<template name="UploadProgress">
+  {{#each OngoingUploadFiles}}
+  {{#unless this.isUploaded}}
+  {{> FS.UploadProgressBar bootstrap=true class='progress-bar-success progress-bar-striped active' showPercent=true}}
+  {{/unless}}
+  {{/each}}
+</template>

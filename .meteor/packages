@@ -32,3 +32,4 @@ udondan:jszip
 cfs:filesystem
 patte:mime-npm
 peerlibrary:fs
+cfs:ui

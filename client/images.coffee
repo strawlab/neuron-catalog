@@ -6,6 +6,9 @@ window.image_upload_template = null
 DEFAULT_THUMB_WIDTH = 200
 DEFAULT_THUMB_HEIGHT = 200
 
+Session.setDefault 'OngoingUploadFilesArchive',{}
+Session.setDefault 'OngoingUploadFilesCache',{}
+
 # ---- Template.binary_data_from_id_block -------------
 
 enhance_image_doc = (doc) ->
@@ -74,6 +77,11 @@ link_image_save_func = (template,collection_name,my_id) ->
 
 # -------------
 
+close_upload_dialog_if_no_more_uploads = () ->
+  count = Object.keys(Session.get("OngoingUploadFilesArchive")).length + Object.keys(Session.get("OngoingUploadFilesCache")).length
+  if count == 0
+    bootbox.hideAll()
+
 insert_image_save_func = (template, coll_name, my_id, field_name) ->
   payload = template.payload_var.get()
   if !payload?
@@ -83,6 +91,10 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
   if !upload_file?
     return
 
+  bootbox.dialog
+    message: window.renderTmp(Template.UploadProgress)
+    title: "Upload Progress"
+
   ArchiveFileStore.insert upload_file, (error, fileObj) ->
     # This is called when original insert is done (not when upload is complete).
 
@@ -90,6 +102,16 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
       console.error(error)
       bootbox.alert("There was an error uploading the file")
       return
+
+    tmp = Session.get("OngoingUploadFilesArchive")
+    tmp[fileObj._id] = true
+    Session.set("OngoingUploadFilesArchive", tmp)
+
+    fileObj.once 'uploaded', ->
+      tmp = Session.get "OngoingUploadFilesArchive"
+      delete tmp[fileObj._id]
+      Session.set "OngoingUploadFilesArchive",tmp
+      close_upload_dialog_if_no_more_uploads()
 
     newBinaryDataDoc =
       archiveId: fileObj._id
@@ -130,6 +152,16 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
               cache_height: payload.full_image.height
           BinaryData.update newBinaryDataDocId, updater_doc
 
+          tmp = Session.get "OngoingUploadFilesCache"
+          tmp[fullCacheFileObj._id] = true
+          Session.set "OngoingUploadFilesCache", tmp
+
+          fullCacheFileObj.once 'uploaded', ->
+            tmp = Session.get "OngoingUploadFilesCache"
+            delete tmp[fullCacheFileObj._id]
+            Session.set "OngoingUploadFilesCache",tmp
+            close_upload_dialog_if_no_more_uploads()
+
       if payload.thumb?
         CacheFileStore.insert payload.thumb.file, (error, thumbFileObj) ->
           # This is called when original insert is done (not when upload is complete).
@@ -142,6 +174,16 @@ insert_image_save_func = (template, coll_name, my_id, field_name) ->
               thumb_width: payload.thumb.width
               thumb_height: payload.thumb.height
           BinaryData.update newBinaryDataDocId, updater_doc
+
+          tmp = Session.get "OngoingUploadFilesCache"
+          tmp[thumbFileObj._id] = true
+          Session.set "OngoingUploadFilesCache", tmp
+
+          thumbFileObj.once 'uploaded', ->
+            tmp = Session.get "OngoingUploadFilesCache"
+            delete tmp[thumbFileObj._id]
+            Session.set "OngoingUploadFilesCache",tmp
+            close_upload_dialog_if_no_more_uploads()
 
 Template.AddImageCode2.events
   "click .edit-images": (event,template) ->
@@ -373,6 +415,16 @@ Template.InsertImageDialog.created = ->
     e.preventDefault()
     return
   ), false
+
+Template.UploadProgress.helpers
+  OngoingUploadFiles: ->
+    result = []
+    for [sessionVarName,store] in [["OngoingUploadFilesCache",CacheFileStore],["OngoingUploadFilesArchive",ArchiveFileStore]]
+      tmp = Session.get(sessionVarName)
+      for _id,val of tmp
+        fileObj = store.findOne({_id:_id})
+        result.push(fileObj)
+    result
 
 Template.InsertImageDialog.helpers
   selected_files: ->
