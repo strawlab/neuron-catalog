@@ -117,7 +117,7 @@
     {{/detail_title}}
     {{#detail_main}}
       <br/>
-        {{> binary_data_table binary_data=images}}
+        {{> binary_data_table_from_ids binary_data_ids=images}}
         {{> add_image_code collection="DriverLines" my_id=_id}}
     {{/detail_main}}
   {{/detail_block}}

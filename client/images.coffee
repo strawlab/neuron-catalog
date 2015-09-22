@@ -9,36 +9,9 @@ DEFAULT_THUMB_HEIGHT = 200
 Session.setDefault 'OngoingUploadFilesArchive',{}
 Session.setDefault 'OngoingUploadFilesCache',{}
 
-# ---- Template.binary_data_from_id_block -------------
-
-enhance_image_doc = (doc) ->
-  if not doc?
-    return
-
-  if doc.fileObjNoTif?
-    # already performed this check
-    return doc
-
-  if doc.cacheId?
-    doc.fileObjNoTif = get_fileObj(doc, "cache")
-  else
-    doc.fileObjNoTif = get_fileObj(doc, "archive")
-
-  if doc.thumbId?
-    doc.fileObjThumb = get_fileObj(doc, "thumb")
-  doc
-
 Template.binary_data_from_id_block.helpers
-  binary_data_from_id: ->
-
-    if @_id
-      # already a doc
-      return enhance_image_doc(this)
-    my_id = this
-    if @valueOf
-      # If we have "valueOf" function, "this" is boxed.
-      my_id = @valueOf() # unbox it
-    enhance_image_doc(BinaryData.findOne(my_id))
+  get_doc: (_id) ->
+    BinaryData.findOne(_id)
 
 # -------------------------------------------------------
 Template.binary_data_show.helpers
@@ -56,8 +29,12 @@ Template.binary_data_show.helpers
       coll.find(query).forEach (doc) ->
         result.push {"collection":collname,"doc":doc,"my_id":doc._id}
     result
+
   fileObjArchive: ->
     get_fileObj(this, "archive")
+
+  fileObjCache: ->
+    get_fileObj(this, "cache")
 
 # -------------------------------------------------------
 
@@ -472,15 +449,24 @@ Template.binary_data_table.onRendered ->
   update_selected(template)
   return
 
+Template.binary_data_show_brief.helpers
+  fileObjThumb: ->
+    CacheFileStore.findOne({_id:this.thumbId})
+
+Template.binary_data_table_from_ids.helpers
+  idsToDocs: ->
+    @binary_data_ids.map (_id) ->
+      BinaryData.findOne({_id:_id}) # Note, this is not reactive.
+
 Template.binary_data_table.helpers
   selectable_class: ->
-    if Template.parentData(2).selectable_not_clickable
+    if Template.parentData(1).selectable_not_clickable
       return "selectable"
     else
       return
 
-  getThumbUrl: ->
-    CacheFileStore.findOne({_id:this.thumbId}).url()
+  fileObjThumb: ->
+    CacheFileStore.findOne({_id:this.thumbId})
 
   get_n_selected: ->
     trigger_update.depend()

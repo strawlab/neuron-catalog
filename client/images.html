@@ -24,8 +24,18 @@
 
   {{#detail_block}}
   <div class="image_big">
-    <img class="aspect_image loadable" src="{{fileObjNoTif.url}}" alt={{name}}>
-    <p>{{name}} [ <a href="{{fileObjNoTif.url}}">cache</a> | <a download="{{name}}" href="{{fileObjArchive.url}}">original</a> ]</p>
+    {{#if this.cacheId}}
+      <img class="aspect_image loadable" src="{{fileObjCache.url}}" alt={{name}}>
+    {{else}}
+      {{#if fileObjArchive.isImage}}
+        <img class="aspect_image loadable" src="{{fileObjArchive.url}}" alt={{name}}>
+      {{/if}}
+    {{/if}}
+    <p>{{name}} [
+      {{#if this.cacheId}}
+      <a href="{{fileObjCache.url}}">cache</a> |
+      {{/if}}
+      <a download="{{name}}" href="{{fileObjArchive.url}}">original</a> ]</p>
   </div>
   {{hack}}
   {{/detail_block}}
@@ -43,7 +53,11 @@
   {{#detail_block}}
   <div>
     <a href="{{pathForName 'binary_data_show'}}">
-      <img src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}} alt={{name}}>
+      {{#if thumbId}}
+        <img src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}} alt={{name}}>
+      {{else}}
+        {{name}}
+      {{/if}}
     </a>
     <p>
       {{name}}
@@ -54,22 +68,26 @@
   {{/binary_data_from_id_block}}
 </template>
 
+<template name="binary_data_table_from_ids">
+  {{>binary_data_table binary_data=idsToDocs}}
+</template>
+
 <template name="binary_data_table">
   <div class="flex-images">
     {{#each binary_data}}
     {{#if thumbId}}
     <div class="item {{selectable_class}}" id={{_id}} data-w={{thumb_width}} data-h={{thumb_height}}>
-      {{#if ../../selectable_not_clickable}}
-      <img src={{getThumbUrl}} data-src={{getThumbUrl}} width={{thumb_width}} height={{thumb_height}}>
+      {{#if ../selectable_not_clickable}}
+      <img src={{fileObjThumb.url}} data-src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}}>
       {{else}}
       <a href="{{pathForName 'binary_data_show'}}">
-        <img src={{getThumbUrl}} data-src={{getThumbUrl}} width={{thumb_width}} height={{thumb_height}}>
+        <img src={{fileObjThumb.url}} data-src={{fileObjThumb.url}} width={{thumb_width}} height={{thumb_height}}>
       </a>
       {{/if}}
     </div>
     {{else}}
     <div class="item no-thumb-item {{selectable_class}}" id={{_id}} data-w={{default_thumb_width}} data-h={{default_thumb_height}}>
-      {{#if ../../selectable_not_clickable}}
+      {{#if ../selectable_not_clickable}}
       {{name}}
       {{else}}
       <a href="{{pathForName 'binary_data_show'}}">{{name}}</a>
@@ -132,7 +150,7 @@
 </template>
 
 <template name="binary_data_from_id_block">
-  {{#with binary_data_from_id}}
+  {{#with get_doc this}}
     {{> Template.contentBlock this}}
   {{/with}}
 </template>
