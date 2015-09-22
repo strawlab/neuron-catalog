@@ -14,6 +14,10 @@ Meteor.methods({
       // unzip and process...
 
       console.log("Processing .zip upload "+fileObj.name());
+      if (!fileObj.hasStored()) {
+        console.log("storage not done, sleeping");
+        Meteor._sleepForMs(1000);
+      }
 
       // Ideally, we would just directly get the data from the FS.File object
       // var buf = fileObj.data;
