@@ -10,7 +10,6 @@ pages:
 - ['installation.md', 'User Guide', 'Installation']
 - ['security.md', 'User Guide', 'Security']
 - ['settings.md', 'User Guide', 'Settings']
-- ['s3-config.md', 'User Guide', 'Storage Configuration']
 - ['specializations.md', 'User Guide', 'Species Specific Specializations']
 - ['credits.md', 'About', 'Credits']
 - ['license.md', 'About', 'License']
