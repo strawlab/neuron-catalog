@@ -22,7 +22,11 @@
 	<a href="https://github.com/strawlab/neuron-catalog/issues/new">Report an issue <i class="fa fa-github"></i></a>
       </span>
       <span class="side-by-side">
-	{{> loginButtons}}
+        {{#if isSandstorm}}
+          {{ currentUser.profile.name }}
+        {{else}}
+          {{> loginButtons}}
+        {{/if}}
       </span>
     </div>
    </div>
@@ -54,7 +58,12 @@
           <a href="{{pathFor 'Search'}}"><i class="fa fa-search"></i> Search</a>
         </li>
 
-        {{#if isInRole 'admin'}}
+        {{#if hasPermission 'admin'}}
+        {{#if isSandstorm}}
+        <li class="{{activeIfTemplateIn 'config'}}">
+          <a href="{{pathFor 'config'}}"><i class="fa fa-cog"></i> Site configuration</a>
+        </li>
+        {{else}}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cog"></i> Admin <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -66,6 +75,7 @@
             </li>
           </ul>
         </li>
+        {{/if}}
         {{/if}}
 
       </ul>

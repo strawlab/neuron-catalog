@@ -260,14 +260,20 @@ Template.registerHelper "binary_data_cursor", ->
   BinaryData.find {}
 
 Template.registerHelper "isInReaderRole", ->
-  Roles.userIsInRole( Meteor.user(), ReaderRoles )
+  NeuronCatalogApp.checkRole( Meteor.user(), ReaderRoles )
 
 Template.registerHelper "isInWriterRole", ->
-  Roles.userIsInRole( Meteor.user(), WriterRoles )
+  NeuronCatalogApp.checkRole( Meteor.user(), WriterRoles )
 
 Template.registerHelper "pathForName", (routeName) ->
   route = Router.routes[routeName]
   route.path({_id: @_id, name: make_safe(@name)})
+
+Template.registerHelper "isSandstorm", ->
+  NeuronCatalogApp.isSandstorm()
+
+Template.registerHelper "hasPermission", (permissionName) ->
+  NeuronCatalogApp.checkRole(Meteor.user(),[permissionName])
 
 setTitle = () ->
   cfg = NeuronCatalogConfig.findOne {}

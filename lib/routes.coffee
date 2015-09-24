@@ -41,10 +41,11 @@ Router.route "/",
 # Only in admin role (see OnBeforeActions below)
 Router.route "/config"
 
-# Only in admin role (see OnBeforeActions below)
-Router.route "/accounts-admin",
-  name: 'accountsAdmin'
-  template: 'accountsAdmin'
+if !NeuronCatalogApp.isSandstorm()
+  # Only in admin role (see OnBeforeActions below)
+  Router.route "/accounts-admin",
+    name: 'accountsAdmin'
+    template: 'accountsAdmin'
 
 Router.route "/driver_lines"
 
@@ -149,7 +150,7 @@ OnBeforeActions =
     if Meteor.loggingIn()
       # wait for login to complete
       @render @loadingTemplate
-    else if !Roles.userIsInRole(Meteor.user(), [ 'admin' ])
+    else if !NeuronCatalogApp.checkRole(Meteor.user(), [ 'admin' ])
       # no permission
       @redirect '/'
     else
@@ -160,7 +161,7 @@ OnBeforeActions =
     if Meteor.loggingIn()
       # wait for login to complete
       @render @loadingTemplate
-    else if !Roles.userIsInRole(Meteor.user(), ReaderRoles)
+    else if !NeuronCatalogApp.checkRole(Meteor.user(), ReaderRoles)
       # no permission
       @redirect '/'
     else

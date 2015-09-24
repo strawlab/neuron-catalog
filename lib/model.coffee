@@ -13,13 +13,17 @@
 @CacheFileStore = new FS.Collection("cache_filestore", {
   stores: [new FS.Store.GridFS("cache_gridfs")]
 });
+
+store_opts = {}
+if Meteor.isServer and NeuronCatalogApp.isSandstorm()
+    store_opts.path = "/var"
 @ZipFileStore = new FS.Collection("zip_filestore", {
-  stores: [new FS.Store.FileSystem("zip_files")]
+  stores: [new FS.Store.FileSystem("zip_files", store_opts)]
 });
 
 # ----------------------------------------
-@ReaderRoles = ['read']
-@WriterRoles = ['write']
+@ReaderRoles = ['read','admin']
+@WriterRoles = ['write','admin']
 
 # define our schemas
 
@@ -287,4 +291,6 @@ Schemas.User = new SimpleSchema(
     optional: true
     blackbox: true
   )
-Meteor.users.attachSchema Schemas.User
+
+if !NeuronCatalogApp.isSandstorm()
+  Meteor.users.attachSchema Schemas.User

@@ -26,28 +26,28 @@ Meteor.startup ->
 Meteor.publish "settings_to_client", ->
   SettingsToClient.find {}
 Meteor.publish "neuron_catalog_config", ->
-  NeuronCatalogConfig.find {} if Roles.userIsInRole(@userId, ReaderRoles)
+  NeuronCatalogConfig.find {} if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
 
 Meteor.publish "driver_lines", ->
-  DriverLines.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+  DriverLines.find {}  if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
 Meteor.publish "neuron_types", ->
-  NeuronTypes.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+  NeuronTypes.find {}  if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
 Meteor.publish "brain_regions", ->
-  BrainRegions.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+  BrainRegions.find {}  if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
 Meteor.publish "binary_data", ->
-  BinaryData.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+  BinaryData.find {}  if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
 
 Meteor.publish "archive_filestore", ->
-  ArchiveFileStore.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+  ArchiveFileStore.find {}  if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
 Meteor.publish "cache_filestore", ->
-  CacheFileStore.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+  CacheFileStore.find {}  if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
 Meteor.publish "zip_filestore", ->
-  ZipFileStore.find {}  if Roles.userIsInRole(@userId, ReaderRoles)
+  ZipFileStore.find {}  if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
 
 # ----------------------------------------
 
 Meteor.publish "userData", ->
-  if Roles.userIsInRole(@userId, ReaderRoles)
+  if NeuronCatalogApp.checkRole(@userId, ReaderRoles)
     Meteor.users.find {},
       fields:
         profile: 1
@@ -56,11 +56,11 @@ Meteor.publish "userData", ->
 
 logged_in_allow =
   insert: (userId, doc) ->
-    Roles.userIsInRole(userId, WriterRoles)
+    NeuronCatalogApp.checkRole(userId, WriterRoles)
   update: (userId, doc, fields, modifier) ->
-    Roles.userIsInRole(userId, WriterRoles)
+    NeuronCatalogApp.checkRole(userId, WriterRoles)
   remove: (userId, doc) ->
-    Roles.userIsInRole(userId, WriterRoles)
+    NeuronCatalogApp.checkRole(userId, WriterRoles)
 
 DriverLines.allow logged_in_allow
 BinaryData.allow logged_in_allow
@@ -68,41 +68,41 @@ NeuronTypes.allow logged_in_allow
 BrainRegions.allow logged_in_allow
 ArchiveFileStore.allow
   insert: (userId, doc) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   update: (userId, doc, fields, modifier) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   remove: (userId, doc) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   download: (userId, fileObj) ->
-    Roles.userIsInRole userId, ReaderRoles
+    NeuronCatalogApp.checkRole userId, ReaderRoles
 CacheFileStore.allow
   insert: (userId, doc) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   update: (userId, doc, fields, modifier) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   remove: (userId, doc) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   download: (userId, fileObj) ->
-    Roles.userIsInRole userId, ReaderRoles
+    NeuronCatalogApp.checkRole userId, ReaderRoles
 ZipFileStore.allow
   insert: (userId, doc) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   update: (userId, doc, fields, modifier) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   remove: (userId, doc) ->
-    Roles.userIsInRole userId, WriterRoles
+    NeuronCatalogApp.checkRole userId, WriterRoles
   download: (userId, fileObj) ->
-    Roles.userIsInRole userId, ReaderRoles
+    NeuronCatalogApp.checkRole userId, ReaderRoles
 
 NeuronCatalogConfig.allow(
   insert: (userId, doc) ->
-    Roles.userIsInRole(userId, ['admin'])
+    NeuronCatalogApp.checkRole(userId, ['admin'])
 
   update: (userId, doc, fields, modifier) ->
-    Roles.userIsInRole(userId, ['admin'])
+    NeuronCatalogApp.checkRole(userId, ['admin'])
 
   remove: (userId, doc) ->
-    Roles.userIsInRole(userId, ['admin'])
+    NeuronCatalogApp.checkRole(userId, ['admin'])
 )
 
 get_default_permissions = () ->
@@ -119,27 +119,28 @@ get_default_permissions = () ->
     return ["read","write"]
   return []
 
-Accounts.onCreateUser (options, user) ->
-  if Meteor.users.find().count()==0
-    # first user is always admin
-    role_names = ['admin']
-  else
-    # get the roles from the settings
-    role_names = get_default_permissions()
+if !NeuronCatalogApp.isSandstorm()
+  Accounts.onCreateUser (options, user) ->
+    if Meteor.users.find().count()==0
+      # first user is always admin
+      role_names = ['admin']
+    else
+      # get the roles from the settings
+      role_names = get_default_permissions()
 
-  # add default roles
-  user.roles = user.roles || []
-  for role_name in role_names
-    if !(role_name in user.roles)
-      user.roles.push role_name
+    # add default roles
+    user.roles = user.roles || []
+    for role_name in role_names
+      if !(role_name in user.roles)
+        user.roles.push role_name
 
-  # Validate roles
-  for role_name in user.roles
-    if role_name not in ['admin','write','read']
-      throw new Error("invalid role name: "+role_name)
+    # Validate roles
+    for role_name in user.roles
+      if role_name not in ['admin','write','read']
+        throw new Error("invalid role name: "+role_name)
 
-  # Set default profile.name value
-  user.profile = user.profile || {}
-  user.profile.name = user.profile.name || user.username
+    # Set default profile.name value
+    user.profile = user.profile || {}
+    user.profile.name = user.profile.name || user.username
 
-  user
+    user
