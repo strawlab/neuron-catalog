@@ -22,11 +22,9 @@ The neuron catalog can be most easily installed for testing using
 The neuron catalog software consists of a standard
 [Meteor.js](https://www.meteor.com/) server. Instructions for getting
 started with Meteor are
-[here](http://docs.meteor.com/#/basic/quickstart). Rougly speaking,
-[create a Meteor settings file](settings.md) and then run Meteor:
+[here](http://docs.meteor.com/#/basic/quickstart). In a nutshell, once you have
+Meteor installed, type this:
 
 ```
-cp server/server-config.json.example server/server-config.json
-# Edit server/server-config.json in a text editor as appropriate.
-meteor run --settings server/server-config.json
+meteor run
 ```

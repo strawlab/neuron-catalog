@@ -9,7 +9,6 @@ pages:
 - ['demo-mode.md', 'User Guide', 'Demonstration Mode']
 - ['installation.md', 'User Guide', 'Installation']
 - ['security.md', 'User Guide', 'Security']
-- ['settings.md', 'User Guide', 'Settings']
 - ['configuration.md', 'User Guide', 'Configuration']
 - ['specialization.md', 'User Guide', 'Species Specific Specializations']
 - ['credits.md', 'About', 'Credits']

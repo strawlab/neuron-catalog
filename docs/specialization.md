@@ -7,8 +7,9 @@ specializations exist for Drosophila melanogaster.
 
 ### Drosophila melanogaster specializations
 
-By placing the string `"Drosophila melanogaster"` in your
-[settings](settings.md), you enable several piecies of code:
+By placing the string `"Drosophila melanogaster"` in the
+`NeuronCatalogSpecialization` field of the [configuration](configuration.md),
+several piecies of code are enabled:
 
 - detection of VT (Vienna Tile) lines. If a VT line is detected, links
   are generated to BrainBaseWeb and the VDRC databases.
