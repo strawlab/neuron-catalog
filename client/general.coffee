@@ -217,8 +217,8 @@ Template.raw_button.events
 Template.show_user_date.helpers
   pretty_username: ->
     doc = Meteor.users.findOne {_id:this.userId}
-    if doc? and doc.username?
-      return doc.username
+    if doc? and doc.profile? and doc.profile.name?
+      return doc.profile.name
     "userID "+this.userId
 
   pretty_time: ->

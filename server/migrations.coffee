@@ -158,4 +158,16 @@ Migrations.add
         validate: false
         getAutoValues: false
 
-Migrations.migrateTo(7)
+Migrations.add
+  version: 8
+  name: 'Add .profile.name field to user docs'
+  up: ->
+    Meteor.users.find().forEach (doc) ->
+      Meteor.users.update
+        _id: doc._id
+      ,
+        $set:
+          profile:
+            name: doc.username
+
+Migrations.migrateTo(8)

@@ -53,7 +53,7 @@ Meteor.publish "userData", ->
   if Roles.userIsInRole(@userId, ReaderRoles)
     Meteor.users.find {},
       fields:
-        username: 1
+        profile: 1
 
 # ----------------------------------------
 
@@ -121,4 +121,9 @@ Accounts.onCreateUser (options, user) ->
   for role_name in role_names
     if !(role_name in user.roles)
       user.roles.push role_name
+
+  # Set default profile.name value
+  user.profile = user.profile || {}
+  user.profile.name = user.profile.name || user.username
+
   user

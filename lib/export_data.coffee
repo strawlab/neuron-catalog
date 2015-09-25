@@ -26,7 +26,7 @@
     coll.find().forEach (doc) ->
       if collection_name=="Meteor.users"
         # only save usernames
-        doc = {_id: doc._id, username: doc.username}
+        doc = {_id: doc._id, profile: {name: doc.profile.name}}
       this_coll[doc._id]= doc
     collections[collection_name]=this_coll
   all_data = {collections: collections, 'export_date': new Date().toISOString()}

@@ -242,11 +242,17 @@ Schemas.BinaryData = new SimpleSchema(
   compose(NamedWithTagsHistoryComments,BinaryDataSpec))
 BinaryData.attachSchema( Schemas.BinaryData )
 
+Schemas.UserProfile = new SimpleSchema(
+  name:
+    type: String
+)
 
 Schemas.User = new SimpleSchema(
   username:
     type: String
     regEx: /^[a-z0-9A-Z_\.]{3,15}$/
+  profile:
+    type: Schemas.UserProfile
   emails:
     type: [ Object ]
     optional: true
