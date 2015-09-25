@@ -81,5 +81,6 @@ AutoForm.hooks configQuickForm:
   onSuccess: (operation, result, template) ->
     bootbox.alert("Saved configuration successfully.")
   onError: (operation, error, template) ->
+    console.log error
     console.error("error saving new configuration")
     bootbox.alert("Error saving configuration.")

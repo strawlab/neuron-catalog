@@ -51,12 +51,12 @@ window.renderTmp = (template, data) ->
   node
 
 window.specialization_Dmel = ->
-  settings = SettingsToClient.findOne({_id: 'settings'})
-  if !settings
+  config = NeuronCatalogConfig.findOne({_id: 'config'})
+  if !config
     return false
-  if !settings.specializations
+  if !config.NeuronCatalogSpecialization
     return false
-  return "Drosophila melanogaster" in settings.specializations
+  return "Drosophila melanogaster" == config.NeuronCatalogSpecialization
 
 Template.registerHelper "specialization_Dmel", ->
   return window.specialization_Dmel()

@@ -14,17 +14,11 @@ The file server/server-config.json.example is provided as an example
 configuration file. It looks like this:
 
 ```
-{"NeuronCatalogSpecializations": ["Drosophila melanogaster"],
- "DefaultUserRoles": ["read","write"]}
+{"DefaultUserRoles": ["read","write"]}
 ```
 
-The options are:
+The fields are:
 
-- `NeuronCatalogSpecializations` Because the neuron-catalog could be
-  used for any species, any [specializations](specializations.md) for
-  a particular species must be enabled. List of Strings. Currently,
-  `"Drosophila melanogaster"` is the only supported
-  specialization. (Optional.)
 - `DefaultUserRoles` When a user creates an account (without any email
   verifcation), what roles should the user have? For maximum security,
   set this to an empty list `[]`. An administrator can then add the

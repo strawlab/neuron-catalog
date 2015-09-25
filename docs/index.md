@@ -54,9 +54,9 @@ framework](https://www.meteor.com). It is implemented as a standard
 Meteor application, and hence all the documentation and help from this
 large community is directly relevant.
 
-#### Species specific specializations available
+#### Species specific specialization available
 
 Currently for Drosophila melanogaster are [several
-enhancements](specializations.md) such as linking to other online
-databases. The design is implemented in a way that would be possible
-to add similar features for other species.
+enhancements](specialization.md) such as linking to other online databases. The
+design is implemented in a way that would be possible to add similar features
+for other species.

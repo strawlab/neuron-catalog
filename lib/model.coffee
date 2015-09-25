@@ -38,6 +38,13 @@ Schemas.NeuronCatalogConfig = new SimpleSchema(
     type: String
     label: "An optional string with more information describing the project. Can contain raw HTML."
     optional: true
+
+  NeuronCatalogSpecialization:
+    type: String
+    label: "An optional value enabling species-specific specializations."
+    allowedValues: ["Drosophila melanogaster"]
+    autoform: afFieldInput: firstOption: '(Select a specialization)'
+    optional: true
 )
 NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig)
 

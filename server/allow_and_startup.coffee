@@ -13,7 +13,6 @@ Meteor.startup ->
   # not in a ReaderRole. So don't add any sensitive information here.
   SettingsToClient.update( {_id: 'settings'},
     {$set:
-       specializations: Meteor.settings.NeuronCatalogSpecializations
        DefaultUserRoles: Meteor.settings.DefaultUserRoles || []
        SchemaVersion: Migrations.getVersion()
     },

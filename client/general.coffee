@@ -25,7 +25,6 @@ Meteor.subscribe "zip_filestore"
 # --------------------------------------------
 # session variables
 editing_name = new ReactiveVar(null)
-Session.setDefault "NeuronCatalogSpecialization",[]
 
 window.modal_save_func = null
 
@@ -278,15 +277,7 @@ setTitle = () ->
     setTimeout(setTitle, 100)
   return
 
-on_get_specializations_callback = (error,specializations) ->
-  if error?
-    console.error("error in Meteor.call()",error)
-    return
-  Session.set("NeuronCatalogSpecialization",specializations)
-
 Meteor.startup ->
-  Meteor.call("get_specializations", on_get_specializations_callback)
-
   Deps.autorun ->
     setTitle()
     return

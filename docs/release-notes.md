@@ -12,6 +12,11 @@ A list of changes with each release. Downloads are
 - Do not require use of Amazon S3 to store files. Instead, save them into
   the local mongodb database instance.
 
+- Specializations (e.g. "Drosophila melanogaster") and default user role (e.g.
+  "editor" or "none") are now set directly through the web interface by an
+  administrator. Previously, this was set via Meteor settings during server
+  startup.
+
 ---
 
 ## v0.5.7 (2015-09-16)
