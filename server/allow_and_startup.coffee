@@ -13,7 +13,6 @@ Meteor.startup ->
   # not in a ReaderRole. So don't add any sensitive information here.
   SettingsToClient.update( {_id: 'settings'},
     {$set:
-       DefaultUserRoles: Meteor.settings.DefaultUserRoles || []
        SchemaVersion: Migrations.getVersion()
     },
     {upsert: true})
@@ -106,13 +105,27 @@ NeuronCatalogConfig.allow(
     Roles.userIsInRole(userId, ['admin'])
 )
 
+get_default_permissions = () ->
+  doc = NeuronCatalogConfig.findOne({_id:"config"})
+  if !doc?
+    return []
+  if !doc.DefaultUserRole?
+    return []
+  if doc.DefaultUserRole == "none"
+    return []
+  if doc.DefaultUserRole == "reader"
+    return ["read"]
+  if doc.DefaultUserRole == "editor"
+    return ["read","write"]
+  return []
+
 Accounts.onCreateUser (options, user) ->
   if Meteor.users.find().count()==0
     # first user is always admin
     role_names = ['admin']
   else
     # get the roles from the settings
-    role_names = Meteor.settings.DefaultUserRoles || []
+    role_names = get_default_permissions()
 
   # add default roles
   user.roles = user.roles || []

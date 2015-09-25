@@ -3,13 +3,6 @@
 # This file was tested with Vagrant 1.6.5 using Virtual Box 4.3.14 on
 # Mac OS X.
 
-# CHANGE THESE SETTINGS TO CONFIGURE. ------------------------------------------------
-settings = <<-EOF
-    echo ' "DefaultUserRoles": ["read","write"],' >>  /neuron-catalog/server/config.json
-EOF
-# ------------------------------------------------------------------------------------
-
-
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "neuron-catalog-demo"
@@ -29,8 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # copy /vagrant to /neuron-catalog while excluding /vagrant/.meteor/local
   config.vm.provision "shell", inline: "mkdir -p /neuron-catalog/server && "\
     "tar -c --exclude ./.meteor/local -C /vagrant . | tar -x -C /neuron-catalog"
-
-  config.vm.provision "shell", inline: settings
 
   # Let ansible provision everything else
   config.vm.provision "shell", inline: "cd /neuron-catalog/server/ansible && "\

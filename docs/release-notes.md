@@ -17,6 +17,10 @@ A list of changes with each release. Downloads are
   administrator. Previously, this was set via Meteor settings during server
   startup.
 
+- The default user role is now set directly through the web interface by an
+  administrator. Previously, this was set via Meteor settings during server
+  startup.
+
 ---
 
 ## v0.5.7 (2015-09-16)

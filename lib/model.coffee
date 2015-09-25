@@ -45,6 +45,14 @@ Schemas.NeuronCatalogConfig = new SimpleSchema(
     allowedValues: ["Drosophila melanogaster"]
     autoform: afFieldInput: firstOption: '(Select a specialization)'
     optional: true
+
+  DefaultUserRole:
+    type: String
+    label: "What role new users are given."
+    allowedValues: ["none","reader","editor"]
+    autoform: afFieldInput: firstOption: '(Select role for new users)'
+    optional: true
+
 )
 NeuronCatalogConfig.attachSchema(Schemas.NeuronCatalogConfig)
 
