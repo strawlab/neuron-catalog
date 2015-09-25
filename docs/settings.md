@@ -15,8 +15,7 @@ configuration file. It looks like this:
 
 ```
 {"NeuronCatalogSpecializations": ["Drosophila melanogaster"],
- "DefaultUserRoles": ["read","write"],
- "DemoMode": true}
+ "DefaultUserRoles": ["read","write"]}
 ```
 
 The options are:
@@ -32,4 +31,3 @@ The options are:
   user to the appropriate role (e.g. `"read","write"` or
   `"read"`). For more convenience, set to `["read","write"]` so
   that each new user can read and write the database immediately.
-- `DemoMode` When true, this limits the maximum upload size to 10 MB.  (Optional.)

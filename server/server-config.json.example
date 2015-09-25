@@ -1,3 +1,2 @@
 {"NeuronCatalogSpecializations": ["Drosophila melanogaster"],
- "DefaultUserRoles": ["read","write"],
- "DemoMode": true}
+ "DefaultUserRoles": ["read","write"]}
