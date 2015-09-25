@@ -6,7 +6,7 @@
 # CHANGE THESE SETTINGS TO CONFIGURE. ------------------------------------------------
 settings = <<-EOF
     echo '{"NeuronCatalogSpecializations": ["Drosophila melanogaster"],' > /neuron-catalog/server/config.json
-    echo ' "DefaultUserRoles": ["read-write"],' >>  /neuron-catalog/server/config.json
+    echo ' "DefaultUserRoles": ["read","write"],' >>  /neuron-catalog/server/config.json
 EOF
 # ------------------------------------------------------------------------------------
 

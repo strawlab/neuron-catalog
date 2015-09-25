@@ -170,4 +170,31 @@ Migrations.add
           profile:
             name: doc.username
 
-Migrations.migrateTo(8)
+Migrations.add
+  version: 9
+  name: 'Rework permissions system'
+  up: ->
+
+    permission_map =
+      'admin': ['read','write','admin']
+      'read-write': ['read','write']
+      'read-only': [ 'read' ]
+
+    # Remove old roles from Meteor.roles collection
+    for old_role of permission_map
+      doc = Meteor.roles.findOne({name:old_role})
+      if doc?
+        Meteor.roles.remove({_id:doc._id})
+
+    # Update user docs for new roles
+    Meteor.users.find().forEach (doc) ->
+      # use object to prevent repeated keys
+      new_permissions = {}
+      for old_permission in doc.roles
+        for new_permission in permission_map[old_permission]
+          new_permissions[new_permission] = true
+      new_permissions = (new_permission for new_permission of new_permissions)
+
+      Meteor.users.update { _id: doc._id }, $set: roles: new_permissions
+
+Migrations.migrateTo(9)

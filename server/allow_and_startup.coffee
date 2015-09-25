@@ -20,10 +20,10 @@ Meteor.startup ->
     },
     {upsert: true})
 
-  # Ensure existance of roles we use.
-  for role_name in ['admin','read-write','read-only']
-    if Meteor.roles.find({name: role_name}).count()==0
-      Meteor.roles.insert({name: role_name})
+  # Ensure existance of permissions we use.
+  for permission_name in ['admin','write','read']
+    if Meteor.roles.find({name: permission_name}).count()==0
+      Meteor.roles.insert({name: permission_name})
 
 # ----------------------------------------
 Meteor.publish "settings_to_client", ->
@@ -121,6 +121,11 @@ Accounts.onCreateUser (options, user) ->
   for role_name in role_names
     if !(role_name in user.roles)
       user.roles.push role_name
+
+  # Validate roles
+  for role_name in user.roles
+    if role_name not in ['admin','write','read']
+      throw new Error("invalid role name: "+role_name)
 
   # Set default profile.name value
   user.profile = user.profile || {}

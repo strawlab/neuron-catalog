@@ -18,8 +18,8 @@
 });
 
 # ----------------------------------------
-@ReaderRoles = ['admin','read-write','read-only']
-@WriterRoles = ['admin','read-write']
+@ReaderRoles = ['read']
+@WriterRoles = ['write']
 
 # define our schemas
 

@@ -15,7 +15,7 @@ configuration file. It looks like this:
 
 ```
 {"NeuronCatalogSpecializations": ["Drosophila melanogaster"],
- "DefaultUserRoles": ["read-write"],
+ "DefaultUserRoles": ["read","write"],
  "DemoMode": true}
 ```
 
@@ -28,8 +28,8 @@ The options are:
   specialization. (Optional.)
 - `DefaultUserRoles` When a user creates an account (without any email
   verifcation), what roles should the user have? For maximum security,
-  set this to and empty list `[]`. An administrator can then add the
-  user to the appropriate role (e.g. `"read-write"` or
-  `"read-only"`). For more convenience, set to `["read-write"]` so
-  that each new user can read and write the database.
+  set this to an empty list `[]`. An administrator can then add the
+  user to the appropriate role (e.g. `"read","write"` or
+  `"read"`). For more convenience, set to `["read","write"]` so
+  that each new user can read and write the database immediately.
 - `DemoMode` When true, this limits the maximum upload size to 10 MB.  (Optional.)
