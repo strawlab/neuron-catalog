@@ -125,7 +125,9 @@
   {{#detail_block}}
     {{#detail_title}}
       Neuron types
+      {{#if isInWriterRole}}
       <a class="btn btn-default btn-small edit-neuron-types" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      {{/if}}
 
     {{/detail_title}}
     {{#detail_main}}
@@ -136,7 +138,9 @@
   {{#detail_block}}
     {{#detail_title}}
       Brain Regions
+      {{#if isInWriterRole}}
       <a class="btn btn-default btn-small edit-brain-regions" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      {{/if}}
     {{/detail_title}}
     {{#detail_main}}
       {{> brain_region_table brain_regions=brain_regions}}

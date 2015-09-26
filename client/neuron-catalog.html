@@ -146,7 +146,11 @@
         {{#if editing_name}}
           <input type="text" id="name-input">
 	{{else}}
-	  <span class="edit-name">{{name}}</span>
+    {{#if isInWriterRole}}
+  	  <span class="edit-name">{{name}}</span>
+    {{else}}
+      <span>{{name}}</span>
+    {{/if}}
 	{{/if}}
       </div>
     </div>
@@ -159,9 +163,13 @@
       {{> next_previous_button collection=collection my_id=_id which="previous"}}
     </div>
     <div class="col-sm-8 align-center">
+      {{#if isInWriterRole}}
       <a class="btn btn-default btn-small edit-name" href="#"><i class="fa fa-pencil-square-o"></i> Edit name</a>
+      {{/if}}
       {{> raw_button collection=collection my_id=_id}}
+      {{#if isInWriterRole}}
       {{> delete_button collection=collection my_id=_id}}
+      {{/if}}
     </div>
     <div class="col-sm-2 right-text">
       <div>Next:</div>
@@ -182,7 +190,8 @@
     {{/detail_title}}
     {{#detail_main}}
       {{> show_comments comments=comments show_name=show_name _id=_id}}
-
+  {{#if isInWriterRole}}
+  <div>
   <ul class="nav nav-tabs" role="tablist">
     {{#if is_previewing_comment}}
     <li class="write-comment"><a href="#">Write</a></li>
@@ -200,6 +209,8 @@
 	<div class="comment-ui-field2 {{is_previewing_attrs}}" id="comment-preview">{{{comment_preview}}}</div>
 	<button type="button" class="btn btn-primary save">Save comment</button>
       </div>
+  </div>
+  {{/if}}
     {{/detail_main}}
   {{/detail_block}}
 </template>
@@ -359,6 +370,7 @@
 <template name="show_comments">
   {{#each wrapped_comments}}
   <div class="entire-comment-region">
+    {{#if isInWriterRole}}
     <div class="remove-indiv-comment">
       <div>
 	<a class="btn btn-danger btn-small delete" href="#" title="delete comment"><i class="fa fa-trash-o"></i> delete</a>
@@ -369,6 +381,7 @@
       </div>
 -->
     </div>
+    {{/if}}
     <div class="indiv-comment">
       {{{show_markdown comment}}}
       <div class="comment-user-date">

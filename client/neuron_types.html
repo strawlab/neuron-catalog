@@ -144,7 +144,9 @@
   {{#detail_block}}
     {{#detail_title}}
       Best driver lines
+      {{#if isInWriterRole}}
       <a class="btn btn-default btn-small edit-best-driver-lines" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      {{/if}}
     {{/detail_title}}
     {{#detail_main}}
       {{> driver_line_table driver_lines=best_driver_lines}}
@@ -154,7 +156,9 @@
   {{#detail_block}}
     {{#detail_title}}
 	Brain Regions
+      {{#if isInWriterRole}}
       <a class="btn btn-default btn-small edit-brain-regions" href="#"><i class="fa fa-pencil-square-o"></i> edit</a>
+      {{/if}}
     {{/detail_title}}
     {{#detail_main}}
       {{> brain_region_table brain_regions=brain_regions}}
