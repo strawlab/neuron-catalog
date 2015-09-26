@@ -29,7 +29,7 @@ Meteor.methods({
       console.log("loading zip with length of", buf.length)
       console.log("fileObj.size()", fileObj.size());
       if (fileObj.size() != buf.length) {
-        throw "unexpected size mismatch"
+        throw new Error("unexpected size mismatch")
       }
       zip.load(buf);
 
@@ -44,7 +44,7 @@ Meteor.methods({
         }
         var parts = filename.split('/');
         if (parts.length != 3) {
-          throw "unexpected filename:"+filename
+          throw new Error("unexpected filename:"+filename)
         }
         var store;
         if (parts[0] == "archive") {
@@ -52,7 +52,7 @@ Meteor.methods({
         } else if (parts[0] == "cache") {
           store = CacheFileStore;
         } else {
-          throw "not in archive or cache dir:"+filename;
+          throw new Error("not in archive or cache dir:"+filename)
         }
         var _id = parts[1];
         var testFileObj = store.findOne({_id:_id});

@@ -15,7 +15,7 @@
   else if name is "SettingsToClient"
     coll = SettingsToClient
   else
-    throw "unknown collection name "+name
+    throw new Error("unknown collection name "+name)
   coll
 
 @export_data = () ->
@@ -37,7 +37,7 @@
   file_version = payload_raw.collections.SettingsToClient.settings.SchemaVersion
   this_version = SettingsToClient.findOne({_id:'settings'}).SchemaVersion
   if this_version != file_version
-    throw ('This neuron-catalog .json file was saved with a different '+
+    throw new Error('This neuron-catalog .json file was saved with a different '+
            'schema. Converting between schemas is not implemented')
   payload = payload_raw.collections
 

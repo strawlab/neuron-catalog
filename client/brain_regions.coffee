@@ -51,7 +51,7 @@ Template.brain_region_from_id_block.helpers
 brain_region_insert_callback = (error, _id) ->
   if error?
     bootbox.alert "Saving failed: "+error
-    throw "brain_region_insert_callback with error:"+ error
+    throw new Error("brain_region_insert_callback with error:"+ error)
 
 # @remove_brain_region is defined in ../neuron-catalog.coffee
 
