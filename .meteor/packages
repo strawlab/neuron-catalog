@@ -33,3 +33,4 @@ cfs:filesystem
 patte:mime-npm
 peerlibrary:fs
 cfs:ui
+kenton:accounts-sandstorm
