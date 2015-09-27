@@ -14,7 +14,20 @@ Session.setDefault 'OngoingUploadFilesZip',{}
     delete tmp[newFile._id]
     Session.set "OngoingUploadFilesZip",tmp
     close_upload_dialog_if_no_more_uploads()
-    Meteor.call("process_zip")
+    Meteor.call "process_zip", (error, result) ->
+      if error
+        console.error "server callback with error",error
+        hasError = true
+      else
+        console.log "server callback with result",result
+        hasError = false
+        for elem in result
+          if elem.jsonResults.errors.length
+            hasError = true
+      if hasError
+        bootbox.alert("Error processing the uploaded file. Some entries may be corrupt or incomplete.")
+      else
+        bootbox.alert("Upload processed OK.")
 
   bootbox.dialog
     message: window.renderTmp(Template.UploadProgress)

@@ -2,6 +2,7 @@ Meteor.methods({
   process_zip: function () {
     // An upload of binary data was made. Process it.
     var cursor = ZipFileStore.find({});
+    results = [];
     cursor.forEach(function (fileObj) {
       // unzip and process...
 
@@ -39,7 +40,7 @@ Meteor.methods({
         if (filename == "data.json") {
           var payload_raw = JSON.parse( contents.asBinary() );
           var payload = ensure_latest_json_schema( payload_raw );
-          do_json_inserts(payload);
+          jsonResults = do_json_inserts(payload);
           continue // continue to next file
         }
         var parts = filename.split('/');
@@ -77,7 +78,8 @@ Meteor.methods({
       console.log("  removing zip file");
       ZipFileStore.remove({_id:fileObj._id});
 
-
+      results.push( {jsonResults: jsonResults, filename: fileObj.name()} )
     });
+    return results;
   }
 });
