@@ -51,12 +51,22 @@
     for _id of raw_data
       raw_doc = raw_data[_id]
       current_doc = coll.findOne({_id:_id})
-      if !current_doc? # if we already have this key, do not update it
-        coll.insert( raw_doc, (error,result) ->
-          if error?
-            console.error 'for collection "'+collection_name+'", _id "'+_id+'": ',error
-            console.error '  raw doc:',raw_doc
-          )
+      if current_doc? # if we already have this key, do not update it
+        console.error "not inserting doc with key "+_id+": we already have that key"
+        continue
+
+      # validate the doc
+      isValid = coll.simpleSchema().namedContext().validate(raw_doc, {modifier: false})
+      if !isValid
+        console.log "invalid doc: ",raw_doc
+        throw new Error("invalid document: "+raw_doc)
+
+      # Insert but not change timestamps, usernames.
+      coll.insert( raw_doc, {validate: false, getAutoValues: false}, (error,result) ->
+        if error?
+          console.error 'for collection "'+collection_name+'", _id "'+_id+'": ',error
+          console.error '  raw doc:',raw_doc
+        )
 
 # ----
 
