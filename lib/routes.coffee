@@ -1,11 +1,7 @@
-DEFAULT_TITLE = 'neuron catalog'
 Router.configure
   layoutTemplate: 'ReaderRequiredLayout'
   loadingTemplate: 'Loading'
   notFoundTemplate: "PageNotFound"
-  onAfterAction: ->
-    if document?
-      document.title = DEFAULT_TITLE
 
 Router.setTemplateNameConverter (str) ->
   str
@@ -34,12 +30,6 @@ Router.route "/driver_lines/:_id/:name?",
   layoutTemplate: 'ReaderRequiredLayoutWithNamedURL'
   data: ->
     DriverLines.findOne _id: @params._id
-  onAfterAction: ->
-    doc = DriverLines.findOne _id: @params._id
-    if doc?
-      document.title = doc.name + ' - neuron catalog'
-    else
-      document.title = DEFAULT_TITLE
 
 Router.route "/neuron_types"
 
@@ -48,12 +38,6 @@ Router.route "/neuron_types/:_id/:name?",
   layoutTemplate: 'ReaderRequiredLayoutWithNamedURL'
   data: ->
     NeuronTypes.findOne _id: @params._id
-  onAfterAction: ->
-    doc = NeuronTypes.findOne _id: @params._id
-    if doc?
-      document.title = doc.name + ' - neuron catalog'
-    else
-      document.title = DEFAULT_TITLE
 
 Router.route "/brain_regions"
 
@@ -62,12 +46,6 @@ Router.route "/brain_regions/:_id/:name?",
   layoutTemplate: 'ReaderRequiredLayoutWithNamedURL'
   data: ->
     BrainRegions.findOne _id: @params._id
-  onAfterAction: ->
-    doc = BrainRegions.findOne _id: @params._id
-    if doc?
-      document.title = doc.name + ' - neuron catalog'
-    else
-      document.title = DEFAULT_TITLE
 
 Router.route "/binary_data"
 
@@ -76,12 +54,6 @@ Router.route "/binary_data/:_id/:name?",
   layoutTemplate: 'ReaderRequiredLayoutWithNamedURL'
   data: ->
     BinaryData.findOne _id: @params._id
-  onAfterAction: ->
-    doc = BinaryData.findOne _id: @params._id
-    if doc?
-      document.title = doc.name + ' - neuron catalog'
-    else
-      document.title = DEFAULT_TITLE
 
 Router.route "/binary_data_zip",
   # This was inspired by

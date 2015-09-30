@@ -26,6 +26,9 @@ Meteor.subscribe "zip_filestore"
 # session variables
 editing_name = new ReactiveVar(null)
 
+DEFAULT_TITLE = 'neuron catalog'
+Session.setDefault 'DocumentTitle',DEFAULT_TITLE
+
 window.modal_save_func = null
 
 # --------------------------------------------
@@ -275,17 +278,8 @@ Template.registerHelper "isSandstorm", ->
 Template.registerHelper "hasPermission", (permissionName) ->
   NeuronCatalogApp.checkRole(Meteor.user(),[permissionName])
 
-setTitle = () ->
-  cfg = NeuronCatalogConfig.findOne {}
-  if cfg?
-    document.title = cfg.project_name
-  else
-    setTimeout(setTitle, 100)
-  return
+Template.registerHelper "defaultTitle", () ->
+  DEFAULT_TITLE
 
-Meteor.startup ->
-  Deps.autorun ->
-    setTitle()
-    return
-
-  return
+Deps.autorun ->
+  document.title = Session.get('DocumentTitle')

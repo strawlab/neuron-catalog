@@ -11,18 +11,19 @@
 
 <template name="ReaderRequiredLayoutWithNamedURL">
   {{ setURL }}
-  {{> MyLayout needPermissions="read" needLogin=true }}
+  {{> MyLayout needPermissions="read" needLogin=true documentTitle=name }}
 </template>
 
 <template name="ReaderRequiredLayout">
-  {{> MyLayout needPermissions="read" needLogin=true }}
+  {{> MyLayout needPermissions="read" needLogin=true documentTitle=defaultTitle }}
 </template>
 
 <template name="AdminRequiredLayout">
-  {{> MyLayout needPermissions="admin" needLogin=true }}
+  {{> MyLayout needPermissions="admin" needLogin=true documentTitle=defaultTitle }}
 </template>
 
 <template name="MyLayout">
+  {{ setTitle }}
   {{> notifications}}
   <div class="container-fluid {{top_margin_class_attrs}}">
 
