@@ -16,8 +16,7 @@ Router.setTemplateNameConverter (str) ->
 Router.route "/",
   layoutTemplate: 'MyLayout'
   name: "home"
-  action: ->
-    @render "Home"
+  template: 'Home'
 
 Router.route "/config",
   layoutTemplate: 'AdminRequiredLayout'
