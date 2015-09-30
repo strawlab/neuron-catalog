@@ -9,6 +9,11 @@
   Loading...
 </template>
 
+<template name="ReaderRequiredLayoutWithNamedURL">
+  {{ setURL }}
+  {{> MyLayout needPermissions="read" needLogin=true }}
+</template>
+
 <template name="ReaderRequiredLayout">
   {{> MyLayout needPermissions="read" needLogin=true }}
 </template>

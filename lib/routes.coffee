@@ -13,27 +13,6 @@ Router.setTemplateNameConverter (str) ->
 @make_safe = (name) ->
   encodeURIComponent(name)
 
-always_include_name_in_path_action = (controller, coll, template_name) ->
-  controller.render template_name
-  # using_canonical_name=false
-  # doc = coll.findOne _id: controller.params._id
-  # if controller.params.name?
-  #   if doc? and controller.params.name == make_safe(doc.name)
-  #     using_canonical_name = true
-  #
-  # if doc?
-  #   if using_canonical_name
-  #     controller.render template_name
-  #   else
-  #     route_name = controller.route.getName()
-  #     controller.redirect( route_name, {_id:controller.params._id,name:make_safe(doc.name)} )
-  # else
-  #   # The _id is not in the database. Should maybe do a 404. For
-  #   # now, render with blank data.
-  #   # FIXME in the future (See
-  #   # https://github.com/EventedMind/iron-router/issues/237 )
-  #   controller.render "PageNotFound"
-
 Router.route "/",
   layoutTemplate: 'MyLayout'
   name: "home"
@@ -53,8 +32,7 @@ Router.route "/driver_lines"
 
 Router.route "/driver_lines/:_id/:name?",
   name: "driver_line_show"
-  action: ->
-    always_include_name_in_path_action(this, DriverLines, "driver_line_show")
+  layoutTemplate: 'ReaderRequiredLayoutWithNamedURL'
   data: ->
     DriverLines.findOne _id: @params._id
   onAfterAction: ->
@@ -68,8 +46,7 @@ Router.route "/neuron_types"
 
 Router.route "/neuron_types/:_id/:name?",
   name: "neuron_type_show"
-  action: ->
-    always_include_name_in_path_action(this, NeuronTypes, "neuron_type_show")
+  layoutTemplate: 'ReaderRequiredLayoutWithNamedURL'
   data: ->
     NeuronTypes.findOne _id: @params._id
   onAfterAction: ->
@@ -83,8 +60,7 @@ Router.route "/brain_regions"
 
 Router.route "/brain_regions/:_id/:name?",
   name: "brain_region_show"
-  action: ->
-    always_include_name_in_path_action(this, BrainRegions, "brain_region_show")
+  layoutTemplate: 'ReaderRequiredLayoutWithNamedURL'
   data: ->
     BrainRegions.findOne _id: @params._id
   onAfterAction: ->
@@ -98,8 +74,7 @@ Router.route "/binary_data"
 
 Router.route "/binary_data/:_id/:name?",
   name: "binary_data_show"
-  action: ->
-    always_include_name_in_path_action(this, BinaryData, "binary_data_show")
+  layoutTemplate: 'ReaderRequiredLayoutWithNamedURL'
   data: ->
     BinaryData.findOne _id: @params._id
   onAfterAction: ->
