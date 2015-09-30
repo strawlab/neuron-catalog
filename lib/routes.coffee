@@ -1,6 +1,6 @@
 DEFAULT_TITLE = 'neuron catalog'
 Router.configure
-  layoutTemplate: "MyLayout"
+  layoutTemplate: 'ReaderRequiredLayout'
   loadingTemplate: 'Loading'
   notFoundTemplate: "PageNotFound"
   onAfterAction: ->
@@ -14,38 +14,40 @@ Router.setTemplateNameConverter (str) ->
   encodeURIComponent(name)
 
 always_include_name_in_path_action = (controller, coll, template_name) ->
-  using_canonical_name=false
-  doc = coll.findOne _id: controller.params._id
-  if controller.params.name?
-    if doc? and controller.params.name == make_safe(doc.name)
-      using_canonical_name = true
-
-  if doc?
-    if using_canonical_name
-      controller.render template_name
-    else
-      route_name = controller.route.getName()
-      controller.redirect( route_name, {_id:controller.params._id,name:make_safe(doc.name)} )
-  else
-    # The _id is not in the database. Should maybe do a 404. For
-    # now, render with blank data.
-    # FIXME in the future (See
-    # https://github.com/EventedMind/iron-router/issues/237 )
-    controller.render "PageNotFound"
+  controller.render template_name
+  # using_canonical_name=false
+  # doc = coll.findOne _id: controller.params._id
+  # if controller.params.name?
+  #   if doc? and controller.params.name == make_safe(doc.name)
+  #     using_canonical_name = true
+  #
+  # if doc?
+  #   if using_canonical_name
+  #     controller.render template_name
+  #   else
+  #     route_name = controller.route.getName()
+  #     controller.redirect( route_name, {_id:controller.params._id,name:make_safe(doc.name)} )
+  # else
+  #   # The _id is not in the database. Should maybe do a 404. For
+  #   # now, render with blank data.
+  #   # FIXME in the future (See
+  #   # https://github.com/EventedMind/iron-router/issues/237 )
+  #   controller.render "PageNotFound"
 
 Router.route "/",
+  layoutTemplate: 'MyLayout'
   name: "home"
   action: ->
     @render "Home"
 
-# Only in admin role (see OnBeforeActions below)
-Router.route "/config"
+Router.route "/config",
+  layoutTemplate: 'AdminRequiredLayout'
 
 if !NeuronCatalogApp.isSandstorm()
-  # Only in admin role (see OnBeforeActions below)
   Router.route "/accounts-admin",
     name: 'accountsAdmin'
     template: 'accountsAdmin'
+    layoutTemplate: 'AdminRequiredLayout'
 
 Router.route "/driver_lines"
 
@@ -144,37 +146,6 @@ Router.route "/Search", ->
     data: ->
       @params
   return
-
-OnBeforeActions =
-  adminRequired: () ->
-    if Meteor.loggingIn()
-      # wait for login to complete
-      @render @loadingTemplate
-    else if !NeuronCatalogApp.checkRole(Meteor.user(), [ 'admin' ])
-      # no permission
-      @redirect '/'
-    else
-      # show the route
-      @next()
-
-  readerRequired: () ->
-    if Meteor.loggingIn()
-      # wait for login to complete
-      @render @loadingTemplate
-    else if !NeuronCatalogApp.checkRole(Meteor.user(), ReaderRoles)
-      # no permission
-      @redirect '/'
-    else
-      # show the route
-      @next()
-
-Router.onBeforeAction(OnBeforeActions.adminRequired,
-                      only: ['accountsAdmin','config'])
-
-Router.onBeforeAction(OnBeforeActions.readerRequired,
-        only: [ 'driver_lines', 'driver_line_show', 'neuron_types', 'neuron_type_show',
-        'brain_regions', 'brain_region_show', 'binary_data', 'binary_data_show',
-        'RecentChanges', 'Search' ])
 
 @remove_driver_line = (my_id) ->
   rdl = (doc) ->

@@ -9,6 +9,14 @@
   Loading...
 </template>
 
+<template name="ReaderRequiredLayout">
+  {{> MyLayout needPermissions="read" needLogin=true }}
+</template>
+
+<template name="AdminRequiredLayout">
+  {{> MyLayout needPermissions="admin" needLogin=true }}
+</template>
+
 <template name="MyLayout">
   {{> notifications}}
   <div class="container-fluid {{top_margin_class_attrs}}">
@@ -87,7 +95,19 @@
    <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <article>
-        {{> yield}}
+        {{#if needLogin}}
+          {{#if currentUser}}
+            {{#if hasNeededRoles}}
+              {{> yield}}
+            {{else}}
+              <p>You do not have permission to see this page.</p>
+            {{/if}}
+          {{else}}
+            <p>You must be logged in to see this page.</p>
+          {{/if}}
+        {{else}}
+          {{> yield}}
+        {{/if}}
       </article>
     </div>
    </div>
