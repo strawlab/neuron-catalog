@@ -1,5 +1,5 @@
 Meteor.startup ->
-  Migrations.migrateTo(9)
+  Migrations.migrateTo('latest')
 
   # create initial config document if it does not exist
   if NeuronCatalogConfig.find().count() is 0
