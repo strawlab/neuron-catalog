@@ -122,7 +122,7 @@ srp@1.0.8
 standard-app-packages@1.0.9
 standard-minifier-css@1.0.6
 standard-minifier-js@1.0.6
-strawlab:meteor-tiff@0.0.1
+strawlab:meteor-tiff@0.1.0
 templating@1.1.9
 templating-tools@1.0.4
 tracker@1.0.13

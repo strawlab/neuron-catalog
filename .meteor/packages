@@ -10,7 +10,6 @@ showdown
 accounts-base
 accounts-ui
 accounts-password
-coffeescript
 mrt:moment
 astraw:jquery-fleximages
 reactive-var
