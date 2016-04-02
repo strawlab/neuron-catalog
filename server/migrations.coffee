@@ -196,5 +196,3 @@ Migrations.add
       new_permissions = (new_permission for new_permission of new_permissions)
 
       Meteor.users.update { _id: doc._id }, $set: roles: new_permissions
-
-Migrations.migrateTo(9)
