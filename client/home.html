@@ -10,28 +10,39 @@
 
     <h4>A simple web database for keeping track of neurons</h4>
 
-    neuron-catalog is a web-based database for small groups (e.g. a
-    lab) collaborating on neuronal circuit mapping. It provides a
-    simple platform to organize your notes about driver lines, neuron
-    types, brain regions and putative connectivity. Each group that
-    wants to run the neuron-catalog can run their own server, as the
-    software is free and open source (GNU Affero General Public
-    License v3). Because it is run as an isolated, standalone
-    database, the neuron-catalog can be used as a collaborative
-    lab-notebook to record novel observations during the process of
-    discovery. Thus, neuron-catalog complements large-scale efforts
-    which require extensive curation by providing a collaboration
-    platform before the data are ready for integration into a finished
-    dataset.
+    <div class="row">
+      <div class="col-md-12">
+        <div class="pull-left">
+          <img style="padding-right:15px;" src="/icons/appGrid-320.png" alt="Neuron Catalog" width="303" height="321"/>
+        </div>
+        neuron-catalog is a web-based database for small groups (e.g. a
+        lab) collaborating on neuronal circuit mapping. It provides a
+        simple platform to organize your notes about driver lines, neuron
+        types, brain regions and putative connectivity. Each group that
+        wants to run the neuron-catalog can run their own server, as the
+        software is free and open source (GNU Affero General Public
+        License v3). Because it is run as an isolated, standalone
+        database, the neuron-catalog can be used as a collaborative
+        lab-notebook to record novel observations during the process of
+        discovery. Thus, neuron-catalog complements large-scale efforts
+        which require extensive curation by providing a collaboration
+        platform before the data are ready for integration into a finished
+        dataset.
+      </div>
+    </div>
 
-    <ul>
-      <li>Home page: <a href="http://strawlab.org/neuron-catalog">strawlab.org/neuron-catalog</a></li>
-      <li>Project page on github:
-	<a href="https://github.com/strawlab/neuron-catalog">github.com/strawlab/neuron-catalog</a></li>
-      <li>Demonstration: <a href="https://neuron-catalog.meteor.com">neuron-catalog demonstration</a></li>
-      <li>Documentation: <a href="{{rtfd.base_url}}/{{rtfd.language}}/{{rtfd.version}}">Read The Docs</a></li>
-      <li>Online forum: <a href="https://gitter.im/strawlab/neuron-catalog">gitter.im/strawlab/neuron-catalog</a></li>
-    </ul>
+    <div class="row" style="padding-top:10px;">
+      <div class="col-md-offset-1 col-md-10">
+        <ul>
+          <li>Home page: <a href="http://strawlab.org/neuron-catalog">strawlab.org/neuron-catalog</a></li>
+          <li>Project page on github:
+            <a href="https://github.com/strawlab/neuron-catalog">github.com/strawlab/neuron-catalog</a></li>
+          <li>Demonstration: <a href="https://neuron-catalog.meteor.com">neuron-catalog demonstration</a></li>
+          <li>Documentation: <a href="{{rtfd.base_url}}/{{rtfd.language}}/{{rtfd.version}}">Read The Docs</a></li>
+          <li>Online forum: <a href="https://gitter.im/strawlab/neuron-catalog">gitter.im/strawlab/neuron-catalog</a></li>
+        </ul>
+      </div>
+    </div>
 
     {{#if currentUser}}
     {{else}}
