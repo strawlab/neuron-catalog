@@ -120,8 +120,7 @@ AutoForm.hooks({configQuickForm:
     return bootbox.alert('Saved configuration successfully.')
   },
   onError (operation, error, template) {
-    console.log(error)
-    console.error('error saving new configuration')
+    console.error('error saving new configuration', error)
     return bootbox.alert('Error saving configuration.')
   }
   }})
