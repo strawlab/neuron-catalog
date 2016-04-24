@@ -6,7 +6,7 @@ import { Session } from 'meteor/session'
 import $ from 'jquery'
 import { Router, Roles } from '../lib/globals-lib'
 import { get_collection_from_name } from '../lib/export_data'
-import { isSandstorm, sandstormCheckRole } from '../lib/init/sandstorm'
+import { isSandstorm, sandstormCheckRole, toUserSchema } from '../lib/init/sandstorm'
 import { ReaderRoles, WriterRoles, BinaryData } from '../lib/model'
 import { neuron_catalog_version } from '../lib/version'
 import { make_safe, remove_driver_line, remove_neuron_type, remove_brain_region, remove_binary_data } from '../lib/routes'
@@ -50,9 +50,7 @@ Session.setDefault('DocumentTitle', DEFAULT_TITLE)
 function currentUser () {
   let result
   if (isSandstorm()) {
-    // Adjust the sandstorm-returned value to match our schema.
-    const profile = Meteor.sandstormUser()
-    result = {profile}
+    result = toUserSchema(Meteor.sandstormUser())
   } else {
     result = Meteor.user()
   }

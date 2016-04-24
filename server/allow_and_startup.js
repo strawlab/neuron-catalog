@@ -2,12 +2,15 @@ import { Meteor } from 'meteor/meteor'
 import { Roles } from '../lib/globals-lib'
 import { DriverLines, BinaryData, NeuronTypes, BrainRegions, ArchiveFileStore, CacheFileStore, ZipFileStore, NeuronCatalogConfig, SettingsToClient, ReaderRoles, WriterRoles } from '../lib/model'
 import { Accounts, Migrations } from './globals-server'
-import { isSandstorm, sandstormCheckRole } from '../lib/init/sandstorm'
+import { isSandstorm, sandstormCheckRole, toUserSchema } from '../lib/init/sandstorm'
 
-function checkRole (user, roles) {
+function checkRole (ctx, roles) {
   if (isSandstorm()) {
-    return sandstormCheckRole(user, roles)
+    const user = toUserSchema(ctx.connection.sandstormUser())
+    const result = sandstormCheckRole(user, roles)
+    return result
   } else {
+    const user = ctx.userId
     return Roles.userIsInRole(user, roles)
   }
 }
@@ -51,36 +54,36 @@ Meteor.startup(function () {
 // ----------------------------------------
 Meteor.publish('settings_to_client', () => SettingsToClient.find({}))
 Meteor.publish('neuron_catalog_config', function () {
-  if (checkRole(this.userId, ReaderRoles)) { return NeuronCatalogConfig.find({}) }
+  if (checkRole(this, ReaderRoles)) { return NeuronCatalogConfig.find({}) }
 })
 
 Meteor.publish('driver_lines', function () {
-  if (checkRole(this.userId, ReaderRoles)) { return DriverLines.find({}) }
+  if (checkRole(this, ReaderRoles)) { return DriverLines.find({}) }
 })
 Meteor.publish('neuron_types', function () {
-  if (checkRole(this.userId, ReaderRoles)) { return NeuronTypes.find({}) }
+  if (checkRole(this, ReaderRoles)) { return NeuronTypes.find({}) }
 })
 Meteor.publish('brain_regions', function () {
-  if (checkRole(this.userId, ReaderRoles)) { return BrainRegions.find({}) }
+  if (checkRole(this, ReaderRoles)) { return BrainRegions.find({}) }
 })
 Meteor.publish('binary_data', function () {
-  if (checkRole(this.userId, ReaderRoles)) { return BinaryData.find({}) }
+  if (checkRole(this, ReaderRoles)) { return BinaryData.find({}) }
 })
 
 Meteor.publish('archive_filestore', function () {
-  if (checkRole(this.userId, ReaderRoles)) { return ArchiveFileStore.find({}) }
+  if (checkRole(this, ReaderRoles)) { return ArchiveFileStore.find({}) }
 })
 Meteor.publish('cache_filestore', function () {
-  if (checkRole(this.userId, ReaderRoles)) { return CacheFileStore.find({}) }
+  if (checkRole(this, ReaderRoles)) { return CacheFileStore.find({}) }
 })
 Meteor.publish('zip_filestore', function () {
-  if (checkRole(this.userId, ReaderRoles)) { return ZipFileStore.find({}) }
+  if (checkRole(this, ReaderRoles)) { return ZipFileStore.find({}) }
 })
 
 // ----------------------------------------
 
 Meteor.publish('userData', function () {
-  if (checkRole(this.userId, ReaderRoles)) {
+  if (checkRole(this, ReaderRoles)) {
     return Meteor.users.find({}, {
       fields: {
         profile: 1
