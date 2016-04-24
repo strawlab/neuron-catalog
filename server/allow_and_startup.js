@@ -6,6 +6,10 @@ import { NeuronCatalogApp } from '../lib/init/sandstorm'
 Meteor.startup(function () {
   Migrations.migrateTo('latest')
 
+  if (JSON.parse(process.env.SANDSTORM || '0')) {
+    Meteor.settings.public.sandstorm = true
+  }
+
   // create initial config document if it does not exist
   if (NeuronCatalogConfig.find().count() === 0) {
     let doc = {
