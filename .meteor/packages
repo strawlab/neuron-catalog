@@ -10,7 +10,6 @@ showdown
 accounts-base
 accounts-ui
 accounts-password
-coffeescript
 mrt:moment
 astraw:jquery-fleximages
 reactive-var
@@ -34,3 +33,6 @@ patte:mime-npm
 peerlibrary:fs
 cfs:ui
 kenton:accounts-sandstorm
+standard-minifier-css
+standard-minifier-js
+ecmascript
