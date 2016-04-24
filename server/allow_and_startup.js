@@ -15,7 +15,8 @@ function checkRole (user, roles) {
 Meteor.startup(function () {
   Migrations.migrateTo('latest')
 
-  if (JSON.parse(process.env.SANDSTORM || '0')) {
+  if (isSandstorm()) {
+    // Tell clients they are in sandstorm.
     Meteor.settings.public.sandstorm = true
   }
 
