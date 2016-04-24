@@ -4,9 +4,9 @@ import { ReactiveVar } from 'meteor/reactive-var'
 import { Template } from 'meteor/templating'
 import { Session } from 'meteor/session'
 import $ from 'jquery'
-import { Router } from '../lib/globals-lib'
+import { Router, Roles } from '../lib/globals-lib'
 import { get_collection_from_name } from '../lib/export_data'
-import { NeuronCatalogApp } from '../lib/init/sandstorm'
+import { isSandstorm, sandstormCheckRole } from '../lib/init/sandstorm'
 import { ReaderRoles, WriterRoles, BinaryData } from '../lib/model'
 import { neuron_catalog_version } from '../lib/version'
 import { make_safe, remove_driver_line, remove_neuron_type, remove_brain_region, remove_binary_data } from '../lib/routes'
@@ -46,6 +46,26 @@ Session.setDefault('DocumentTitle', DEFAULT_TITLE)
 
 // --------------------------------------------
 // helper functions
+
+function currentUser () {
+  let result
+  if (isSandstorm()) {
+    // Adjust the sandstorm-returned value to match our schema.
+    const profile = Meteor.sandstormUser()
+    result = {profile}
+  } else {
+    result = Meteor.user()
+  }
+  return result
+}
+
+export function checkRoleClient (roles) {
+  if (isSandstorm()) {
+    return sandstormCheckRole(currentUser(), roles)
+  } else {
+    return Roles.userIsInRole(currentUser(), roles)
+  }
+}
 
 export function endsWith (str, suffix) {
   return str.indexOf(suffix, str.length - suffix.length) !== -1
@@ -335,25 +355,23 @@ Template.registerHelper('activeIfTemplateIn', function () {
   }
 })
 
-Template.registerHelper('currentUser', () =>
 // Mimic the normal meteor accounts system from IronRouter template.
-Meteor.user()
-)
+Template.registerHelper('currentUser', () => currentUser())
 
 Template.registerHelper('binary_data_cursor', () => BinaryData.find({}))
 
-Template.registerHelper('isInReaderRole', () => NeuronCatalogApp.checkRole(Meteor.user(), ReaderRoles))
+Template.registerHelper('isInReaderRole', () => checkRoleClient(ReaderRoles))
 
-Template.registerHelper('isInWriterRole', () => NeuronCatalogApp.checkRole(Meteor.user(), WriterRoles))
+Template.registerHelper('isInWriterRole', () => checkRoleClient(WriterRoles))
 
 Template.registerHelper('pathForName', function (routeName) {
   let route = Router.routes[routeName]
   return route.path({_id: this._id, name: make_safe(this.name)})
 })
 
-Template.registerHelper('isSandstorm', () => NeuronCatalogApp.isSandstorm())
+Template.registerHelper('isSandstorm', () => isSandstorm())
 
-Template.registerHelper('hasPermission', permissionName => NeuronCatalogApp.checkRole(Meteor.user(), [permissionName]))
+Template.registerHelper('hasPermission', permissionName => checkRoleClient([permissionName]))
 
 Template.registerHelper('defaultTitle', () => DEFAULT_TITLE)
 

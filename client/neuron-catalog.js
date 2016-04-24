@@ -1,8 +1,8 @@
-import { Meteor } from 'meteor/meteor'
-import { NeuronCatalogApp } from '../lib/init/sandstorm'
 import { Session } from 'meteor/session'
 import { Template } from 'meteor/templating'
 import { Router } from '../lib/globals-lib'
+
+import { checkRoleClient } from './general'
 
 Template.tags_panel.helpers({
   TagSearchQuery () {
@@ -21,7 +21,7 @@ Template.ReaderRequiredLayoutWithNamedURL.helpers({
 Template.MyLayout.helpers({
   hasNeededRoles () {
     // if user has "admin" role or @needPermissions role, authorize
-    return NeuronCatalogApp.checkRole(Meteor.user(), ['admin', this.needPermissions])
+    return checkRoleClient(['admin', this.needPermissions])
   },
 
   setTitle () {
