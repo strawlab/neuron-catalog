@@ -6,7 +6,12 @@ import { isSandstorm, sandstormCheckRole, toUserSchema } from '../lib/init/sands
 
 function checkRole (ctx, roles) {
   if (isSandstorm()) {
-    const user = toUserSchema(ctx.connection.sandstormUser())
+    // FIXME: The next line cannot rely on ctx.connection and so we call into
+    // this private Meteor API.
+    // https://github.com/sandstorm-io/meteor-accounts-sandstorm/issues/19
+    const connection = ctx.connection || DDP._CurrentInvocation.get().connection // eslint-disable-line no-undef
+
+    const user = toUserSchema(connection.sandstormUser())
     const result = sandstormCheckRole(user, roles)
     return result
   } else {
