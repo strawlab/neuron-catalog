@@ -14,7 +14,7 @@ import { renderTmp } from './lib/globals'
 import { Deps, bootbox, Blob, File, FileReader, Tiff } from './globals-client'
 import { append_spinner } from './general'
 
-var DEFAULT_THUMB_HEIGHT, DEFAULT_THUMB_WIDTH, getThumbnail, get_blob, handle_file_step_two, handle_files, insert_image_save_func, link_image_save_func, on_link_image_dialog_shown, removeExtension, trigger_update, update_selected
+var DEFAULT_THUMB_HEIGHT, DEFAULT_THUMB_WIDTH, getThumbnail, handle_file_step_two, handle_files, insert_image_save_func, link_image_save_func, on_link_image_dialog_shown, removeExtension, trigger_update, update_selected
 
 trigger_update = new Deps.Dependency()
 
@@ -299,10 +299,10 @@ getThumbnail = function (original, width, height) {
   return canvas
 }
 
-get_blob = function (canvas, type, quality) {
-  var arr, binStr, i, len, result
-  binStr = window.atob(canvas.toDataURL(type, quality).split(',')[1])
-  len = binStr.length
+function get_blob (canvas, type, quality) {
+  var arr, i, result
+  const binStr = window.atob(canvas.toDataURL(type, quality).split(',')[1])
+  const len = binStr.length
   arr = new Uint8Array(len)
   i = 0
   while (i < len) {
