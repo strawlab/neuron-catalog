@@ -96,6 +96,9 @@ function get_route_from_name (name) {
 
 Template.RawDocumentView.helpers({
   raw_document () {
+    if (isSandstorm() && this.collection === 'Meteor.users') {
+      return JSON.stringify(toUserSchema(Meteor.sandstormUser()))
+    }
     let coll = get_collection_from_name(this.collection)
     let doc = coll.findOne({_id: this.my_id})
     return JSON.stringify(doc, undefined, 2)
