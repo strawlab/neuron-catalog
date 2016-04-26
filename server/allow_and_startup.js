@@ -6,10 +6,18 @@ import { isSandstorm, sandstormCheckRole, toUserSchema } from '../lib/init/sands
 
 function checkRole (ctx, roles) {
   if (isSandstorm()) {
-    // FIXME: The next line cannot rely on ctx.connection and so we call into
-    // this private Meteor API.
-    // https://github.com/sandstorm-io/meteor-accounts-sandstorm/issues/19
-    const connection = ctx.connection || DDP._CurrentInvocation.get().connection // eslint-disable-line no-undef
+    let connection = ctx.connection
+    if (!connection) {
+      // FIXME: The next line cannot rely on ctx.connection and so we call into
+      // this private Meteor API.
+      // https://github.com/sandstorm-io/meteor-accounts-sandstorm/issues/19
+      let invocation = DDP._CurrentInvocation.get() // eslint-disable-line no-undef
+      if (invocation) {
+        connection = invocation.connection
+      } else {
+        throw new Error('could not get invocation')
+      }
+    }
 
     const user = toUserSchema(connection.sandstormUser())
     const result = sandstormCheckRole(user, roles)
@@ -17,6 +25,25 @@ function checkRole (ctx, roles) {
   } else {
     const user = ctx.userId
     return Roles.userIsInRole(user, roles)
+  }
+}
+
+function allowRole (userId, roles) {
+  // This function is only called on the server.
+  if (isSandstorm()) {
+    // FIXME: The next line cannot rely on ctx.connection and so we call into
+    // this private Meteor API.
+    // https://github.com/sandstorm-io/meteor-accounts-sandstorm/issues/19
+    const invocation = DDP._CurrentInvocation.get() // eslint-disable-line no-undef
+    if (!invocation) {
+      console.error('Could not get invocation. Unsafely granting permission anyway.')
+      return true
+    }
+    const user = toUserSchema(invocation.connection.sandstormUser())
+    const result = sandstormCheckRole(user, roles)
+    return result
+  } else {
+    return Roles.userIsInRole(userId, roles)
   }
 }
 
@@ -101,13 +128,13 @@ Meteor.publish('userData', function () {
 
 let logged_in_allow = {
   insert (userId, doc) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   update (userId, doc, fields, modifier) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   remove (userId, doc) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   }
 }
 
@@ -117,58 +144,58 @@ NeuronTypes.allow(logged_in_allow)
 BrainRegions.allow(logged_in_allow)
 ArchiveFileStore.allow({
   insert (userId, doc) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   update (userId, doc, fields, modifier) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   remove (userId, doc) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   download (userId, fileObj) {
-    return checkRole(userId, ReaderRoles)
+    return allowRole(userId, ReaderRoles)
   }
 })
 CacheFileStore.allow({
   insert (userId, doc) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   update (userId, doc, fields, modifier) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   remove (userId, doc) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   download (userId, fileObj) {
-    return checkRole(userId, ReaderRoles)
+    return allowRole(userId, ReaderRoles)
   }
 })
 ZipFileStore.allow({
   insert (userId, doc) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   update (userId, doc, fields, modifier) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   remove (userId, doc) {
-    return checkRole(userId, WriterRoles)
+    return allowRole(userId, WriterRoles)
   },
   download (userId, fileObj) {
-    return checkRole(userId, ReaderRoles)
+    return allowRole(userId, ReaderRoles)
   }
 })
 
 NeuronCatalogConfig.allow({
   insert (userId, doc) {
-    return checkRole(userId, ['admin'])
+    return allowRole(userId, ['admin'])
   },
 
   update (userId, doc, fields, modifier) {
-    return checkRole(userId, ['admin'])
+    return allowRole(userId, ['admin'])
   },
 
   remove (userId, doc) {
-    return checkRole(userId, ['admin'])
+    return allowRole(userId, ['admin'])
   }
 }
 )
