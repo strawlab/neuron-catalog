@@ -6,11 +6,9 @@ moment // eslint-disable-line no-undef
 AutoForm // eslint-disable-line no-undef
 Showdown // eslint-disable-line no-undef
 FS // eslint-disable-line no-undef
-atob // eslint-disable-line no-undef
-btoa // eslint-disable-line no-undef
 Blob // eslint-disable-line no-undef
 File // eslint-disable-line no-undef
 FileReader // eslint-disable-line no-undef
 Tiff // eslint-disable-line no-undef
 
-export { Deps, Notifications, bootbox, html_sanitize, moment, AutoForm, Showdown, FS, atob, btoa, Blob, File, FileReader, Tiff } // eslint-disable-line no-undef
+export { Deps, Notifications, bootbox, html_sanitize, moment, AutoForm, Showdown, FS, Blob, File, FileReader, Tiff } // eslint-disable-line no-undef

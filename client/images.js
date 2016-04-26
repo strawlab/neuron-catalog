@@ -11,7 +11,7 @@ import { BinaryData, ArchiveFileStore, CacheFileStore, ZipFileStore } from '../l
 import $ from 'jquery'
 
 import { renderTmp } from './lib/globals'
-import { Deps, bootbox, atob, Blob, File, FileReader, Tiff } from './globals-client'
+import { Deps, bootbox, Blob, File, FileReader, Tiff } from './globals-client'
 import { append_spinner } from './general'
 
 var DEFAULT_THUMB_HEIGHT, DEFAULT_THUMB_WIDTH, getThumbnail, get_blob, handle_file_step_two, handle_files, insert_image_save_func, link_image_save_func, on_link_image_dialog_shown, removeExtension, trigger_update, update_selected
@@ -301,7 +301,7 @@ getThumbnail = function (original, width, height) {
 
 get_blob = function (canvas, type, quality) {
   var arr, binStr, i, len, result
-  binStr = atob(canvas.toDataURL(type, quality).split(',')[1])
+  binStr = window.atob(canvas.toDataURL(type, quality).split(',')[1])
   len = binStr.length
   arr = new Uint8Array(len)
   i = 0

@@ -11,7 +11,6 @@ import { ReaderRoles, WriterRoles, BinaryData } from '../lib/model'
 import { neuron_catalog_version } from '../lib/version'
 import { make_safe, remove_driver_line, remove_neuron_type, remove_brain_region, remove_binary_data } from '../lib/routes'
 
-import { btoa, atob } from './globals-client'
 import { get_sort_key, activateInput, okCancelEvents, renderTmp } from './lib/globals'
 
 // -------------
@@ -70,11 +69,11 @@ export function endsWith (str, suffix) {
 }
 
 export function utf8_to_b64 (str) {
-  return btoa(unescape(encodeURIComponent(str)))
+  return window.btoa(unescape(encodeURIComponent(str)))
 }
 
 export function b64_to_utf8 (str) {
-  return decodeURIComponent(escape(atob(str)))
+  return decodeURIComponent(escape(window.atob(str)))
 }
 
 function get_route_from_name (name) {
