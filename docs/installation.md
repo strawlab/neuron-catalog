@@ -1,7 +1,7 @@
 ## Installation
 
 By far the easiest way to try and run neuron-catalog is the demo server at
-[oasis.sandstorm.io](https://oasis.sandstorm.io/apps).
+[oasis.sandstorm.io](https://oasis.sandstorm.io/apps/u1pa4174jqhvn93fkgr6u07mfgpk53dtgvfqqz9hec0pxk6c8nuh).
 
 ## Downloads
 

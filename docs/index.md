@@ -23,7 +23,7 @@ a finished dataset.
 - Download: [Release page](https://github.com/strawlab/neuron-catalog/releases)
 - Project page on github:
 [github.com/strawlab/neuron-catalog](https://github.com/strawlab/neuron-catalog)
-- Demonstration: [oasis.sandstorm.io](https://oasis.sandstorm.io/apps)
+- Demonstration: [oasis.sandstorm.io](https://oasis.sandstorm.io/apps/u1pa4174jqhvn93fkgr6u07mfgpk53dtgvfqqz9hec0pxk6c8nuh)
 - Documentation: [Read The Docs](https://neuron-catalog.readthedocs.org/en/latest)
 - Online forum: [gitter.im/strawlab/neuron-catalog](https://gitter.im/strawlab/neuron-catalog)
 

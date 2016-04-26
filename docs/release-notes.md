@@ -10,7 +10,7 @@ A list of changes with each release. Downloads are
 ##### Features and Improvements
 
 - Require the use of [Sandstorm](https://sandstorm.io) to host the project. See
-  a demo at [oasis.sandstorm.io](https://oasis.sandstorm.io/apps).
+  a demo at [oasis.sandstorm.io](https://oasis.sandstorm.io/apps/u1pa4174jqhvn93fkgr6u07mfgpk53dtgvfqqz9hec0pxk6c8nuh).
 
 - A cool logo from Nena Nguyen (sandstorm.io). Thanks!
 
