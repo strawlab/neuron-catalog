@@ -8,17 +8,8 @@ function checkRole (ctx, roles) {
   if (isSandstorm()) {
     let connection = ctx.connection
     if (!connection) {
-      // FIXME: The next line cannot rely on ctx.connection and so we call into
-      // this private Meteor API.
-      // https://github.com/sandstorm-io/meteor-accounts-sandstorm/issues/19
-      let invocation = DDP._CurrentInvocation.get() // eslint-disable-line no-undef
-      if (invocation) {
-        connection = invocation.connection
-      } else {
-        throw new Error('could not get invocation')
-      }
+      throw new Error('could not get connection')
     }
-
     const user = toUserSchema(connection.sandstormUser())
     const result = sandstormCheckRole(user, roles)
     return result
