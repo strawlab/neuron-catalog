@@ -3,8 +3,7 @@
 ### Online demonstration hosted at Meteor.com
 
 You can view a demonstration website runnning neuron-catalog at
-[neuron-catalog.meteor.com](https://neuron-catalog.meteor.com).
+[oasis.sandstorm.io](https://oasis.sandstorm.io/apps).
 
-This is the same software you can download and run. It is running in a
-special demonstration mode, which limits upload size. Furthermore, no
-guarantee can be made about the integrity of data and images uploaded.
+This is the same software you can download and run. Read more at
+[sandstorm.io](https://sandstorm.io).

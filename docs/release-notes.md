@@ -9,6 +9,14 @@ A list of changes with each release. Downloads are
 
 ##### Features and Improvements
 
+- Require the use of [Sandstorm](https://sandstorm.io) to host the project. See
+  a demo at [oasis.sandstorm.io](https://oasis.sandstorm.io/apps).
+
+- A cool logo from Nena Nguyen (sandstorm.io). Thanks!
+
+- Use Meteor 1.3, drop the use of coffeescript, and convert as much as possible
+  into ES6 javascript.
+
 - Do not require use of Amazon S3 to store files. Instead, save them into
   the local mongodb database instance.
 
