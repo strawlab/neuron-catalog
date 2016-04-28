@@ -86,7 +86,7 @@ link_image_save_func = function (template, collection_name, my_id) {
 
 export function close_upload_dialog_if_no_more_uploads () {
   var count
-  count = Object.keys(Session.get('OngoingUploadFilesArchive')).length + Object.keys(Session.get('OngoingUploadFilesCache')).length + Object.keys(Session.get('OngoingUploadFilesZip')).length
+  count = Object.keys(Session.get('OngoingUploadFilesArchive')).length + Object.keys(Session.get('OngoingUploadFilesCache')).length + Object.keys(Session.get('OngoingUploadDataFiles')).length
   if (count === 0) {
     return bootbox.hideAll()
   }
@@ -474,10 +474,10 @@ Template.InsertImageDialog.created = function () {
 }
 
 Template.UploadProgress.helpers({
-  OngoingUploadFiles: function () {
+  OngoingUploadDataFiles: function () {
     var _id, fileObj, j, len1, ref, ref1, result, sessionVarName, store, tmp
     result = []
-    ref = [['OngoingUploadFilesCache', CacheFileStore], ['OngoingUploadFilesArchive', ArchiveFileStore], ['OngoingUploadFilesZip', ZipFileStore]]
+    ref = [['OngoingUploadFilesCache', CacheFileStore], ['OngoingUploadFilesArchive', ArchiveFileStore], ['OngoingUploadDataFiles', ZipFileStore]]
     for (j = 0, len1 = ref.length; j < len1; j++) {
       ref1 = ref[j]
       sessionVarName = ref1[0]

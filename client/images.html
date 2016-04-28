@@ -162,7 +162,7 @@
 </template>
 
 <template name="UploadProgress">
-  {{#each OngoingUploadFiles}}
+  {{#each OngoingUploadDataFiles}}
   {{#unless this.isUploaded}}
   {{> FS.UploadProgressBar bootstrap=true class='progress-bar-success progress-bar-striped active' showPercent=true}}
   {{/unless}}

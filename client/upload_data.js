@@ -11,17 +11,17 @@ import { renderTmp } from './lib/globals'
 
 window.upload_template = null
 
-Session.setDefault('OngoingUploadFilesZip', {})
+Session.setDefault('OngoingUploadDataFiles', {})
 
 export function do_upload_data_file (chosen_file) {
-  if (chosen_file.type !== 'application/zip') {
-    console.error('chosen_file.type is not "application/zip", proceeding anyway')
+  if (chosen_file.type !== 'application/zip' && chosen_file.type !== 'application/json') {
+    console.error('file type is not zip or json, proceeding anyway')
   }
   const newFile = new FS.File(chosen_file)
   newFile.once('uploaded', function () {
-    const tmp = Session.get('OngoingUploadFilesZip')
+    const tmp = Session.get('OngoingUploadDataFiles')
     delete tmp[newFile._id]
-    Session.set('OngoingUploadFilesZip', tmp)
+    Session.set('OngoingUploadDataFiles', tmp)
     close_upload_dialog_if_no_more_uploads()
     return Meteor.call('process_zip', function (error, result) {
       var elem, hasError, i, len
@@ -54,9 +54,9 @@ export function do_upload_data_file (chosen_file) {
       console.error(error)
       bootbox.alert('There was an error uploading the file')
     }
-    const tmp = Session.get('OngoingUploadFilesZip')
+    const tmp = Session.get('OngoingUploadDataFiles')
     tmp[fileObj._id] = true
-    return Session.set('OngoingUploadFilesZip', tmp)
+    return Session.set('OngoingUploadDataFiles', tmp)
   })
 }
 
