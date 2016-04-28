@@ -14,7 +14,7 @@ Template.FlyCircuitPanel.events(okCancelEvents('#edit-flycircuit-input', {
     coll = get_collection_from_name(this.collection)
     coll.update(this._id, {
       $addToSet: {
-        flycircuit_idids: +value
+        flycircuit_idids: value
       }
     })
     editing_flycircuit_idid.set(null)
