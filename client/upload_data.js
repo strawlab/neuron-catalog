@@ -13,7 +13,7 @@ window.upload_template = null
 
 Session.setDefault('OngoingUploadFilesZip', {})
 
-export function do_upload_zip_file (chosen_file) {
+export function do_upload_data_file (chosen_file) {
   var newFile
   if (chosen_file.type !== 'application/zip') {
     console.error('chosen_file.type is not "application/zip", proceeding anyway')

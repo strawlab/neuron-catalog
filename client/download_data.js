@@ -3,7 +3,7 @@ import { Tracker } from 'meteor/tracker'
 import { Blaze } from 'meteor/blaze'
 import $ from 'jquery'
 
-import { do_upload_zip_file } from './upload_zip'
+import { do_upload_data_file } from './upload_data'
 
 let get_fname_base = function () {
   let now = new Date()
@@ -38,7 +38,7 @@ Template.DataImportExportLauncher.events({
           if (template.zip_upload_ready.get()) {
             let fileList = template.selected_zip_files_var.get()
             let chosen_file = fileList[0]
-            return do_upload_zip_file(chosen_file)
+            return do_upload_data_file(chosen_file)
           }
         }
         )
