@@ -29,6 +29,11 @@ A list of changes with each release. Downloads are
   administrator. Previously, this was set via Meteor settings during server
   startup.
 
+##### Upgrading
+
+  - As the data format has changed and we only support Sandstorm now, download
+    your data as a .json file and upload it into the new version.
+
 ---
 
 ## v0.5.7 (2015-09-16)

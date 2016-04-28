@@ -1,14 +1,66 @@
+import { Meteor } from 'meteor/meteor'
+
 import { SettingsToClient } from '../lib/model'
-import { get_collection_from_name } from '../lib/export_data'
+import { get_collection_from_name, convertToPlain } from '../lib/export_data'
+import { implementations } from './migrationImplementation'
+
+// As a security measure, do not set these collections.
+const doNotUpdate = ['Meteor.users', 'Meteor.roles', 'SettingsToClient', 'NeuronCatalogConfig']
 
 function ensure_latest_json_schema (collections) {
-  let file_version = collections.SettingsToClient.settings.SchemaVersion
-  let this_version = SettingsToClient.findOne({_id: 'settings'}).SchemaVersion
-  if (this_version !== file_version) {
-    throw new Error(`This file was saved with schema ${file_version}. Converting
-to current schema ${this_version} is not implemented.`)
+  const originalVersion = collections.SettingsToClient.settings.SchemaVersion
+  let targetVersion = SettingsToClient.findOne({_id: 'settings'}).SchemaVersion
+
+  // create an in-memory Collection of each (maybe old schema) Collection
+  const newCollections = {}
+  Object.keys(collections).forEach(function (collectionName) {
+    if (__in__(collectionName, doNotUpdate)) {
+      return
+    }
+    const newCollection = new Meteor.Collection(null) // create in-memory
+    const data = collections[collectionName]
+    Object.keys(data).forEach(function (_id) {
+      const doc = data[_id]
+      newCollection.insert(doc)
+    })
+    newCollections[collectionName] = newCollection
+  })
+
+  let dataVersion = originalVersion
+  while (dataVersion !== targetVersion) {
+    const nextVersion = dataVersion + 1
+    const impl = implementations[nextVersion]
+    const argNamesToConvert = []
+    impl.argNames.forEach(function (argName) {
+      if (__in__(argName, doNotUpdate)) {
+        return
+      }
+      argNamesToConvert.push(argName)
+    })
+
+    const args = []
+    argNamesToConvert.forEach(function (argName) {
+      const collectionData = newCollections[argName]
+      args.push(collectionData)
+    })
+
+    if (args.length > 0) {
+      console.log(`Migrating data from ${dataVersion} to ${nextVersion}.`)
+      impl.upFunc.apply(null, args)
+    } else {
+      // Probably we removed the work via doNotUpdate
+      console.log(`Skipping migration from ${dataVersion} to ${nextVersion}: nothing to do.`)
+    }
+
+    dataVersion++
   }
-  return collections
+
+  const result = {}
+  Object.keys(newCollections).forEach(function (collName) {
+    const coll = newCollections[collName]
+    result[collName] = convertToPlain(coll, collName)
+  })
+  return result
 }
 
 export function processJsonBuf (collections) {
@@ -21,7 +73,7 @@ export function processRawJsonBuf (buf) {
   return processJsonBuf(data.collections)
 }
 
-export function do_json_inserts (payload) {
+function do_json_inserts (payload) {
   let results = {
     errors: [],
     numInsertedDocs: 0,
@@ -29,7 +81,7 @@ export function do_json_inserts (payload) {
   }
 
   for (let collection_name in payload) {
-    if (__in__(collection_name, ['SettingsToClient', 'Meteor.users', 'NeuronCatalogConfig'])) {
+    if (__in__(collection_name, doNotUpdate)) {
       continue
     }
     let raw_data = payload[collection_name]
