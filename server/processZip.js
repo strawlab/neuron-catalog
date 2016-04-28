@@ -1,22 +1,15 @@
-import { JSZip, MIME, FS } from './globals-server'
-import { ensure_latest_json_schema } from '../lib/export_data'
-import { do_json_inserts } from './json_data'
+import { MIME, FS } from './globals-server'
+import { processJsonBuf } from './json_data'
 import { ArchiveFileStore, CacheFileStore } from '../lib/model'
 
-export function processZip (buf) {
-  var zip = new JSZip()
-
-  console.log('loading zip with length of', buf.length)
-  zip.load(buf)
-
+export function processZip (zip) {
   let jsonResults = null
   for (var filename in zip.files) {
     console.log('  processing zip filename: ' + filename)
     var contents = zip.files[filename]
     if (filename === 'data.json') {
       var payload_raw = JSON.parse(contents.asBinary())
-      var payload = ensure_latest_json_schema(payload_raw)
-      jsonResults = do_json_inserts(payload)
+      jsonResults = processJsonBuf(payload_raw.collections)
       continue // continue to next file
     }
     var parts = filename.split('/')

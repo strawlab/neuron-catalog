@@ -3,7 +3,7 @@ import { Session } from 'meteor/session'
 import { ReactiveVar } from 'meteor/reactive-var'
 import { Template } from 'meteor/templating'
 
-import { UploadedDataFileStore } from '../lib/model'
+import { UploadedTempFileStore } from '../lib/model'
 
 import { FS, bootbox } from './globals-client'
 import { close_upload_dialog_if_no_more_uploads } from './images'
@@ -49,7 +49,7 @@ export function do_upload_data_file (chosen_file) {
     message: renderTmp(Template.UploadProgress),
     title: 'Upload Progress'
   })
-  return UploadedDataFileStore.insert(newFile, function (error, fileObj) {
+  return UploadedTempFileStore.insert(newFile, function (error, fileObj) {
     if (error != null) {
       console.error(error)
       bootbox.alert('There was an error uploading the file')

@@ -1,4 +1,25 @@
+import { SettingsToClient } from '../lib/model'
 import { get_collection_from_name } from '../lib/export_data'
+
+function ensure_latest_json_schema (collections) {
+  let file_version = collections.SettingsToClient.settings.SchemaVersion
+  let this_version = SettingsToClient.findOne({_id: 'settings'}).SchemaVersion
+  if (this_version !== file_version) {
+    throw new Error(`This file was saved with schema ${file_version}. Converting
+to current schema ${this_version} is not implemented.`)
+  }
+  return collections
+}
+
+export function processJsonBuf (collections) {
+  const payload = ensure_latest_json_schema(collections)
+  return do_json_inserts(payload)
+}
+
+export function processRawJsonBuf (buf) {
+  const data = JSON.parse(buf)
+  return processJsonBuf(data.collections)
+}
 
 export function do_json_inserts (payload) {
   let results = {
