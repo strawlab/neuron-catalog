@@ -33,6 +33,10 @@ export function do_upload_data_file (chosen_file) {
         hasError = false
         for (i = 0, len = result.length; i < len; i++) {
           elem = result[i]
+          if (elem.error) {
+            hasError = true
+            break
+          }
           if (elem.jsonResults.errors.length) {
             hasError = true
           }

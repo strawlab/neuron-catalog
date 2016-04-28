@@ -42,13 +42,19 @@ function processUpload (fileObj) {
     console.log('not a zip file:', e)
   }
 
-  const jsonResults = isZip ? processZip(zip) : processRawJsonBuf(buf)
+  let jsonResults = null
+  let error = null
+  try {
+    jsonResults = isZip ? processZip(zip) : processRawJsonBuf(buf)
+  } catch (e) {
+    error = e.toString()
+  } finally {
+    // now remove file
+    console.log('  removing file')
+    UploadedTempFileStore.remove({_id: fileObj._id})
+  }
 
-  // now remove file
-  console.log('  removing file')
-  UploadedTempFileStore.remove({_id: fileObj._id})
-
-  return {jsonResults: jsonResults, filename: fileObj.name()}
+  return {jsonResults, filename: fileObj.name(), error}
 }
 
 Meteor.methods({
