@@ -3,7 +3,7 @@ import { Session } from 'meteor/session'
 import { ReactiveVar } from 'meteor/reactive-var'
 import { Template } from 'meteor/templating'
 
-import { ZipFileStore } from '../lib/model'
+import { UploadedDataFileStore } from '../lib/model'
 
 import { FS, bootbox } from './globals-client'
 import { close_upload_dialog_if_no_more_uploads } from './images'
@@ -23,7 +23,7 @@ export function do_upload_data_file (chosen_file) {
     delete tmp[newFile._id]
     Session.set('OngoingUploadDataFiles', tmp)
     close_upload_dialog_if_no_more_uploads()
-    return Meteor.call('process_zip', function (error, result) {
+    return Meteor.call('process_data_upload', function (error, result) {
       var elem, hasError, i, len
       if (error) {
         console.error('server callback with error', error)
@@ -49,7 +49,7 @@ export function do_upload_data_file (chosen_file) {
     message: renderTmp(Template.UploadProgress),
     title: 'Upload Progress'
   })
-  return ZipFileStore.insert(newFile, function (error, fileObj) {
+  return UploadedDataFileStore.insert(newFile, function (error, fileObj) {
     if (error != null) {
       console.error(error)
       bootbox.alert('There was an error uploading the file')

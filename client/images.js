@@ -6,7 +6,7 @@ import { ReactiveVar } from 'meteor/reactive-var'
 
 import { get_collection_from_name, get_fileObj } from '../lib/export_data'
 
-import { BinaryData, ArchiveFileStore, CacheFileStore, ZipFileStore } from '../lib/model'
+import { BinaryData, ArchiveFileStore, CacheFileStore, UploadedDataFileStore } from '../lib/model'
 
 import $ from 'jquery'
 
@@ -477,7 +477,7 @@ Template.UploadProgress.helpers({
   OngoingUploadDataFiles: function () {
     var _id, fileObj, j, len1, ref, ref1, result, sessionVarName, store, tmp
     result = []
-    ref = [['OngoingUploadFilesCache', CacheFileStore], ['OngoingUploadFilesArchive', ArchiveFileStore], ['OngoingUploadDataFiles', ZipFileStore]]
+    ref = [['OngoingUploadFilesCache', CacheFileStore], ['OngoingUploadFilesArchive', ArchiveFileStore], ['OngoingUploadDataFiles', UploadedDataFileStore]]
     for (j = 0, len1 = ref.length; j < len1; j++) {
       ref1 = ref[j]
       sessionVarName = ref1[0]

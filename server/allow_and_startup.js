@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Roles } from '../lib/globals-lib'
-import { DriverLines, BinaryData, NeuronTypes, BrainRegions, ArchiveFileStore, CacheFileStore, ZipFileStore, NeuronCatalogConfig, SettingsToClient, ReaderRoles, WriterRoles } from '../lib/model'
+import { DriverLines, BinaryData, NeuronTypes, BrainRegions, ArchiveFileStore, CacheFileStore, UploadedDataFileStore, NeuronCatalogConfig, SettingsToClient, ReaderRoles, WriterRoles } from '../lib/model'
 import { Accounts, Migrations } from './globals-server'
 import { isSandstorm, sandstormCheckRole, toUserSchema } from '../lib/init/sandstorm'
 
@@ -100,7 +100,7 @@ Meteor.publish('cache_filestore', function () {
   if (checkRole(this, ReaderRoles)) { return CacheFileStore.find({}) }
 })
 Meteor.publish('zip_filestore', function () {
-  if (checkRole(this, ReaderRoles)) { return ZipFileStore.find({}) }
+  if (checkRole(this, ReaderRoles)) { return UploadedDataFileStore.find({}) }
 })
 
 // ----------------------------------------
@@ -161,7 +161,7 @@ CacheFileStore.allow({
     return allowRole(userId, ReaderRoles)
   }
 })
-ZipFileStore.allow({
+UploadedDataFileStore.allow({
   insert (userId, doc) {
     return allowRole(userId, WriterRoles)
   },
