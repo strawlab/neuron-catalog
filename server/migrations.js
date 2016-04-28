@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 
 import { DriverLines, BinaryData, NeuronTypes, BrainRegions, ArchiveFileStore, CacheFileStore, NeuronCatalogConfig } from '../lib/model'
-import { FS, Migrations } from './globals-server'
+import { Migrations } from './globals-server'
+import { implementations } from './migrationImplementation'
 
 function parse_s3_url (url) {
   throw new Error('Not Implemented')
@@ -170,55 +171,34 @@ Migrations.add({
   }
 })
 
-let v7_get_s3_url = function (region, bucket, key) {
-  if (region === 'us-east-1') {
-    return `https://s3.amazonaws.com/${bucket}/${key}`
+function arraysEqual (a, b) {
+  // from http://stackoverflow.com/a/16436975/1633026
+  if (a === b) return true
+  if (a == null || b == null) return false
+  if (a.length !== b.length) return false
+
+  // If you don't care about the order of the elements inside
+  // the array, you should sort both arrays here.
+
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false
   }
-  return `https://s3-${region}.amazonaws.com/${bucket}/${key}`
+  return true
 }
 
-let v7_get_fileObj = function (doc, key) {
-  let url = v7_get_s3_url(doc.s3_region, doc.s3_bucket, key)
-  let fileObj = new FS.File(url)
-  return fileObj
+function assert (value) {
+  if (!value) {
+    throw new Error('assertion failed')
+  }
 }
 
 Migrations.add({
   version: 7,
   name: 'Use CollectionFS rather than S3',
   up () {
-    return BinaryData.find().forEach(function (doc) {
-      let setters = {}
-      let removers = {
-        s3_bucket: 1,
-        s3_region: 1,
-        s3_upload_done: 1
-      }
-
-      let fileObjArchive = ArchiveFileStore.insert(v7_get_fileObj(doc, doc.s3_key))
-      setters.archiveId = fileObjArchive._id
-      removers.s3_key = 1
-
-      if (doc.thumb_s3_key) {
-        let fileObjThumb = CacheFileStore.insert(v7_get_fileObj(doc, doc.thumb_s3_key))
-        setters.thumbId = fileObjThumb._id
-        removers.thumb_s3_key = 1
-      }
-
-      if (doc.cache_s3_key) {
-        let fileObjCache = CacheFileStore.insert(v7_get_fileObj(doc, doc.cache_s3_key))
-        setters.cacheId = fileObjCache._id
-        removers.cache_s3_key = 1
-      }
-
-      return BinaryData.update({ _id: doc._id }, {
-        $set: setters,
-        $unset: removers
-      }, {
-        validate: false,
-        getAutoValues: false
-      })
-    })
+    const impl = implementations[7]
+    assert(arraysEqual(impl.argNames, ['BinaryData', 'ArchiveFileStore', 'CacheFileStore']))
+    return impl.upFunc(BinaryData, ArchiveFileStore, CacheFileStore)
   }
 })
 
@@ -226,17 +206,9 @@ Migrations.add({
   version: 8,
   name: 'Add .profile.name field to user docs',
   up () {
-    return Meteor.users.find().forEach(doc =>
-      Meteor.users.update(
-        {_id: doc._id}
-      , {
-        $set: {
-          profile: {
-            name: doc.username
-          }
-        }
-      })
-    )
+    const impl = implementations[8]
+    assert(arraysEqual(impl.argNames, ['Meteor.users']))
+    return impl.upFunc(Meteor.users)
   }
 })
 
@@ -244,35 +216,8 @@ Migrations.add({
   version: 9,
   name: 'Rework permissions system',
   up () {
-    let permission_map = {
-      'admin': ['read', 'write', 'admin'],
-      'read-write': ['read', 'write'],
-      'read-only': ['read']
-    }
-
-    // Remove old roles from Meteor.roles collection
-    for (let old_role in permission_map) {
-      let doc = Meteor.roles.findOne({name: old_role})
-      if (doc != null) {
-        Meteor.roles.remove({_id: doc._id})
-      }
-    }
-
-    // Update user docs for new roles
-    return Meteor.users.find().forEach(function (doc) {
-      // use object to prevent repeated keys
-      let new_permissions = {}
-      for (let i = 0; i < doc.roles.length; i++) {
-        let old_permission = doc.roles[i]
-        for (let j = 0; j < permission_map[old_permission].length; j++) {
-          let new_permission = permission_map[old_permission][j]
-          new_permissions[new_permission] = true
-        }
-      }
-      new_permissions = Object.keys(new_permissions)
-
-      return Meteor.users.update({ _id: doc._id }, {$set: { roles: new_permissions
-    }})
-    })
+    const impl = implementations[9]
+    assert(arraysEqual(impl.argNames, ['Meteor.roles', 'Meteor.users']))
+    return impl.upFunc(Meteor.roles, Meteor.users)
   }
 })
