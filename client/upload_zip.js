@@ -9,8 +9,6 @@ import { FS, bootbox } from './globals-client'
 import { close_upload_dialog_if_no_more_uploads } from './images'
 import { renderTmp } from './lib/globals'
 
-var handle_zip_files, myclick
-
 window.upload_template = null
 
 Session.setDefault('OngoingUploadFilesZip', {})
@@ -78,7 +76,7 @@ Template.UploadDataDialog.created = function () {
 }
 
 Template.UploadDataDialog.helpers({
-  selected_zip_files: function () {
+  selectedDataFiles: function () {
     var f, i, len, ref, results
     ref = Template.instance().selected_zip_files_var.get()
     results = []
@@ -90,23 +88,18 @@ Template.UploadDataDialog.helpers({
   }
 })
 
-myclick = function (template, event, selector) {
-  var file_dom_element
-  file_dom_element = template.find(selector)
-  if (file_dom_element) {
-    file_dom_element.click()
-  }
-  return event.preventDefault()
-}
-
 Template.UploadDataDialog.events({
-  'click #zipSelect': function (event, template) {
-    return myclick(template, event, '#upload-zip-data')
+  'click #uploadSelectButton': function (event, template) {
+    const file_dom_element = template.find('#upload-data')
+    if (file_dom_element) {
+      file_dom_element.click()
+    }
+    return event.preventDefault()
   },
-  'change #upload-zip-data': function (event, template) {
+  'change #upload-data': function (event, template) {
     var file_dom_element
     template.zip_upload_ready.set(false)
-    file_dom_element = template.find('#upload-zip-data')
+    file_dom_element = template.find('#upload-data')
     if (!file_dom_element) {
       return
     }
@@ -121,7 +114,7 @@ Template.UploadDataDialog.events({
     event.stopPropagation()
     return event.preventDefault()
   },
-  'drop #upload-zip-data-div': function (event, template) {
+  'drop #upload-data-div': function (event, template) {
     var dt
     event.stopPropagation()
     event.preventDefault()
@@ -131,7 +124,7 @@ Template.UploadDataDialog.events({
   }
 })
 
-handle_zip_files = function (fileList, template) {
+function handle_zip_files (fileList, template) {
   if (fileList.length === 0) {
     return
   }
