@@ -12,6 +12,10 @@ Template.tags_panel.helpers({
 
 Template.ReaderRequiredLayoutWithNamedURL.helpers({
   setURL () {
+    if (!this.name) {
+      // If we are not logged in, for example, this won't be set.
+      return
+    }
     // Set the URL bar of the browser to include the @name.
     let newPath = Router.current().route.path({_id: this._id, name: this.name})
     Router.go(newPath, {}, {replaceState: true})
