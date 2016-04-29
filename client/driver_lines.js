@@ -48,6 +48,8 @@ let enhance_driver_line_doc = function (doc) {
   if (specialization_Dmel()) {
     if (name.lastIndexOf('gmr', 0) === 0 && endsWith(name, 'gal4')) {
       doc.is_flylight_gal4_line = true
+      const shortName = name.substring(2, 8) // without 'gm'
+      doc.flylight_url = `https://strawlab.org/fly-enhancer-redirect/v1/flylight?line=${shortName}`
       doc.has_remote_links = true
     }
 
@@ -57,19 +59,9 @@ let enhance_driver_line_doc = function (doc) {
       if (endsWith(vt_number_str, '-')) {
         vt_number_str = vt_number_str.substring(0, vt_number_str.length - 1)
       }
-      let query = {
-        SEARCH_ANYPRESUF: 'N',
-        SEARCH_CATALOG_ID: 'VDRC_Catalog',
-        SEARCH_CATEGORY_ID: 'VDRC_All',
-        SEARCH_OPERATOR: 'AND',
-        SEARCH_STRING: `vt${vt_number_str}`,
-        VIEW_SIZE: '100',
-        sortAscending: 'Y',
-        sortOrder: 'SortProductField:transformId'
-      }
-      let qs = $.param(query)
-      doc.vdrc_url = `http://stockcenter.vdrc.at/control/keywordsearch?${qs}`
-      doc.brainbase_url = `http://brainbase.imp.ac.at/bbweb/#6?st=byline&q=${vt_number_str}`
+      const shortName = vt_number_str
+      doc.vdrc_url = `https://strawlab.org/fly-enhancer-redirect/v1/vdrc?vt=${shortName}`
+      doc.brainbase_url = `https://strawlab.org/fly-enhancer-redirect/v1/bbweb?vt=${shortName}`
       doc.has_remote_links = true
     }
   }
