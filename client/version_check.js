@@ -17,7 +17,7 @@ let on_version_received = function (data, status, xhr) {
 }
 
 let check_version = () => $.ajax({
-  url: 'https://s3-eu-west-1.amazonaws.com/strawlab.org/neuron-catalog/latest-release.json',
+  url: 'https://strawlab.org/neuron-catalog/latest-release.json',
   dataType: 'json',
   success: on_version_received
 }
