@@ -356,6 +356,8 @@ Template.registerHelper('activeIfTemplateIn', function () {
 })
 
 // Mimic the normal meteor accounts system from IronRouter template.
+Template.registerHelper('loggingIn', () => Meteor.loggingIn())
+
 Template.registerHelper('currentUser', () => currentUser())
 
 Template.registerHelper('binary_data_cursor', () => BinaryData.find({}))
