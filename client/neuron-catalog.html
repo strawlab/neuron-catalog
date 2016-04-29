@@ -33,7 +33,7 @@
 	<a href="{{rtfd.base_url}}/{{rtfd.language}}/{{rtfd.version}}">Documentation</a>
       </span>
       <span class="side-by-side">
-	<a href="https://github.com/strawlab/neuron-catalog/issues/new">Report an issue <i class="fa fa-github"></i></a>
+	<a target={{linkTarget}} href="https://github.com/strawlab/neuron-catalog/issues/new">Report an issue <i class="fa fa-github"></i></a>
       </span>
       <span class="side-by-side">
         {{#if isSandstorm}}
@@ -375,7 +375,7 @@
 	<div class="item-tags">
           {{#each idid_dicts}}
 <div class="btn btn-default btn-small">
-      <div class="pzp1 name"><a href="http://flycircuit.tw/modules.php?name=clearpage&op=detail_table&neuron={{name}}">{{name}}</a></div>
+      <div class="pzp1 name"><a target={{linkTarget}} href="http://flycircuit.tw/modules.php?name=clearpage&op=detail_table&neuron={{name}}">{{name}}</a></div>
 	    <div class="pzp2 remove-flycircuit"><i class="fa fa-trash-o"></i></div>
 	  </div>
 	  {{/each}}
