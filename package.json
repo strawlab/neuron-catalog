@@ -1,0 +1,11 @@
+{
+  "name": "neuron-catalog",
+  "repository": "https://github.com/strawlab/neuron-catalog",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "meteor-node-stubs": "~0.2.0"
+  }
+}
