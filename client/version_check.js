@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { neuron_catalog_version } from '../lib/version'
 import { Notifications } from './globals-client'
-import $ from 'jquery'
+import { $ } from './globals-client'
 
 // check for a new release of neuron catalog
 

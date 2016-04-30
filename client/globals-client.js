@@ -10,5 +10,6 @@ Blob // eslint-disable-line no-undef
 File // eslint-disable-line no-undef
 FileReader // eslint-disable-line no-undef
 Tiff // eslint-disable-line no-undef
+$ // eslint-disable-line no-undef
 
-export { Deps, Notifications, bootbox, html_sanitize, moment, AutoForm, Showdown, FS, Blob, File, FileReader, Tiff } // eslint-disable-line no-undef
+export { Deps, Notifications, bootbox, html_sanitize, moment, AutoForm, Showdown, FS, Blob, File, FileReader, Tiff, $ } // eslint-disable-line no-undef

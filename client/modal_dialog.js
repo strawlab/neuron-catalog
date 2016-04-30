@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
-import $ from 'jquery'
+import { $ } from './globals-client'
 
 Template.ModalDialog.onRendered(function () {
   let body_div = this.$('#modal-dialog-body')[0]

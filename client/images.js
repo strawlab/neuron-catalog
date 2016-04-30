@@ -8,7 +8,7 @@ import { get_collection_from_name, get_fileObj } from '../lib/export_data'
 
 import { BinaryData, ArchiveFileStore, CacheFileStore, UploadedTempFileStore } from '../lib/model'
 
-import $ from 'jquery'
+import { $ } from './globals-client'
 
 import { renderTmp } from './lib/globals'
 import { Deps, bootbox, Blob, File, FileReader, Tiff } from './globals-client'

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { ReactiveVar } from 'meteor/reactive-var'
 import { Template } from 'meteor/templating'
-import $ from 'jquery'
+import { $ } from './globals-client'
 
 import { get_collection_from_name } from '../lib/export_data'
 import { Deps, bootbox } from './globals-client'

@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating'
 import { Tracker } from 'meteor/tracker'
 import { Blaze } from 'meteor/blaze'
-import $ from 'jquery'
+import { $ } from './globals-client'
 
 import { do_upload_data_file } from './upload_data'
 
