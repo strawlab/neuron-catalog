@@ -19,9 +19,10 @@ const pkgdef :Spk.PackageDefinition = (
 
     appTitle = (defaultText = "Neuron Catalog"),
 
-    appVersion = 0,  # Increment this for every release.
+    appVersion = 1,  # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "0.0.0"),
+    # Keep in sync with ../lib/version.js
+    appMarketingVersion = (defaultText = "0.6.0"),
     # Human-readable representation of appVersion. Should match the way you
     # identify versions of your app in documentation and marketing.
 
