@@ -70,9 +70,9 @@ const pkgdef :Spk.PackageDefinition = (
       author = (
         # Fields relating to the author of this app.
 
-        contactEmail = "andrew.straw@biologie.uni-freiburg.de",
+        contactEmail = "strawman@astraw.com",
 
-        #pgpSignature = embed "path/to/pgp-signature",
+        pgpSignature = embed "pgp-signature",
         # PGP signature attesting responsibility for the app ID. This is a binary-format detached
         # signature of the following ASCII message (not including the quotes, no newlines, and
         # replacing <app-id> with the standard base-32 text format of the app's ID):
@@ -86,14 +86,14 @@ const pkgdef :Spk.PackageDefinition = (
         # Further details including how to set up GPG and how to use keybase.io can be found
         # at https://docs.sandstorm.io/en/latest/developing/publishing-apps/#verify-your-identity
 
-        upstreamAuthor = "Andrew Straw",
+        # upstreamAuthor = "Andrew Straw",
         # Name of the original primary author of this app, if it is different from the person who
         # produced the Sandstorm package. Setting this implies that the author connected to the PGP
         # signature only "packaged" the app for Sandstorm, rather than developing the app.
         # Remove this line if you consider yourself as the author of the app.
       ),
 
-      #pgpKeyring = embed "path/to/pgp-keyring",
+      pgpKeyring = embed "pgp-keyring",
       # A keyring in GPG keyring format containing all public keys needed to verify PGP signatures in
       # this manifest (as of this writing, there is only one: `author.pgpSignature`).
       #
