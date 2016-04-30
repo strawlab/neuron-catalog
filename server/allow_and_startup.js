@@ -54,7 +54,7 @@ Meteor.startup(function () {
       data_authors: 'authors',
       blurb: ''
     }
-    NeuronCatalogConfig.insert(doc)
+    NeuronCatalogConfig.update({_id: doc._id}, {$set: doc}, {upsert: true})
   }
 
   // Send relevant Meteor.settings.
