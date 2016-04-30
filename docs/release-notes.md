@@ -5,12 +5,14 @@ A list of changes with each release. Downloads are
 
 ---
 
-## v0.6.0 (not yet released)
+## v0.6.0
 
 ##### Features and Improvements
 
 - Require the use of [Sandstorm](https://sandstorm.io) to host the project. See
-  a demo at [oasis.sandstorm.io](https://oasis.sandstorm.io/apps/u1pa4174jqhvn93fkgr6u07mfgpk53dtgvfqqz9hec0pxk6c8nuh).
+  [the neuron-catalog
+  app](https://apps.sandstorm.io/app/u1pa4174jqhvn93fkgr6u07mfgpk53dtgvfqqz9hec0pxk6c8nuh)
+  in the Sandstorm app store.
 
 - A cool logo from Nena Nguyen (sandstorm.io). Thanks!
 
@@ -31,8 +33,10 @@ A list of changes with each release. Downloads are
 
 ##### Upgrading
 
-  - As the data format has changed and we only support Sandstorm now, download
-    your data as a .json file and upload it into the new version.
+  - Neuron-catalog preserves data in-place during an upgrade and automatically
+    updates the schema if required. To import data from an old installation into
+    a new installation, download your data from the old installation and upload
+    it into the new installation. The data should be automatically migrated.
 
 ---
 

@@ -6,7 +6,6 @@ repo_url: https://github.com/strawlab/neuron-catalog/
 
 pages:
 - ['index.md', 'Introduction']
-- ['demo-mode.md', 'User Guide', 'Demonstration Mode']
 - ['installation.md', 'User Guide', 'Installation']
 - ['security.md', 'User Guide', 'Security']
 - ['configuration.md', 'User Guide', 'Configuration']

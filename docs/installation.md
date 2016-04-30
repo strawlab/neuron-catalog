@@ -1,15 +1,13 @@
 ## Installation
 
-By far the easiest way to try and run neuron-catalog is the demo server at
-[oasis.sandstorm.io](https://oasis.sandstorm.io/apps/u1pa4174jqhvn93fkgr6u07mfgpk53dtgvfqqz9hec0pxk6c8nuh).
+The easiest way to try and run neuron-catalog is to use the pre-packaged app
+[sandstorm.io](https://apps.sandstorm.io/app/u1pa4174jqhvn93fkgr6u07mfgpk53dtgvfqqz9hec0pxk6c8nuh).
+You can run this app locally in a self-hosted Sandstorm server on the
+Sandstorm infrastructure.
 
-You can also install and run the Sandstorm Package locally by using the
-Sandstorm App Store. Install Sandstorm, and neuron-catalog will be available as
-an app.
+## Source code downloads
 
-## Downloads
-
-Releases can be downloaded
+Source code for the releases can be downloaded
 [here](https://github.com/strawlab/neuron-catalog/releases).
 
 ## Development
