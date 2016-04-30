@@ -5,6 +5,10 @@
 
 set -euo pipefail
 
+# g++ is required for fibers.js which is required for meteor
+sudo apt-get update --yes
+sudo apt-get install build-essential --yes
+
 CURL_OPTS="--silent --show-error"
 
 cd /opt/
@@ -36,7 +40,7 @@ cp -a /lib/x86_64-linux-gnu/libtinfo.so.* /opt/meteor-spk/meteor-spk.deps/lib/x8
 # Unfortunately, Meteor does not explicitly make it easy to cache packages, but
 # we know experimentally that the package is mostly directly extractable to a
 # user's $HOME/.meteor directory.
-METEOR_RELEASE=1.3.2.2
+METEOR_RELEASE=1.3.2.4
 METEOR_PLATFORM=os.linux.x86_64
 METEOR_TARBALL_FILENAME="meteor-bootstrap-${METEOR_PLATFORM}.tar.gz"
 METEOR_TARBALL_URL="https://d3sqy0vbqsdhku.cloudfront.net/packages-bootstrap/${METEOR_RELEASE}/${METEOR_TARBALL_FILENAME}"
