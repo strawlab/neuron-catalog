@@ -1,6 +1,6 @@
-# neuron-catalog - A simple web database for keeping track of neurons
+Neuron Catalog - A simple web database for keeping track of neurons
 
-neuron-catalog is a web-based database for small groups (e.g. a lab)
+Neuron Catalog is a web-based database for small groups (e.g. a lab)
 collaborating on neuronal circuit mapping. It provides a simple platform to
 organize your notes about driver lines, neuron types, brain regions and putative
 connectivity. Each group that wants to run the neuron-catalog can run their own
