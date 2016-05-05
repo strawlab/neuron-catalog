@@ -5,6 +5,12 @@ A list of changes with each release. Downloads are
 
 ---
 
+## v0.6.1
+
+##### Features and Improvements
+
+- Improve the description for the Sandstorm market.
+
 ## v0.6.0
 
 ##### Features and Improvements
